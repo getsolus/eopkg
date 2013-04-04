@@ -126,6 +126,9 @@ def buildTYPE():
     '''returns the current build type'''
     return env.build_type
 
+def canClang():
+	return env.clang.lower() == "true"
+	
 # Directory Related Functions
 
 def docDIR():

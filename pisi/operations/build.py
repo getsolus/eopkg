@@ -394,6 +394,7 @@ class Builder:
                "SRC_NAME": self.spec.source.name,
                "SRC_VERSION": self.spec.getSourceVersion(),
                "SRC_RELEASE": self.spec.getSourceRelease(),
+               "PKG_SUPPORTS_CLANG" : str(self.spec.getClangSupported()),               
                "PYTHONDONTWRITEBYTECODE": '1'}
         if self.build_type == "emul32":
             env["CC"] = "%s -m32" % os.getenv("CC")

@@ -56,6 +56,7 @@ class Env(object):
             'cflags': 'CFLAGS',
             'cxxflags': 'CXXFLAGS',
             'ldflags': 'LDFLAGS',
+            'clang': 'PKG_SUPPORTS_CLANG',            
             'jobs': 'JOBS'
         }
 
