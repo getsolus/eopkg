@@ -25,6 +25,7 @@ import pisi.actionsapi.get as get
 from pisi.actionsapi.shelltools import system
 from pisi.actionsapi.shelltools import can_access_file
 from pisi.actionsapi.shelltools import unlink
+from pisi.actionsapi.shelltools import export
 from pisi.actionsapi.libtools import gnuconfig_update
 from pisi.actionsapi.shelltools import isDirectory
 from pisi.actionsapi.shelltools import ls
@@ -59,7 +60,11 @@ class RunTimeError(pisi.actionsapi.Error):
 
 def configure(parameters = ''):
     '''configure source with given parameters = "--with-nls --with-libusb --with-something-usefull"'''
-
+    # Set clang as compiler if supported
+    if get.canClang():
+		export ("CC", "clang")
+		export ("CXX", "clang++")
+		
     if can_access_file('configure'):
         gnuconfig_update()
 
@@ -88,6 +93,11 @@ def configure(parameters = ''):
 
 def rawConfigure(parameters = ''):
     '''configure source with given parameters = "--prefix=/usr --libdir=/usr/lib --with-nls"'''
+    # Set clang as compiler if supported
+    if get.canClang():
+		export ("CC", "clang")
+		export ("CXX", "clang++")
+		    
     if can_access_file('configure'):
         gnuconfig_update()
 
@@ -101,6 +111,11 @@ def compile(parameters = ''):
 
 def make(parameters = ''):
     '''make source with given parameters = "all" || "doc" etc.'''
+    # Set clang as compiler if supported
+    if get.canClang():
+		export ("CC", "clang")
+		export ("CXX", "clang++")
+		    
     if system('make %s %s' % (get.makeJOBS(), parameters)):
         raise MakeError(_('Make failed.'))
 
@@ -118,6 +133,11 @@ def fixpc():
 
 def install(parameters = '', argument = 'install'):
     '''install source into install directory with given parameters'''
+    # Set clang as compiler if supported
+    if get.canClang():
+		export ("CC", "clang")
+		export ("CXX", "clang++")
+		    
     args = 'make prefix=%(prefix)s/%(defaultprefix)s \
             datadir=%(prefix)s/%(data)s \
             infodir=%(prefix)s/%(info)s \
@@ -148,6 +168,11 @@ def install(parameters = '', argument = 'install'):
 
 def rawInstall(parameters = '', argument = 'install'):
     '''install source into install directory with given parameters = PREFIX=%s % get.installDIR()'''
+    # Set clang as compiler if supported
+    if get.canClang():
+		export ("CC", "clang")
+		export ("CXX", "clang++")
+		    
     if system('make %s %s' % (parameters, argument)):
         raise InstallError(_('Install failed.'))
     else:
