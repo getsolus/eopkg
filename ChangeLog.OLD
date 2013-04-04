@@ -1,0 +1,489 @@
+2010-03-09 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/constants.py: Don't use underscores to be compatible with other
+		file names in infodir.
+
+2010-03-08 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/actionsapi/cmaketools.py: Those given parameters are nonsense
+		and noop. Just give DESTDIR to install() for correct installation into
+		sandbox.
+		
+2010-03-03 Fatih Aşıcı <fatih@pardus.org.tr>
+		* pisi/operations/build.py: Fix concatenation error. This is a
+		regression introduced when the support for Source/AdditionalFile
+		support is added.
+
+2010-03-01 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/: Use the constants from constants.py instead of hardcoding
+		them.
+
+2010-02-28 Fatih Aşıcı <fatih@pardus.org.tr>
+		* pisi/atomicoperations.py: Check if the old and new paths
+		refer to the same file when relocating or cleaning up. Also
+		fix updates with delta packages when the destination
+		directory is "/" and fix exceptions when an old file is not
+		found.
+		* pisi/operations/check.py: Show missing files in the "check"
+		command output. Take "-D" parameter into account when checking
+		files.
+		* pisi/operations/delta.py: Take -D parameter into account
+		when looking for file permission changes.
+		* pisi/api.py (snapshot): Take -D parameter into account when
+		storing config files.
+		* pisi/operations/build.py: Catch empty dirs when searching
+		for abandoned files. Always show abandoned files whether the
+		--debug option is given or not.
+		* pisi-cli: Do not show traceback for handled pisi errors.
+
+2010-02-27 Fatih Aşıcı <fatih@pardus.org.tr>
+		* pisi/archive.py: Install files into correct paths when the old
+		package format is used. This was a regression introduced when
+		switching to python 2.6.
+
+2010-02-22 Fatih Aşıcı <fatih@pardus.org.tr>
+		* pisi/cli/addrepo.py, pisi/db/repodb.py: Remove the check
+		for repository architecture as the current infrastructure
+		doesn't allow a unified repository for multiple
+		architectures.
+		* pisi/operations/build.py: Refactor get_file_type function.
+
+2010-02-12 Serdar Dalgıç <serdar@pardus.org.tr>
+		* pisi/operations/build.py: Use glob.glob0 and lstrip instead of
+		glob.glob. Typos in filePaths in pspec.xml were sometimes ignored and
+		abandoned files were not succesfully caught in some cases. Now it is
+		fixed. Thanks Fatih for the collaboration.
+
+2010-02-12 Gökçen Eraslan <gokcen@pardus.org.tr>
+		* pisi/actionsapi/shelltools.py: Replace FileError with ctx.ui.error
+		since FileError is defined in pisitoolsfunctions.
+
+2010-02-05 Fatih Aşıcı <fatih@pardus.org.tr>
+		* pisi/version.py (compare): Allow comparing Version objects
+		with strings.
+
+2010-02-04 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/pxml/autoxml.py (format): Some optional elements may be None
+		during formatting, handle those situations. We still have a formatting
+		issue caused by the automagical output representation of autoxml.
+
+2010-02-02 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/component.py(Maintainer): Add Maintainer tag to components.xml.
+
+2010-01-26 Serdar Dalgıç <serdar@pardus.org.tr>
+		* Handle urllib2 errors of dummy .part files created as a result of unreachable
+		translations.xml's. Fixes #12136.
+
+2010-01-23 Ozan Çağlayan <ozan@pardus.org.tr>
+		* Add support for optional reverse="[tT]rue" in <Patch> for reverse applying
+		a patch.
+
+2010-01-22 Gökçen Eraslan <gokcen@pardus.org.tr>
+		* pisi/actionsapi/perlmodules.py: Do not ignore parameter in make
+		method (eg. perl Build test). Tests of some perl modules have never run
+		before this commit.
+
+2010-01-19 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/specfile.py (_set_i18n): Handle parsing errors during
+		translations.xml reading.
+		* pisi/specfile.py (read_translations): Ignore source package
+		translations if <Name> is empty in translations.xml.
+		* pisi/version.py (VersionItem): Handle unknown keywords in version
+		strings,
+		* pisi/operations/build.py (Builder.__init__): Don't wait until
+		creating .pisi file for borking about invalid version strings e.g.
+		something like "0.5.6.1_x1219" in <Update> element.
+
+2010-01-12 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/actionsapi/get.py: Add ARCH() for getting host architecture.
+		Thanks to 64-bit team for pointing out this requirement.
+
+2010-01-04 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/actionsapi/shelltools.py (unlink): Support glob patterns in
+		unlink().
+
+2009-12-21 Gökçen Eraslan <gokcen@pardus.org.tr>
+		* pisi/actionsapi/cmaketools.py: Change CMake build type to
+		RelWithDebInfo to get faster KDE packages.
+
+2009-12-21 Fatih Aşıcı <fatih@pardus.org.tr>
+		* pisi/cli/history.py: Fix exceptions raise after quitting history view.
+
+2009-12-16 Serdar Dalgıç <serdar@pardus.org.tr>
+		* pisi/cli/blame.py: Several enhancements in blame:
+			- pisi bl works for LC_ALL=C
+			- a new option "-a" / "--print-all": blame for all of the releases
+
+2009-12-16 Serdar Dalgıç <serdar@pardus.org.tr>
+		* pisi/operations/build.py: Warn if component.xml is not found in the
+		upper directory, tag the source as a part of unknown component.
+
+2009-12-15 Faik Uygur <faik@pardus.org.tr>
+		* pisi/component.py (Component): Make LocalName, Summary and
+		Description optional for cleaning up component.xml files in the
+		repository.
+
+2009-12-14 Serdar Dalgıç <serdar@pardus.org.tr>
+		* Add architecture and distribution release check to pisi add-repo
+		New parameter --ignore-check is added to pisi ar too.
+
+2009-12-11 Serdar Dalgıç <serdar@pardus.org.tr>
+		* pisi/operations/install.py: Check individual packages' Distribution
+		Release and architecture properties before installing them.
+
+2009-12-09 Serdar Dalgıç <serdar@pardus.org.tr>
+		* pisi/specfile.py: Raise meaningful warning when translations.xml has
+		invalid XML, closes bug #8969
+
+2009-12-08 Bahadır Kandemir <bahadir@pardus.org.tr>
+		* pisi/atomicoperations.py: Add package name to needs{Restart,Reboot}
+		list if an update requires one of these actions.
+
+2009-12-07 Bahadır Kandemir <bahadir@pardus.org.tr>
+		* pisi/api.py, pisi/db/install.db, pisi/constants.py: Install DB
+		changes and API methods for needs{Restart,Reboot} feature.
+
+2009-12-04 Bahadır Kandemir <bahadir@pardus.org.tr>
+		* pisi/scenarioapi/pspec.py: Reverted AnyDependency changes.
+
+2009-12-04 Bahadır Kandemir <bahadir@pardus.org.tr>
+		* pisi/scenarioapi/package.py: Fixed repo_version_bumped() ignoring
+		with_version() argument.
+
+2009-12-04 Bahadır Kandemir <bahadir@pardus.org.tr>
+		* pisi/scenarioapi/pspec.py: AnyDependency support added to
+		with_dependencies() method. Simply give AnyDependency list as an
+		argument.
+
+2009-11-22 Bahadır Kandemir <bahadir@pardus.org.tr>
+		* pisi/operations/build.py, pisi/index.py: *Size variables should be
+		long, instead of int.
+
+2009-11-09 Faik Uygur <faik@pardus.org.tr>
+		* pisi/actionsapi/perlmodules.py: KeepSpecial should control pod file removal.
+                Remove .packlist files from perl packages.
+
+2009-10-15 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/operations/build.py (Builder.generate_debug_package_object):
+		Don't append dbginfo to the debug packages' component.
+
+2009-09-25 Gökçen Eraslan <gokcen@pardus.org.tr>
+		* pisi/actionsapi/pisitools.py: In dosym method, file that already exists is the
+		destination file, not the source file. Print the correct error message
+		when there is already a destination file.
+
+2009-09-22 Fatih Aşıcı <fatih@pardus.org.tr>
+		* pisi/operations/build.py: Fix the special file patterns
+		for the new code using python magic module.
+
+2009-09-16 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/archive.py (ArchiveBzip2): Implement ArchiveBzip2 to support
+		.bz2 archive files,
+		* pisi/operations/build.py (Builder.file_actions): Use python magic
+		module instead of spawning file process to improve performance.
+
+2009-09-08 Ozan Çağlayan <ozan@pardus.org.tr>
+		* pisi/specfile.py (read_translations): Fix matching of translations
+		against sub-packages.
+
+2009-08-23 Fatih Aşıcı <fatih@pardus.org.tr>
+		* Normalize target paths of symbolic links. Fixes #10976.
+
+2009-08-22 Fatih Aşıcı <fatih@pardus.org.tr>
+		* Add optional destDir parameter to pisitools.dohtml as
+		pisitools.dodoc supports.
+
+2009-08-04 Ozan Çağlayan <ozan@pardus.org.tr>
+		* (pisi/util.py): Revert kernel module stripping for now as it's not
+		tested well.
+
+2009-08-14 Serdar Dalgıç <dalgic.srdr@gmail.com>
+        * tarZ support for archives
+
+2009-08-12 Jérôme Schneider <jerome.schneider@gmail.com>
+		* Advanced search parameters added. pisi can now search only by name, summary
+                or description of a package.
+
+2009-08-11 Serdar Dalgıç <dalgic.srdr@gmail.com>
+		* (cli/build.py): pisi build command now works in debug mode unless -q
+		or --quiet parameter is passed.
+
+2009-08-07 Ozan Çağlayan <ozan@pardus.org.tr>
+		* (pisi/util.py): Strip kernel and modules as well as other binaries to build
+		dbginfo packages for them.
+
+2009-08-04 Ozan Çağlayan <ozan@pardus.org.tr>
+		* (operations/build.py): Really fix the abandoned file checking when
+		the path in pspec.xml and the actual path of a missed file intersects,
+		* (operations/build.py): Check and fail if necessary for abandoned files before creating the
+		*.pisi packages.
+
+2009-08-03 Fatih Aşıcı <fatih@pardus.org.tr>
+		* Make it possible to specify doc directory's name via destDir
+		parameter provided to pisitools.dodoc.
+
+2009-06-30 Onur Küçük <onur@pardus.org.tr>
+		* Change default make job number from 1 to 3 in pisi defaults,
+		sometimes it is forgotten and we need to see parallel build errors
+
+2009-06-26 Fatih Aşıcı <fatih@pardus.org.tr>
+		* Pass relative paths of patches to quilt. This makes the
+		patches directory have the same structure as the files
+		directory of package.
+
+2009-06-16 Fatih Aşıcı <fatih@pardus.org.tr>
+		* Fix resetting of the environment.
+
+2009-06-06 Ozan Çağlayan <ozan@pardus.org.tr>
+		* (operations/build.py): Sort the files according to their path names
+		before adding them to the tarfile. This helps lzma to compress the
+		install.tar better. Thanks Onur for noticing this and giving the idea.
+
+2009-05-07 Bahadır Kandemir <bahadir@pardus.org.tr>
+        * Set DBus timeout for setupPackage calls.
+
+2009-05-05 Bahadır Kandemir <bahadir@pardus.org.tr>
+        * Increase DBus timeout
+        * Always set COMAR client locale
+
+2009-05-04 Fatih Aşıcı <fatih@pardus.org.tr>
+        * Change distribution release to 2009.
+
+2009-04-09 Ozan Çağlayan <ozan@pardus.org.tr>
+        * (scripts/revdep-rebuild): Ignore /opt/ptsp during library and binary
+        search.
+
+2009-03-30 Faik Uygur <faik@pardus.org.tr>
+        * Fix a bug in new "reverseDependencyUpdate" tag, where it forces to install all reverseDeps that are
+        also not installed
+
+2009-03-24 Bahadır Kandemir <bahadir@pardus.org.tr>
+        * Allow disabling delta package support from pisi.conf
+
+2009-03-24 Bahadır Kandemir <bahadir@pardus.org.tr>
+        * Merged COMAR patch. PiSi now has a cleaner comar interface module.
+
+2009-03-11 Ozan Çağlayan <ozan@pardus.org.tr>
+        * pisi/actionsapi/pisitools.py: Implement new method removeLaFiles()
+        to recursively delete libtool *la files from /usr/lib.
+        * pisi/configfile.py: Fix debug_packages_dir default value.
+
+2009-03-09 Faik Uygur <faik@pardus.org.tr>
+        * Fix pisi hs output for snapshot printing empty "*"
+
+2009-02-13 Bahadır Kandemir <bahadir@pardus.org.tr>
+        * Merged Python 2.6 patch
+
+2009-02-13 Faik Uygur <faik@pardus.org.tr>
+        * pisi-2.1.2
+
+2009-02-13 Faik Uygur <faik@pardus.org.tr>
+        * Make enableSandbox enabled default
+        * Export CXX and CC before compiling
+
+2009-02-10 Faik Uygur <faik@pardus.org.tr>
+        * pisi history --takeback should not give an exception and quit when package
+        does not found (#9083)
+
+2009-02-10 Faik Uygur <faik@pardus.org.tr>
+        * Make pisi search output colored like grep (#9156)
+
+2009-02-05 Bahadır Kandemir <bahadir@pardus.org.tr>
+        * pisi/api.py (configure_pending): Import comariface when necessary.
+
+2009-02-05 Ozan Çağlayan <ozan@pardus.org.tr>
+        * pisi/actionsapi/pisitools.py (dosed): Unlink backup file in all situations
+        as it now raises warning instead of error.
+
+2009-02-04 Faik Uygur <faik@pardus.org.tr>
+        * Add --repository parameter to pisi upgrade operation to upgrade packages from only
+        given repository (#6157)
+        * Add activate/deactive repository functionality to pisi api
+        * Add --repository parameter to use with --component parameter which lets pisi install
+        operation to install components from only given repository (#8123)
+
+2009-02-04 Ozan Çağlayan <ozan@pardus.org.tr>
+        * po/*.po: Update PO messages, fix bugzilla url,
+        * po/tr.po: Complete missing translations.
+        * pisi/cli/listupgrades.py (run): Return if there are no updates, resize the first column of the output.
+        * pisi/cli/listnewest.py (run): No need to double check for 'l' before the assignment of maxlen.
+
+2009-02-02 Faik Uygur <faik@pardus.org.tr>
+        * Add human readable package size info to pisi info output. (#8845)
+        * Speed up finding old packages process. (#9101)
+
+2009-02-01 Ozan Çağlayan <ozan@pardus.org.tr>
+        * pisi/metadata.py (Package.__str__): Use human_readable_size() to output installed size.
+
+2009-01-29 Faik Uygur <faik@pardus.org.tr>
+        * Fix not allowing local letters other than [a-zA-Z] and space for repo names (#8361)
+
+2009-01-28 Fatih Aşıcı <fatih@pardus.org.tr>
+        * Fix auto-dodoc in pythonmodules to include ChangeLog, README, etc.
+
+2009-01-27 Faik Uygur <faik@pardus.org.tr>
+        * When a takeback operation is accepted there should be no other question (#8811)
+        * Make pisi help command outputs translatable (#9089)
+        * Add list_sources method to pisi api.
+
+2009-01-26 Faik Uygur <faik@pardus.org.tr>
+        * When pisi fails to download the package raise an error and exit. This is needed when
+        pisi is behind a proxy with some virus control mechanism that sends a html status page
+        instead of the package file. (#4113)
+        * Add -x and --exclude-from packages parameters to install operation. (#9020)
+
+2009-01-23 Faik Uygur <faik@pardus.org.tr>
+        * Fix a critical regression bug which prevents an upgrade operation (#9038)
+
+2009-01-20 Faik Uygur <faik@pardus.org.tr>
+        * Fix a bug in the delta code that is discovered in virtualbox' delta package where a symlink
+        is tried to be overwritten by the previous linked file with the same name.
+
+2009-01-17 Ozan Çağlayan <ozan@pardus.org.tr>
+        * pisi/operations/build.py (get_abandoned_files): Delimit the paths
+        written in pspec.xml's Files section with a trailing '/' for not
+        matching similar patterns like /usr/lib and /usr/libexec during
+        abandoned files checking.
+
+2009-01-16 Faik Uygur <faik@pardus.org.tr>
+        * Add pisi list-newest [--since yyyy-mm-dd] [--last nth_previous_repo_ update]
+        Lists the newly added packages in the repositories.
+
+2009-01-14 Ozan Çağlayan <ozan@pardus.org.tr>
+        * pisi/cli/listavailable.py (print_packages): Resize the first column
+        dynamically according to the longest package name (#9021) and fix some
+        other displaying issues concerning 'listavailable' command.
+        * pisi/cli/listinstalled.py (run): Resize the first column
+        dynamically according to the longest package name.
+
+2009-01-09 Gökçen Eraslan <gokcen@pardus.org.tr>
+        * pisi/actionsapi/cmaketools.py: If both -v and -d parameters are
+        given, pass VERBOSE=1 parameter to make command. This results printing
+        commands in make to the screen in addition to the colorful cmake progress lines.
+
+2009-01-07 Faik Uygur <faik@pardus.org.tr>
+        * pisi-2.1.1
+
+2009-01-04 Gökçen Eraslan <gokcen@pardus.org.tr>
+        * (pisi/actionsapi/{pisitools.py, pisitoolsfunctions.py,
+        shelltools.py}): Check glob methods. This means, if any action in actions.py, operates
+        on files that do not exist, pisi raises an exception about that.
+        * (pisi/actionsapi/shelltools.py): Check return value of the given command of shelltools.system, raise
+        exception if it is not equal to zero. This also effects methods using system, like domo, dobin, doman etc.
+        * (pisi/actionsapi/pisitools.py): Raise exception, if dosed does not change anything in given file.
+
+2008-12-27 Ozan Çağlayan <ozan@pardus.org.tr>
+        * (pisi/cli/command.py): Trivial cosmetic patch by Ömer Fadıl Usta
+        to fix the layout issue of 'pisi help' (#8907).
+
+2008-12-23 Gökmen Göksel <gokmen@pardus.org.tr>
+        * Fix dodoc for python
+
+2008-12-23 Faik Uygur <faik@pardus.org.tr>
+        * Fix replaced package upgrades regression. No upgrades was possible.
+        * Fix optional and mandatory problem of <Requires> <Action> tags when
+        pisi.spec.SpecFile is used.
+
+2008-12-22 Faik Uygur <faik@pardus.org.tr>
+        * Fail if build dependency install is unsuccesful.
+
+2008-12-08 Ozan Çağlayan <ozan@pardus.org.tr>
+        * Added 4Suite and Qhull licenses
+
+2008-12-05 Faik Uygur <faik@pardus.org.tr>
+        * Add get_config_files helper to installdb
+        * Clean up pisi.api.check and move check to pisi.operations.check
+        * Added --config parameter to pisi check that now checks and finds any
+        changed config file (#8436)
+
+2008-12-02 Faik Uygur <faik@pardus.org.tr>
+        * If full path is given to pisi sf then lookup package in filesdb for
+        a quick search result.
+
+2008-12-01 Faik Uygur <faik@pardus.org.tr>
+        * pisi-2.1.0
+
+2008-11-27 Ozan Çağlayan <ozan@pardus.org.tr>
+        * (cli/__init__.py): Flush stdin buffer just before asking a question.
+
+2008-11-26 Faik Uygur <faik@pardus.org.tr>
+        * Check versioning of the package while building and installing. (#5493)
+        * Make warning message color brightyellow instead of brightred. Red indicates
+        a fatal error. (#5619)
+
+2008-11-25 Faik Uygur <faik@pardus.org.tr>
+        * Fix fetching pspec.xml twice.
+        * pisi cli does not have to give all user friendly messages. But "I/O Error"
+        is not necessary here. (#6402)
+
+2008-11-21 Faik Uygur <faik@pardus.org.tr>
+        * Symlink files' existence should be checked not the linked file's. (#7336)
+        * Check build dependencies before downloading all the patches of a
+        remote build operation (#5370)
+
+2008-11-19 Faik Uygur <faik@pardus.org.tr>
+        * Install operation should fetch all the packages before starting to install.
+        * Install operation should show the status of the operation (#8623)
+
+2008-11-10 Faik Uygur <faik@pardus.org.tr>
+        * If an unsatisfied build dep is found and another version of that package is installed
+        build asks to install the package but than exits complaining that the package is already
+        installed. (#8379)
+
+2008-11-10 Türker Sezer <turkersezer@tsdesign.info>
+        * Do not ask to remove conflicting packages until it is time to remove them. The
+        message is misleading when --fetch-only is used. (#4539)
+
+2008-11-05 Faik Uygur <faik@pardus.org.tr>
+        * Force upgrade of replaced packages. Because they are also obsoleted packages,
+        they will be removed in any way. This is not wanted for replaced driver packages.
+        * Privilege warning messages added to pisi history command (#8515)
+
+2008-11-03 Faik Uygur <faik@pardus.org.tr>
+        * debug_packages_dir config option is added to calculate build nos
+        of debug packages if they are moved to somewhere than compiled_packages_dir.
+
+2008-10-15 Ozan Çağlayan <ozan@pardus.org.tr>
+        * (po/de.po): Correct word for "Package" is "Paket" (Fixes #8501)
+
+2008-10-15 Faik Uygur <faik@pardus.org.tr>
+        * doman should also work on compressed man files. (#8426)
+
+2008-10-06 Faik Uygur <faik@pardus.org.tr>
+        * Raise exception when tried to run another instance of pisi. (#8145)
+
+2008-09-25 Faik Uygur <faik@pardus.org.tr>
+        * Fix leaving symlinks while removing a package problem.
+
+2008-09-10 Fatih Aşıcı <fatih@pardus.org.tr>
+        * Add validation for sub packages having icons.
+
+2008-09-10 Ozan Çağlayan <ozan@pardus.org.tr>
+        * Fix only the first unsatisfied runtime dependency being
+        resolved while building a standalone package.
+
+2008-09-08 Faik Uygur <faik@pardus.org.tr>
+        * Add Requires tag to Update with actions.
+
+2008-09-04 Faik Uygur <faik@pardus.org.tr>
+        * Allow dot in repo name fix.
+
+2008-09-03 Eren Türkay <turkay.eren@gmail.com>
+        * Fix for false sandbox violation errors. (#7328)
+
+2008-09-03 Faik Uygur <faik@pardus.org.tr>
+        * pisi-2.0.1
+
+2008-09-02 Faik Uygur <faik@pardus.org.tr>
+        * Only add delta packages to latest build of the package.
+
+2008-08-07 Faik Uygur <faik@pardus.org.tr>
+        * Fix validity checks while adding a new repo. (#5940, #5906)
+        * Increase console information line length. (#5281)
+        * pisi it *.pisi was showing same package name multiple times
+        as a dependency. (#7929)
+
+2008-08-04 Faik Uygur <faik@pardus.org.tr>
+        * Fix for pisi history not showing +999 operations bug.
+
+2008-07-31 Türker Sezer <turkersezer@tsdesign.info>
+        * Fix failing pisi la -c when component not found in the
+        first repository. (#7929)

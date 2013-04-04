@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: pisi
+Version: 2.4
+Summary: PiSi (Packages Installed Successfully as Intended)
+Home-page: http://www.pardus.org.tr/eng/pisi/
+Author: Pardus Developers
+Author-email: pisi@pardus.org.tr
+License: GNU GPL2
+Description: PiSi is the package management system of Pardus Linux.
+Platform: UNKNOWN

@@ -1,0 +1,7 @@
+recursive-include doc *
+recursive-include po *
+recursive-include scenarios *
+recursive-include scripts *
+recursive-include tests *
+include *.dtd *.rng *.in
+include AUTHORS ChangeLog* CODING COPYING INSTALL README* TODO
