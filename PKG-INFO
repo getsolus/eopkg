@@ -1,10 +1,10 @@
 Metadata-Version: 1.0
 Name: pisi
-Version: 2.4
+Version: 3.0
 Summary: PiSi (Packages Installed Successfully as Intended)
-Home-page: http://www.pardus.org.tr/eng/pisi/
-Author: Pardus Developers
-Author-email: pisi@pardus.org.tr
+Home-page: http://www.solusos.com/pisi/
+Author: Ikey Doherty
+Author-email: ikey@solusos.com
 License: GNU GPL2
-Description: PiSi is the package management system of Pardus Linux.
+Description: PiSi is the package management system of SolusOS, originally written for Pardus Linux by the Pardus Developers.
 Platform: UNKNOWN
