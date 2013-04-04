@@ -1,3 +1,14 @@
+04-03-2013 Ikey Doherty <ikey@solusos.com>
+	* pisi 3.0
+	
+	We've now taken ownership of the PiSi Package Manager
+	All PiSi patches have been imported, and initial Clang support has been
+	added. 
+	
+	We intend to ship SolusOS 2 with pisi 3.x, given a stable updated API
+	and full compiler switching + Clang Support
+	
+	
 2011-07-27 Fatih Aşıcı <fatih@pardus.org.tr>
 	* pisi 2.4_rc1
 
