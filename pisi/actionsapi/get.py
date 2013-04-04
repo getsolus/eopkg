@@ -155,6 +155,9 @@ def libexecDIR():
 def defaultprefixDIR():
     return dirs.defaultprefix
 
+def emul32prefixDIR():
+    return dirs.emul32prefix
+
 def kdeDIR():
     return dirs.kde
 

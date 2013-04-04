@@ -50,20 +50,20 @@ class RunTimeError(pisi.actionsapi.Error):
         self.value = value
         ctx.ui.error(value)
 
-def configure(parameters = ''):
+def configure(parameters = '', pyVer = ''):
     '''does python setup.py configure'''
-    if system('python setup.py configure %s' % (parameters)):
+    if system('python%s setup.py configure %s' % (pyVer, parameters)):
         raise ConfigureError, _('Configuration failed.')
 
 
-def compile(parameters = ''):
+def compile(parameters = '', pyVer = ''):
     '''compile source with given parameters.'''
-    if system('python setup.py build %s' % (parameters)):
+    if system('python%s setup.py build %s' % (pyVer, parameters)):
         raise CompileError, _('Make failed.')
 
-def install(parameters = ''):
+def install(parameters = '', pyVer = ''):
     '''does python setup.py install'''
-    if system('python setup.py install --root=%s --no-compile -O0 %s' % (get.installDIR(), parameters)):
+    if system('python%s setup.py install --root=%s --no-compile -O0 %s' % (pyVer, get.installDIR(), parameters)):
         raise InstallError, _('Install failed.')
 
     docFiles = ('AUTHORS', 'CHANGELOG', 'CONTRIBUTORS', 'COPYING*', 'COPYRIGHT',
@@ -75,9 +75,9 @@ def install(parameters = ''):
             if not isEmpty(doc):
                 dodoc(doc)
 
-def run(parameters = ''):
+def run(parameters = '', pyVer = ''):
     '''executes parameters with python'''
-    if system('python %s' % (parameters)):
+    if system('python%s %s' % (pyVer, parameters)):
         raise RunTimeError, _('Running %s failed.') % parameters
 
 def fixCompiledPy(lookInto = '/usr/lib/%s/' % get.curPYTHON()):

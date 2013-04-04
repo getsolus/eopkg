@@ -393,7 +393,11 @@ class Builder:
                "PISI_BUILD_TYPE": self.build_type,
                "SRC_NAME": self.spec.source.name,
                "SRC_VERSION": self.spec.getSourceVersion(),
-               "SRC_RELEASE": self.spec.getSourceRelease()}
+               "SRC_RELEASE": self.spec.getSourceRelease(),
+               "PYTHONDONTWRITEBYTECODE": '1'}
+        if self.build_type == "emul32":
+            env["CC"] = "%s -m32" % os.getenv("CC")
+            env["CXX"] = "%s -m32" % os.getenv("CXX")
         os.environ.update(env)
 
         # First check icecream, if not found use ccache
@@ -671,6 +675,12 @@ class Builder:
                 if not ext:
                     break
 
+        if not os.path.exists(src_dir):
+            # still not exists? so  try first from dirnames returned by os.walk
+            # usualy archives contains one root dir
+            src_dir = util.join_path(self.pkg_work_dir(), os.walk(self.pkg_work_dir()).next()[1][0])
+            if self.get_state() == "unpack": ctx.ui.debug("Setting WorkDir to %s" % src_dir)
+
         return src_dir
 
     def log_sandbox_violation(self, operation, path, canonical_path):
@@ -694,7 +704,8 @@ class Builder:
 
         if func in self.actionLocals:
             if ctx.get_option('ignore_sandbox') or \
-                    not ctx.config.values.build.enablesandbox:
+                    not ctx.config.values.build.enablesandbox or \
+                    "emul32" in self.build_type:
                 self.actionLocals[func]()
             else:
                 import catbox
@@ -981,21 +992,22 @@ class Builder:
         install_dir = self.pkg_install_dir()
 
         import magic
-        ms = magic.open(magic.MAGIC_NONE)
-        ms.load()
 
         for root, dirs, files in os.walk(install_dir):
             for fn in files:
                 filepath = util.join_path(root, fn)
-                fileinfo = ms.file(filepath)
-                strip_debug_action(filepath, fileinfo, install_dir, self.actionGlobals)
-                exclude_special_files(filepath, fileinfo, self.actionGlobals)
-
-        ms.close()
+                try:
+					fileinfo = magic.from_file(filepath)
+					strip_debug_action(filepath, fileinfo, install_dir, self.actionGlobals)
+					exclude_special_files(filepath, fileinfo, self.actionGlobals)
+                except:
+					pass
 
     def build_packages(self):
         """Build each package defined in PSPEC file. After this process there
         will be .pisi files hanging around, AS INTENDED ;)"""
+
+        doc_ptrn = re.compile(ctx.const.doc_package_end)
 
         self.fetch_component()  # bug 856
 
@@ -1070,7 +1082,15 @@ class Builder:
             if not package.description:
                 package.description = self.spec.source.description
             if not package.partOf:
-                package.partOf = self.spec.source.partOf
+                if package.name.endswith(ctx.const.devel_package_end):
+                    if self.spec.source.partOf in ctx.const.assign_to_system_devel:
+                        package.partOf = ctx.const.system_devel_component
+                    else:
+                        package.partOf = ctx.const.devels_component
+                elif re.search(doc_ptrn, package.name):
+                    package.partOf = ctx.const.docs_component
+                else:
+                    package.partOf = self.spec.source.partOf
             if not package.license:
                 package.license = self.spec.source.license
             if not package.icon:

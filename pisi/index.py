@@ -272,7 +272,7 @@ def add_spec(params):
             sf.source.sourceURI = util.removepathprefix(repo_uri, path)
 
         ctx.ui.info("%-80.80s\r" % (_('Adding %s to source index') %
-            path), noln = True)
+            path), noln = False if ctx.config.get_option("verbose") else True)
         return sf
 
     except KeyboardInterrupt:

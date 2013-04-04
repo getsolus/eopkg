@@ -81,6 +81,7 @@ class Dirs:
     localstate = 'var'
     libexec = 'usr/libexec'
     defaultprefix = 'usr'
+    emul32prefix = 'emul32'
 
     # These should be owned by object not the class. Or else Python
     # will bug us with NoneType errors because of uninitialized

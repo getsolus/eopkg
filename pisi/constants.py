@@ -97,6 +97,12 @@ class Constants:
         self.__c.needs_reboot = "needsreboot"
         self.__c.files_db = "files.db"
         self.__c.repos = "repos"
+        self.__c.devel_package_end = "-devel"
+        self.__c.doc_package_end = "-docs?$"
+        self.__c.assign_to_system_devel = ["system.base", "system.devel"]
+        self.__c.system_devel_component = "system.devel"
+        self.__c.devels_component = "programming.devel"
+        self.__c.docs_component = "programming.docs"
 
         #file/directory permissions
         self.__c.umask = 0022
