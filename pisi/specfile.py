@@ -179,6 +179,7 @@ class Source:
     t_Archive = [ [Archive], autoxml.mandatory, "Archive" ]
     t_AdditionalFiles = [ [AdditionalFile], autoxml.optional]
     t_BuildDependencies = [ [pisi.dependency.Dependency], autoxml.optional]
+    t_SupportsClang = [ autoxml.String, autoxml.optional, "SupportsClang" ]    
     t_Patches = [ [Patch], autoxml.optional]
     t_Version = [ autoxml.String, autoxml.optional]
     t_Release = [ autoxml.String, autoxml.optional]
@@ -417,7 +418,13 @@ class SpecFile(xmlfile.XmlFile):
                     elif attr_name.startswith("release"):
                         dep.__dict__[attr_name] = current_release
 
-
+    def getClangSupported(self):
+		''' Check whether SupportsClang was used '''
+		if self.source.supportsClang is not None:
+			if self.source.supportsClang.lower() == "true":
+				return True
+		return False
+			
     def getSourceVersion(self):
         return self.history[0].version
 

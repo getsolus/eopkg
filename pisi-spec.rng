@@ -60,6 +60,9 @@
             <optional>
                 <ref name="Patches"/>
             </optional>
+            <optional>
+                <ref name="SupportsClang"/>				
+            </optional>            
         </element>
     </define>
 
@@ -1374,6 +1377,13 @@
         </element>
     </define>
 
+    <!-- SupportsClang -->
+    <define name="SupportsClang">
+        <element name="SupportsClang">
+            <text/>
+        </element>
+    </define>
+    
     <!-- BuildDependencies -->
     <define name="BuildDependencies">
         <element name="BuildDependencies">

@@ -20,6 +20,7 @@
 	Archive |
 	AdditionalFiles |
 	Patches |
+	SupportsClang |	
 	BuildDependencies
 )*>
 
@@ -57,6 +58,9 @@
 <!ELEMENT Flag (#PCDATA)>
 
 <!ELEMENT BuildType (#PCDATA)>
+
+<!ELEMENT SupportsClang (#PCDATA)>
+
 
 <!ELEMENT BuildDependencies (Dependency*)>
 
