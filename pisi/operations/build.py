@@ -969,6 +969,7 @@ class Builder:
                 else:
                     st = os.lstat(fpath)
 
+                frpath =  frpath.decode("latin1").encode('utf-8')
                 d[frpath] = pisi.files.FileInfo(path=frpath, type=ftype, permanent=permanent,
                                      size=fsize, hash=fhash, uid=str(st.st_uid), gid=str(st.st_gid),
                                      mode=oct(stat.S_IMODE(st.st_mode)))
@@ -1150,6 +1151,7 @@ class Builder:
 
             for finfo in pkg.files.list:
                 orgname = util.join_path("install", finfo.path)
+                orgname = orgname.encode('utf-8').decode('utf-8').encode("latin1")
                 if package.debug_package:
                     orgname = util.join_path("debug", finfo.path)
                 pkg.add_to_install(orgname, finfo.path)
