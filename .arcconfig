@@ -1,0 +1,5 @@
+{
+  "project_id" : "pisi",
+  "conduit_uri" : "http://inf.solusos.com/",
+  "lint.engine" : "ComprehensiveLintEngine"
+}
