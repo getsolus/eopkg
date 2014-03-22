@@ -1,13 +1,4 @@
 Evolve OS Package Manager
 
-Some of its distinctive features:
-
- - Implemented in python
- - Efficient and small
- - Package sources are written in XML and python
- - Uses LZMA for a better compression ratio 
- - Fast database access implemented with berkeley DB
- - Integrates low-level and high-level package operations (dependency resolution)
- - Framework approach to build applications and tools upon
- - Extremely simple package construction
-
+Continuation of the PiSi Package Manager, originally from Pardus Linux,
+and adapted/maintained during the lifetime of SolusOS.
