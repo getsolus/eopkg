@@ -26,7 +26,7 @@ Usage: index <directory> ...
 
 This command searches for all PiSi files in a directory, collects PiSi
 tags from them and accumulates the information in an output XML file,
-named by default 'pisi-index.xml'. In particular, it indexes both
+named by default 'eopkg-index.xml'. In particular, it indexes both
 source and binary packages.
 
 If you give multiple directories, the command still works, but puts
@@ -54,7 +54,7 @@ class Index(command.Command):
 
         group.add_option("-o", "--output",
                          action="store",
-                         default='pisi-index.xml',
+                         default='eopkg-index.xml',
                          help=_("Index output file"))
 
         group.add_option("--compression-types",

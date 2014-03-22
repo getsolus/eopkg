@@ -270,8 +270,8 @@ class BuildFarm:
     def create_index(self, repo):
         binrepo = "%s-bin" % repo
         shutil.copy("%s/distribution.xml" % repo, binrepo)
-        os.system("pisi index %s --skip-signing -o %s/pisi-index.xml" % (repo, repo))
-        os.system("pisi index --skip-sources --skip-signing -o %s/pisi-index.xml %s %s" % (binrepo, binrepo, repo))
+        os.system("pisi index %s --skip-signing -o %s/eopkg-index.xml" % (repo, repo))
+        os.system("pisi index --skip-sources --skip-signing -o %s/eopkg-index.xml %s %s" % (binrepo, binrepo, repo))
 
     def build(self, repos):
         for repo in repos:

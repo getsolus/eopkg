@@ -773,7 +773,7 @@ def info_name(package_name, useinstalldb=False):
         files = None
     return metadata, files, repo
 
-def index(dirs=None, output='pisi-index.xml',
+def index(dirs=None, output='eopkg-index.xml',
           skip_sources=False, skip_signing=False,
           compression=0):
     """Accumulate PiSi XML files in a directory, and write an index."""

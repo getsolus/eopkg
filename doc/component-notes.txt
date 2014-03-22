@@ -63,13 +63,13 @@ göstericileri gibi...
 3. Database XML ayrımı (Barış)
 
 Component database'i ile component.xml ayrı olmalı. Component database, 
-pisi'nin pisi-index.xml dosyasını okuyarak oluşturacağı bir veritabanı. Hangi 
+pisi'nin eopkg-index.xml dosyasını okuyarak oluşturacağı bir veritabanı. Hangi 
 paketler hangi componentlere dahil, vs. sorguları bu veritabanından 
 yapılacak.
 
 Pspec dosyasını hatırlayalım. İçerisinde bir <PartOf> diye bir tag var. 
 Oluşturulacak paketin hangi component'e ait olduğunu belirtiyor. Bu bilgi 
-pisi-index.xml dosyasına da koyulmalı.
+eopkg-index.xml dosyasına da koyulmalı.
 
 4. PL modüllerine benzerlik (Eray)
 

@@ -23,7 +23,7 @@ class ConflictTestCase(unittest.TestCase):
     def testConflictCheck(self):
         # In our sample repo1, spam conflicts with bar.
         # If this fails, it may affect database test case results.
-        pisi.api.add_repo("repo1", "repos/repo1-bin/pisi-index.xml")
+        pisi.api.add_repo("repo1", "repos/repo1-bin/eopkg-index.xml")
         pisi.api.update_repo("repo1")
         pisi.api.install(["spam"])
 
@@ -41,14 +41,14 @@ class ConflictTestCase(unittest.TestCase):
 
     def testInterRepoCrossConflicts(self):
         #If this fails, it may affect database test case results
-        pisi.api.add_repo("repo1", "repos/repo1-bin/pisi-index.xml")
+        pisi.api.add_repo("repo1", "repos/repo1-bin/eopkg-index.xml")
         pisi.api.update_repo("repo1")
 
         pisi.api.install(["spam", "foo"])
         before = pisi.api.list_installed()
         pisi.api.remove_repo("repo1")
 
-        pisi.api.add_repo("repo2", "repos/repo2-bin/pisi-index.xml")
+        pisi.api.add_repo("repo2", "repos/repo2-bin/eopkg-index.xml")
         pisi.api.update_repo("repo2")
         pisi.api.upgrade(["spam"])
         after = pisi.api.list_installed()

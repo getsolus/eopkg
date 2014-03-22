@@ -45,7 +45,7 @@ consts.scenarios_path = "scenarios/"
 consts.pisi_db = "db/"
 consts.repo_name = "scenario-db"
 consts.repo_path = "repo/"
-consts.repo_url = consts.repo_path + "pisi-index.xml"
+consts.repo_url = consts.repo_path + "eopkg-index.xml"
 
 consts.glob_pisis = "*.eopkg"
 consts.pisi_suffix = ".eopkg"
