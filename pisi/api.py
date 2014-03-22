@@ -975,7 +975,7 @@ def clearCache(all=False):
                     pass
 
     def removeAll(cacheDir):
-        cached = glob.glob("%s/*.pisi" % cacheDir) + glob.glob("%s/*.part" % cacheDir)
+        cached = glob.glob("%s/*.eopkg" % cacheDir) + glob.glob("%s/*.part" % cacheDir)
         for pkg in cached:
             try:
                 os.remove(pkg)
@@ -984,7 +984,7 @@ def clearCache(all=False):
 
     cacheDir = ctx.config.cached_packages_dir()
 
-    pkgList = map(lambda x: os.path.basename(x).split(ctx.const.package_suffix)[0], glob.glob("%s/*.pisi" % cacheDir))
+    pkgList = map(lambda x: os.path.basename(x).split(ctx.const.package_suffix)[0], glob.glob("%s/*.eopkg" % cacheDir))
     if not all:
         # Cache limits from pisi.conf
         config = pisi.configfile.ConfigurationFile("/etc/pisi/pisi.conf")

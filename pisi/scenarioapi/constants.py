@@ -47,8 +47,8 @@ consts.repo_name = "scenario-db"
 consts.repo_path = "repo/"
 consts.repo_url = consts.repo_path + "pisi-index.xml"
 
-consts.glob_pisis = "*.pisi"
-consts.pisi_suffix = ".pisi"
+consts.glob_pisis = "*.eopkg"
+consts.pisi_suffix = ".eopkg"
 
 consts.pspec_path = "/tmp/pspec.xml"
 consts.actionspy_path = "/tmp/actions.py"

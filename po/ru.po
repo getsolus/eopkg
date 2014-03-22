@@ -1605,13 +1605,13 @@ msgid ""
 "\n"
 "Usage: info <package1> <package2> ... <packagen>\n"
 "\n"
-"<packagei> is either a package name or a .pisi file,\n"
+"<packagei> is either a package name or a .eopkg file,\n"
 msgstr ""
 "Просмотр информации о пакете\n"
 "\n"
 "Использование: info <package1> <package2> ... <packagen>\n"
 "\n"
-"<packagei> is either a package name or a .pisi file,\n"
+"<packagei> is either a package name or a .eopkg file,\n"
 
 #: pisi/cli/info.py:45
 msgid "info options"
@@ -3086,8 +3086,8 @@ msgid "You must restart your system for the updates in the following package(s) 
 msgstr "Вы должны перезагрузить компьютер для того чтобы обновления следующих пакетов вступили в силу:"
 
 #: pisi/operations/upgrade.py:81
-msgid "Warning: package *name* ends with '.pisi'"
-msgstr "Внимание: *имя пакета* заканчивается расширением '.pisi'"
+msgid "Warning: package *name* ends with '.eopkg'"
+msgstr "Внимание: *имя пакета* заканчивается расширением '.eopkg'"
 
 #: pisi/operations/upgrade.py:84
 #, python-format

@@ -1503,7 +1503,7 @@ msgid ""
 "\n"
 "Usage: info <package1> <package2> ... <packagen>\n"
 "\n"
-"<packagei> is either a package name or a .pisi file,\n"
+"<packagei> is either a package name or a .eopkg file,\n"
 msgstr ""
 
 #: pisi/cli/info.py:45
@@ -2868,8 +2868,8 @@ msgid "You must restart your system for the updates in the following package(s) 
 msgstr "Musisz ponownie uruchomić komputer by następujące aktualizacje miały efekt:"
 
 #: pisi/operations/upgrade.py:81
-msgid "Warning: package *name* ends with '.pisi'"
-msgstr "Ostrzeżenie: nazwy pakietów kończą się na \".pisi\"."
+msgid "Warning: package *name* ends with '.eopkg'"
+msgstr "Ostrzeżenie: nazwy pakietów kończą się na \".eopkg\"."
 
 #: pisi/operations/upgrade.py:84
 #, python-format

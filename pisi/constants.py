@@ -46,10 +46,10 @@ class Constants:
 
     def __init__(self):
         # suffix for package names
-        self.__c.package_suffix = ".pisi"
+        self.__c.package_suffix = ".eopkg"
 
         # delta suffix for package names
-        self.__c.delta_package_suffix = ".delta.pisi"
+        self.__c.delta_package_suffix = ".delta.eopkg"
 
         # suffix for lzma
         self.__c.lzma_suffix = ".lzma"

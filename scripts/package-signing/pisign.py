@@ -16,7 +16,7 @@ import tempfile
 import zipfile
 
 # ZipFile extensions
-ZIP_FILES = ('.zip', '.pisi')
+ZIP_FILES = ('.zip', '.eopkg')
 
 # Signature headers & extensions
 HEADER = 'pisi-signed'

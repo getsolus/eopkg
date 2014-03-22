@@ -1507,7 +1507,7 @@ msgid ""
 "\n"
 "Usage: info <package1> <package2> ... <packagen>\n"
 "\n"
-"<packagei> is either a package name or a .pisi file,\n"
+"<packagei> is either a package name or a .eopkg file,\n"
 msgstr ""
 
 #: pisi/cli/info.py:45
@@ -2882,8 +2882,8 @@ msgid "You must restart your system for the updates in the following package(s) 
 msgstr ""
 
 #: pisi/operations/upgrade.py:81
-msgid "Warning: package *name* ends with '.pisi'"
-msgstr "Upozorenje: *ime* paketa završava sa '.pisi'"
+msgid "Warning: package *name* ends with '.eopkg'"
+msgstr "Upozorenje: *ime* paketa završava sa '.eopkg'"
 
 #: pisi/operations/upgrade.py:84
 #, python-format

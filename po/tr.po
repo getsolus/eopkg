@@ -1625,13 +1625,13 @@ msgid ""
 "\n"
 "Usage: info <package1> <package2> ... <packagen>\n"
 "\n"
-"<packagei> is either a package name or a .pisi file,\n"
+"<packagei> is either a package name or a .eopkg file,\n"
 msgstr ""
 "Paket bilgisini göster\n"
 "\n"
 "Kullanım: info <paket1> <paket2> ... <paketn>\n"
 "\n"
-"<paketi> paket adı ya da .pisi dosyası olabilir.\n"
+"<paketi> paket adı ya da .eopkg dosyası olabilir.\n"
 
 #: pisi/cli/info.py:45
 msgid "info options"
@@ -3106,8 +3106,8 @@ msgid "You must restart your system for the updates in the following package(s) 
 msgstr "Aşağıdaki paket(ler)in güncel sürümlerinin etkin hale gelmesi için sisteminizi yeniden başlatmalısınız:"
 
 #: pisi/operations/upgrade.py:81
-msgid "Warning: package *name* ends with '.pisi'"
-msgstr "Uyarı: paket *ismi* '.pisi' ile bitiyor."
+msgid "Warning: package *name* ends with '.eopkg'"
+msgstr "Uyarı: paket *ismi* '.eopkg' ile bitiyor."
 
 #: pisi/operations/upgrade.py:84
 #, python-format

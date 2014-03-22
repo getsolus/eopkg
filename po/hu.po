@@ -1615,13 +1615,13 @@ msgid ""
 "\n"
 "Usage: info <package1> <package2> ... <packagen>\n"
 "\n"
-"<packagei> is either a package name or a .pisi file,\n"
+"<packagei> is either a package name or a .eopkg file,\n"
 msgstr ""
 "Csomag információ megjelenítése\n"
 "\n"
 "Használata: info <csomag1> <csomag2> ... <csomagN>\n"
 "\n"
-"<csomagX> vagy egy csomagnév, vagy egy .pisi fájl\n"
+"<csomagX> vagy egy csomagnév, vagy egy .eopkg fájl\n"
 
 #: pisi/cli/info.py:45
 msgid "info options"
@@ -3098,8 +3098,8 @@ msgid "You must restart your system for the updates in the following package(s) 
 msgstr "Indítsa újra a rendszert, hogy az alábbi csomagok frissítései életbe lépjenek:"
 
 #: pisi/operations/upgrade.py:81
-msgid "Warning: package *name* ends with '.pisi'"
-msgstr "Figyelem: a csomagok *neve* '.pisi'-re végződik"
+msgid "Warning: package *name* ends with '.eopkg'"
+msgstr "Figyelem: a csomagok *neve* '.eopkg'-re végződik"
 
 #: pisi/operations/upgrade.py:84
 #, python-format

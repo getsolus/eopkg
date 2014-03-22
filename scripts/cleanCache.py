@@ -55,10 +55,10 @@ def doit(root, listdir, clean, suffix = ""):
 
 def cleanPisis(clean, root = '/var/cache/pisi/packages'):
     # pisi packages
-    list = map(lambda x: os.path.basename(x).split(".pisi")[0], glob.glob("%s/*.pisi" % root))
+    list = map(lambda x: os.path.basename(x).split(".eopkg")[0], glob.glob("%s/*.eopkg" % root))
     list.sort()
     l = findUnneededFiles(list)
-    doit(root, l, clean, ".pisi")
+    doit(root, l, clean, ".eopkg")
 
 def cleanBuilds(clean, root = '/var/pisi'):
     # Build remnant

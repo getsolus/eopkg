@@ -1371,7 +1371,7 @@ msgstr ""
 "\n"
 "Utilizzo: info <pacchetto1> <pacchetto2> ... <pacchetton>\n"
 "\n"
-"<pacchettoi> è o il nome di un pacchetto o un file .pisi,\n"
+"<pacchettoi> è o il nome di un pacchetto o un file .eopkg,\n"
 
 #: pisi/cli/fetch.py:41
 msgid "fetch options"
@@ -1596,13 +1596,13 @@ msgid ""
 "\n"
 "Usage: info <package1> <package2> ... <packagen>\n"
 "\n"
-"<packagei> is either a package name or a .pisi file,\n"
+"<packagei> is either a package name or a .eopkg file,\n"
 msgstr ""
 "Mostra informazioni sui pacchetti\n"
 "\n"
 "Utilizzo: info <pacchetto1> <pacchetto2> ... <pacchetton>\n"
 "\n"
-"<pacchettoi> è o il nome di un pacchetto o un file .pisi,\n"
+"<pacchettoi> è o il nome di un pacchetto o un file .eopkg,\n"
 
 #: pisi/cli/info.py:45
 msgid "info options"
@@ -3076,8 +3076,8 @@ msgid "You must restart your system for the updates in the following package(s) 
 msgstr ""
 
 #: pisi/operations/upgrade.py:81
-msgid "Warning: package *name* ends with '.pisi'"
-msgstr "Attenzione: il *nome* del pacchetto termina con '.pisi'"
+msgid "Warning: package *name* ends with '.eopkg'"
+msgstr "Attenzione: il *nome* del pacchetto termina con '.eopkg'"
 
 #: pisi/operations/upgrade.py:84
 #, python-format
