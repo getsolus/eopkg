@@ -85,8 +85,8 @@ class BuildDefaults:
     jobs = "-j5"
     generateDebug = False
     enableSandbox = False # Dropping sandbox support soon
-    cflags = "-mtune=generic -march=x86_64 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
-    cxxflags = "-mtune=generic -march=x86_64 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
+    cflags = "-mtune=generic -march=x86-64 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
+    cxxflags = "-mtune=generic -march=x86-64 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
     ldflags = "-Wl,-O1 -Wl,-z,relro -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--sort-common"
     buildhelper = None
     compressionlevel = 1
