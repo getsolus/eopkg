@@ -28,7 +28,7 @@ Usage: rebuilddb [ <package1> <package2> ... <packagen> ]
 Rebuilds the PiSi databases
 
 If package specs are given, they should be the names of package
-dirs under /var/lib/pisi
+dirs under /var/lib/eopkg
 """)
     __metaclass__ = command.autocommand
 

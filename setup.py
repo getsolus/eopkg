@@ -124,22 +124,22 @@ class Install(install):
 
     def generateConfigFile(self):
         import pisi.configfile
-        destpath = os.path.join(self.root, "etc/pisi/")
+        destpath = os.path.join(self.root, "etc/eopkg/")
         if not os.path.exists(destpath):
             os.makedirs(destpath)
 
-        confFile = os.path.join(destpath, "pisi.conf")
-        if os.path.isfile(confFile): # Don't overwrite existing pisi.conf
+        confFile = os.path.join(destpath, "eopkg.conf")
+        if os.path.isfile(confFile): # Don't overwrite existing eopkg.conf
             return
 
-        pisiconf = open(confFile, "w")
+        eopkgconf = open(confFile, "w")
 
         klasses = inspect.getmembers(pisi.configfile, inspect.isclass)
         defaults = [klass for klass in klasses if klass[0].endswith('Defaults')]
 
         for d in defaults:
             section_name = d[0][:-len('Defaults')].lower()
-            pisiconf.write("[%s]\n" % section_name)
+            eopkgconf.write("[%s]\n" % section_name)
 
             section_members = [m for m in inspect.getmembers(d[1]) \
                                if not m[0].startswith('__') \
@@ -147,10 +147,10 @@ class Install(install):
 
             for member in section_members:
                 if member[1] == None or member[1] == "":
-                    pisiconf.write("# %s = %s\n" % (member[0], member[1]))
+                    eopkgconf.write("# %s = %s\n" % (member[0], member[1]))
                 else:
-                    pisiconf.write("%s = %s\n" % (member[0], member[1]))
-            pisiconf.write('\n')
+                    eopkgconf.write("%s = %s\n" % (member[0], member[1]))
+            eopkgconf.write('\n')
 
 
 

@@ -47,7 +47,7 @@ class Config(object):
 
     def __init__(self, options = Options()):
         self.set_options(options)
-        self.values = pisi.configfile.ConfigurationFile("/etc/pisi/pisi.conf")
+        self.values = pisi.configfile.ConfigurationFile("/etc/eopkg/eopkg.conf")
 
         # get the initial environment variables. this is needed for
         # build process.
@@ -138,9 +138,9 @@ class Config(object):
     def tmp_dir(self):
         sysdir = self.subdir(self.values.dirs.tmp_dir)
         if os.environ.has_key('USER'):
-            userdir = self.subdir('/tmp/pisi-' + os.environ['USER'])
+            userdir = self.subdir('/tmp/eopkg-' + os.environ['USER'])
         else:
-            userdir = self.subdir('/tmp/pisi-root')
+            userdir = self.subdir('/tmp/eopkg-root')
         # check write access
         if os.access(sysdir, os.W_OK):
             return sysdir

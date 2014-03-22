@@ -56,13 +56,13 @@ consts.actionspy_path = "/tmp/actions.py"
 consts.packager_name = "Faik Uygur"
 consts.packager_email = "faik@pardus.org.tr"
 
-consts.homepage = "http://cekirdek.uludag.org.tr/~faik/pisi"
+consts.homepage = "http://cekirdek.uludag.org.tr/~faik/eopkg"
 consts.summary = "%s is a good application"
 consts.description = "%s is a free software that can do anything it wants"
 consts.license = ["GPL-2"]
 
 consts.skel_sha1sum = "cc64dfa6e068fe1f6fb68a635878b1ea21acfac7"
 consts.skel_type = "targz"
-consts.skel_uri = "http://cekirdek.uludag.org.tr/~faik/pisi/skeleton.tar.gz"
+consts.skel_uri = "http://cekirdek.uludag.org.tr/~faik/eopkg/skeleton.tar.gz"
 consts.skel_bindir = "/usr/bin"
 consts.skel_dirtype = "executable"

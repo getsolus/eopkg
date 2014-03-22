@@ -93,7 +93,7 @@ class Dirs:
         self.qt = self.values.dirs.qt_dir
 
 class Generals:
-    '''General informations from /etc/pisi/pisi.conf'''
+    '''General informations from /etc/eopkg/eopkg.conf'''
 
     def __init__(self):
         self.values = ctx.config.values

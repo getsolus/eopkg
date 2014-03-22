@@ -37,5 +37,5 @@ def run():
     repo_version_bumped(PISI)
     repo_updated_index()
 
-    # The packages in /etc/pisi/blacklist should not be upgraded
+    # The packages in /etc/eopkg/blacklist should not be upgraded
     pisi_upgraded()

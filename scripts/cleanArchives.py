@@ -53,11 +53,11 @@ if __name__ == "__main__":
         URI = pisi.uri.URI(spec.source.archive.uri)
         files.append(URI.filename())
 
-    archiveFiles = os.listdir("/var/cache/pisi/archives/")
+    archiveFiles = os.listdir("/var/cache/eopkg/archives/")
     unneededFiles = filter(lambda x:x not in files, archiveFiles)
 
     for i in unneededFiles:
         if not clean:
-            print("/var/cache/pisi/archives/%s" % i)
+            print("/var/cache/eopkg/archives/%s" % i)
         else:
-            cleanArchives("/var/cache/pisi/archives/%s" % i)
+            cleanArchives("/var/cache/eopkg/archives/%s" % i)

@@ -19,7 +19,7 @@ import subprocess
 # We don't use a secret keyring, of course, but gpg panics and
 # implodes if there isn't one available
 GPG_CMD = 'gpg --ignore-time-conflict --no-options --no-default-keyring \
-            --secret-keyring /etc/pisi/secring.gpg --trustdb-name /etc/pisi/trustdb.gpg'
+            --secret-keyring /etc/eopkg/secring.gpg --trustdb-name /etc/eopkg/trustdb.gpg'
 
 GPG = GPG_CMD
 
@@ -95,10 +95,10 @@ def net_update():
         sys.exit(1)
 
     #TODO: Network connection should be checked!!
-    if not os.path.isdir("/var/lib/pisi/keyrings"):
-        os.mkdir("/var/lib/pisi/keyrings")
+    if not os.path.isdir("/var/lib/eopkg/keyrings"):
+        os.mkdir("/var/lib/eopkg/keyrings")
 
-    keyring = "/var/lib/pisi/keyrings/%s" ARCHIVE_KEYRING.split("/")[-1]
+    keyring = "/var/lib/eopkg/keyrings/%s" ARCHIVE_KEYRING.split("/")[-1]
     if os.path.exists(keyring):
         old_mtime = os.stat(keyring).st_mtime
     else:
@@ -185,7 +185,7 @@ if __name__ == '__main__':
 
     else:
         # otherwise use the default
-        keyring = '/etc/pisi/trusted.gpg'
+        keyring = '/etc/eopkg/trusted.gpg'
         if os.access(keyring, os.F_OK):
             GPG += ' --keyring %s' % keyring
         GPG += ' --primary-keyring %s' % keyring

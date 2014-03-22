@@ -63,7 +63,7 @@ def ENV(environ):
 
 def pkgDIR():
     '''returns the path of binary packages'''
-    '''Default: /var/cache/pisi/packages'''
+    '''Default: /var/cache/eopkg/packages'''
     return env.pkg_dir
 
 def workDIR():

@@ -91,7 +91,7 @@ class ShellTestCase(unittest.TestCase):
 
         assert not isDirectory('doc/dependency.pdf')
         assert isDirectory('/usr/lib')
-        assert isDirectory('/etc/pisi')
+        assert isDirectory('/etc/eopkg')
         assert not isDirectory('tests/shelltest.py')
 
     def testRealPath(self):

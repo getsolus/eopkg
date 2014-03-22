@@ -45,7 +45,7 @@ class UtilTestCase(unittest.TestCase):
 
     #file/directory related functions tests
     def testCheckFile(self):
-        assert check_file('/etc/pisi/pisi.conf')
+        assert check_file('/etc/eopkg/pisi.conf')
         assert check_file('/usr/bin/aatest')
 
     def testCleanDir(self):
@@ -58,6 +58,6 @@ class UtilTestCase(unittest.TestCase):
         self.assertNotEqual(dir_size('usr/lib'),65)
 
     def testCopyFile(self):
-        copy_file('/etc/pisi/pisi.conf', '/tmp/pisi-test1')
-        copy_file('/etc/pisi/sandbox.conf', '/tmp/pisi-test2')
-        copy_file_stat('/etc/pisi/pisi.conf', '/tmp/pisi-test1')
+        copy_file('/etc/eopkg/pisi.conf', '/tmp/pisi-test1')
+        copy_file('/etc/eopkg/sandbox.conf', '/tmp/pisi-test2')
+        copy_file_stat('/etc/eopkg/pisi.conf', '/tmp/pisi-test1')

@@ -626,7 +626,7 @@
 	* patches: Add patch to support non-root building
 
 	* if config.tmp_dir is not writeable defaults to /tmp/pisi-$USER
-	* if /var/cache/pisi/archives is not writeable defaults to /tmp/pisi-$USER
+	* if /var/cache/eopkg/archives is not writeable defaults to /tmp/pisi-$USER
 	* Move chowning additional files into postinstall
 	* Assume that group == owner if no group is given for AdditionalFiles
 
@@ -1561,7 +1561,7 @@
 	* scripts: Add a script to generate ChangeLog files from svn log
 
 2010-05-26 Fatih Aşıcı <fatih@pardus.org.tr>
-	* repodb: Do not search index files of local repos in /var/lib/pisi
+	* repodb: Do not search index files of local repos in /var/lib/eopkg
 
 	Fixes the bug reported at http://bugs.pardus.org.tr/13156.
 

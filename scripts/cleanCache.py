@@ -53,14 +53,14 @@ def doit(root, listdir, clean, suffix = ""):
                     usage("Permission denied: %s" % e)
 
 
-def cleanPisis(clean, root = '/var/cache/pisi/packages'):
+def cleanPisis(clean, root = '/var/cache/eopkg/packages'):
     # pisi packages
     list = map(lambda x: os.path.basename(x).split(".eopkg")[0], glob.glob("%s/*.eopkg" % root))
     list.sort()
     l = findUnneededFiles(list)
     doit(root, l, clean, ".eopkg")
 
-def cleanBuilds(clean, root = '/var/pisi'):
+def cleanBuilds(clean, root = '/var/eopkg'):
     # Build remnant
     list = []
     for f in os.listdir(root):

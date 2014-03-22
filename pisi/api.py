@@ -987,7 +987,7 @@ def clearCache(all=False):
     pkgList = map(lambda x: os.path.basename(x).split(ctx.const.package_suffix)[0], glob.glob("%s/*.eopkg" % cacheDir))
     if not all:
         # Cache limits from pisi.conf
-        config = pisi.configfile.ConfigurationFile("/etc/pisi/pisi.conf")
+        config = pisi.configfile.ConfigurationFile("/etc/eopkg/eopkg.conf")
         cacheLimit = int(config.get("general", "package_cache_limit")) * 1024 * 1024 # is this safe?
         if not cacheLimit:
             return

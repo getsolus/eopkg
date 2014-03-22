@@ -5,7 +5,7 @@ import xml.dom.minidom as mdom
 import codecs
 import os
 
-folder = "/var/lib/pisi"
+folder = "/var/lib/eopkg"
 
 def saveMetadata(data, file):
     if data:

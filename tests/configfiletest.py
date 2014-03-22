@@ -38,7 +38,7 @@ class ConfigFileTestCase(unittest.TestCase):
     def testPisiConfValues(self):
         cf = self.cf
         self.assertEqual(cf.dirs.kde_dir, '/usr/kde/4')
-        self.assertEqual(cf.dirs.compiled_packages_dir, '/var/cache/pisi/packages')
+        self.assertEqual(cf.dirs.compiled_packages_dir, '/var/cache/eopkg/packages')
         self.assertEqual(cf.general.architecture, 'i686')
         self.assertEqual(cf.general.distribution_release, '2009')
 

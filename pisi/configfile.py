@@ -14,7 +14,7 @@
 # configuration file. Module also defines default values for
 # configuration parameters.
 #
-# Configuration file is located in /etc/pisi/pisi.conf by default,
+# Configuration file is located in /etc/eopkg/eopkg.conf by default,
 # having an INI like format like below.
 #
 #[general]
@@ -35,15 +35,15 @@
 #fallback = "ftp://ftp.pardus.org.tr/pub/source/2009"
 #
 #[directories]
-#lib_dir = /var/lib/pisi
-#info_dir = "/var/lib/pisi/info"
-#history_dir = /var/lib/pisi/history
-#archives_dir = /var/cache/pisi/archives
-#cached_packages_dir = /var/cache/pisi/packages
-#compiled_packages_dir = "/var/cache/pisi/packages"
-#index_dir = /var/cache/pisi/index
-#packages_dir = /var/cache/pisi/package
-#tmp_dir = /var/pisi
+#lib_dir = /var/lib/eopkg
+#info_dir = "/var/lib/eopkg/info"
+#history_dir = /var/lib/eopkg/history
+#archives_dir = /var/cache/eopkg/archives
+#cached_packages_dir = /var/cache/eopkg/packages
+#compiled_packages_dir = "/var/cache/eopkg/packages"
+#index_dir = /var/cache/eopkg/index
+#packages_dir = /var/cache/eopkg/package
+#tmp_dir = /var/eopkg
 #kde_dir = /usr/kde/4
 #qt_dir = /usr/qt/4
 
@@ -95,19 +95,19 @@ class BuildDefaults:
 
 class DirectoriesDefaults:
     "Default values for [directories] section"
-    lib_dir = "/var/lib/pisi"
+    lib_dir = "/var/lib/eopkg"
     log_dir = "/var/log"
-    info_dir = "/var/lib/pisi/info"
-    history_dir = "/var/lib/pisi/history"
-    archives_dir = "/var/cache/pisi/archives"
-    cache_root_dir = "/var/cache/pisi"
-    cached_packages_dir = "/var/cache/pisi/packages"
-    compiled_packages_dir = "/var/cache/pisi/packages"
-    debug_packages_dir = "/var/cache/pisi/packages-debug"
-    packages_dir = "/var/lib/pisi/package"
+    info_dir = "/var/lib/eopkg/info"
+    history_dir = "/var/lib/eopkg/history"
+    archives_dir = "/var/cache/eopkg/archives"
+    cache_root_dir = "/var/cache/eopkg"
+    cached_packages_dir = "/var/cache/eopkg/packages"
+    compiled_packages_dir = "/var/cache/eopkg/packages"
+    debug_packages_dir = "/var/cache/eopkg/packages-debug"
+    packages_dir = "/var/lib/eopkg/package"
     lock_dir = "/var/lock/subsys"
-    index_dir = "/var/lib/pisi/index"
-    tmp_dir =  "/var/pisi"
+    index_dir = "/var/lib/eopkg/index"
+    tmp_dir =  "/var/eopkg"
     kde_dir = "/usr/kde/4"
     qt_dir = "/usr/qt/4"
 

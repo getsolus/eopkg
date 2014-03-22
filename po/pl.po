@@ -1835,7 +1835,7 @@ msgid ""
 "Rebuilds the PiSi databases\n"
 "\n"
 "If package specs are given, they should be the names of package\n"
-"dirs under /var/lib/pisi\n"
+"dirs under /var/lib/eopkg\n"
 msgstr ""
 
 #: pisi/cli/rebuilddb.py:42

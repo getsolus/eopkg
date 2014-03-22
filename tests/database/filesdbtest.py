@@ -34,30 +34,30 @@ class FilesDBTestCase(testcase.TestCase):
 
     def testAddRemoveFiles(self):
         fileinfo1 = pisi.files.FileInfo()
-        fileinfo1.path = "etc/pisi/pisi.conf"
+        fileinfo1.path = "etc/eopkg/eopkg.conf"
         fileinfo2 = pisi.files.FileInfo()
-        fileinfo2.path = "etc/pisi/mirrors.conf"
+        fileinfo2.path = "etc/eopkg/mirrors.conf"
         
         files = pisi.files.Files()
         files.list.append(fileinfo1)
         files.list.append(fileinfo2)
 
-        assert not self.filesdb.has_file("etc/pisi/pisi.conf")
-        assert not self.filesdb.has_file("etc/pisi/mirrors.conf")
+        assert not self.filesdb.has_file("etc/eopkg/eopkg.conf")
+        assert not self.filesdb.has_file("etc/eopkg/mirrors.conf")
 
         self.filesdb.add_files("pisi", files)
 
-        assert self.filesdb.has_file("etc/pisi/pisi.conf")
-        assert self.filesdb.has_file("etc/pisi/mirrors.conf")
+        assert self.filesdb.has_file("etc/eopkg/eopkg.conf")
+        assert self.filesdb.has_file("etc/eopkg/mirrors.conf")
 
-        pkg, path = self.filesdb.get_file("etc/pisi/pisi.conf")
+        pkg, path = self.filesdb.get_file("etc/eopkg/eopkg.conf")
         assert pkg == "pisi"
 
         # FIXME: inconsistency in filesdb.py add_remove and remove_remove parameters
         self.filesdb.remove_files(files.list)
 
-        assert not self.filesdb.has_file("etc/pisi/pisi.conf")
-        assert not self.filesdb.has_file("etc/pisi/mirrors.conf")
+        assert not self.filesdb.has_file("etc/eopkg/eopkg.conf")
+        assert not self.filesdb.has_file("etc/eopkg/mirrors.conf")
         
     def testSearchFile(self):
         assert not self.filesdb.search_file("ethtool")
