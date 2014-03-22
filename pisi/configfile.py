@@ -65,10 +65,10 @@ class GeneralDefaults:
     """Default values for [general] section"""
     destinationdirectory = "/"
     autoclean = False
-    distribution = "Pardus"
-    distribution_release = "2009"
-    distribution_id = "p9"
-    architecture = "i686"
+    distribution = "Evolve OS"
+    distribution_release = "1"
+    distribution_id = "1"
+    architecture = "x86_64"
     http_proxy = os.getenv("HTTP_PROXY") or None
     https_proxy = os.getenv("HTTPS_PROXY") or None
     ftp_proxy = os.getenv("FTP_PROXY") or None
@@ -80,17 +80,17 @@ class GeneralDefaults:
 
 class BuildDefaults:
     """Default values for [build] section"""
-    build_host = "localhost"
-    host = "i686-pc-linux-gnu"
-    jobs = "-j3"
+    build_host = "evolveos"
+    host = "x86_64-evolveos-linux"
+    jobs = "-j5"
     generateDebug = False
-    enableSandbox = True
-    cflags = "-mtune=generic -march=i686 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
-    cxxflags = "-mtune=generic -march=i686 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
+    enableSandbox = False # Dropping sandbox support soon
+    cflags = "-mtune=generic -march=x86_64 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
+    cxxflags = "-mtune=generic -march=x86_64 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
     ldflags = "-Wl,-O1 -Wl,-z,relro -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--sort-common"
     buildhelper = None
     compressionlevel = 1
-    fallback = "ftp://ftp.pardus.org.tr/pub/source/2009"
+    fallback = "http://evolve-os.com/source"
     ignored_build_types = ""
 
 class DirectoriesDefaults:
