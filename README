@@ -2,3 +2,14 @@ Evolve OS Package Manager
 
 Continuation of the PiSi Package Manager, originally from Pardus Linux,
 and adapted/maintained during the lifetime of SolusOS.
+
+
+Why the different naming?
+---
+Number of reasons really. Most prominent being we don't want unsupported
+binary .pisi packages from Solus OS 2 (no longer going to work) or other
+distributions using PiSi being installed in Evolve OS.
+
+Basically, they'd never work properly. Whether its dependencies or the
+fact we use a different toolchain... too many variables. So, we only support
+Evolve OS binary packages (named .eopkg to avoid the possibility)
