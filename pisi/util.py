@@ -587,6 +587,14 @@ def strip_file(filepath, fileinfo, outpath):
         # run_chrpath(filepath)
         return True
 
+    # Bit nasty, but just ensures kernel modules are also stripped and we split debug
+    elif "SB relocatable" in fileinfo and filepath.endswith(".ko"):
+        if ctx.config.values.build.generatedebug:
+            ensure_dirs(os.path.dirname(outpath))
+            save_elf_debug(filepath, outpath)
+        run_strip(filepath)
+        return True
+
     elif "SB shared object" in fileinfo:
         if ctx.config.values.build.generatedebug:
             ensure_dirs(os.path.dirname(outpath))
