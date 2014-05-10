@@ -592,7 +592,7 @@ def strip_file(filepath, fileinfo, outpath):
         if ctx.config.values.build.generatedebug:
             ensure_dirs(os.path.dirname(outpath))
             save_elf_debug(filepath, outpath)
-        run_strip(filepath)
+        run_strip(filepath, "-g --strip-unneeded")
         return True
 
     elif "SB shared object" in fileinfo:
