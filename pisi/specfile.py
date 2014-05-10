@@ -386,10 +386,16 @@ class Package:
         s += _('Description: %s\n') % unicode(self.description)
         s += _('Licenses: %s\n') % u", ".join(self.license)
         s += _('Component: %s\n') % unicode(self.partOf)
-        s += _('Provides: ')
-        for x in self.providesComar:
-           s += x.om + ' '
-        s += '\n'
+        if len(self.providesComar) > 0 or len(self.providesPkgConfig) > 0:
+            s += _('Provides: ')
+        if len(self.providesComar) > 0:
+            for x in self.providesComar:
+               s += x.om + ' '
+            s += '\n'
+        if len(self.providesPkgConfig) > 0:
+            for x in self.providesPkgConfig:
+                s += "pkgconfig(" + x.om + ") "
+            s += '\n'
         s += _('Dependencies: ')
         for x in self.componentDependencies:
            s += x + ' '
