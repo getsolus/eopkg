@@ -123,6 +123,7 @@ class MetaData(xmlfile.XmlFile):
         self.package.conflicts = pkg.conflicts
         self.package.replaces = pkg.replaces
         self.package.providesComar = pkg.providesComar
+        self.package.providesPkgConfig = pkg.providesPkgConfig
         #self.package.requiresComar = pkg.requiresComar
         self.package.additionalFiles = pkg.additionalFiles
 

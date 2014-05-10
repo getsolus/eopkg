@@ -108,6 +108,10 @@
 <!ATTLIST COMAR script CDATA #IMPLIED>
 <!ATTLIST COMAR name CDATA #IMPLIED>
 
+<!ELEMENT Provides (PkgConfig)+>
+<!ELEMENT PkgConfig (#PCDATA)>
+<!ATTLIST PkgConfig version CDATA #IMPLIED>
+
 <!ELEMENT Conflicts (Package)+>
 <!-- we have a problem here, this Package tag only contains a package name
 while dtd treats this as another Package section, who said dtd doesnt

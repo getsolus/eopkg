@@ -1474,6 +1474,9 @@
             <oneOrMore>
                 <ref name="COMAR"/>
             </oneOrMore>
+            <optional>
+                <ref name="PkgConfig"/>
+            </optional>
         </element>
     </define>
 
@@ -1491,6 +1494,16 @@
         </optional>
         <optional>
             <attribute name="name"/>
+        </optional>
+    </define>
+
+    <!-- PkgConfig -->
+    <define name="PkgConfig">
+        <element name="PkgConfig">
+            <text/>
+        </element>
+        <optional>
+            <attribute name="version"/>
         </optional>
     </define>
 

@@ -926,6 +926,31 @@ class Builder:
         for fileinfo in self.files.list:
             size += fileinfo.size
 
+        # Detect any installed pkg-config files
+        pkgconfigExec = pisi.util.search_executable("pkg-config")
+        for fileinfo in self.files.list:
+            path = fileinfo.path
+            if path.endswith(".pc") and "pkgconfig" in path:
+                if not pkgconfigExec:
+                    ctx.ui.warning(_("pkg-config not found but package provides .pc files - skipping export of pkgconfig information"))
+                    break
+                pcName = path.split("/")[-1].split(".pc")[0]
+                alreadyProvided = False
+                # Check its not been manually specified
+                for pkgconfig in metadata.package.providesPkgConfig:
+                    if pkgconfig.om == pcName:
+                        alreadyProvided = True
+                        break
+                if not alreadyProvided:
+                    pkgconfig = pisi.specfile.PkgConfigProvide()
+                    pkgconfig.om = pcName
+                    code,out,err = pisi.util.run_batch("%s --modversion %s" % (pkgconfigExec, pcName))
+                    if code != 0:
+                        ctx.ui.warn(_("Unable to obtain pkgconfig module version for %s") % pcName)
+                    else:
+                        pkgconfig.version = out.strip().rstrip()
+                    metadata.package.providesPkgConfig.append(pkgconfig)
+                    ctx.ui.debug(_("Adding %s to provided pkgconfig list" % pcName))
         metadata.package.installedSize = long(size)
 
         self.metadata = metadata

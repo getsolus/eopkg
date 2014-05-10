@@ -150,6 +150,17 @@ class ComarProvide:
         s += ' (' + self.om + '%s' % (' for %s' % self.name if self.name else '') + ')'
         return s
 
+class PkgConfigProvide:
+
+    s_om = [autoxml.String, autoxml.mandatory]
+    a_version = [autoxml.String, autoxml.optional]
+
+    def __str__(self):
+        s = self.om
+        if self.a_version and self.a_version != '':
+            s += " == " + self.a_version
+        return s
+
 class Archive:
 
     s_uri = [ autoxml.String, autoxml.mandatory ]
@@ -243,6 +254,7 @@ class Package:
     t_Conflicts = [ [pisi.conflict.Conflict], autoxml.optional, "Conflicts/Package"]
     t_Replaces = [ [pisi.replace.Replace], autoxml.optional, "Replaces/Package"]
     t_ProvidesComar = [ [ComarProvide], autoxml.optional, "Provides/COMAR"]
+    t_ProvidesPkgConfig = [ [PkgConfigProvide], autoxml.optional, "Provides/PkgConfig"]
     t_AdditionalFiles = [ [AdditionalFile], autoxml.optional]
     t_History = [ [Update], autoxml.optional]
 
