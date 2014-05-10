@@ -71,6 +71,7 @@
 <!ATTLIST Dependency releaseFrom CDATA #IMPLIED>
 <!ATTLIST Dependency releaseTo CDATA #IMPLIED>
 <!ATTLIST Dependency release CDATA #IMPLIED>
+<!ATTLIST Dependency type CDATA #IMPLIED>
 
 <!ELEMENT Patches (Patch*)>
 

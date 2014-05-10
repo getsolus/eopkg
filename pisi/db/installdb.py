@@ -258,6 +258,14 @@ class InstallDB(lazydb.LazyDB):
         metadata.read(metadata_xml)
         return metadata.package
 
+    def get_package_by_pkgconfig(self, pkgconfig):
+        for item in self.list_installed():
+            pkg = self.get_package(item)
+            if pkg.providesPkgConfig:
+                for pc in pkg.providesPkgConfig:
+                    if pc.om == pkgconfig:
+                        return pkg
+
     def __mark_package(self, _type, package):
         packages = self.__get_marked_packages(_type)
         if package not in packages:

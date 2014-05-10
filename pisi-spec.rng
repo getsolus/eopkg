@@ -1431,6 +1431,9 @@
             <optional>
                 <attribute name="release"/>
             </optional>
+            <optional>
+                <attribute name="pkgconfig"/>
+            </optional>
         </group>
     </define>
 

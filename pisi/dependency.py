@@ -18,8 +18,12 @@ _ = __trans.ugettext
 
 import pisi.relation
 import pisi.db
+import pisi.pxml.autoxml as autoxml
 
 class Dependency(pisi.relation.Relation):
+
+    a_type = [autoxml.String, autoxml.optional]
+
     def __str__(self):
         s = self.package
         if self.versionFrom:
@@ -34,6 +38,8 @@ class Dependency(pisi.relation.Relation):
             s += _(" release <= ") + self.releaseTo
         if self.release:
             s += _(" release ") + self.release
+        if self.type:
+            s += " (" + self.type + ")"
         return s
 
     def name(self):
@@ -51,6 +57,12 @@ class Dependency(pisi.relation.Relation):
 
     def satisfied_by_repo(self):
         packagedb = pisi.db.packagedb.PackageDB()
+        if self.type == "pkgconfig":
+            pkg = packagedb.get_package_by_pkgconfig(self.package)
+            if pkg:
+                return self.satisfies_relation(pkg.version, pkg.release)
+            else:
+                return False
         if not packagedb.has_package(self.package):
             return False
         else:

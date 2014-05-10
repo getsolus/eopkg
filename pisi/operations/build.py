@@ -198,6 +198,7 @@ class Builder:
 
         self.componentdb = pisi.db.componentdb.ComponentDB()
         self.installdb = pisi.db.installdb.InstallDB()
+        self.packagedb = pisi.db.packagedb.PackageDB()
 
         # process args
         if not isinstance(specuri, pisi.uri.URI):
@@ -805,6 +806,9 @@ class Builder:
         for dep in build_deps:
             if not dep.satisfied_by_installed():
                 dep_unsatis.append(dep)
+            else:
+                if dep.type == "pkgconfig":
+                    ctx.ui.info("%s pkgconfig dependency provided by %s" % (dep.package, self.installdb.get_package_by_pkgconfig(dep.package).name))
 
         if dep_unsatis:
             ctx.ui.info(_("Unsatisfied Build Dependencies:") + ' '
@@ -820,7 +824,14 @@ class Builder:
                 if ctx.ui.confirm(
                 _('Do you want to install the unsatisfied build dependencies')):
                     ctx.ui.info(_('Installing build dependencies.'))
-                    if not pisi.api.install([dep.package for dep in dep_unsatis], reinstall=True):
+                    depsResolved = list()
+                    for dep in dep_unsatis:
+                        if dep.type == "pkgconfig":
+                            depappend = self.packagedb.get_package_by_pkgconfig(dep.package)
+                            depsResolved.append(depappend.name)
+                        else:
+                            depsResolved.append(dep.package)
+                    if not pisi.api.install([dep for dep in depsResolved], reinstall=True):
                         fail()
                 else:
                     fail()
