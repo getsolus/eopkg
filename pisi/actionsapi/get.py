@@ -21,6 +21,8 @@ _ = __trans.ugettext
 import pisi.actionsapi
 import pisi.context as ctx
 
+import multiprocessing
+
 # ActionsAPI Modules
 import pisi.actionsapi.variables
 
@@ -120,6 +122,14 @@ def LDFLAGS():
     return env.ldflags
 
 def makeJOBS():
+    # Note: "auto" only works when /sys is mounted.
+    if env.jobs == "auto":
+        procs = 2
+        try:
+            procs = multiprocessing.cpu_count() + 1
+        except Exception, e:
+            ctx.ui.warning("Unable to retrieve CPU count: %s" % e)
+        return "-j%s" % procs
     return env.jobs
 
 def buildTYPE():
