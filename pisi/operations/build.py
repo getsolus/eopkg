@@ -955,7 +955,8 @@ class Builder:
                 if not alreadyProvided:
                     pkgconfig = pisi.specfile.PkgConfigProvide()
                     pkgconfig.om = pcName
-                    code,out,err = pisi.util.run_batch("%s --modversion %s" % (pkgconfigExec, pcName))
+                    pcPath = util.join_path(self.pkg_install_dir(), path)
+                    code,out,err = pisi.util.run_batch("%s --modversion %s" % (pkgconfigExec, pcPath))
                     if code != 0:
                         ctx.ui.warn(_("Unable to obtain pkgconfig module version for %s") % pcName)
                     else:
