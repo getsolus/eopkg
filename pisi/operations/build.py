@@ -918,6 +918,42 @@ class Builder:
 
         return debug_package_obj
 
+    def get_binary_deps(self, path):
+        bin_deps = list()
+        if not os.path.exists(path):
+            return bin_deps
+
+        cmd = "ldd %s" % path
+        code,out,err = util.run_batch(cmd)
+        installdir = self.pkg_install_dir()
+
+        if code == 0:
+            # Literally just resolve every link we find and see if it
+            # belongs to an installed package. If so, append to the
+            # returned binary deps (and some lib64 hackery is needed right
+            # now just for Evolve OS..
+            for line in out.split("\n"):
+                line = line.strip().rstrip()
+                if "=>" in line:
+                    dep = line.split("=>")[1]
+                    dep = dep.strip().rstrip().split()[0]
+
+                    # Ensure its not our own!
+                    tpath = util.join_path(installdir, dep)
+                    tpath2 = tpath.replace("/lib/", "/lib64/")
+                    if os.path.exists(tpath) or os.path.exists(tpath2):
+                        continue
+
+                    dep2 = dep.replace("/lib/", "/lib64/")
+                    result = pisi.api.search_file(dep)
+                    if not result:
+                        result = pisi.api.search_file(dep2)
+                    if not result:
+                        continue
+                    pkg = result[0][0]
+                    bin_deps.append(pkg)
+        return bin_deps
+
     def gen_metadata_xml(self, package):
         """Generate the metadata.xml file for build source.
 
@@ -939,6 +975,8 @@ class Builder:
 
         # Detect any installed pkg-config files
         pkgconfigExec = pisi.util.search_executable("pkg-config")
+        import magic
+
         for fileinfo in self.files.list:
             path = fileinfo.path
             if path.endswith(".pc") and "pkgconfig" in path:
@@ -963,6 +1001,31 @@ class Builder:
                         pkgconfig.version = out.strip().rstrip()
                     metadata.package.providesPkgConfig.append(pkgconfig)
                     ctx.ui.debug(_("Adding %s to provided pkgconfig list" % pcName))
+            else:
+                # Note this is quite slow to complete, but the only other
+                # alternative is exporting ELF symbols to the XML and then
+                # searching providers that way.. ala RPM.
+                installdir = self.pkg_install_dir()
+                fullpath = util.join_path(installdir, path)
+                if not os.path.exists(fullpath):
+                    # Dodgy symlinks
+                    continue
+                filemagic = magic.from_file(fullpath)
+                if "SB executable" in filemagic or "SB shared object" in filemagic:
+                    ctx.ui.debug("Checking %s for binary dependencies" % fullpath)
+                    bindeps = self.get_binary_deps(fullpath)
+                    for dep in bindeps:
+                        found = False
+                        for depen in metadata.package.packageDependencies:
+                            if depen.package == dep:
+                                found = True
+                                break
+                        if not found and dep not in metadata.package.packageDependencies:
+                            newDep = pisi.dependency.Dependency()
+                            newDep.package = dep
+                            metadata.package.packageDependencies.append(newDep)
+                            ctx.ui.debug("%s depends on %s" % (metadata.package.name, dep))
+
         metadata.package.installedSize = long(size)
 
         self.metadata = metadata
