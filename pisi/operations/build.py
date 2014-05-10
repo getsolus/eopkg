@@ -1002,6 +1002,8 @@ class Builder:
                     metadata.package.providesPkgConfig.append(pkgconfig)
                     ctx.ui.debug(_("Adding %s to provided pkgconfig list" % pcName))
             else:
+                if self.actionGlobals.get("IgnoreAutodep"):
+                    continue
                 # Note this is quite slow to complete, but the only other
                 # alternative is exporting ELF symbols to the XML and then
                 # searching providers that way.. ala RPM.
