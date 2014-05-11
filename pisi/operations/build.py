@@ -977,6 +977,7 @@ class Builder:
         pkgconfigExec = pisi.util.search_executable("pkg-config")
         import magic
 
+        knownPcFiles = list()
         for fileinfo in self.files.list:
             path = fileinfo.path
             if path.endswith(".pc") and "pkgconfig" in path:
@@ -1001,6 +1002,7 @@ class Builder:
                         pkgconfig.version = out.strip().rstrip()
                     metadata.package.providesPkgConfig.append(pkgconfig)
                     ctx.ui.debug(_("Adding %s to provided pkgconfig list" % pcName))
+                    knownPcFiles.append(pcPath)
             else:
                 if self.actionGlobals.get("IgnoreAutodep"):
                     continue
@@ -1027,6 +1029,64 @@ class Builder:
                             newDep.package = dep
                             metadata.package.packageDependencies.append(newDep)
                             ctx.ui.debug("%s depends on %s" % (metadata.package.name, dep))
+
+        # Seems insane iterating again for requirements, but we must ensure we grab
+        # all pkgconfig files first! (also this is just a small list of known pc files :)
+        for pcFile in knownPcFiles:
+            # We need to also add -devel dependencies to this devel if it needs other packages
+            lines = list()
+            code,out,err = pisi.util.run_batch("%s --print-requires %s" % (pkgconfigExec, pcPath))
+            for line in out.split("\n"):
+                line = line.strip().rstrip()
+                if line == '':
+                    continue
+                lines.append(line)
+            # Cmon, give us your details!
+            code,out,err = pisi.util.run_batch("%s --print-requires-private %s" % (pkgconfigExec, pcPath))
+            for line in out.split("\n"):
+                line = line.strip().rstrip()
+                if line == '':
+                    continue
+                # Make sure round 1 didn't already expose this
+                if line in lines:
+                    continue
+                lines.append(line)
+
+            for line in lines:
+                line = line.strip().rstrip()
+
+                if line ==  '':
+                    continue
+                    # In the future we'll also provide a mechanism to support
+                    # ">=" and "==" dependencies in pkgconfig, for now we'll
+                    # ignore the version
+                if " " in line:
+                    line = line.split()[0]
+                alreadyProvided = False
+                # Check its not been manually specified
+                for pkgconfig in metadata.package.providesPkgConfig:
+                    if pkgconfig.om == line:
+                        alreadyProvided = True
+                        break
+                # Likely our own dependency..
+                if alreadyProvided:
+                    continue
+                pkg = self.installdb.get_package_by_pkgconfig(line)
+                if not pkg:
+                    ctx.ui.warning("%s depends on unaccounted pkgconfig file! pkgconfig(%s)" % (metadata.package.name, line))
+                    # in the future we'll raise an enormous error..
+                    continue
+                # Check its not already an explicit dependency
+                found = False
+                for depen in metadata.package.packageDependencies:
+                    if depen.package == pkg.name:
+                        found = True
+                        break
+                if not found and pkg not in metadata.package.packageDependencies:
+                    newDep = pisi.dependency.Dependency()
+                    newDep.package = pkg.name
+                    metadata.package.packageDependencies.append(newDep)
+                    ctx.ui.debug("%s also depends on %s" % (metadata.package.name, pkg.name))
 
         metadata.package.installedSize = long(size)
 
