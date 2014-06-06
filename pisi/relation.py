@@ -57,7 +57,7 @@ class Relation:
 def installed_package_satisfies(relation):
     installdb = pisi.db.installdb.InstallDB()
     pkg_name = relation.package
-    if relation.type == "pkgconfig":
+    if hasattr(relation, "type") and relation.type == "pkgconfig":
         pkg = installdb.get_package_by_pkgconfig(pkg_name)
         if pkg:
             return relation.satisfies_relation(pkg.version, pkg.release)
