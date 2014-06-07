@@ -942,10 +942,12 @@ class Builder:
 
                     # Ensure its not our own!
                     tpath = util.join_path(installdir, dep)
-                    tpath2 = tpath.replace("/lib/", "/lib64/")
+                    if "/lib64/" in tpath:
+                        tpath2 = tpath.replace("/lib64/", "/lib/")
+                    else:
+                        tpath2 = tpath.replace("/lib/", "/lib64/")
                     if os.path.exists(tpath) or os.path.exists(tpath2):
                         continue
-
                     if "lib64" in dep:
                         dep2 = dep.replace("/lib64/", "/lib/")
                     else:
