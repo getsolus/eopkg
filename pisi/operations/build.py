@@ -935,6 +935,8 @@ class Builder:
             for line in out.split("\n"):
                 line = line.strip().rstrip()
                 if "=>" in line:
+                    if "not found" in line:
+                        continue
                     dep = line.split("=>")[1]
                     dep = dep.strip().rstrip().split()[0]
 
@@ -944,7 +946,10 @@ class Builder:
                     if os.path.exists(tpath) or os.path.exists(tpath2):
                         continue
 
-                    dep2 = dep.replace("/lib/", "/lib64/")
+                    if "lib64" in dep:
+                        dep2 = dep.replace("/lib64/", "/lib/")
+                    else:
+                        dep2 = dep.replace("/lib/", "/lib64/")
                     result = pisi.api.search_file(dep)
                     if not result:
                         result = pisi.api.search_file(dep2)
