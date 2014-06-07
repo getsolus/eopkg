@@ -1040,14 +1040,14 @@ class Builder:
         for pcFile in knownPcFiles:
             # We need to also add -devel dependencies to this devel if it needs other packages
             lines = list()
-            code,out,err = pisi.util.run_batch("%s --print-requires %s" % (pkgconfigExec, pcPath))
+            code,out,err = pisi.util.run_batch("%s --print-requires %s" % (pkgconfigExec, pcFile))
             for line in out.split("\n"):
                 line = line.strip().rstrip()
                 if line == '':
                     continue
                 lines.append(line)
             # Cmon, give us your details!
-            code,out,err = pisi.util.run_batch("%s --print-requires-private %s" % (pkgconfigExec, pcPath))
+            code,out,err = pisi.util.run_batch("%s --print-requires-private %s" % (pkgconfigExec, pcFile))
             for line in out.split("\n"):
                 line = line.strip().rstrip()
                 if line == '':
