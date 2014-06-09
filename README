@@ -1,15 +1,41 @@
 Evolve OS Package Manager
+-------------------------
 
-Continuation of the PiSi Package Manager, originally from Pardus Linux,
+Fork of the PiSi Package Manager, originally from Pardus Linux,
 and adapted/maintained during the lifetime of SolusOS.
 
 
-Why the different naming?
----
-Number of reasons really. Most prominent being we don't want unsupported
-binary .pisi packages from Solus OS 2 (no longer going to work) or other
-distributions using PiSi being installed in Evolve OS.
+NOTE: Due to talks with the "Pisilinux" project maintainers, who claim
+that PiSi is being actively "maintained" (developed doesn't seem the correct
+word here) this project should now be considered a FORK of the original
+Pardus PiSi package manager. Note this is not a new effort, and merely
+continues its life through SolusOS into Evolve OS.
 
-Basically, they'd never work properly. Whether its dependencies or the
-fact we use a different toolchain... too many variables. So, we only support
-Evolve OS binary packages (named .eopkg to avoid the possibility)
+In essence, it is within Evolve OS's interests to keep developing and
+changing this package manager (and eventually a full rewrite) to advance
+practices and improve the Evolve OS project on the whole.
+
+Other projects will continue to use the *original* PiSi package manager,
+as the aim of some of these projects is to preserve everything about their
+parent project (or fork-base), which obviously would conflict with our
+interests in completely rewriting it and ripping pieces out.
+
+In time, the contents of this repository will change significantly, as
+I now have total "carte blanche" to rewrite the entire package manager
+in a more sensible fashion without fear of reprisal of projects not
+related to Evolve OS.
+
+The last release of this fork under the name "PiSi" will be 3.2, after
+which the changes below will be initiated and a new name will be taken,
+with a fresh codebase that merely integrates the original concepts, and
+does away with the years of old code.
+
+TODO:
+
+ * COMAR will die. As will PolKit/dbus integration - It's not appropriate!!
+ * The XML format and system will be ripped out - too big, too unfriendly.
+ * Long run: Probable rewrite into C.
+ * ACTUAL deltas. i.e. not changed files but binary diff of two packages.
+ * Package signing
+ * Support for VCS as Archive source (i.e. git packages)
+ * Integration with SMACK (via extended attributes support)
