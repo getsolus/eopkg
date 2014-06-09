@@ -926,12 +926,13 @@ class Builder:
         cmd = "ldd %s" % path
         code,out,err = util.run_batch(cmd)
         installdir = self.pkg_install_dir()
+        workdir = self.pkg_work_dir()
 
         if code == 0:
             # Literally just resolve every link we find and see if it
             # belongs to an installed package. If so, append to the
             # returned binary deps (and some lib64 hackery is needed right
-            # now just for Evolve OS..
+            # now just for Evolve OS..)
             for line in out.split("\n"):
                 line = line.strip().rstrip()
                 if "=>" in line:
@@ -940,6 +941,9 @@ class Builder:
                     dep = line.split("=>")[1]
                     dep = dep.strip().rstrip().split()[0]
 
+                    # Skip dodgy deps from internally linking packages
+                    if dep.startswith(workdir):
+                        continue
                     # Ensure its not our own!
                     tpath = util.join_path(installdir, dep)
                     if "/lib64/" in tpath:
@@ -952,13 +956,26 @@ class Builder:
                         dep2 = dep.replace("/lib64/", "/lib/")
                     else:
                         dep2 = dep.replace("/lib/", "/lib64/")
-                    result = pisi.api.search_file(dep)
-                    if not result:
-                        result = pisi.api.search_file(dep2)
+
+                    # try checking our cache first
+                    if dep in self._bindeps_cache:
+                        result = self._bindeps_cache[dep]
+                    elif dep2 in self._bindeps_cache:
+                        result = self._bindeps_cache[dep2]
+                    else:
+                        # First time looking at this dep
+                        result = pisi.api.search_file(dep)
+                        if not result:
+                            result = pisi.api.search_file(dep2)
+                            if result:
+                                self._bindeps_cache[dep2] = result
+                        else:
+                            self._bindeps_cache[dep] = result
                     if not result:
                         continue
                     pkg = result[0][0]
                     bin_deps.append(pkg)
+
         return bin_deps
 
     def gen_metadata_xml(self, package):
@@ -1082,11 +1099,21 @@ class Builder:
                 # Likely our own dependency..
                 if alreadyProvided:
                     continue
-                pkg = self.installdb.get_package_by_pkgconfig(line)
+
+                cached = False
+                # See if its in our cache first
+                if line in self._pkgconfig_cache:
+                    cached = True
+                    pkg = self._pkgconfig_cache[line]
+                else:
+                    pkg = self.installdb.get_package_by_pkgconfig(line)
                 if not pkg:
                     ctx.ui.warning("%s depends on unaccounted pkgconfig file! pkgconfig(%s)" % (metadata.package.name, line))
                     # in the future we'll raise an enormous error..
                     continue
+                # Cache for later
+                if not cached:
+                    self._pkgconfig_cache[line] = pkg
                 # Check its not already an explicit dependency
                 found = False
                 for depen in metadata.package.packageDependencies:
@@ -1097,7 +1124,10 @@ class Builder:
                     newDep = pisi.dependency.Dependency()
                     newDep.package = pkg.name
                     metadata.package.packageDependencies.append(newDep)
-                    ctx.ui.debug("%s also depends on %s" % (metadata.package.name, pkg.name))
+                    output = "%s also depends on %s" % (metadata.package.name, pkg.name)
+                    if cached:
+                        output += " [cached]"
+                    ctx.ui.debug(output)
 
         metadata.package.installedSize = long(size)
 
@@ -1246,6 +1276,11 @@ class Builder:
                 ctx.ui.info("    - %s" % f)
 
             raise AbandonedFilesException
+
+        # Cache pkgconfig and binary deps to ensure repeated lookups are
+        # much faster
+        self._pkgconfig_cache = dict()
+        self._bindeps_cache = dict()
 
         for package in self.spec.packages:
             # removing "farce" in specfile.py:SpecFile.override_tags
