@@ -984,6 +984,10 @@ class Builder:
         pkgconfigExec = pisi.util.search_executable("pkg-config")
         import magic
 
+        # Refresh db's here otherwise we might have out of date information
+        # on new installed build dependencies
+        self.installdb = pisi.db.installdb.InstallDB()
+
         knownPcFiles = list()
         for fileinfo in self.files.list:
             path = fileinfo.path
