@@ -1004,6 +1004,7 @@ class Builder:
         # Refresh db's here otherwise we might have out of date information
         # on new installed build dependencies
         self.installdb = pisi.db.installdb.InstallDB()
+        self.packagedb = pisi.db.packagedb.PackageDB()
 
         knownPcFiles = list()
         for fileinfo in self.files.list:
@@ -1055,8 +1056,10 @@ class Builder:
                         if not found and dep not in metadata.package.packageDependencies:
                             newDep = pisi.dependency.Dependency()
                             newDep.package = dep
+                            pkg = self.packagedb.get_package(dep)
+                            newDep.releaseFrom = pkg.release
                             metadata.package.packageDependencies.append(newDep)
-                            ctx.ui.debug("%s depends on %s" % (metadata.package.name, dep))
+                            ctx.ui.debug("%s depends on %s (>= release %s)" % (metadata.package.name, dep, pkg.release))
 
         # Seems insane iterating again for requirements, but we must ensure we grab
         # all pkgconfig files first! (also this is just a small list of known pc files :)
@@ -1123,8 +1126,9 @@ class Builder:
                 if not found and pkg not in metadata.package.packageDependencies:
                     newDep = pisi.dependency.Dependency()
                     newDep.package = pkg.name
+                    newDep.releaseFrom = pkg.release
                     metadata.package.packageDependencies.append(newDep)
-                    output = "%s also depends on %s" % (metadata.package.name, pkg.name)
+                    output = "%s also depends on %s (>= release %s)" % (metadata.package.name, pkg.name, pkg.release)
                     if cached:
                         output += " [cached]"
                     ctx.ui.debug(output)
