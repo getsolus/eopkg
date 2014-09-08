@@ -1026,7 +1026,7 @@ class Builder:
                     pcPath = util.join_path(self.pkg_install_dir(), path)
                     code,out,err = pisi.util.run_batch("%s --modversion %s" % (pkgconfigExec, pcPath))
                     if code != 0:
-                        ctx.ui.warn(_("Unable to obtain pkgconfig module version for %s") % pcName)
+                        ctx.ui.warning(_("Unable to obtain pkgconfig module version for %s") % pcName)
                     else:
                         pkgconfig.version = out.strip().rstrip()
                     metadata.package.providesPkgConfig.append(pkgconfig)
