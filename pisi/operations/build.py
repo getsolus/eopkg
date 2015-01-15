@@ -1056,7 +1056,7 @@ class Builder:
                         if not found and dep not in metadata.package.packageDependencies:
                             newDep = pisi.dependency.Dependency()
                             newDep.package = dep
-                            pkg = self.packagedb.get_package(dep)
+                            pkg = self.installdb.get_package(dep)
                             newDep.releaseFrom = pkg.release
                             metadata.package.packageDependencies.append(newDep)
                             ctx.ui.debug("%s depends on %s (>= release %s)" % (metadata.package.name, dep, pkg.release))
