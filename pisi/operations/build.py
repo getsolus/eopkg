@@ -1043,23 +1043,28 @@ class Builder:
                 if not os.path.exists(fullpath):
                     # Dodgy symlinks
                     continue
-                filemagic = magic.from_file(fullpath)
-                if "SB executable" in filemagic or "SB shared object" in filemagic:
-                    ctx.ui.debug("Checking %s for binary dependencies" % fullpath)
-                    bindeps = self.get_binary_deps(fullpath)
-                    for dep in bindeps:
-                        found = False
-                        for depen in metadata.package.packageDependencies:
-                            if depen.package == dep:
-                                found = True
-                                break
-                        if not found and dep not in metadata.package.packageDependencies:
-                            newDep = pisi.dependency.Dependency()
-                            newDep.package = dep
-                            pkg = self.installdb.get_package(dep)
-                            newDep.releaseFrom = pkg.release
-                            metadata.package.packageDependencies.append(newDep)
-                            ctx.ui.debug("%s depends on %s (>= release %s)" % (metadata.package.name, dep, pkg.release))
+                filemagic = None
+                try:
+                    filemagic = magic.from_file(fullpath)
+                except:
+                    pass
+                if filemagic:
+                    if "SB executable" in filemagic or "SB shared object" in filemagic:
+                        ctx.ui.debug("Checking %s for binary dependencies" % fullpath)
+                        bindeps = self.get_binary_deps(fullpath)
+                        for dep in bindeps:
+                            found = False
+                            for depen in metadata.package.packageDependencies:
+                                if depen.package == dep:
+                                    found = True
+                                    break
+                            if not found and dep not in metadata.package.packageDependencies:
+                                newDep = pisi.dependency.Dependency()
+                                newDep.package = dep
+                                pkg = self.installdb.get_package(dep)
+                                newDep.releaseFrom = pkg.release
+                                metadata.package.packageDependencies.append(newDep)
+                                ctx.ui.debug("%s depends on %s (>= release %s)" % (metadata.package.name, dep, pkg.release))
 
         # Seems insane iterating again for requirements, but we must ensure we grab
         # all pkgconfig files first! (also this is just a small list of known pc files :)
