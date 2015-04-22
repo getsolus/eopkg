@@ -2,9 +2,9 @@ Metadata-Version: 1.0
 Name: pisi
 Version: 3.2
 Summary: PiSi (Packages Installed Successfully as Intended)
-Home-page: http://www.evolve-os.com
+Home-page: https://www.solus-project.com
 Author: Ikey Doherty
-Author-email: ikey@solusos.com
+Author-email: ikey@solus-project.com
 License: GNU GPL2
-Description: PiSi is the package management system of Evolve OS, originally written for Pardus Linux by the Pardus Developers.
+Description: PiSi is the package management system of Solus Operating System, originally written for Pardus Linux by the Pardus Developers.
 Platform: UNKNOWN
