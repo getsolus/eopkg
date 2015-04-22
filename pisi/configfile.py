@@ -65,7 +65,7 @@ class GeneralDefaults:
     """Default values for [general] section"""
     destinationdirectory = "/"
     autoclean = False
-    distribution = "Evolve OS"
+    distribution = "Solus Operating System"
     distribution_release = "1"
     distribution_id = "1"
     architecture = "x86_64"
@@ -90,7 +90,7 @@ class BuildDefaults:
     ldflags = "-Wl,-O1 -Wl,-z,relro -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--sort-common"
     buildhelper = None
     compressionlevel = 1
-    fallback = "http://evolve-os.com/source"
+    fallback = "https://www.solus-project.com/source"
     ignored_build_types = ""
 
 class DirectoriesDefaults:

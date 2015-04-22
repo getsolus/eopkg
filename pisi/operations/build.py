@@ -932,7 +932,7 @@ class Builder:
             # Literally just resolve every link we find and see if it
             # belongs to an installed package. If so, append to the
             # returned binary deps (and some lib64 hackery is needed right
-            # now just for Evolve OS..)
+            # now just for Solus Operating System..)
             for line in out.split("\n"):
                 line = line.strip().rstrip()
                 if "=>" in line:
