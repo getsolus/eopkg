@@ -1,4 +1,4 @@
-Evolve OS Package Manager
+Solus Operating System Package Manager
 -------------------------
 
 Fork of the PiSi Package Manager, originally from Pardus Linux,
@@ -9,11 +9,11 @@ NOTE: Due to talks with the "Pisilinux" project maintainers, who claim
 that PiSi is being actively "maintained" (developed doesn't seem the correct
 word here) this project should now be considered a FORK of the original
 Pardus PiSi package manager. Note this is not a new effort, and merely
-continues its life through SolusOS into Evolve OS.
+continues its life through SolusOS into Solus Operating System.
 
-In essence, it is within Evolve OS's interests to keep developing and
+In essence, it is within Solus Operating System's interests to keep developing and
 changing this package manager (and eventually a full rewrite) to advance
-practices and improve the Evolve OS project on the whole.
+practices and improve the Solus Operating System project on the whole.
 
 Other projects will continue to use the *original* PiSi package manager,
 as the aim of some of these projects is to preserve everything about their
@@ -23,7 +23,7 @@ interests in completely rewriting it and ripping pieces out.
 In time, the contents of this repository will change significantly, as
 I now have total "carte blanche" to rewrite the entire package manager
 in a more sensible fashion without fear of reprisal of projects not
-related to Evolve OS.
+related to Solus Operating System.
 
 The last release of this fork under the name "PiSi" will be 3.2, after
 which the changes below will be initiated and a new name will be taken,
