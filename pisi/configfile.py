@@ -65,7 +65,7 @@ class GeneralDefaults:
     """Default values for [general] section"""
     destinationdirectory = "/"
     autoclean = False
-    distribution = "Solus Operating System"
+    distribution = "Solus"
     distribution_release = "1"
     distribution_id = "1"
     architecture = "x86_64"
