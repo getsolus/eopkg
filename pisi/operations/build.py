@@ -904,7 +904,7 @@ class Builder:
         # FIXME: find a better way to deal with the summary and description constants.
         debug_package_obj.summary['en'] = u'Debug files for %s' % (package.name)
         debug_package_obj.description['en'] = u'Debug files for %s' % (package.name)
-        debug_package_obj.partOf = package.partOf
+        debug_package_obj.partOf = ctx.const.debug_component
 
         dependency = pisi.dependency.Dependency()
         dependency.package = package.name
