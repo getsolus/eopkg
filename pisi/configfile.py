@@ -80,13 +80,13 @@ class GeneralDefaults:
 
 class BuildDefaults:
     """Default values for [build] section"""
-    build_host = "evolveos"
-    host = "x86_64-evolveos-linux"
+    build_host = "solus"
+    host = "x86_64-solus-linux"
     jobs = "-j5"
     generateDebug = False
     enableSandbox = False # Dropping sandbox support soon
-    cflags = "-mtune=generic -march=x86-64 -O2 -pipe -fPIC -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
-    cxxflags = "-mtune=generic -march=x86-64 -O2 -pipe -fPIC -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
+    cflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
+    cxxflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
     ldflags = "-Wl,-O1 -Wl,-z,relro -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--sort-common"
     buildhelper = None
     compressionlevel = 1
