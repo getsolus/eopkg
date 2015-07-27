@@ -85,9 +85,9 @@ class BuildDefaults:
     jobs = "-j5"
     generateDebug = False
     enableSandbox = False # Dropping sandbox support soon
-    cflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
-    cxxflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2"
-    ldflags = "-Wl,-O1 -Wl,-z,relro -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--sort-common"
+    cflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -fomit-frame-pointer -fstack-protector --param ssp-buffer-size=4 -fexceptions -D_FORTIFY_SOURCE=2 -feliminate-unused-debug-types -Wno-error"
+    cxxflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -fomit-frame-pointer -fstack-protector --param ssp-buffer-size=4 -fexceptions -D_FORTIFY_SOURCE=2 -feliminate-unused-debug-types -Wno-error"
+    ldflags = "-Wl,--copy-dt-needed-entries -Wl,-O1 -Wl,-z,relro -Wl,-z,now"
     buildhelper = None
     compressionlevel = 1
     fallback = "https://www.solus-project.com/source"
