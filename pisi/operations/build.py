@@ -42,6 +42,8 @@ import pisi.archive as archive
 import pisi.actionsapi.variables
 import pisi.db
 
+import magic
+
 
 class Error(pisi.Error):
     pass
@@ -154,11 +156,11 @@ def get_debug_path(filepath, fileinfo, install_dir):
 
     if "SB executable" not in fileinfo and "SB relocatable" not in fileinfo \
     and "SB shared object" not in fileinfo:
-        return None
+        return (None,None)
 
     code,out,err = pisi.util.run_batch("readelf -n \"%s\"" % filepath)
-    if code != 0:
-        return None
+    if code != 0 or not out:
+        return (None,None)
     for line in out.split("\n"):
         if "Build ID:" not in line:
             continue
@@ -1260,17 +1262,15 @@ class Builder:
     def file_actions(self):
         install_dir = self.pkg_install_dir()
 
-        import magic
-
         for root, dirs, files in os.walk(install_dir):
             for fn in files:
                 filepath = util.join_path(root, fn)
                 try:
-					fileinfo = magic.from_file(filepath)
-					strip_debug_action(filepath, fileinfo, install_dir, self.actionGlobals)
-					exclude_special_files(filepath, fileinfo, self.actionGlobals)
-                except:
-					pass
+                    fileinfo = magic.from_file(filepath)
+                    strip_debug_action(filepath, fileinfo, install_dir, self.actionGlobals)
+                    exclude_special_files(filepath, fileinfo, self.actionGlobals)
+                except Exception:
+                    pass
 
     def build_packages(self):
         """Build each package defined in PSPEC file. After this process there
