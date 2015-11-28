@@ -248,6 +248,7 @@ class Builder:
         self.componentdb = pisi.db.componentdb.ComponentDB()
         self.installdb = pisi.db.installdb.InstallDB()
         self.packagedb = pisi.db.packagedb.PackageDB()
+        self.filesdb = pisi.db.filesdb.FilesDB()
 
         # process args
         if not isinstance(specuri, pisi.uri.URI):
@@ -975,6 +976,11 @@ class Builder:
 
         return debug_package_obj
 
+    def _search_file(self, term):
+        if term.startswith("/"):
+            term = term[1:]
+        return self.filesdb.search_file(term)
+
     def get_binary_deps(self, path):
         bin_deps = list()
         if not os.path.exists(path):
@@ -1021,9 +1027,9 @@ class Builder:
                         result = self._bindeps_cache[dep2]
                     else:
                         # First time looking at this dep
-                        result = pisi.api.search_file(dep)
+                        result = self._search_file(dep)
                         if not result:
-                            result = pisi.api.search_file(dep2)
+                            result = self._search_file(dep2)
                             if result:
                                 self._bindeps_cache[dep2] = result
                         else:
@@ -1062,6 +1068,7 @@ class Builder:
         # on new installed build dependencies
         self.installdb = pisi.db.installdb.InstallDB()
         self.packagedb = pisi.db.packagedb.PackageDB()
+        self.filesdb = pisi.db.filesdb.FilesDB()
 
         knownPcFiles = list()
         for fileinfo in self.files.list:

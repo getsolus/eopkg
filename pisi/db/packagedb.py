@@ -87,7 +87,7 @@ class PackageDB(lazydb.LazyDB):
     def get_package_by_pkgconfig(self, pkgconfig):
         for item in self.list_packages(None):
             pkg = self.get_package(item)
-            if pkg.providesPkgConfig:
+            if pkg.providesPkgConfig is not None and len(pkg.providesPkgConfig) > 0:
                 for pc in pkg.providesPkgConfig:
                     if pc.om == pkgconfig:
                         return pkg
