@@ -266,6 +266,14 @@ class InstallDB(lazydb.LazyDB):
                     if pc.om == pkgconfig:
                         return pkg
 
+    def get_package_by_pkgconfig32(self, pkgconfig):
+        for item in self.list_installed():
+            pkg = self.get_package(item)
+            if pkg.providesPkgConfig32 is not None and len(pkg.providesPkgConfig32) > 0:
+                for pc in pkg.providesPkgConfig32:
+                    if pc.om == pkgconfig:
+                        return pkg
+
     def __mark_package(self, _type, package):
         packages = self.__get_marked_packages(_type)
         if package not in packages:

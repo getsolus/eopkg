@@ -161,6 +161,17 @@ class PkgConfigProvide:
             s += " == " + self.a_version
         return s
 
+class PkgConfig32Provide:
+
+    s_om = [autoxml.String, autoxml.mandatory]
+    a_version = [autoxml.String, autoxml.optional]
+
+    def __str__(self):
+        s = self.om
+        if self.a_version and self.a_version != '':
+            s += " == " + self.a_version
+        return s
+
 class Archive:
 
     s_uri = [ autoxml.String, autoxml.mandatory ]
@@ -255,6 +266,7 @@ class Package:
     t_Replaces = [ [pisi.replace.Replace], autoxml.optional, "Replaces/Package"]
     t_ProvidesComar = [ [ComarProvide], autoxml.optional, "Provides/COMAR"]
     t_ProvidesPkgConfig = [ [PkgConfigProvide], autoxml.optional, "Provides/PkgConfig"]
+    t_ProvidesPkgConfig32 = [ [PkgConfig32Provide], autoxml.optional, "Provides/PkgConfig32"]
     t_AdditionalFiles = [ [AdditionalFile], autoxml.optional]
     t_History = [ [Update], autoxml.optional]
 
@@ -386,7 +398,7 @@ class Package:
         s += _('Description: %s\n') % unicode(self.description)
         s += _('Licenses: %s\n') % u", ".join(self.license)
         s += _('Component: %s\n') % unicode(self.partOf)
-        if len(self.providesComar) > 0 or len(self.providesPkgConfig) > 0:
+        if len(self.providesComar) > 0 or len(self.providesPkgConfig) > 0 or len(self.providesPkgConfig32) > 0:
             s += _('Provides: ')
         if len(self.providesComar) > 0:
             for x in self.providesComar:
@@ -395,6 +407,10 @@ class Package:
         if len(self.providesPkgConfig) > 0:
             for x in self.providesPkgConfig:
                 s += "pkgconfig(" + x.om + ") "
+            s += '\n'
+        if len(self.providesPkgConfig32) > 0:
+            for x in self.providesPkgConfig32:
+                s += "pkgconfig32(" + x.om + ") "
             s += '\n'
         s += _('Dependencies: ')
         for x in self.componentDependencies:

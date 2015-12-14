@@ -93,6 +93,15 @@ class PackageDB(lazydb.LazyDB):
                         return pkg
         return None
 
+    def get_package_by_pkgconfig32(self, pkgconfig):
+        for item in self.list_packages(None):
+            pkg = self.get_package(item)
+            if pkg.providesPkgConfig32 is not None and len(pkg.providesPkgConfig32) > 0:
+                for pc in pkg.providesPkgConfig32:
+                    if pc.om == pkgconfig:
+                        return pkg
+        return None
+
     def search_in_packages(self, packages, terms, lang=None):
         resum = '<Summary xml:lang=.(%s|en).>.*?%s.*?</Summary>'
         redesc = '<Description xml:lang=.(%s|en).>.*?%s.*?</Description>'

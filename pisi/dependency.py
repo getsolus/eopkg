@@ -57,8 +57,15 @@ class Dependency(pisi.relation.Relation):
 
     def satisfied_by_repo(self):
         packagedb = pisi.db.packagedb.PackageDB()
-        if self.type == "pkgconfig":
+        pkgconfig32 = False
+        if self.type == "pkgconfig" :
             pkg = packagedb.get_package_by_pkgconfig(self.package)
+            if pkg:
+                return self.satisfies_relation(pkg.version, pkg.release)
+            else:
+                return False
+        elif self.type == "pkgconfig32" :
+            pkg = packagedb.get_package_by_pkgconfig32(self.package)
             if pkg:
                 return self.satisfies_relation(pkg.version, pkg.release)
             else:

@@ -63,6 +63,12 @@ def installed_package_satisfies(relation):
             return relation.satisfies_relation(pkg.version, pkg.release)
         else:
             return False
+    elif hasattr(relation, "type") and relation.type == "pkgconfig32":
+        pkg = installdb.get_package_by_pkgconfig32(pkg_name)
+        if pkg:
+            return relation.satisfies_relation(pkg.version, pkg.release)
+        else:
+            return False
     if not installdb.has_package(pkg_name):
         return False
     else:

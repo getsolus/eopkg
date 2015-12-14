@@ -856,9 +856,6 @@ class Builder:
         for dep in build_deps:
             if not dep.satisfied_by_installed():
                 dep_unsatis.append(dep)
-            else:
-                if dep.type == "pkgconfig":
-                    ctx.ui.info("%s pkgconfig dependency provided by %s" % (dep.package, self.installdb.get_package_by_pkgconfig(dep.package).name))
 
         if dep_unsatis:
             ctx.ui.info(_("Unsatisfied Build Dependencies:") + ' '
@@ -878,6 +875,9 @@ class Builder:
                     for dep in dep_unsatis:
                         if dep.type == "pkgconfig":
                             depappend = self.packagedb.get_package_by_pkgconfig(dep.package)
+                            depsResolved.append(depappend.name)
+                        elif dep.type == "pkgconfig32":
+                            depappend = self.packagedb.get_package_by_pkgconfig32(dep.package)
                             depsResolved.append(depappend.name)
                         else:
                             depsResolved.append(dep.package)
@@ -1071,31 +1071,41 @@ class Builder:
         self.filesdb = pisi.db.filesdb.FilesDB()
 
         knownPcFiles = list()
+        knownPcFiles32 = list()
         for fileinfo in self.files.list:
             path = fileinfo.path
             if path.endswith(".pc") and "pkgconfig" in path:
                 if not pkgconfigExec:
                     ctx.ui.warning(_("pkg-config not found but package provides .pc files - skipping export of pkgconfig information"))
                     break
+                emul32pc = "usr/lib32/pkgconfig" in path
                 pcName = path.split("/")[-1].split(".pc")[0]
                 alreadyProvided = False
                 # Check its not been manually specified
-                for pkgconfig in metadata.package.providesPkgConfig:
+                hitlist = metadata.package.providesPkgConfig if not emul32pc else metadata.package.providesPkgConfig32
+                for pkgconfig in hitlist:
                     if pkgconfig.om == pcName:
                         alreadyProvided = True
                         break
                 if not alreadyProvided:
-                    pkgconfig = pisi.specfile.PkgConfigProvide()
+                    pkgconfig = pisi.specfile.PkgConfigProvide() if not emul32pc else pisi.specfile.PkgConfig32Provide()
                     pkgconfig.om = pcName
                     pcPath = util.join_path(self.pkg_install_dir(), path)
-                    code,out,err = pisi.util.run_batch("%s --modversion %s" % (pkgconfigExec, pcPath))
+                    pkgextra = "PKG_CONFIG_PATH=\"/usr/lib32/pkgconfig:/usr/share/pkgconfig\" " if emul32pc else ""
+
+                    code,out,err = pisi.util.run_batch("%s%s --modversion %s" % (pkgextra, pkgconfigExec, pcPath))
                     if code != 0:
                         ctx.ui.warning(_("Unable to obtain pkgconfig module version for %s") % pcName)
                     else:
                         pkgconfig.version = out.strip().rstrip()
-                    metadata.package.providesPkgConfig.append(pkgconfig)
-                    ctx.ui.debug(_("Adding %s to provided pkgconfig list" % pcName))
-                    knownPcFiles.append(pcPath)
+                    if emul32pc:
+                        metadata.package.providesPkgConfig32.append(pkgconfig)
+                        ctx.ui.debug(_("Adding %s to provided pkgconfig32 list" % pcName))
+                        knownPcFiles32.append(pcPath)
+                    else:
+                        metadata.package.providesPkgConfig.append(pkgconfig)
+                        ctx.ui.debug(_("Adding %s to provided pkgconfig list" % pcName))
+                        knownPcFiles.append(pcPath)
             else:
                 if self.actionGlobals.get("IgnoreAutodep"):
                     continue
@@ -1132,75 +1142,91 @@ class Builder:
 
         # Seems insane iterating again for requirements, but we must ensure we grab
         # all pkgconfig files first! (also this is just a small list of known pc files :)
-        for pcFile in knownPcFiles:
-            # We need to also add -devel dependencies to this devel if it needs other packages
-            lines = list()
-            code,out,err = pisi.util.run_batch("%s --print-requires %s" % (pkgconfigExec, pcFile))
-            for line in out.split("\n"):
-                line = line.strip().rstrip()
-                if line == '':
-                    continue
-                lines.append(line)
-            # Cmon, give us your details!
-            code,out,err = pisi.util.run_batch("%s --print-requires-private %s" % (pkgconfigExec, pcFile))
-            for line in out.split("\n"):
-                line = line.strip().rstrip()
-                if line == '':
-                    continue
-                # Make sure round 1 didn't already expose this
-                if line in lines:
-                    continue
-                lines.append(line)
+        for pcfilelist in (knownPcFiles32, knownPcFiles):
+            for pcFile in pcfilelist:
+                # We need to also add -devel dependencies to this devel if it needs other packages
+                lines = list()
 
-            for line in lines:
-                line = line.strip().rstrip()
+                emul32pc = pcfilelist == knownPcFiles32
+                pkgextra = "PKG_CONFIG_PATH=\"/usr/lib32/pkgconfig:/usr/share/pkgconfig\" " if emul32pc else ""
+                code,out,err = pisi.util.run_batch("%s%s --print-requires %s" % (pkgextra, pkgconfigExec, pcFile))
+                for line in out.split("\n"):
+                    line = line.strip().rstrip()
+                    if line == '':
+                        continue
+                    lines.append(line)
+                # Cmon, give us your details!
+                code,out,err = pisi.util.run_batch("%s%s --print-requires-private %s" % (pkgextra, pkgconfigExec, pcFile))
+                for line in out.split("\n"):
+                    line = line.strip().rstrip()
+                    if line == '':
+                        continue
+                    # Make sure round 1 didn't already expose this
+                    if line in lines:
+                        continue
+                    lines.append(line)
 
-                if line ==  '':
-                    continue
-                    # In the future we'll also provide a mechanism to support
-                    # ">=" and "==" dependencies in pkgconfig, for now we'll
-                    # ignore the version
-                if " " in line:
-                    line = line.split()[0]
-                alreadyProvided = False
-                # Check its not been manually specified
-                for pkgconfig in metadata.package.providesPkgConfig:
-                    if pkgconfig.om == line:
-                        alreadyProvided = True
-                        break
-                # Likely our own dependency..
-                if alreadyProvided:
-                    continue
+                for line in lines:
+                    line = line.strip().rstrip()
 
-                cached = False
-                # See if its in our cache first
-                if line in self._pkgconfig_cache:
-                    cached = True
-                    pkg = self._pkgconfig_cache[line]
-                else:
-                    pkg = self.installdb.get_package_by_pkgconfig(line)
-                if not pkg:
-                    ctx.ui.warning("%s depends on unaccounted pkgconfig file! pkgconfig(%s)" % (metadata.package.name, line))
-                    # in the future we'll raise an enormous error..
-                    continue
-                # Cache for later
-                if not cached:
-                    self._pkgconfig_cache[line] = pkg
-                # Check its not already an explicit dependency
-                found = False
-                for depen in metadata.package.packageDependencies:
-                    if depen.package == pkg.name:
-                        found = True
-                        break
-                if not found and pkg not in metadata.package.packageDependencies:
-                    newDep = pisi.dependency.Dependency()
-                    newDep.package = pkg.name
-                    newDep.releaseFrom = pkg.release
-                    metadata.package.packageDependencies.append(newDep)
-                    output = "%s also depends on %s (>= release %s)" % (metadata.package.name, pkg.name, pkg.release)
-                    if cached:
-                        output += " [cached]"
-                    ctx.ui.debug(output)
+                    if line ==  '':
+                        continue
+                        # In the future we'll also provide a mechanism to support
+                        # ">=" and "==" dependencies in pkgconfig, for now we'll
+                        # ignore the version
+                    if " " in line:
+                        line = line.split()[0]
+                    alreadyProvided = False
+                    # Check its not been manually specified
+                    hitlist = metadata.package.providesPkgConfig32 if emul32pc else metadata.package.providesPkgConfig
+                    for pkgconfig in hitlist:
+                        if pkgconfig.om == line:
+                            alreadyProvided = True
+                            break
+                    # Likely our own dependency..
+                    if alreadyProvided:
+                        continue
+
+                    cached = False
+                    # See if its in our cache first
+                    if emul32pc:
+                        if line in self._pkgconfig_cache32:
+                            cached = True
+                            pkg = self._pkgconfig_cache32[line]
+                        else:
+                            pkg = self.installdb.get_package_by_pkgconfig32(line)
+                    else:
+                        if line in self._pkgconfig_cache:
+                            cached = True
+                            pkg = self._pkgconfig_cache[line]
+                        else:
+                            pkg = self.installdb.get_package_by_pkgconfig(line)
+                    if not pkg:
+                        ctx.ui.warning("%s depends on unaccounted pkgconfig file! pkgconfig%s(%s)" % (metadata.package.name, "" if not emul32pc else "32", line))
+                        # in the future we'll raise an enormous error..
+                        continue
+                    # Cache for later
+                    if not cached:
+                        if not emul32pc:
+                            self._pkgconfig_cache[line] = pkg
+                        else:
+                            self._pkgconfig_cache32[line] = pkg
+
+                    # Check its not already an explicit dependency
+                    found = False
+                    for depen in metadata.package.packageDependencies:
+                        if depen.package == pkg.name:
+                            found = True
+                            break
+                    if not found and pkg not in metadata.package.packageDependencies:
+                        newDep = pisi.dependency.Dependency()
+                        newDep.package = pkg.name
+                        newDep.releaseFrom = pkg.release
+                        metadata.package.packageDependencies.append(newDep)
+                        output = "%s also depends on %s (>= release %s)" % (metadata.package.name, pkg.name, pkg.release)
+                        if cached:
+                            output += " [cached]"
+                        ctx.ui.debug(output)
 
         metadata.package.installedSize = long(size)
 
@@ -1351,6 +1377,7 @@ class Builder:
         # Cache pkgconfig and binary deps to ensure repeated lookups are
         # much faster
         self._pkgconfig_cache = dict()
+        self._pkgconfig_cache32 = dict()
         self._bindeps_cache = dict()
 
         for package in self.spec.packages:

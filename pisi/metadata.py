@@ -124,6 +124,7 @@ class MetaData(xmlfile.XmlFile):
         self.package.replaces = pkg.replaces
         self.package.providesComar = pkg.providesComar
         self.package.providesPkgConfig = pkg.providesPkgConfig
+        self.package.providesPkgConfig32 = pkg.providesPkgConfig32
         #self.package.requiresComar = pkg.requiresComar
         self.package.additionalFiles = pkg.additionalFiles
 

@@ -1434,6 +1434,9 @@
             <optional>
                 <attribute name="pkgconfig"/>
             </optional>
+            <optional>
+                <attribute name="pkgconfig32"/>
+            </optional>
         </group>
     </define>
 
@@ -1480,6 +1483,9 @@
             <optional>
                 <ref name="PkgConfig"/>
             </optional>
+            <optional>
+                <ref name="PkgConfig32"/>
+            </optional>
         </element>
     </define>
 
@@ -1503,6 +1509,14 @@
     <!-- PkgConfig -->
     <define name="PkgConfig">
         <element name="PkgConfig">
+            <text/>
+        </element>
+        <optional>
+            <attribute name="version"/>
+        </optional>
+    </define>
+    <define name="PkgConfig32">
+        <element name="PkgConfig32">
             <text/>
         </element>
         <optional>
