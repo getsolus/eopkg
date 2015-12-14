@@ -1091,7 +1091,7 @@ class Builder:
                     pkgconfig = pisi.specfile.PkgConfigProvide() if not emul32pc else pisi.specfile.PkgConfig32Provide()
                     pkgconfig.om = pcName
                     pcPath = util.join_path(self.pkg_install_dir(), path)
-                    pkgextra = "PKG_CONFIG_PATH=\"/usr/lib32/pkgconfig:/usr/share/pkgconfig\" " if emul32pc else ""
+                    pkgextra = "PKG_CONFIG_PATH=\"/usr/lib32/pkgconfig:/usr/share/pkgconfig:/usr/lib/pkgconfig\" " if emul32pc else ""
 
                     code,out,err = pisi.util.run_batch("%s%s --modversion %s" % (pkgextra, pkgconfigExec, pcPath))
                     if code != 0:
@@ -1148,7 +1148,7 @@ class Builder:
                 lines = list()
 
                 emul32pc = pcfilelist == knownPcFiles32
-                pkgextra = "PKG_CONFIG_PATH=\"/usr/lib32/pkgconfig:/usr/share/pkgconfig\" " if emul32pc else ""
+                pkgextra = "PKG_CONFIG_PATH=\"/usr/lib32/pkgconfig:/usr/share/pkgconfig:/usr/lib/pkgconfig\" " if emul32pc else ""
                 code,out,err = pisi.util.run_batch("%s%s --print-requires %s" % (pkgextra, pkgconfigExec, pcFile))
                 for line in out.split("\n"):
                     line = line.strip().rstrip()
@@ -1188,6 +1188,7 @@ class Builder:
                         continue
 
                     cached = False
+                    fromNative = True
                     # See if its in our cache first
                     if emul32pc:
                         if line in self._pkgconfig_cache32:
@@ -1195,7 +1196,10 @@ class Builder:
                             pkg = self._pkgconfig_cache32[line]
                         else:
                             pkg = self.installdb.get_package_by_pkgconfig32(line)
-                    else:
+                            # Fallback to normal pkgconfig
+                            if pkg is not None:
+                                fromNative = False
+                    if fromNative:
                         if line in self._pkgconfig_cache:
                             cached = True
                             pkg = self._pkgconfig_cache[line]
@@ -1207,7 +1211,7 @@ class Builder:
                         continue
                     # Cache for later
                     if not cached:
-                        if not emul32pc:
+                        if fromNative:
                             self._pkgconfig_cache[line] = pkg
                         else:
                             self._pkgconfig_cache32[line] = pkg
