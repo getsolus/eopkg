@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2005-2011, TUBITAK/UEKAE
+# Copyright (C) 2013-2016, Ikey Doherty <ikey@solus-project.com>
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
@@ -249,6 +250,12 @@ class Builder:
         self.installdb = pisi.db.installdb.InstallDB()
         self.packagedb = pisi.db.packagedb.PackageDB()
         self.filesdb = pisi.db.filesdb.FilesDB()
+
+        self.v_dyn = re.compile(r"ELF (64|32)\-bit LSB shared object,")
+        self.v_bin = re.compile(r"ELF (64|32)\-bit LSB executable,")
+        self.shared_lib = re.compile(r".*Shared library: \[(.*)\].*")
+        self.r_path = re.compile(r".*Library rpath: \[(.*)\].*")
+        self.r_soname = re.compile(r".*Library soname: \[(.*)\].*")
 
         # process args
         if not isinstance(specuri, pisi.uri.URI):
@@ -981,63 +988,37 @@ class Builder:
             term = term[1:]
         return self.filesdb.search_file(term)
 
-    def get_binary_deps(self, path):
-        bin_deps = list()
-        if not os.path.exists(path):
+    def get_binary_deps(self, fullpath, magic_token):
+        ''' Obtain and resolve binary dependencies for a given path '''
+        bin_deps = set()
+        if not os.path.exists(fullpath):
             return bin_deps
 
-        cmd = "ldd %s" % path
-        code,out,err = util.run_batch(cmd)
-        installdir = self.pkg_install_dir()
-        workdir = self.pkg_work_dir()
+        emul32 = magic_token.startswith("ELF 32")
+        so_deps = self.accumulate_dependencies(fullpath, emul32)
 
-        if code == 0:
-            # Literally just resolve every link we find and see if it
-            # belongs to an installed package. If so, append to the
-            # returned binary deps (and some lib64 hackery is needed right
-            # now just for Solus Operating System..)
-            for line in out.split("\n"):
-                line = line.strip().rstrip()
-                if "=>" in line:
-                    if "not found" in line:
-                        continue
-                    dep = line.split("=>")[1]
-                    dep = dep.strip().rstrip().split()[0]
+        for dep in so_deps:
+            result = None
 
-                    # Skip dodgy deps from internally linking packages
-                    if dep.startswith(workdir):
-                        continue
-                    # Ensure its not our own!
-                    tpath = util.join_path(installdir, dep)
-                    if "/lib64/" in tpath:
-                        tpath2 = tpath.replace("/lib64/", "/lib/")
-                    else:
-                        tpath2 = tpath.replace("/lib/", "/lib64/")
-                    if os.path.exists(tpath) or os.path.exists(tpath2):
-                        continue
-                    if "lib64" in dep:
-                        dep2 = dep.replace("/lib64/", "/lib/")
-                    else:
-                        dep2 = dep.replace("/lib/", "/lib64/")
+            dep2 = dep.replace("/lib64/", "/lib/")
 
-                    # try checking our cache first
-                    if dep in self._bindeps_cache:
-                        result = self._bindeps_cache[dep]
-                    elif dep2 in self._bindeps_cache:
-                        result = self._bindeps_cache[dep2]
-                    else:
-                        # First time looking at this dep
-                        result = self._search_file(dep)
-                        if not result:
-                            result = self._search_file(dep2)
-                            if result:
-                                self._bindeps_cache[dep2] = result
-                        else:
-                            self._bindeps_cache[dep] = result
-                    if not result:
-                        continue
-                    pkg = result[0][0]
-                    bin_deps.append(pkg)
+            if dep in self._bindeps_cache:
+                result = self._bindeps_cache[dep]
+            elif dep2 in self._bindeps_cache:
+                result = self._bindeps_cache[dep2]
+            else:
+                # First time looking at this dep
+                result = self._search_file(dep)
+                if not result:
+                    result = self._search_file(dep2)
+                    if result:
+                        self._bindeps_cache[dep2] = result
+                else:
+                    self._bindeps_cache[dep] = result
+            if not result:
+                continue
+            pkg = result[0][0]
+            bin_deps.add(pkg)
 
         return bin_deps
 
@@ -1122,23 +1103,23 @@ class Builder:
                     filemagic = magic.from_file(fullpath)
                 except:
                     pass
-                if filemagic:
-                    if "SB executable" in filemagic or "SB shared object" in filemagic:
-                        ctx.ui.debug("Checking %s for binary dependencies" % fullpath)
-                        bindeps = self.get_binary_deps(fullpath)
-                        for dep in bindeps:
-                            found = False
-                            for depen in metadata.package.packageDependencies:
-                                if depen.package == dep:
-                                    found = True
-                                    break
-                            if not found and dep not in metadata.package.packageDependencies:
-                                newDep = pisi.dependency.Dependency()
-                                newDep.package = dep
-                                pkg = self.installdb.get_package(dep)
-                                newDep.releaseFrom = pkg.release
-                                metadata.package.packageDependencies.append(newDep)
-                                ctx.ui.debug("%s depends on %s (>= release %s)" % (metadata.package.name, dep, pkg.release))
+
+                if filemagic is not None and self.is_dynamic_binary(fullpath, filemagic):
+                    ctx.ui.debug("Checking %s for binary dependencies" % fullpath)
+                    bindeps = self.get_binary_deps(fullpath, filemagic)
+                    for dep in bindeps:
+                        found = False
+                        for depen in metadata.package.packageDependencies:
+                            if depen.package == dep:
+                                found = True
+                                break
+                        if not found and dep not in metadata.package.packageDependencies:
+                            newDep = pisi.dependency.Dependency()
+                            newDep.package = dep
+                            pkg = self.installdb.get_package(dep)
+                            newDep.releaseFrom = pkg.release
+                            metadata.package.packageDependencies.append(newDep)
+                            ctx.ui.debug("%s depends on %s (>= release %s)" % (metadata.package.name, dep, pkg.release))
 
         # Seems insane iterating again for requirements, but we must ensure we grab
         # all pkgconfig files first! (also this is just a small list of known pc files :)
@@ -1309,6 +1290,101 @@ class Builder:
                 except Exception:
                     pass
 
+    # Currently don't differentiate between internal and public
+    soname_providers = None
+
+    def get_soname(self, path):
+        ''' Get the soname for a given path '''
+        code,out,err = pisi.util.run_batch("/usr/bin/readelf -d {}".format(path))
+
+        if out != 0:
+            return None
+
+        for line in output.split("\n"):
+            line = line.strip()
+            g = self.r_soname.match(line)
+            if g:
+                return g.group(1)
+        return None
+
+    def is_dynamic_library(self, path):
+        ''' Similar to is_dynamic_binary, but only for libraries '''
+        if not os.path.exists(path) or not os.path.isfile(path):
+            return False
+        try:
+            mg = magic.from_file(path)
+        except Exception, e:
+            return False
+        if self.v_dyn.match(mg):
+            return True
+        return False
+
+    def is_dynamic_binary(self, path, mg):
+        ''' Determine if the given path is a dynamic binary file '''
+        if not os.path.exists(path) or not os.path.isfile(path):
+            return False
+        if self.v_dyn.match(mg):
+            return True
+        if self.v_bin.match(mg):
+            return True
+        return False
+
+    def accumulate_providers(self, directory):
+        ''' Accumulate all providers from the package root '''
+        self.soname_providers = set()
+
+        for root,dirs,files in os.walk(directory):
+            for f in files:
+                p = os.path.join(root, f)
+                if not self.is_dynamic_library(p):
+                    continue
+                s = self.get_soname(p)
+                if s is not None:
+                    self.soname_providers.add(s)
+
+    def accumulate_dependencies(self, path, emul32=False):
+        ''' Accumulate all shared dependencies of a given path '''
+        code,out,err = pisi.util.run_batch("/usr/bin/readelf -d {}".format(path))
+
+        if code != 0:
+            return []
+
+        check_deps = set()
+        r_paths = set()
+        valid_libs = set()
+
+        if emul32:
+            valid_libs.update(["/usr/lib32", "/lib32"])
+        else:
+            # Currently on Solus this is the same thing as /usr/lib.
+            valid_libs.update(["/usr/lib64", "/lib64"])
+
+        for line in out.split("\n"):
+            line = line.strip()
+            g = self.shared_lib.match(line)
+            if g:
+                lib = g.group(1)
+                # Skip internally provided symbols
+                if lib in self.soname_providers:
+                    continue
+                check_deps.add(lib)
+                continue
+            r = self.r_path.match(line)
+            if r:
+                r_paths.add(r.group(1))
+
+        dirname = os.path.dirname(path)
+
+        # Filter rpath and same-dir files
+        filter_deps = [x for x in check_deps for y in r_paths if os.path.exists(os.path.join(y, x)) or os.path.exists(os.path.join(dirname, x))]
+
+        # Set from filter
+        ret_deps = filter(lambda s: s not in filter_deps, check_deps)
+
+        # Join into fullpaths ready for probing
+        full_paths = [os.path.join(y,x) for x in ret_deps for y in valid_libs if os.path.exists(os.path.join(y,x))]
+        return full_paths
+
     def build_packages(self):
         """Build each package defined in PSPEC file. After this process there
         will be .pisi files hanging around, AS INTENDED ;)"""
@@ -1383,6 +1459,9 @@ class Builder:
         self._pkgconfig_cache = dict()
         self._pkgconfig_cache32 = dict()
         self._bindeps_cache = dict()
+
+        # Grab all the providers now
+        self.accumulate_providers(self.pkg_install_dir())
 
         for package in self.spec.packages:
             # removing "farce" in specfile.py:SpecFile.override_tags
