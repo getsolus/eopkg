@@ -159,7 +159,7 @@ def get_debug_path(filepath, fileinfo, install_dir):
     and "SB shared object" not in fileinfo:
         return (None,None)
 
-    code,out,err = pisi.util.run_batch("readelf -n \"%s\"" % filepath)
+    code,out,err = pisi.util.run_batch("LC_ALL=C readelf -n \"%s\"" % filepath)
     if code != 0 or not out:
         return (None,None)
     for line in out.split("\n"):
@@ -256,6 +256,8 @@ class Builder:
         self.shared_lib = re.compile(r".*Shared library: \[(.*)\].*")
         self.r_path = re.compile(r".*Library rpath: \[(.*)\].*")
         self.r_soname = re.compile(r".*Library soname: \[(.*)\].*")
+        # Currently don't differentiate between internal and public
+        self.soname_providers = None
 
         # process args
         if not isinstance(specuri, pisi.uri.URI):
@@ -1290,17 +1292,14 @@ class Builder:
                 except Exception:
                     pass
 
-    # Currently don't differentiate between internal and public
-    soname_providers = None
-
     def get_soname(self, path):
         ''' Get the soname for a given path '''
-        code,out,err = pisi.util.run_batch("/usr/bin/readelf -d {}".format(path))
+        code,out,err = pisi.util.run_batch("LC_ALL=C /usr/bin/readelf -d {}".format(path))
 
-        if out != 0:
+        if code != 0:
             return None
 
-        for line in output.split("\n"):
+        for line in out.split("\n"):
             line = line.strip()
             g = self.r_soname.match(line)
             if g:
@@ -1344,7 +1343,7 @@ class Builder:
 
     def accumulate_dependencies(self, path, emul32=False):
         ''' Accumulate all shared dependencies of a given path '''
-        code,out,err = pisi.util.run_batch("/usr/bin/readelf -d {}".format(path))
+        code,out,err = pisi.util.run_batch("LC_ALL=C /usr/bin/readelf -d {}".format(path))
 
         if code != 0:
             return []
