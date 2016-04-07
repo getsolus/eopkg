@@ -28,6 +28,8 @@ import pisi.files
 import pisi.util as util
 import fetcher
 
+# 1980, Jan 1, for zip
+TSTAMP_META = 315532800
 
 class Error(pisi.Error):
     pass
@@ -151,6 +153,7 @@ class Package:
             self.install_archive.close()
             arcpath = self.install_archive_path
             arcname = os.path.basename(arcpath)
+            os.utime(arcpath, (TSTAMP_META, TSTAMP_META))
             self.add_to_package(arcpath, arcname)
 
         self.impl.close()
