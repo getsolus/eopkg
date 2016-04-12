@@ -16,6 +16,14 @@ during the build process of a package and used in installation.'''
 
 import pisi.pxml.autoxml as autoxml
 
+class ExtendedAttribute:
+    """XAttr holds a key/value mapping of extended attributes """
+
+    __metaclass__ = autoxml.autoxml
+
+    a_label = [ autoxml.String, autoxml.mandatory ]
+    s_value = [ autoxml.String, autoxml.mandatory ]
+
 class FileInfo:
     """File holds the information for a File node/tag in files.xml"""
 
@@ -29,6 +37,7 @@ class FileInfo:
     t_Mode = [ autoxml.String, autoxml.optional ]
     t_Hash = [ autoxml.String, autoxml.optional, "SHA1Sum" ]
     t_Permanent = [ autoxml.String, autoxml.optional ]
+    t_ExtendedAttributes = [[ExtendedAttribute], autoxml.optional ]
 
     def __str__(self):
         s = "/%s, type: %s, size: %s, sha1sum: %s" %  (self.path, self.type,
