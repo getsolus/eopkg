@@ -19,6 +19,7 @@ import pisi.ui
 import pisi.version
 import pisi.operations.delta
 import pisi.db
+import base64
 
 
 class Error(pisi.Error):
@@ -483,12 +484,27 @@ class Install(AtomicOperation):
             update_permissions()
 
         self.package.extract_install(ctx.config.dest_dir())
+        self.restore_xattrs()
 
         if config_changed:
             rename_configs()
 
         if self.reinstall():
             clean_leftovers()
+
+    def restore_xattrs(self):
+        try:
+            import xattr
+
+            for file in self.files.list:
+                if not file.extendedAttributes:
+                    continue
+                for attrPair in file.extendedAttributes:
+                    realVal = base64.b64decode(bytes(attrPair.value, "utf-8"))
+                    xattr.setxattr("/" + file.path, attrPair.label, realVal)
+        except Exception as e:
+            ctx.ui.warning("Failed to restore xattr: {}".format(e))
+            # ctx.ui.warning("Please run: eopkg fix-attributes")
 
     def store_pisi_files(self):
         """put files.xml, metadata.xml, actions.py and COMAR scripts
