@@ -116,8 +116,8 @@ msgid "System error. Program terminated."
 msgstr "Erreur du système. Programme terminé."
 
 #: pisi-cli:66
-msgid "Please use 'pisi help' for general help."
-msgstr "Veuillez utiliser 'pisi help' pour une aide généraliste."
+msgid "Please use 'eopkg help' for general help."
+msgstr "Veuillez utiliser 'eopkg help' pour une aide généraliste."
 
 #: pisi-cli:69
 msgid ""

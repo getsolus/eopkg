@@ -120,8 +120,8 @@ msgid "System error. Program terminated."
 msgstr "Sistem hatası. Program sonlandırıldı."
 
 #: pisi-cli:66
-msgid "Please use 'pisi help' for general help."
-msgstr "Genel yardım için lütfen 'pisi help' komutunu kullanınız."
+msgid "Please use 'eopkg help' for general help."
+msgstr "Genel yardım için lütfen 'eopkg help' komutunu kullanınız."
 
 #: pisi-cli:69
 msgid ""

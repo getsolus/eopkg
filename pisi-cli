@@ -63,7 +63,7 @@ def handle_exception(exception, value, tb):
         if msg:
             ui.error(msg)
 
-    ui.info(_("Please use 'pisi help' for general help."))
+    ui.info(_("Please use 'eopkg help' for general help."))
 
     if show_traceback:
         ui.info(_("\nTraceback:"))
