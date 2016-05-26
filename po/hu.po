@@ -119,8 +119,8 @@ msgid "System error. Program terminated."
 msgstr "Rendszerhiba. A program futása megszakadt."
 
 #: pisi-cli:66
-msgid "Please use 'pisi help' for general help."
-msgstr "Kérjük, használja a \"pisi help\" alkalmazást az általános súgóhoz."
+msgid "Please use 'eopkg help' for general help."
+msgstr "Kérjük, használja a \"eopkg help\" alkalmazást az általános súgóhoz."
 
 #: pisi-cli:69
 msgid ""

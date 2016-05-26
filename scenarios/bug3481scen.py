@@ -13,7 +13,7 @@
 #            Kaldıracak paket yok.
 #            Program sonlandırıldı.
 #            pisi.operations.Error: Çakışmalar var
-#            Genel yardım için lütfen 'pisi help' komutunu kullanınız.
+#            Genel yardım için lütfen 'eopkg help' komutunu kullanınız.
 #
 # Problem Description: 
 # 

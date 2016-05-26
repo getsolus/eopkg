@@ -115,8 +115,8 @@ msgid "System error. Program terminated."
 msgstr "Systemfel. Programmet avbröts."
 
 #: pisi-cli:66
-msgid "Please use 'pisi help' for general help."
-msgstr "Vänligen använd 'pisi help' för allmän hjälp."
+msgid "Please use 'eopkg help' for general help."
+msgstr "Vänligen använd 'eopkg help' för allmän hjälp."
 
 #: pisi-cli:69
 msgid ""

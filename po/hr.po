@@ -115,7 +115,7 @@ msgid "System error. Program terminated."
 msgstr "Greška sustava. Program je prekinut."
 
 #: pisi-cli:66
-msgid "Please use 'pisi help' for general help."
+msgid "Please use 'eopkg help' for general help."
 msgstr "Molim koristite  'pisi pomoć' za osnovnu pomoć."
 
 #: pisi-cli:69
