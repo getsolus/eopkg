@@ -62,7 +62,7 @@ class BuildPo(build):
                 if filename.endswith(".py"):
                     filelist.append(os.path.join(root, filename))
 
-        filelist.extend(["pisi-cli", "pisi.xml.in.h", optparse_path])
+        filelist.extend(["eopkg-cli", "pisi.xml.in.h", optparse_path])
         filelist.sort()
         with open(files, "w") as _files:
             _files.write("\n".join(filelist))
@@ -164,7 +164,7 @@ setup(name="pisi",
     url="http://www.pardus.org.tr/eng/pisi/",
     package_dir = {'': ''},
     packages = ['pisi', 'pisi.cli', 'pisi.operations', 'pisi.actionsapi', 'pisi.pxml', 'pisi.scenarioapi', 'pisi.db'],
-    scripts = ['pisi-cli', 'scripts/lspisi', 'scripts/unpisi', 'scripts/check-newconfigs.py', 'scripts/revdep-rebuild'],
+    scripts = ['eopkg-cli', 'scripts/lseopkg', 'scripts/uneopkg', 'scripts/check-newconfigs.py', 'scripts/revdep-rebuild'],
     cmdclass = {'build' : Build,
                 'build_po' : BuildPo,
                 'install' : Install}

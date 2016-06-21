@@ -39,7 +39,7 @@ def usage(errmsg):
 
 def main():
     if len(sys.argv) < 2 or ("dirs" in sys.argv and len(sys.argv) < 3):
-        usage("PiSi package required...")
+        usage("eopkg package required...")
 
     if sys.argv[1] == "dirs":
         dirlist = []

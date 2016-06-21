@@ -29,7 +29,7 @@ def usage(errmsg):
 def main():
 
     if len(sys.argv) < 2:
-        usage("PiSi package required..")
+        usage("eopkg package required..")
 
     elif not os.path.exists(sys.argv[1]):
         usage("File %s not found" % sys.argv[1])
