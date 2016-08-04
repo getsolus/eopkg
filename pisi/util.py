@@ -394,10 +394,6 @@ def calculate_hash(path):
         ctx.ui.info(_("Including directory '%s'") % path)
         value = None
     else:
-        if path.endswith('.a'):
-            # .a file content changes with each compile due to timestamps
-            # We pad them with zeroes, thus hash will be stable
-            clean_ar_timestamps(path)
         value = sha1_file(path)
 
     return (path, value)
