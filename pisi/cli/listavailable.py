@@ -27,7 +27,7 @@ class ListAvailable(command.Command):
 
 Usage: list-available [ <repo1> <repo2> ... repon ]
 
-Gives a brief list of PiSi packages published in the specified
+Gives a brief list of eopkg packages published in the specified
 repositories. If no repository is specified, we list packages in
 all repositories.
 """)

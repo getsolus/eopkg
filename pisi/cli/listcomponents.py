@@ -25,7 +25,7 @@ class ListComponents(command.Command):
 
 Usage: list-components
 
-Gives a brief list of PiSi components published in the
+Gives a brief list of eopkg components published in the
 repositories.
 """)
     __metaclass__ = command.autocommand

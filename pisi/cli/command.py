@@ -96,7 +96,7 @@ class Command(object):
         group = optparse.OptionGroup(self.parser, _("general options"))
 
         group.add_option("-D", "--destdir", action="store", default = None,
-                     help = _("Change the system root for PiSi commands"))
+                     help = _("Change the system root for eopkg commands"))
         group.add_option("-y", "--yes-all", action="store_true",
                      default=False, help = _("Assume yes in all yes/no queries"))
         group.add_option("-u", "--username", action="store")
@@ -109,7 +109,7 @@ class Command(object):
         group.add_option("-d", "--debug", action="store_true",
                      default=False, help=_("Show debugging information"))
         group.add_option("-N", "--no-color", action="store_true", default=False,
-                     help = _("Suppresses all coloring of PiSi's output"))
+                     help = _("Suppresses all coloring of eopkg's output"))
 
         p.add_option_group(group)
 
@@ -155,7 +155,7 @@ class Command(object):
             self.options.authinfo = None
 
     def init(self, database = True, write = True):
-        """initialize PiSi components"""
+        """initialize eopkg components"""
 
         if self.options:
             ui = pisi.cli.CLI(self.options.debug, self.options.verbose)

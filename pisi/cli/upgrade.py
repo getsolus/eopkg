@@ -22,7 +22,7 @@ import pisi.api
 import pisi.db
 
 class Upgrade(command.PackageOp):
-    __doc__ = _("""Upgrade PiSi packages
+    __doc__ = _("""Upgrade eopkg packages
 
 Usage: Upgrade [<package1> <package2> ... <packagen>]
 
@@ -34,7 +34,7 @@ You may use only package names to specify packages because
 the package upgrade operation is defined only with respect
 to repositories. If you have specified a package name, it
 should exist in the package repositories. If you just want to
-reinstall a package from a PiSi file, use the install command.
+reinstall a package from a eopkg file, use the install command.
 
 You can also specify components instead of package names, which will be
 expanded to package names.

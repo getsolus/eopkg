@@ -22,11 +22,11 @@ import pisi.cli.command as command
 import pisi.context as ctx
 
 
-usage = _("""Build PiSi packages
+usage = _("""Build eopkg packages
 
 Usage: build [<pspec.xml> | <sourcename>] ...
 
-You can give a URI of the pspec.xml file. PiSi will
+You can give a URI of the pspec.xml file. eopkg will
 fetch all necessary files and build the package for you.
 
 Alternatively, you can give the name of a source package
@@ -152,7 +152,7 @@ class Build(command.Command):
                          dest="until",
                          action="store_const",
                          const="package",
-                         help=_("Create PiSi package"))
+                         help=_("Create eopkg package"))
 
         self.parser.add_option_group(group)
 

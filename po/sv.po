@@ -132,8 +132,8 @@ msgstr "Använd --debug för att se en bakåtspårning."
 
 #: pisi.xml.in.h:1
 #, fuzzy
-msgid "PiSi package"
-msgstr "Skapar PiSi-paketet"
+msgid "eopkg package"
+msgstr "Skapar eopkg-paketet"
 
 #: pisi/actionsapi/autotools.py:36 pisi/actionsapi/cmaketools.py:36
 #, python-format
@@ -556,7 +556,7 @@ msgid "You have to be root for this operation."
 msgstr "Du måste vara root för den här åtgärden."
 
 #: pisi/api.py:65
-msgid "Another instance of PiSi is running. Only one instance is allowed."
+msgid "Another instance of eopkg is running. Only one instance is allowed."
 msgstr ""
 
 #: pisi/api.py:420
@@ -604,8 +604,8 @@ msgstr "Filen %s hittades inte"
 
 #: pisi/api.py:786
 #, fuzzy, python-format
-msgid "Building index of PiSi files under %s"
-msgstr "* Indexerar PiSi-filer under %s"
+msgid "Building index of eopkg files under %s"
+msgstr "* Indexerar eopkg-filer under %s"
 
 #: pisi/api.py:791
 #, fuzzy
@@ -705,7 +705,7 @@ msgstr "Installerar %s, version %s, utgåva %s"
 
 #: pisi/atomicoperations.py:192 pisi/operations/build.py:765
 #, python-format
-msgid "%s-%s is not a valid PiSi version format"
+msgid "%s-%s is not a valid eopkg version format"
 msgstr ""
 
 #: pisi/atomicoperations.py:198
@@ -914,11 +914,11 @@ msgstr ""
 
 #: pisi/cli/build.py:25
 msgid ""
-"Build PiSi packages\n"
+"Build eopkg packages\n"
 "\n"
 "Usage: build [<pspec.xml> | <sourcename>] ...\n"
 "\n"
-"You can give a URI of the pspec.xml file. PiSi will\n"
+"You can give a URI of the pspec.xml file. eopkg will\n"
 "fetch all necessary files and build the package for you.\n"
 "\n"
 "Alternatively, you can give the name of a source package\n"
@@ -998,8 +998,8 @@ msgid "Break build after running install step"
 msgstr ""
 
 #: pisi/cli/build.py:155
-msgid "Create PiSi package"
-msgstr "Skapar PiSi-paketet"
+msgid "Create eopkg package"
+msgstr "Skapar eopkg-paketet"
 
 #: pisi/cli/build.py:165 pisi/cli/delta.py:72
 msgid "Supported package formats:"
@@ -1096,7 +1096,7 @@ msgid ""
 "\n"
 "Usage: clean\n"
 "\n"
-"PiSi uses filesystem locks for managing database access.\n"
+"eopkg uses filesystem locks for managing database access.\n"
 "This command deletes unused locks from the database directory."
 msgstr ""
 
@@ -1119,7 +1119,7 @@ msgid "general options"
 msgstr ""
 
 #: pisi/cli/command.py:99
-msgid "Change the system root for PiSi commands"
+msgid "Change the system root for eopkg commands"
 msgstr ""
 
 #: pisi/cli/command.py:101
@@ -1139,7 +1139,7 @@ msgid "Show debugging information"
 msgstr "Visa debug-information"
 
 #: pisi/cli/command.py:112
-msgid "Suppresses all coloring of PiSi's output"
+msgid "Suppresses all coloring of eopkg's output"
 msgstr ""
 
 #: pisi/cli/command.py:130
@@ -1230,7 +1230,7 @@ msgstr ""
 
 #: pisi/cli/emerge.py:25
 msgid ""
-"Build and install PiSi source packages from repository\n"
+"Build and install eopkg source packages from repository\n"
 "\n"
 "Usage: emerge <sourcename> ...\n"
 "\n"
@@ -1440,11 +1440,11 @@ msgstr ""
 
 #: pisi/cli/index.py:23
 msgid ""
-"Index PiSi files in a given directory\n"
+"Index eopkg files in a given directory\n"
 "\n"
 "Usage: index <directory> ...\n"
 "\n"
-"This command searches for all PiSi files in a directory, collects PiSi\n"
+"This command searches for all eopkg files in a directory, collects eopkg\n"
 "tags from them and accumulates the information in an output XML file,\n"
 "named by default 'eopkg-index.xml'. In particular, it indexes both\n"
 "source and binary packages.\n"
@@ -1470,7 +1470,7 @@ msgid "Comma-separated compression types for index file"
 msgstr ""
 
 #: pisi/cli/index.py:69
-msgid "Do not index PiSi spec files."
+msgid "Do not index eopkg spec files."
 msgstr ""
 
 #: pisi/cli/index.py:74
@@ -1561,7 +1561,7 @@ msgstr "%s finns inte i källkodsförråden."
 
 #: pisi/cli/install.py:25
 msgid ""
-"Install PiSi packages\n"
+"Install eopkg packages\n"
 "\n"
 "Usage: install <package1> <package2> ... <packagen>\n"
 "\n"
@@ -1615,7 +1615,7 @@ msgid ""
 "\n"
 "Usage: list-available [ <repo1> <repo2> ... repon ]\n"
 "\n"
-"Gives a brief list of PiSi packages published in the specified\n"
+"Gives a brief list of eopkg packages published in the specified\n"
 "repositories. If no repository is specified, we list packages in\n"
 "all repositories.\n"
 msgstr ""
@@ -1653,7 +1653,7 @@ msgid ""
 "\n"
 "Usage: list-components\n"
 "\n"
-"Gives a brief list of PiSi components published in the\n"
+"Gives a brief list of eopkg components published in the\n"
 "repositories.\n"
 msgstr ""
 
@@ -1698,7 +1698,7 @@ msgid ""
 "\n"
 "Usage: list-newest [ <repo1> <repo2> ... repon ]\n"
 "\n"
-"Gives a list of PiSi newly published packages in the specified\n"
+"Gives a list of eopkg newly published packages in the specified\n"
 "repositories. If no repository is specified, we list the new\n"
 "packages from all repositories.\n"
 msgstr ""
@@ -1810,7 +1810,7 @@ msgid ""
 "\n"
 "Usage: rebuilddb [ <package1> <package2> ... <packagen> ]\n"
 "\n"
-"Rebuilds the PiSi databases\n"
+"Rebuilds the eopkg databases\n"
 "\n"
 "If package specs are given, they should be the names of package\n"
 "dirs under /var/lib/eopkg\n"
@@ -1825,12 +1825,12 @@ msgid "Rebuild files database"
 msgstr ""
 
 #: pisi/cli/rebuilddb.py:51
-msgid "Rebuild PiSi databases?"
+msgid "Rebuild eopkg databases?"
 msgstr ""
 
 #: pisi/cli/remove.py:25
 msgid ""
-"Remove PiSi packages\n"
+"Remove eopkg packages\n"
 "\n"
 "Usage: remove <package1> <package2> ... <packagen>\n"
 "\n"
@@ -1942,7 +1942,7 @@ msgid ""
 "\n"
 "<repoi>: repository name\n"
 "\n"
-"Synchronizes the PiSi databases with the current repository.\n"
+"Synchronizes the eopkg databases with the current repository.\n"
 "If no repository is given, all repositories are updated.\n"
 msgstr ""
 
@@ -1956,7 +1956,7 @@ msgstr ""
 
 #: pisi/cli/upgrade.py:25
 msgid ""
-"Upgrade PiSi packages\n"
+"Upgrade eopkg packages\n"
 "\n"
 "Usage: Upgrade [<package1> <package2> ... <packagen>]\n"
 "\n"
@@ -1968,7 +1968,7 @@ msgid ""
 "the package upgrade operation is defined only with respect\n"
 "to repositories. If you have specified a package name, it\n"
 "should exist in the package repositories. If you just want to\n"
-"reinstall a package from a PiSi file, use the install command.\n"
+"reinstall a package from a eopkg file, use the install command.\n"
 "\n"
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
@@ -3247,8 +3247,8 @@ msgstr "Ogiltig versionssträng: '%s'"
 #~ msgid "Repository architecture does not match. Removing %s from system."
 #~ msgstr "Förrådet % finns inte och kan därmed inte tas bort."
 
-#~ msgid "Update PiSi database for repository %s?"
-#~ msgstr "Uppdatera PiSi-databasen för %s-förrådet?"
+#~ msgid "Update eopkg database for repository %s?"
+#~ msgstr "Uppdatera eopkg-databasen för %s-förrådet?"
 
 #~ msgid "Repository distribution does not match. Removing %s from system."
 #~ msgstr "Förrådsdistributionen stämmer inte. Tar bort %s från systemet."
@@ -3256,8 +3256,8 @@ msgstr "Ogiltig versionssträng: '%s'"
 #~ msgid "Name: %s, version: %s, release: %s, build %s\n"
 #~ msgstr "Namn: %s, version: %s, utgåva: %s, bygge %s\n"
 
-#~ msgid "Creating delta PiSi package between %s %s"
-#~ msgstr "Skapar delta-PiSi-paket mellan %s och %s"
+#~ msgid "Creating delta eopkg package between %s %s"
+#~ msgstr "Skapar delta-eopkg-paket mellan %s och %s"
 
 #~ msgid "Cannot create delta for same package!"
 #~ msgstr "Kan inte skapa delta av samma paket!"

@@ -131,7 +131,7 @@ class Fetcher:
                            ftp_headers  = self._get_ftp_headers(),
                            proxies      = self._get_proxies(),
                            timeout      = timeout,
-                           user_agent   = 'PiSi Fetcher/' + pisi.__version__)
+                           user_agent   = 'eopkg Fetcher/' + pisi.__version__)
         except urlgrabber.grabber.URLGrabError:
             return False
 
@@ -165,7 +165,7 @@ class Fetcher:
                            throttle     = self._get_bandwith_limit(),
                            reget        = self._test_range_support(),
                            copy_local   = 1,
-                           user_agent   = 'PiSi Fetcher/' + pisi.__version__)
+                           user_agent   = 'eopkg Fetcher/' + pisi.__version__)
         except urlgrabber.grabber.URLGrabError, e:
             raise FetchError(_('Could not fetch destination file "%s": %s') % (self.url.get_uri(), e))
 

@@ -21,7 +21,7 @@ def usage(errmsg):
     Error: %s
 
     Usage:
-      unpisi PiSi_package.pisi [target_dir]
+      unpisi eopkg_package.pisi [target_dir]
     """ % (errmsg)
 
     sys.exit(1)

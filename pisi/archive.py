@@ -24,7 +24,7 @@ import gettext
 __trans = gettext.translation('pisi', fallback=True)
 _ = __trans.ugettext
 
-# PiSi modules
+# eopkg modules
 import pisi
 import pisi.util as util
 import pisi.context as ctx
@@ -556,7 +556,7 @@ class Archive7Zip(ArchiveBase):
 class ArchiveZip(ArchiveBase):
     """ArchiveZip handles zip archives.
 
-    Being a zip archive PiSi packages also use this class
+    Being a zip archive eopkg packages also use this class
     extensively. This class provides unpacking and packing magic for
     zip archives."""
 

@@ -55,7 +55,7 @@ def get_link():
     """Connect to the COMAR daemon and return the link."""
 
     sockname = "/var/run/dbus/system_bus_socket"
-    # YALI starts comar chrooted in the install target, but uses PiSi
+    # YALI starts comar chrooted in the install target, but uses eopkg
     # outside of the chroot environment, so Pisi needs to use a different
     # socket path to be able to connect true dbus (and comar).
     # (usually /var/run/dbus/system_bus_socket)

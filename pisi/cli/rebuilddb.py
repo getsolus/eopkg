@@ -25,7 +25,7 @@ class RebuildDb(command.Command):
 
 Usage: rebuilddb [ <package1> <package2> ... <packagen> ]
 
-Rebuilds the PiSi databases
+Rebuilds the eopkg databases
 
 If package specs are given, they should be the names of package
 dirs under /var/lib/eopkg
@@ -48,5 +48,5 @@ dirs under /var/lib/eopkg
 
     def run(self):
         self.init(database=True)
-        if ctx.ui.confirm(_('Rebuild PiSi databases?')):
+        if ctx.ui.confirm(_('Rebuild eopkg databases?')):
             pisi.api.rebuild_db(ctx.get_option('files'))

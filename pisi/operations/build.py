@@ -132,7 +132,7 @@ def exclude_special_files(filepath, fileinfo, ag):
         # which causes wrong path entries in *.la files. And these wrong path
         # entries sometimes triggers compile-time errors or linkage problems.
         # Instead of patching all these buggy sources and maintain these
-        # patches, PiSi removes wrong paths...
+        # patches, eopkg removes wrong paths...
         if re.match(patterns["libtool"], fileinfo) and \
                 not os.path.islink(filepath):
             ladata = file(filepath).read()
@@ -507,7 +507,7 @@ class Builder:
         try:
             self.download(translationsuri, self.destdir)
         except pisi.fetcher.FetchError:
-            # translations.xml is not mandatory for PiSi
+            # translations.xml is not mandatory for eopkg
             pass
 
     def fetch_patches(self):
@@ -834,7 +834,7 @@ class Builder:
             int(release)
             pisi.version.make_version(version)
         except (ValueError, pisi.version.InvalidVersionError):
-            raise Error(_("%s-%s is not a valid PiSi version format")
+            raise Error(_("%s-%s is not a valid eopkg version format")
                         % (version, release))
 
     def check_build_dependencies(self):

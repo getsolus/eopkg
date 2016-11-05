@@ -10,7 +10,7 @@
 # Please read the COPYING file.
 #
 
-"""PiSi source/package index"""
+"""eopkg source/package index"""
 
 import os
 import shutil

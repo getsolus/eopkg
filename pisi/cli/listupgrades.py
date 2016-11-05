@@ -54,7 +54,7 @@ Lists the packages that will be upgraded.
 
         component = ctx.get_option('component')
         if component:
-            #FIXME: PiSi api is insufficient to do this
+            #FIXME: eopkg api is insufficient to do this
             component_pkgs = self.componentdb.get_union_packages(component, walk=True)
             upgradable_pkgs = list(set(upgradable_pkgs) & set(component_pkgs))
 

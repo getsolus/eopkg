@@ -1,5 +1,5 @@
 #! /usr/bin/python
-# a script to preare PiSi source tarball from svn
+# a script to preare eopkg source tarball from svn
 # author: exa
 
 #TODO: arguments for svn snapshot with rev number, or a tag to override default

@@ -22,7 +22,7 @@ import pisi.api
 import pisi.db
 
 class Remove(command.PackageOp):
-    __doc__ = _("""Remove PiSi packages
+    __doc__ = _("""Remove eopkg packages
 
 Usage: remove <package1> <package2> ... <packagen>
 

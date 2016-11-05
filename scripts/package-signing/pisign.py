@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    PiSi Package Signing Tools
+    eopkg Package Signing Tools
 """
 
 import base64

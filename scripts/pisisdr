@@ -10,7 +10,7 @@
 #
 # Please read the COPYING file.
 
-# a Simple helper script for PiSi to set default repo
+# a Simple helper script for eopkg to set default repo
 
 import os
 import sys

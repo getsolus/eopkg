@@ -1,5 +1,5 @@
 # translation of tr.po to Turkish
-# PiSi Translation
+# eopkg Translation
 # Copyright (C) 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
 # Eray Ozkural <eray@pardus.org.tr>, 2005,2006.
 # Furkan Duman <coderlord@gmail.com>, 2006.
@@ -136,8 +136,8 @@ msgid "Use --debug to see a traceback."
 msgstr "Geri izleme verisi almak için lütfen --debug seçeneğini kullanın."
 
 #: pisi.xml.in.h:1
-msgid "PiSi package"
-msgstr "PiSi paketi"
+msgid "eopkg package"
+msgstr "eopkg paketi"
 
 #: pisi/actionsapi/autotools.py:36 pisi/actionsapi/cmaketools.py:36
 #, python-format
@@ -573,8 +573,8 @@ msgid "You have to be root for this operation."
 msgstr "Bu işlemi yapabilmek için root kullanıcısı olmalısınız."
 
 #: pisi/api.py:65
-msgid "Another instance of PiSi is running. Only one instance is allowed."
-msgstr "Sistemde çalışan bir PiSi mevcut. Aynı anda sadece tek PiSi çalışabilir."
+msgid "Another instance of eopkg is running. Only one instance is allowed."
+msgstr "Sistemde çalışan bir eopkg mevcut. Aynı anda sadece tek eopkg çalışabilir."
 
 #: pisi/api.py:420
 #, python-format
@@ -621,8 +621,8 @@ msgstr "%s dosyası bulunamadı."
 
 #: pisi/api.py:786
 #, python-format
-msgid "Building index of PiSi files under %s"
-msgstr "%s altındaki PiSi dosyalarının kataloğu oluşturuluyor"
+msgid "Building index of eopkg files under %s"
+msgstr "%s altındaki eopkg dosyalarının kataloğu oluşturuluyor"
 
 #: pisi/api.py:791
 msgid "Index file written"
@@ -720,8 +720,8 @@ msgstr "%s paketi %s sürümü %s yayımı kuruluyor"
 
 #: pisi/atomicoperations.py:192 pisi/operations/build.py:765
 #, python-format
-msgid "%s-%s is not a valid PiSi version format"
-msgstr "%s-%s PiSi sürüm biçimine uymuyor"
+msgid "%s-%s is not a valid eopkg version format"
+msgstr "%s-%s eopkg sürüm biçimine uymuyor"
 
 #: pisi/atomicoperations.py:198
 #, python-format
@@ -945,25 +945,25 @@ msgstr "Güncelleme Tarihi: %s\n"
 
 #: pisi/cli/build.py:25
 msgid ""
-"Build PiSi packages\n"
+"Build eopkg packages\n"
 "\n"
 "Usage: build [<pspec.xml> | <sourcename>] ...\n"
 "\n"
-"You can give a URI of the pspec.xml file. PiSi will\n"
+"You can give a URI of the pspec.xml file. eopkg will\n"
 "fetch all necessary files and build the package for you.\n"
 "\n"
 "Alternatively, you can give the name of a source package\n"
 "to be downloaded from a repository containing sources.\n"
 msgstr ""
-"Verilen PiSi paket(ler)ini inşa et\n"
+"Verilen eopkg paket(ler)ini inşa et\n"
 "\n"
 "Kullanım: build [<pspec.xml> | <kaynakadı>] ...\n"
 "\n"
 "Yerel veya uzak bir adresteki pspec.xml dosyasının adresinin verilmesi\n"
-"yeterlidir, PiSi gerekli dosyaları indirip paketi inşa edecektir.\n"
+"yeterlidir, eopkg gerekli dosyaları indirip paketi inşa edecektir.\n"
 "\n"
 "Kaynak depo kullanıyorsanız, doğrudan kaynak depoda bulunan bir\n"
-"paketin adını vererek PiSi'nin o paketi inşa etmesini sağlayabilirsiniz.\n"
+"paketin adını vererek eopkg'nin o paketi inşa etmesini sağlayabilirsiniz.\n"
 
 #: pisi/cli/build.py:50
 msgid "build options"
@@ -1038,8 +1038,8 @@ msgid "Break build after running install step"
 msgstr "Kurulum adımından sonra inşayı sonlandır."
 
 #: pisi/cli/build.py:155
-msgid "Create PiSi package"
-msgstr "PiSi paketi oluştur"
+msgid "Create eopkg package"
+msgstr "eopkg paketi oluştur"
 
 #: pisi/cli/build.py:165 pisi/cli/delta.py:72
 msgid "Supported package formats:"
@@ -1152,14 +1152,14 @@ msgid ""
 "\n"
 "Usage: clean\n"
 "\n"
-"PiSi uses filesystem locks for managing database access.\n"
+"eopkg uses filesystem locks for managing database access.\n"
 "This command deletes unused locks from the database directory."
 msgstr ""
 "Kullanılmayan kilitleri temizle\n"
 "\n"
 "Kullanım: clean\n"
 "\n"
-"PiSi veritabanı erişimini yönetmek için dosya kilitleri kullanır.\n"
+"eopkg veritabanı erişimini yönetmek için dosya kilitleri kullanır.\n"
 "Bu komut, kullanılmayan kilit dosyalarını veritabanı dizininden kaldırır."
 
 #: pisi/cli/command.py:30
@@ -1182,8 +1182,8 @@ msgid "general options"
 msgstr "genel seçenekler"
 
 #: pisi/cli/command.py:99
-msgid "Change the system root for PiSi commands"
-msgstr "PiSi komutları için sistem kökünü değiştir."
+msgid "Change the system root for eopkg commands"
+msgstr "eopkg komutları için sistem kökünü değiştir."
 
 #: pisi/cli/command.py:101
 msgid "Assume yes in all yes/no queries"
@@ -1202,8 +1202,8 @@ msgid "Show debugging information"
 msgstr "Hata ayıklama bilgisini göster."
 
 #: pisi/cli/command.py:112
-msgid "Suppresses all coloring of PiSi's output"
-msgstr "PiSi çıktılarında renk kullanılmasını engeller."
+msgid "Suppresses all coloring of eopkg's output"
+msgstr "eopkg çıktılarında renk kullanılmasını engeller."
 
 #: pisi/cli/command.py:130
 #, python-format
@@ -1319,7 +1319,7 @@ msgstr ""
 
 #: pisi/cli/emerge.py:25
 msgid ""
-"Build and install PiSi source packages from repository\n"
+"Build and install eopkg source packages from repository\n"
 "\n"
 "Usage: emerge <sourcename> ...\n"
 "\n"
@@ -1328,7 +1328,7 @@ msgid ""
 "\n"
 "You can also give the name of a component.\n"
 msgstr ""
-"PiSi kaynak paketlerini depodan inşa et ve kur\n"
+"eopkg kaynak paketlerini depodan inşa et ve kur\n"
 "\n"
 "Kullanım: emerge <kaynakismi> ...\n"
 "\n"
@@ -1533,7 +1533,7 @@ msgid ""
 "\n"
 "Lists previous operations."
 msgstr ""
-"PiSi işlemlerinin günlüğü\n"
+"eopkg işlemlerinin günlüğü\n"
 "\n"
 "Kullanım: history\n"
 "\n"
@@ -1572,11 +1572,11 @@ msgstr "    * Bu durum görüntüsünde %d paket var."
 
 #: pisi/cli/index.py:23
 msgid ""
-"Index PiSi files in a given directory\n"
+"Index eopkg files in a given directory\n"
 "\n"
 "Usage: index <directory> ...\n"
 "\n"
-"This command searches for all PiSi files in a directory, collects PiSi\n"
+"This command searches for all eopkg files in a directory, collects eopkg\n"
 "tags from them and accumulates the information in an output XML file,\n"
 "named by default 'eopkg-index.xml'. In particular, it indexes both\n"
 "source and binary packages.\n"
@@ -1584,11 +1584,11 @@ msgid ""
 "If you give multiple directories, the command still works, but puts\n"
 "everything in a single index file.\n"
 msgstr ""
-"Verilen dizindeki PiSi dosyalarının kataloğunu çıkar\n"
+"Verilen dizindeki eopkg dosyalarının kataloğunu çıkar\n"
 "\n"
 "Kullanım: index <dizin> ...\n"
 "\n"
-"Bu komut bir dizinde PiSi dosyaları arar, onlardan PiSi etiketlerini çıkarır\n"
+"Bu komut bir dizinde eopkg dosyaları arar, onlardan eopkg etiketlerini çıkarır\n"
 "ve bilgiyi eopkg-index.xml adında bir XML dosyasında toplar. Hem kaynak hem\n"
 "de ikili paketleri bu XML kataloğuna ekler.\n"
 "\n"
@@ -1612,8 +1612,8 @@ msgid "Comma-separated compression types for index file"
 msgstr "Katalog dosyası için virgülle ayrılmış sıkıştırma türleri"
 
 #: pisi/cli/index.py:69
-msgid "Do not index PiSi spec files."
-msgstr "PiSi spec dosyalarını kataloğa ekleme."
+msgid "Do not index eopkg spec files."
+msgstr "eopkg spec dosyalarını kataloğa ekleme."
 
 #: pisi/cli/index.py:74
 msgid "Do not sign index."
@@ -1708,7 +1708,7 @@ msgstr "%s paketi kaynak depolarda bulunamadı."
 
 #: pisi/cli/install.py:25
 msgid ""
-"Install PiSi packages\n"
+"Install eopkg packages\n"
 "\n"
 "Usage: install <package1> <package2> ... <packagen>\n"
 "\n"
@@ -1718,7 +1718,7 @@ msgid ""
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
 msgstr ""
-"PiSi paket(ler)i kur\n"
+"eopkg paket(ler)i kur\n"
 "\n"
 "Kullanım: install <paket1> <paket2> ... <paketn>\n"
 "\n"
@@ -1771,7 +1771,7 @@ msgid ""
 "\n"
 "Usage: list-available [ <repo1> <repo2> ... repon ]\n"
 "\n"
-"Gives a brief list of PiSi packages published in the specified\n"
+"Gives a brief list of eopkg packages published in the specified\n"
 "repositories. If no repository is specified, we list packages in\n"
 "all repositories.\n"
 msgstr ""
@@ -1779,7 +1779,7 @@ msgstr ""
 "\n"
 "Kullanım: list-available [ <depo1> <depo2> ... <depon> ]\n"
 "\n"
-"Belirtilen depolarda yayınlanan PiSi paketlerinin kısa bir\n"
+"Belirtilen depolarda yayınlanan eopkg paketlerinin kısa bir\n"
 "listesini verir. Eğer depo belirtilmezse, tüm açık depolardaki\n"
 "paketler listelenir.\n"
 
@@ -1816,14 +1816,14 @@ msgid ""
 "\n"
 "Usage: list-components\n"
 "\n"
-"Gives a brief list of PiSi components published in the\n"
+"Gives a brief list of eopkg components published in the\n"
 "repositories.\n"
 msgstr ""
 "Bileşenleri listele\n"
 "\n"
 "Kullanım: list-components\n"
 "\n"
-"Depolarda yayınlanan PiSi bileşenlerinin kısa bir\n"
+"Depolarda yayınlanan eopkg bileşenlerinin kısa bir\n"
 "listesini verir.\n"
 
 #: pisi/cli/listcomponents.py:40
@@ -1871,7 +1871,7 @@ msgid ""
 "\n"
 "Usage: list-newest [ <repo1> <repo2> ... repon ]\n"
 "\n"
-"Gives a list of PiSi newly published packages in the specified\n"
+"Gives a list of eopkg newly published packages in the specified\n"
 "repositories. If no repository is specified, we list the new\n"
 "packages from all repositories.\n"
 msgstr ""
@@ -2008,7 +2008,7 @@ msgid ""
 "\n"
 "Usage: rebuilddb [ <package1> <package2> ... <packagen> ]\n"
 "\n"
-"Rebuilds the PiSi databases\n"
+"Rebuilds the eopkg databases\n"
 "\n"
 "If package specs are given, they should be the names of package\n"
 "dirs under /var/lib/eopkg\n"
@@ -2017,7 +2017,7 @@ msgstr ""
 "\n"
 "Kullanım: rebuilddb [ <paket1> <paket2> ... <paketn> ]\n"
 "\n"
-"PiSi veritabanlarını yeniden inşa eder\n"
+"eopkg veritabanlarını yeniden inşa eder\n"
 "\n"
 "Eğer paket belirtimleri verilirse, /var/lib/eopkg altındaki\n"
 "dizinlerin adları olmalıdir.\n"
@@ -2031,12 +2031,12 @@ msgid "Rebuild files database"
 msgstr "Dosya veritabanını yeniden inşa et"
 
 #: pisi/cli/rebuilddb.py:51
-msgid "Rebuild PiSi databases?"
-msgstr "PiSi veritabanı yeniden inşa edilsin mi?"
+msgid "Rebuild eopkg databases?"
+msgstr "eopkg veritabanı yeniden inşa edilsin mi?"
 
 #: pisi/cli/remove.py:25
 msgid ""
-"Remove PiSi packages\n"
+"Remove eopkg packages\n"
 "\n"
 "Usage: remove <package1> <package2> ... <packagen>\n"
 "\n"
@@ -2045,7 +2045,7 @@ msgid ""
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
 msgstr ""
-"PiSi paketlerini kaldır\n"
+"eopkg paketlerini kaldır\n"
 "\n"
 "Kullanım: remove <paket1> <paket2> ... <paketn>\n"
 "\n"
@@ -2176,7 +2176,7 @@ msgid ""
 "\n"
 "<repoi>: repository name\n"
 "\n"
-"Synchronizes the PiSi databases with the current repository.\n"
+"Synchronizes the eopkg databases with the current repository.\n"
 "If no repository is given, all repositories are updated.\n"
 msgstr ""
 "Depo veritabanlarını güncelle\n"
@@ -2185,7 +2185,7 @@ msgstr ""
 "\n"
 "<depoi>: depo ismi\n"
 "\n"
-"PiSi veritabanlarını güncel depoya eşler. Eğer depo ismi\n"
+"eopkg veritabanlarını güncel depoya eşler. Eğer depo ismi\n"
 "verilmezse tüm depolar güncellenir.\n"
 
 #: pisi/cli/updaterepo.py:42
@@ -2198,7 +2198,7 @@ msgstr "Veritabanını her halükârda güncelle"
 
 #: pisi/cli/upgrade.py:25
 msgid ""
-"Upgrade PiSi packages\n"
+"Upgrade eopkg packages\n"
 "\n"
 "Usage: Upgrade [<package1> <package2> ... <packagen>]\n"
 "\n"
@@ -2210,12 +2210,12 @@ msgid ""
 "the package upgrade operation is defined only with respect\n"
 "to repositories. If you have specified a package name, it\n"
 "should exist in the package repositories. If you just want to\n"
-"reinstall a package from a PiSi file, use the install command.\n"
+"reinstall a package from a eopkg file, use the install command.\n"
 "\n"
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
 msgstr ""
-"PiSi paketlerini güncelle\n"
+"eopkg paketlerini güncelle\n"
 "\n"
 "Kullanım: upgrade [<paket1> <paket2> ... <paketn>]\n"
 "\n"
@@ -2226,7 +2226,7 @@ msgstr ""
 "Paket güncelleme işlemleri sadece depolar dikkate alınarak\n"
 "yapıldığı için sadece paket isimleri kullanabilirsiniz. Eğer\n"
 "bir paket ismi belirtirseniz, pa ketin paket depolarında\n"
-"bulunması gerekir. Eğer istediğiniz bir PiSi dosyasından bir\n"
+"bulunması gerekir. Eğer istediğiniz bir eopkg dosyasından bir\n"
 "paket kurmaksa, install komutunu kullanın.\n"
 "\n"
 "Ayrıca paket isimleri yerine bileşen de belirtirseniz, bu durumda\n"
@@ -3287,7 +3287,7 @@ msgstr "'%s' dosyasının XML sözdizimi geçersiz."
 #: pisi/scenarioapi/package.py:67
 #, python-format
 msgid "No pisi package: %s* found."
-msgstr "PiSi paketi yok: %s* bulundu."
+msgstr "eopkg paketi yok: %s* bulundu."
 
 #: pisi/scenarioapi/repoops.py:28
 #, python-format
@@ -3538,8 +3538,8 @@ msgstr "Hatalı sürüm dizgisi: '%s'"
 #~ msgid "Package %s is already at the latest build %s."
 #~ msgstr "%s paketi zaten (en son) inşa %s."
 
-#~ msgid "Creating delta PiSi package between %s %s"
-#~ msgstr "%s ile %s paketi arasında PiSi delta paketi oluşturuluyor."
+#~ msgid "Creating delta eopkg package between %s %s"
+#~ msgstr "%s ile %s paketi arasında eopkg delta paketi oluşturuluyor."
 
 #~ msgid "Cannot create delta for same package!"
 #~ msgstr "Aynı paket için delta oluşturulamaz!"
@@ -3580,8 +3580,8 @@ msgstr "Hatalı sürüm dizgisi: '%s'"
 #~ msgid "package_format must be one of %s "
 #~ msgstr "package_format, bunlardan birisi olmalı: %s"
 
-#~ msgid "PiSi binary package formats: '1.0', '1.1' (default)"
-#~ msgstr "PiSi ikili paket biçimleri: '1.0', '1.1' (öntanımlı)"
+#~ msgid "eopkg binary package formats: '1.0', '1.1' (default)"
+#~ msgstr "eopkg ikili paket biçimleri: '1.0', '1.1' (öntanımlı)"
 
 #~ msgid "Do not take build no into account."
 #~ msgstr "İnşa numarasını dikkate alma."

@@ -34,7 +34,7 @@ class Error(pisi.Error):
 
 
 class Package:
-    """PiSi Package Class provides access to a pisi package (.pisi
+    """eopkg Package Class provides access to a pisi package (.pisi
     file)."""
 
     formats = ("1.0", "1.1", "1.2")
@@ -250,19 +250,19 @@ class Package:
         self.impl.unpack(outdir, clean_dir)
 
     def extract_pisi_files(self, outdir):
-        """Extract PiSi control files: metadata.xml, files.xml,
+        """Extract eopkg control files: metadata.xml, files.xml,
         action scripts, etc."""
         self.extract_files([ctx.const.metadata_xml, ctx.const.files_xml], outdir)
         self.extract_dir('config', outdir)
 
     def get_metadata(self):
-        """reads metadata.xml from the PiSi package and returns MetaData object"""
+        """reads metadata.xml from the eopkg package and returns MetaData object"""
         md = pisi.metadata.MetaData()
         md.parse(self.impl.read_file(ctx.const.metadata_xml))
         return md
 
     def get_files(self):
-        """reads files.xml from the PiSi package and returns Files object"""
+        """reads files.xml from the eopkg package and returns Files object"""
         files = pisi.files.Files()
         files.parse(self.impl.read_file(ctx.const.files_xml))
         return files

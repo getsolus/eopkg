@@ -62,7 +62,7 @@ def locked(func):
             ctx.locked = True
         except IOError:
             if not ctx.locked:
-                raise pisi.errors.AnotherInstanceError(_("Another instance of PiSi is running. Only one instance is allowed."))
+                raise pisi.errors.AnotherInstanceError(_("Another instance of eopkg is running. Only one instance is allowed."))
 
         try:
             pisi.db.invalidate_caches()
@@ -776,14 +776,14 @@ def info_name(package_name, useinstalldb=False):
 def index(dirs=None, output='eopkg-index.xml',
           skip_sources=False, skip_signing=False,
           compression=0):
-    """Accumulate PiSi XML files in a directory, and write an index."""
+    """Accumulate eopkg XML files in a directory, and write an index."""
     index = pisi.index.Index()
     index.distribution = None
     if not dirs:
         dirs = ['.']
     for repo_dir in dirs:
         repo_dir = str(repo_dir)
-        ctx.ui.info(_('Building index of PiSi files under %s') % repo_dir)
+        ctx.ui.info(_('Building index of eopkg files under %s') % repo_dir)
         index.index(repo_dir, skip_sources)
 
     sign = None if skip_signing else pisi.file.File.detached

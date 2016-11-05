@@ -1,6 +1,6 @@
 #! /usr/bin/python
 #
-# a script to prepare PiSi source tarball from any svn directory you specify
+# a script to prepare eopkg source tarball from any svn directory you specify
 #   in any revision you want.
 # author: sdalgic
 #

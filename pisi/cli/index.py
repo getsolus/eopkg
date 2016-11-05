@@ -20,11 +20,11 @@ import pisi.cli.command as command
 import pisi.context as ctx
 
 
-usage = _("""Index PiSi files in a given directory
+usage = _("""Index eopkg files in a given directory
 
 Usage: index <directory> ...
 
-This command searches for all PiSi files in a directory, collects PiSi
+This command searches for all eopkg files in a directory, collects eopkg
 tags from them and accumulates the information in an output XML file,
 named by default 'eopkg-index.xml'. In particular, it indexes both
 source and binary packages.
@@ -66,7 +66,7 @@ class Index(command.Command):
         group.add_option("--skip-sources",
                          action="store_true",
                          default=False,
-                         help=_("Do not index PiSi spec files."))
+                         help=_("Do not index eopkg spec files."))
 
         group.add_option("--skip-signing",
                          action="store_true",

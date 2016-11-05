@@ -32,7 +32,7 @@ import gettext
 __trans = gettext.translation('pisi', fallback=True)
 _ = __trans.ugettext
 
-# PiSi
+# eopkg
 import pisi
 import pisi.pxml.xmlext as xmlext
 import pisi.pxml.xmlfile as xmlfile

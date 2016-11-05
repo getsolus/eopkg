@@ -21,7 +21,7 @@ class Clean(command.Command):
 
 Usage: clean
 
-PiSi uses filesystem locks for managing database access.
+eopkg uses filesystem locks for managing database access.
 This command deletes unused locks from the database directory.""")
 
     __metaclass__ = command.autocommand

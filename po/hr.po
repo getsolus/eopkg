@@ -129,8 +129,8 @@ msgid "Use --debug to see a traceback."
 msgstr ""
 
 #: pisi.xml.in.h:1
-msgid "PiSi package"
-msgstr "PiSi paket"
+msgid "eopkg package"
+msgstr "eopkg paket"
 
 #: pisi/actionsapi/autotools.py:36 pisi/actionsapi/cmaketools.py:36
 #, python-format
@@ -548,7 +548,7 @@ msgid "You have to be root for this operation."
 msgstr "Morate biti root za ovu operaciju."
 
 #: pisi/api.py:65
-msgid "Another instance of PiSi is running. Only one instance is allowed."
+msgid "Another instance of eopkg is running. Only one instance is allowed."
 msgstr ""
 
 #: pisi/api.py:420
@@ -596,8 +596,8 @@ msgstr "Datoteka %s nije nađena"
 
 #: pisi/api.py:786
 #, python-format
-msgid "Building index of PiSi files under %s"
-msgstr "Izgradnja indeksa PiSi datoteka pod %s"
+msgid "Building index of eopkg files under %s"
+msgstr "Izgradnja indeksa eopkg datoteka pod %s"
 
 #: pisi/api.py:791
 msgid "Index file written"
@@ -695,7 +695,7 @@ msgstr "Instaliram %s,verzija %s,izdanje %s"
 
 #: pisi/atomicoperations.py:192 pisi/operations/build.py:765
 #, python-format
-msgid "%s-%s is not a valid PiSi version format"
+msgid "%s-%s is not a valid eopkg version format"
 msgstr "%s-%s nije valjan format Pisi verzije"
 
 #: pisi/atomicoperations.py:198
@@ -919,11 +919,11 @@ msgstr "Datum dopune: %s\n"
 
 #: pisi/cli/build.py:25
 msgid ""
-"Build PiSi packages\n"
+"Build eopkg packages\n"
 "\n"
 "Usage: build [<pspec.xml> | <sourcename>] ...\n"
 "\n"
-"You can give a URI of the pspec.xml file. PiSi will\n"
+"You can give a URI of the pspec.xml file. eopkg will\n"
 "fetch all necessary files and build the package for you.\n"
 "\n"
 "Alternatively, you can give the name of a source package\n"
@@ -1003,7 +1003,7 @@ msgid "Break build after running install step"
 msgstr ""
 
 #: pisi/cli/build.py:155
-msgid "Create PiSi package"
+msgid "Create eopkg package"
 msgstr "Napravi Pisi paket"
 
 #: pisi/cli/build.py:165 pisi/cli/delta.py:72
@@ -1103,7 +1103,7 @@ msgid ""
 "\n"
 "Usage: clean\n"
 "\n"
-"PiSi uses filesystem locks for managing database access.\n"
+"eopkg uses filesystem locks for managing database access.\n"
 "This command deletes unused locks from the database directory."
 msgstr ""
 
@@ -1126,8 +1126,8 @@ msgid "general options"
 msgstr "osnovne opcije"
 
 #: pisi/cli/command.py:99
-msgid "Change the system root for PiSi commands"
-msgstr "Promjena root sustava za PiSi naredbe"
+msgid "Change the system root for eopkg commands"
+msgstr "Promjena root sustava za eopkg naredbe"
 
 #: pisi/cli/command.py:101
 msgid "Assume yes in all yes/no queries"
@@ -1146,7 +1146,7 @@ msgid "Show debugging information"
 msgstr ""
 
 #: pisi/cli/command.py:112
-msgid "Suppresses all coloring of PiSi's output"
+msgid "Suppresses all coloring of eopkg's output"
 msgstr ""
 
 #: pisi/cli/command.py:130
@@ -1245,7 +1245,7 @@ msgstr ""
 
 #: pisi/cli/emerge.py:25
 msgid ""
-"Build and install PiSi source packages from repository\n"
+"Build and install eopkg source packages from repository\n"
 "\n"
 "Usage: emerge <sourcename> ...\n"
 "\n"
@@ -1254,7 +1254,7 @@ msgid ""
 "\n"
 "You can also give the name of a component.\n"
 msgstr ""
-"Gradnja i instalacija PiSi izvornih paketa iz repozitorija\n"
+"Gradnja i instalacija eopkg izvornih paketa iz repozitorija\n"
 "\\ nUporaba: emerge <sourcename> ... \n"
 "\n"
 "Trebate dati ime izvornog paketa za\n"
@@ -1464,11 +1464,11 @@ msgstr ""
 
 #: pisi/cli/index.py:23
 msgid ""
-"Index PiSi files in a given directory\n"
+"Index eopkg files in a given directory\n"
 "\n"
 "Usage: index <directory> ...\n"
 "\n"
-"This command searches for all PiSi files in a directory, collects PiSi\n"
+"This command searches for all eopkg files in a directory, collects eopkg\n"
 "tags from them and accumulates the information in an output XML file,\n"
 "named by default 'eopkg-index.xml'. In particular, it indexes both\n"
 "source and binary packages.\n"
@@ -1494,8 +1494,8 @@ msgid "Comma-separated compression types for index file"
 msgstr ""
 
 #: pisi/cli/index.py:69
-msgid "Do not index PiSi spec files."
-msgstr "Ne indeksiraj PiSi spec datoteke."
+msgid "Do not index eopkg spec files."
+msgstr "Ne indeksiraj eopkg spec datoteke."
 
 #: pisi/cli/index.py:74
 msgid "Do not sign index."
@@ -1585,7 +1585,7 @@ msgstr "%s paket nije nađen u repozitoriju izvora"
 
 #: pisi/cli/install.py:25
 msgid ""
-"Install PiSi packages\n"
+"Install eopkg packages\n"
 "\n"
 "Usage: install <package1> <package2> ... <packagen>\n"
 "\n"
@@ -1595,7 +1595,7 @@ msgid ""
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
 msgstr ""
-"Instaliraj PiSi pakete\n"
+"Instaliraj eopkg pakete\n"
 "\n"
 "Uporaba: instaliraj <paket1> <paket2> ... <paketn>\n"
 "\n"
@@ -1648,14 +1648,14 @@ msgid ""
 "\n"
 "Usage: list-available [ <repo1> <repo2> ... repon ]\n"
 "\n"
-"Gives a brief list of PiSi packages published in the specified\n"
+"Gives a brief list of eopkg packages published in the specified\n"
 "repositories. If no repository is specified, we list packages in\n"
 "all repositories.\n"
 msgstr ""
 "Izlistaj dostupne pakete u repozitorijima\n"
 "\n"
 "Uporaba: izlistaj-dostupne[ <repo1><repo2> ... repon]\n"
-"  nDaje kratak popis PiSi paketa objavljenih u navedenom\n"
+"  nDaje kratak popis eopkg paketa objavljenih u navedenom\n"
 "repozitorijima. Ako nijedan repozitorij nije naveden, mi listamo pakete u\n"
 "svim repozitorijima.\n"
 
@@ -1692,7 +1692,7 @@ msgid ""
 "\n"
 "Usage: list-components\n"
 "\n"
-"Gives a brief list of PiSi components published in the\n"
+"Gives a brief list of eopkg components published in the\n"
 "repositories.\n"
 msgstr ""
 
@@ -1740,7 +1740,7 @@ msgid ""
 "\n"
 "Usage: list-newest [ <repo1> <repo2> ... repon ]\n"
 "\n"
-"Gives a list of PiSi newly published packages in the specified\n"
+"Gives a list of eopkg newly published packages in the specified\n"
 "repositories. If no repository is specified, we list the new\n"
 "packages from all repositories.\n"
 msgstr ""
@@ -1852,7 +1852,7 @@ msgid ""
 "\n"
 "Usage: rebuilddb [ <package1> <package2> ... <packagen> ]\n"
 "\n"
-"Rebuilds the PiSi databases\n"
+"Rebuilds the eopkg databases\n"
 "\n"
 "If package specs are given, they should be the names of package\n"
 "dirs under /var/lib/eopkg\n"
@@ -1867,12 +1867,12 @@ msgid "Rebuild files database"
 msgstr "Obnovi bazu podataka datoteka"
 
 #: pisi/cli/rebuilddb.py:51
-msgid "Rebuild PiSi databases?"
-msgstr "Obnovi PiSi baze podataka?"
+msgid "Rebuild eopkg databases?"
+msgstr "Obnovi eopkg baze podataka?"
 
 #: pisi/cli/remove.py:25
 msgid ""
-"Remove PiSi packages\n"
+"Remove eopkg packages\n"
 "\n"
 "Usage: remove <package1> <package2> ... <packagen>\n"
 "\n"
@@ -1984,7 +1984,7 @@ msgid ""
 "\n"
 "<repoi>: repository name\n"
 "\n"
-"Synchronizes the PiSi databases with the current repository.\n"
+"Synchronizes the eopkg databases with the current repository.\n"
 "If no repository is given, all repositories are updated.\n"
 msgstr ""
 
@@ -1998,7 +1998,7 @@ msgstr "Dopuni  bazu podataka u svakom slučaju"
 
 #: pisi/cli/upgrade.py:25
 msgid ""
-"Upgrade PiSi packages\n"
+"Upgrade eopkg packages\n"
 "\n"
 "Usage: Upgrade [<package1> <package2> ... <packagen>]\n"
 "\n"
@@ -2010,7 +2010,7 @@ msgid ""
 "the package upgrade operation is defined only with respect\n"
 "to repositories. If you have specified a package name, it\n"
 "should exist in the package repositories. If you just want to\n"
-"reinstall a package from a PiSi file, use the install command.\n"
+"reinstall a package from a eopkg file, use the install command.\n"
 "\n"
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"

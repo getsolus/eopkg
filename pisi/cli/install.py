@@ -22,7 +22,7 @@ import pisi.api
 import pisi.db
 
 class Install(command.PackageOp):
-    __doc__ = _("""Install PiSi packages
+    __doc__ = _("""Install eopkg packages
 
 Usage: install <package1> <package2> ... <packagen>
 

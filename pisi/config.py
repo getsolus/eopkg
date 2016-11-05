@@ -11,8 +11,8 @@
 #
 
 """
-PiSi Configuration module is used for gathering and providing
-regular PiSi configurations.
+eopkg Configuration module is used for gathering and providing
+regular eopkg configurations.
 """
 
 import os

@@ -188,7 +188,7 @@ class Install(AtomicOperation):
             int(release)
             pisi.version.make_version(version)
         except (ValueError, pisi.version.InvalidVersionError):
-            raise Error(_("%s-%s is not a valid PiSi version format") % (version, release))
+            raise Error(_("%s-%s is not a valid eopkg version format") % (version, release))
 
     def check_relations(self):
         # check dependencies

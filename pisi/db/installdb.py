@@ -21,7 +21,7 @@ _ = __trans.ugettext
 
 import piksemel
 
-# PiSi
+# eopkg
 import pisi
 import pisi.context as ctx
 import pisi.dependency

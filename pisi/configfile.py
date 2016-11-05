@@ -10,7 +10,7 @@
 # Please read the COPYING file.
 #
 
-# PiSi Configuration File module, obviously, is used to read from the
+# eopkg Configuration File module, obviously, is used to read from the
 # configuration file. Module also defines default values for
 # configuration parameters.
 #

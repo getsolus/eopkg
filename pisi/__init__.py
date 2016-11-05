@@ -10,7 +10,7 @@
 # Please read the COPYING file.
 #
 
-# PiSi version
+# eopkg version
 
 import os
 import sys
@@ -24,7 +24,7 @@ __all__ = [ 'api', 'configfile', 'db']
 
 # FIXME: Exception shadows builtin Exception. This is no good.
 class Exception(Exception):
-    """Class of exceptions that must be caught and handled within PiSi"""
+    """Class of exceptions that must be caught and handled within eopkg"""
     def __str__(self):
         s = u''
         for x in self.args:

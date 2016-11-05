@@ -36,7 +36,7 @@ def get_option(opt):
 
 ui = pisi.ui.UI()
 
-# stdout, stderr for PiSi API
+# stdout, stderr for eopkg API
 stdout = None
 stderr = None
 

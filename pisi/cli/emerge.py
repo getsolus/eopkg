@@ -22,7 +22,7 @@ import pisi.context as ctx
 import pisi.api
 
 class Emerge(build.Build):
-    __doc__ = _("""Build and install PiSi source packages from repository
+    __doc__ = _("""Build and install eopkg source packages from repository
 
 Usage: emerge <sourcename> ...
 

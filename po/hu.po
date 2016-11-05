@@ -1,4 +1,4 @@
-# PiSi hungarian translation
+# eopkg hungarian translation
 # Copyright (C) YEAR ORGANIZATION
 # Zoltan Siposs <zoltan.siposs@gmail.com>
 #
@@ -7,7 +7,7 @@
 # Attila Siposs <sipiatti@gmail.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: PiSi\n"
+"Project-Id-Version: eopkg\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-06-17 14:30+0300\n"
 "PO-Revision-Date: 2010-12-27 13:15+0100\n"
@@ -136,8 +136,8 @@ msgstr "Használja a --debug kapcsolót a visszakövetés megjelenítéséhez."
 
 #: pisi.xml.in.h:1
 #, fuzzy
-msgid "PiSi package"
-msgstr "PiSi csomag létrehozása"
+msgid "eopkg package"
+msgstr "eopkg csomag létrehozása"
 
 #: pisi/actionsapi/autotools.py:36 pisi/actionsapi/cmaketools.py:36
 #, python-format
@@ -560,8 +560,8 @@ msgid "You have to be root for this operation."
 msgstr "Rendszergazda jogosultsággal kell rendelkeznie ehhez a művelethez."
 
 #: pisi/api.py:65
-msgid "Another instance of PiSi is running. Only one instance is allowed."
-msgstr "Egy másik PiSi már fut. Csak egy példány indítása megengedett."
+msgid "Another instance of eopkg is running. Only one instance is allowed."
+msgstr "Egy másik eopkg már fut. Csak egy példány indítása megengedett."
 
 #: pisi/api.py:420
 #, python-format
@@ -576,7 +576,7 @@ msgstr "A(z) %s csomagot már letöltöttem"
 #: pisi/api.py:532
 #, fuzzy, python-format
 msgid "Cleaning package cache %s..."
-msgstr "A(z) %s PiSi csomag létrehozása."
+msgstr "A(z) %s eopkg csomag létrehozása."
 
 #: pisi/api.py:534
 #, fuzzy, python-format
@@ -608,8 +608,8 @@ msgstr "A(z) %s fájl nem található"
 
 #: pisi/api.py:786
 #, fuzzy, python-format
-msgid "Building index of PiSi files under %s"
-msgstr "* PiSi fájl-index építése folyamatban: %s"
+msgid "Building index of eopkg files under %s"
+msgstr "* eopkg fájl-index építése folyamatban: %s"
 
 #: pisi/api.py:791
 #, fuzzy
@@ -709,8 +709,8 @@ msgstr "%s telepítése, verzió %s, kiadás %s"
 
 #: pisi/atomicoperations.py:192 pisi/operations/build.py:765
 #, python-format
-msgid "%s-%s is not a valid PiSi version format"
-msgstr "%s-%s nem érvényes PiSi verzió formátum"
+msgid "%s-%s is not a valid eopkg version format"
+msgstr "%s-%s nem érvényes eopkg verzió formátum"
 
 #: pisi/atomicoperations.py:198
 #, python-format
@@ -935,22 +935,22 @@ msgstr "Frissítés dátuma: %s\n"
 
 #: pisi/cli/build.py:25
 msgid ""
-"Build PiSi packages\n"
+"Build eopkg packages\n"
 "\n"
 "Usage: build [<pspec.xml> | <sourcename>] ...\n"
 "\n"
-"You can give a URI of the pspec.xml file. PiSi will\n"
+"You can give a URI of the pspec.xml file. eopkg will\n"
 "fetch all necessary files and build the package for you.\n"
 "\n"
 "Alternatively, you can give the name of a source package\n"
 "to be downloaded from a repository containing sources.\n"
 msgstr ""
-"PiSi csomagok készítése\n"
+"eopkg csomagok készítése\n"
 "\n"
 "Használata: build [<pspec.xml> | <forrásnév>] ...\n"
 "\n"
 "Megadhatsz egy URI-t is a pspec.xml fájlhoz.\n"
-"A PiSi minden szükséges fájlt letölt és elkészíti a csomagodat.\n"
+"A eopkg minden szükséges fájlt letölt és elkészíti a csomagodat.\n"
 "\n"
 "Más lehetőségként megadhatod egy forráscsomag nevét,\n"
 "melyet egy forrásokat kínáló tárolóból lehet letölteni.\n"
@@ -1028,8 +1028,8 @@ msgid "Break build after running install step"
 msgstr "A build megszakítása az install lépés után"
 
 #: pisi/cli/build.py:155
-msgid "Create PiSi package"
-msgstr "PiSi csomag létrehozása"
+msgid "Create eopkg package"
+msgstr "eopkg csomag létrehozása"
 
 #: pisi/cli/build.py:165 pisi/cli/delta.py:72
 msgid "Supported package formats:"
@@ -1142,14 +1142,14 @@ msgid ""
 "\n"
 "Usage: clean\n"
 "\n"
-"PiSi uses filesystem locks for managing database access.\n"
+"eopkg uses filesystem locks for managing database access.\n"
 "This command deletes unused locks from the database directory."
 msgstr ""
 "Beragadt zárolások tisztítása\n"
 "\n"
 "Használata: clean\n"
 "\n"
-"A PiSi fájlrendszer zárolást (lock) használ az adatbázis hozzáférés kezelésére.\n"
+"A eopkg fájlrendszer zárolást (lock) használ az adatbázis hozzáférés kezelésére.\n"
 "Ez a parancs törli a nem használt zárolásokat az adatbázis könyvtárából."
 
 #: pisi/cli/command.py:30
@@ -1171,8 +1171,8 @@ msgid "general options"
 msgstr "általános beállítások"
 
 #: pisi/cli/command.py:99
-msgid "Change the system root for PiSi commands"
-msgstr "Gyökér könyvtár megváltoztatása a PiSi parancsok számára"
+msgid "Change the system root for eopkg commands"
+msgstr "Gyökér könyvtár megváltoztatása a eopkg parancsok számára"
 
 #: pisi/cli/command.py:101
 msgid "Assume yes in all yes/no queries"
@@ -1191,7 +1191,7 @@ msgid "Show debugging information"
 msgstr "Hibakeresési információk megjelenítése"
 
 #: pisi/cli/command.py:112
-msgid "Suppresses all coloring of PiSi's output"
+msgid "Suppresses all coloring of eopkg's output"
 msgstr "Színes kimenet letiltása"
 
 #: pisi/cli/command.py:130
@@ -1273,7 +1273,7 @@ msgstr ""
 "Használata: delta régicsomag újcsomag\n"
 "\n"
 "A delta utasítás az adott csomagokban található fájlok között  az sha1sum adatok alapján megkeresi a megváltozott\n"
-"állományokat és egy ún. delta PiSi csomagot hoz létre, amelyben csak ezek a megváltozott fájlok lesznek benne.\n"
+"állományokat és egy ún. delta eopkg csomagot hoz létre, amelyben csak ezek a megváltozott fájlok lesznek benne.\n"
 "\n"
 
 #: pisi/cli/delta.py:46
@@ -1308,7 +1308,7 @@ msgstr ""
 
 #: pisi/cli/emerge.py:25
 msgid ""
-"Build and install PiSi source packages from repository\n"
+"Build and install eopkg source packages from repository\n"
 "\n"
 "Usage: emerge <sourcename> ...\n"
 "\n"
@@ -1317,7 +1317,7 @@ msgid ""
 "\n"
 "You can also give the name of a component.\n"
 msgstr ""
-"A tárolókban található PiSi forráscsomagok fordítása és telepítése\n"
+"A tárolókban található eopkg forráscsomagok fordítása és telepítése\n"
 "\n"
 "Használata: emerge <forráscsomag_neve> ...\n"
 "\n"
@@ -1385,7 +1385,7 @@ msgstr ""
 "\n"
 "<csomagX>: csomag neve\n"
 "\n"
-"Letölti a megadott nevű PiSi csomagokat a munkakönyvtárba\n"
+"Letölti a megadott nevű eopkg csomagokat a munkakönyvtárba\n"
 
 #: pisi/cli/fetch.py:41
 msgid "fetch options"
@@ -1562,11 +1562,11 @@ msgstr "    * %d csomag található a pillanatfelvételben."
 
 #: pisi/cli/index.py:23
 msgid ""
-"Index PiSi files in a given directory\n"
+"Index eopkg files in a given directory\n"
 "\n"
 "Usage: index <directory> ...\n"
 "\n"
-"This command searches for all PiSi files in a directory, collects PiSi\n"
+"This command searches for all eopkg files in a directory, collects eopkg\n"
 "tags from them and accumulates the information in an output XML file,\n"
 "named by default 'eopkg-index.xml'. In particular, it indexes both\n"
 "source and binary packages.\n"
@@ -1574,11 +1574,11 @@ msgid ""
 "If you give multiple directories, the command still works, but puts\n"
 "everything in a single index file.\n"
 msgstr ""
-"Indexeli a megadott könyvtárban található PiSi fájlokat\n"
+"Indexeli a megadott könyvtárban található eopkg fájlokat\n"
 "\n"
 "Használata index <könyvtár> ...\n"
-"Ez a parancs megkeresi a PiSi fájlokat a megadott könyvtárban\n"
-"kigyűjti belőlük a PiSi címkével jelölt információt és összegyűjti egy XML fájlban,\n"
+"Ez a parancs megkeresi a eopkg fájlokat a megadott könyvtárban\n"
+"kigyűjti belőlük a eopkg címkével jelölt információt és összegyűjti egy XML fájlban,\n"
 "melynek alapértelmezett neve 'eopkg-index.xml'. Mind a forrás, mind a bináris\n"
 "csomagokat indexeli.\n"
 "\n"
@@ -1602,8 +1602,8 @@ msgid "Comma-separated compression types for index file"
 msgstr "Vesszővel elválasztott lista az index fájl tömörítési típusaihoz"
 
 #: pisi/cli/index.py:69
-msgid "Do not index PiSi spec files."
-msgstr "Ne indexelje a  PiSi specifikus fájlokat."
+msgid "Do not index eopkg spec files."
+msgstr "Ne indexelje a  eopkg specifikus fájlokat."
 
 #: pisi/cli/index.py:74
 msgid "Do not sign index."
@@ -1698,7 +1698,7 @@ msgstr "a(z) %s csomag nem található a forrás-tárolókban"
 
 #: pisi/cli/install.py:25
 msgid ""
-"Install PiSi packages\n"
+"Install eopkg packages\n"
 "\n"
 "Usage: install <package1> <package2> ... <packagen>\n"
 "\n"
@@ -1708,7 +1708,7 @@ msgid ""
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
 msgstr ""
-"PiSi csomagok telepítése\n"
+"eopkg csomagok telepítése\n"
 "\n"
 "Használata: install <csomag1> <csomag2> ... <csomagN>\n"
 "\n"
@@ -1761,7 +1761,7 @@ msgid ""
 "\n"
 "Usage: list-available [ <repo1> <repo2> ... repon ]\n"
 "\n"
-"Gives a brief list of PiSi packages published in the specified\n"
+"Gives a brief list of eopkg packages published in the specified\n"
 "repositories. If no repository is specified, we list packages in\n"
 "all repositories.\n"
 msgstr ""
@@ -1770,7 +1770,7 @@ msgstr ""
 "Használata: list-available [ <repo1> <repo2> ... <repoN>]\n"
 "\n"
 "Összefoglaló listát jelenít meg a megadott tárolókban található\n"
-"PiSi csomagokról. Ha nincs tároló megadva, akkor az összes tároló\n"
+"eopkg csomagokról. Ha nincs tároló megadva, akkor az összes tároló\n"
 "csomagjai meg lesznek jelenítve.\n"
 
 #: pisi/cli/listavailable.py:45
@@ -1806,7 +1806,7 @@ msgid ""
 "\n"
 "Usage: list-components\n"
 "\n"
-"Gives a brief list of PiSi components published in the\n"
+"Gives a brief list of eopkg components published in the\n"
 "repositories.\n"
 msgstr ""
 "Az elérhető komponensek kilistázása\n"
@@ -1814,7 +1814,7 @@ msgstr ""
 "Használata: list-components\n"
 "\n"
 "Összefoglaló listát ad a tárolókban  elérhető\n"
-"PiSi komponensekről\n"
+"eopkg komponensekről\n"
 
 #: pisi/cli/listcomponents.py:40
 msgid "list-components options"
@@ -1860,7 +1860,7 @@ msgid ""
 "\n"
 "Usage: list-newest [ <repo1> <repo2> ... repon ]\n"
 "\n"
-"Gives a list of PiSi newly published packages in the specified\n"
+"Gives a list of eopkg newly published packages in the specified\n"
 "repositories. If no repository is specified, we list the new\n"
 "packages from all repositories.\n"
 msgstr ""
@@ -1997,7 +1997,7 @@ msgid ""
 "\n"
 "Usage: rebuilddb [ <package1> <package2> ... <packagen> ]\n"
 "\n"
-"Rebuilds the PiSi databases\n"
+"Rebuilds the eopkg databases\n"
 "\n"
 "If package specs are given, they should be the names of package\n"
 "dirs under /var/lib/eopkg\n"
@@ -2006,7 +2006,7 @@ msgstr ""
 "\n"
 "Használata: rebuilddb [ <csomag1> <csomag2> ... <csomagN> ]\n"
 "\n"
-"Újraépítit a PiSi adatbázisait\n"
+"Újraépítit a eopkg adatbázisait\n"
 "\n"
 "Ha a csomag-specifikációt megadjuk, annak a /var/lib/eopkg\n"
 "alatt található csomagkönyvtárnak kell lennnie\n"
@@ -2020,12 +2020,12 @@ msgid "Rebuild files database"
 msgstr "Fájl adatbázis újraépítése"
 
 #: pisi/cli/rebuilddb.py:51
-msgid "Rebuild PiSi databases?"
-msgstr "Újraépítsem a PiSi adatbázist?"
+msgid "Rebuild eopkg databases?"
+msgstr "Újraépítsem a eopkg adatbázist?"
 
 #: pisi/cli/remove.py:25
 msgid ""
-"Remove PiSi packages\n"
+"Remove eopkg packages\n"
 "\n"
 "Usage: remove <package1> <package2> ... <packagen>\n"
 "\n"
@@ -2164,7 +2164,7 @@ msgid ""
 "\n"
 "<repoi>: repository name\n"
 "\n"
-"Synchronizes the PiSi databases with the current repository.\n"
+"Synchronizes the eopkg databases with the current repository.\n"
 "If no repository is given, all repositories are updated.\n"
 msgstr ""
 "Tárolók adatainak frissítése\n"
@@ -2173,7 +2173,7 @@ msgstr ""
 "\n"
 "<repoX>: tároló neve\n"
 "\n"
-"A helyi PiSi adatbázis szinkronizálása az aktuális csomagtárolókkal.\n"
+"A helyi eopkg adatbázis szinkronizálása az aktuális csomagtárolókkal.\n"
 "Ha nincs tároló megadva, az összes tároló frissítésre kerül.\n"
 
 #: pisi/cli/updaterepo.py:42
@@ -2186,7 +2186,7 @@ msgstr "Adatbázis frissítése mindenképpen"
 
 #: pisi/cli/upgrade.py:25
 msgid ""
-"Upgrade PiSi packages\n"
+"Upgrade eopkg packages\n"
 "\n"
 "Usage: Upgrade [<package1> <package2> ... <packagen>]\n"
 "\n"
@@ -2198,12 +2198,12 @@ msgid ""
 "the package upgrade operation is defined only with respect\n"
 "to repositories. If you have specified a package name, it\n"
 "should exist in the package repositories. If you just want to\n"
-"reinstall a package from a PiSi file, use the install command.\n"
+"reinstall a package from a eopkg file, use the install command.\n"
 "\n"
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
 msgstr ""
-"PiSi csomagok frissítése\n"
+"eopkg csomagok frissítése\n"
 "\n"
 "Használata: upgrade [<csomag1> <csomag2> ... <csomagN>]\n"
 "\n"
@@ -2214,7 +2214,7 @@ msgstr ""
 "Csakis csomagneveket használhat a frissítés művelet során,\n"
 "mert a frissítés a tárolóknak megfelelően történik. A megadott\n"
 "csomagnak léteznie kell a tárolókban. Ha csak újratelepíteni szeretne\n"
-"egy csomagot egy PiSi fájlból, használja az install parancsot.\n"
+"egy csomagot egy eopkg fájlból, használja az install parancsot.\n"
 "\n"
 "Komponens neveket is megadhat csomagok helyett, mely automatikusan\n"
 "csomagnevekre lesz bontva.\n"
@@ -2661,7 +2661,7 @@ msgstr "A pspec.xml óva int a csomag '%s' számára való építésétől."
 #: pisi/operations/build.py:323
 #, python-format
 msgid "Building source package: %s"
-msgstr "PiSi forráscsomag készítése: %s"
+msgstr "eopkg forráscsomag készítése: %s"
 
 #: pisi/operations/build.py:341
 msgid "ccache detected..."
@@ -3525,8 +3525,8 @@ msgstr "Érvénytelen verzió-sztring: '%s'"
 #~ msgid "Do not take build no into account."
 #~ msgstr "Nem veszi figyelembe a \"build-no\" kapcsolót."
 
-#~ msgid "PiSi binary package formats: '1.0', '1.1' (default)"
-#~ msgstr "PiSi bináris csomag formátumok: 1.0', '1.1' (alapértelmezett)"
+#~ msgid "eopkg binary package formats: '1.0', '1.1' (default)"
+#~ msgstr "eopkg bináris csomag formátumok: 1.0', '1.1' (alapértelmezett)"
 
 #~ msgid "package_format must be one of %s "
 #~ msgstr "a csomag formátuma csak a következők egyike lehet:  %s"
@@ -3567,8 +3567,8 @@ msgstr "Érvénytelen verzió-sztring: '%s'"
 #~ msgid "Cannot create delta for same package!"
 #~ msgstr "Nem hozható létre különbözet ugyanazon csomagból!"
 
-#~ msgid "Creating delta PiSi package between %s %s"
-#~ msgstr "PiSi különbözeti csomag létrehozása %s és %s között."
+#~ msgid "Creating delta eopkg package between %s %s"
+#~ msgstr "eopkg különbözeti csomag létrehozása %s és %s között."
 
 #~ msgid "Package %s is already at the latest build %s."
 #~ msgstr "A(z) %s csomag már a legutolsó build számot viseli: %s."

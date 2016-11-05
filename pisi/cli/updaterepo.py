@@ -27,7 +27,7 @@ Usage: update-repo [<repo1> <repo2> ... <repon>]
 
 <repoi>: repository name
 
-Synchronizes the PiSi databases with the current repository.
+Synchronizes the eopkg databases with the current repository.
 If no repository is given, all repositories are updated.
 """)
     __metaclass__ = command.autocommand
