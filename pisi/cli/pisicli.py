@@ -30,7 +30,6 @@ import pisi.cli.deletecache
 import pisi.cli.delta
 import pisi.cli.emerge
 import pisi.cli.fetch
-import pisi.cli.graph
 import pisi.cli.index
 import pisi.cli.info
 import pisi.cli.install
