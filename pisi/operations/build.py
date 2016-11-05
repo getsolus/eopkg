@@ -1400,7 +1400,12 @@ class Builder:
             if obj:
                 self.spec.packages.append(obj)
 
-        if ctx.config.values.build.generatedebug:
+        # In most cases just use the legacy debug behaviour
+        gen_debug = ctx.config.values.build.generatedebug
+        # ..Except for the kernel.
+        if self.spec.source.name == "kernel":
+            gen_debug = False
+        if gen_debug:
             debug_packages = []
             for package in self.spec.packages:
                 if "noDebug" in package.buildFlags:
