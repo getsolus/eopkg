@@ -24,7 +24,7 @@ from distutils.command.install import install
 sys.path.insert(0, '.')
 import pisi
 
-IN_FILES = ("pisi.xml.in",)
+IN_FILES = ("eopkg.xml.in",)
 PROJECT = "pisi"
 MIMEFILE_DIR = "usr/share/mime/packages"
 
@@ -62,7 +62,7 @@ class BuildPo(build):
                 if filename.endswith(".py"):
                     filelist.append(os.path.join(root, filename))
 
-        filelist.extend(["eopkg-cli", "pisi.xml.in.h", optparse_path])
+        filelist.extend(["eopkg-cli", "eopkg.xml.in.h", optparse_path])
         filelist.sort()
         with open(files, "w") as _files:
             _files.write("\n".join(filelist))
@@ -156,12 +156,12 @@ class Install(install):
 
 setup(name="pisi",
     version= pisi.__version__,
-    description="PiSi (Packages Installed Successfully as Intended)",
-    long_description="PiSi is the package management system of Pardus Linux.",
+    description="eopkg - package manager",
+    long_description="Solus Interim Package Management",
     license="GNU GPL2",
-    author="Pardus Developers",
-    author_email="pisi@pardus.org.tr",
-    url="http://www.pardus.org.tr/eng/pisi/",
+    author="Solus (Previously Pardus Developers)",
+    author_email="packaging@solus-project.com",
+    url="https://solus-project.com",
     package_dir = {'': ''},
     packages = ['pisi', 'pisi.cli', 'pisi.operations', 'pisi.actionsapi', 'pisi.pxml', 'pisi.scenarioapi', 'pisi.db'],
     scripts = ['eopkg-cli', 'scripts/lseopkg', 'scripts/uneopkg', 'scripts/check-newconfigs.py', 'scripts/revdep-rebuild'],
