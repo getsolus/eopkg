@@ -90,8 +90,9 @@ class Constants:
         self.__c.files_xml = "files.xml"
         self.__c.metadata_xml = "metadata.xml"
         self.__c.install_tar = "install.tar"
-        self.__c.mirrors_conf = "/etc/eopkg/mirrors.conf"
-        self.__c.sandbox_conf = "/etc/eopkg/sandbox.conf"
+        # Legacy cruft on Solus, sol won't support this
+        self.__c.mirrors_conf = "/usr/share/defaults/eopkg/mirrors.conf"
+        self.__c.sandbox_conf = "/usr/share/defaults/eopkg/sandbox.conf"
         self.__c.blacklist = "/etc/eopkg/blacklist"
         self.__c.config_pending = "configpending"
         self.__c.needs_restart = "needsrestart"
