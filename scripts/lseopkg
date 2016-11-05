@@ -30,8 +30,8 @@ def usage(errmsg):
     Error: %s
 
     Usage:
-      lspisi eopkg_package.eopkg         (lists the content of package)
-      lspisi dirs eopkg_package.eopkg    (lists directories in the package for the package developer)
+      lseopkg eopkg_package.eopkg         (lists the content of package)
+      lseopkg dirs eopkg_package.eopkg    (lists directories in the package for the package developer)
     """ % (errmsg)
 
     sys.exit(1)
