@@ -124,7 +124,7 @@ class Install(install):
 
     def generateConfigFile(self):
         import pisi.configfile
-        destpath = os.path.join(self.root, "etc/eopkg/")
+        destpath = os.path.join(self.root, "usr/share/defaults/eopkg/")
         if not os.path.exists(destpath):
             os.makedirs(destpath)
 

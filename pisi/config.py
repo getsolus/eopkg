@@ -16,6 +16,7 @@ regular PiSi configurations.
 """
 
 import os
+import os.path
 import copy
 
 import gettext
@@ -47,7 +48,10 @@ class Config(object):
 
     def __init__(self, options = Options()):
         self.set_options(options)
-        self.values = pisi.configfile.ConfigurationFile("/etc/eopkg/eopkg.conf")
+        if os.path.exists("/etc/eopkg/eopkg.conf"):
+            self.values = pisi.configfile.ConfigurationFile("/etc/eopkg/eopkg.conf")
+        else:
+            self.values = pisi.configfile.ConfigurationFile("/usr/share/defaults/eopkg/eopkg.conf")
 
         # get the initial environment variables. this is needed for
         # build process.
