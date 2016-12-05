@@ -84,22 +84,44 @@ class PackageDB(lazydb.LazyDB):
         pkg, repo = self.get_package_repo(name, repo)
         return pkg
 
+    def get_pkgconfig_providers(self, repo=None):
+        """ get_pkgconfig_providers will return a tuple of two dicts
+
+            The first dict ([0]) contains the standard pkgconfig mapping
+            to package name.
+            The second dict ([1]) contains the pkgconfig32 mapping to
+            package name.
+        """
+        repodb = pisi.db.repodb.RepoDB()
+
+        pkgConfigs = dict()
+        pkgConfigs32 = dict()
+
+        for repo in repodb.list_repos(repo):
+            doc = repodb.get_repo_doc(repo)
+            for pkg in doc.tags("Package"):
+                prov = pkg.getTag("Provides")
+                name = pkg.getTagData("Name")
+                if not prov:
+                    continue
+                for node in prov.tags("PkgConfig32"):
+                    pkgConfigs32[node.firstChild().data()] = name
+                for node in prov.tags("PkgConfig"):
+                    pkgConfigs[node.firstChild().data()] = name
+        return (pkgConfigs, pkgConfigs32)
+
     def get_package_by_pkgconfig(self, pkgconfig):
-        for item in self.list_packages(None):
-            pkg = self.get_package(item)
-            if pkg.providesPkgConfig is not None and len(pkg.providesPkgConfig) > 0:
-                for pc in pkg.providesPkgConfig:
-                    if pc.om == pkgconfig:
-                        return pkg
+        """ This method is deprecated. Use get_pkgconfig_providers instead """
+        provs = self.get_pkgconfig_providers()[0]
+        if pkgconfig in provs:
+            return self.get_package(provs[pkgconfig])
         return None
 
     def get_package_by_pkgconfig32(self, pkgconfig):
-        for item in self.list_packages(None):
-            pkg = self.get_package(item)
-            if pkg.providesPkgConfig32 is not None and len(pkg.providesPkgConfig32) > 0:
-                for pc in pkg.providesPkgConfig32:
-                    if pc.om == pkgconfig:
-                        return pkg
+        """ This method is deprecated. Use get_pkgconfig_providers instead """
+        provs = self.get_pkgconfig_providers()[1]
+        if pkgconfig in provs:
+            return self.get_package(provs[pkgconfig])
         return None
 
     def search_in_packages(self, packages, terms, lang=None):
