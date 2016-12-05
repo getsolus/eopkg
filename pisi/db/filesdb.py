@@ -51,6 +51,27 @@ class FilesDB(lazydb.LazyDB):
                 found.append((pkg, paths))
         return found
 
+    def get_pkgconfig_provider(self, pkgconfigName):
+        """ get_pkgconfig_provider will try known paths to find the provider
+            of a given pkgconfig name """
+        pcPaths = [
+            "usr/lib64/pkgconfig",
+            "usr/share/pkgconfig",
+        ]
+        for p in pcPaths:
+            fp = p + "/" + pkgconfigName + ".pc"
+            if self.has_file(fp):
+                return self.get_file(fp)
+        return None
+
+    def get_pkgconfig32_provider(self, pkgconfigName):
+        """ get_pkgconfig32_provider will try known paths to find the provider
+            of a given pkgconfig32 name """
+        fp = "usr/lib32/pkgconfig" + pkgconfigName + ".pc"
+        if self.has_file(fp):
+            return self.get_file(fp)
+        return None
+
     def add_files(self, pkg, files):
 
         self.__check_filesdb()
