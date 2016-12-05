@@ -1183,7 +1183,7 @@ class Builder:
                             nom = self.filesdb.get_pkgconfig32_provider(line)
                             pkg = None
                             if nom:
-                                pkg = self.installdb.get_package(nom)
+                                pkg = self.installdb.get_package(nom[0])
                             # Fallback to normal pkgconfig
                             if pkg is not None:
                                 fromNative = False
@@ -1195,7 +1195,7 @@ class Builder:
                             nom = self.filesdb.get_pkgconfig_provider(line)
                             pkg = None
                             if nom:
-                                pkg = self.installdb.get_package(nom)
+                                pkg = self.installdb.get_package(nom[0])
                             pkg = self.installdb.get_package_by_pkgconfig(line)
                     if not pkg:
                         ctx.ui.warning("%s depends on unaccounted pkgconfig file! pkgconfig%s(%s)" % (metadata.package.name, "" if not emul32pc else "32", line))
