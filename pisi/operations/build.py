@@ -866,6 +866,8 @@ class Builder:
             if not dep.satisfied_by_installed():
                 dep_unsatis.append(dep)
 
+        pkgConfigs, pkgConfigs32 = self.packagedb.get_pkgconfig_providers()
+
         if dep_unsatis:
             ctx.ui.info(_("Unsatisfied Build Dependencies:") + ' '
                         + util.strlist([str(x) for x in dep_unsatis]))
@@ -883,11 +885,11 @@ class Builder:
                     depsResolved = list()
                     for dep in dep_unsatis:
                         if dep.type == "pkgconfig":
-                            depappend = self.packagedb.get_package_by_pkgconfig(dep.package)
-                            depsResolved.append(depappend.name)
+                            if dep.package in pkgConfigs:
+                                depsResolved.append(pkgConfigs[dep.package])
                         elif dep.type == "pkgconfig32":
-                            depappend = self.packagedb.get_package_by_pkgconfig32(dep.package)
-                            depsResolved.append(depappend.name)
+                            if dep.package in pkgConfigs32:
+                                depsResolved.append(pkgConfigs32[dep.package])
                         else:
                             depsResolved.append(dep.package)
                     if not pisi.api.install([dep for dep in depsResolved], reinstall=True):
@@ -1178,7 +1180,10 @@ class Builder:
                             cached = True
                             pkg = self._pkgconfig_cache32[line]
                         else:
-                            pkg = self.installdb.get_package_by_pkgconfig32(line)
+                            nom = self.filesdb.get_pkgconfig32_provider(line)
+                            pkg = None
+                            if nom:
+                                pkg = self.installdb.get_package(nom)
                             # Fallback to normal pkgconfig
                             if pkg is not None:
                                 fromNative = False
@@ -1187,6 +1192,10 @@ class Builder:
                             cached = True
                             pkg = self._pkgconfig_cache[line]
                         else:
+                            nom = self.filesdb.get_pkgconfig_provider(line)
+                            pkg = None
+                            if nom:
+                                pkg = self.installdb.get_package(nom)
                             pkg = self.installdb.get_package_by_pkgconfig(line)
                     if not pkg:
                         ctx.ui.warning("%s depends on unaccounted pkgconfig file! pkgconfig%s(%s)" % (metadata.package.name, "" if not emul32pc else "32", line))
