@@ -85,8 +85,8 @@ class BuildDefaults:
     jobs = "-j5"
     generateDebug = False
     enableSandbox = False # Dropping sandbox support soon
-    cflags = "-mtune=generic -march=x86-64 -ftree-vectorize -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -fno-omit-frame-pointer -fstack-protector-strong --param ssp-buffer-size=4 -fexceptions -D_FORTIFY_SOURCE=2 -feliminate-unused-debug-types -Wno-error -Wp,-D_REENTRANT"
-    cxxflags = "-mtune=generic -march=x86-64 -ftree-vectorize -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -fno-omit-frame-pointer -fstack-protector-strong --param ssp-buffer-size=4 -fexceptions -D_FORTIFY_SOURCE=2 -feliminate-unused-debug-types -Wno-error -Wp,-D_REENTRANT"
+    cflags = "-mtune=generic -march=x86-64 -ftree-vectorize -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -fno-omit-frame-pointer -fstack-protector --param ssp-buffer-size=4 -fexceptions -D_FORTIFY_SOURCE=2 -feliminate-unused-debug-types -Wno-error -Wp,-D_REENTRANT"
+    cxxflags = "-mtune=generic -march=x86-64 -ftree-vectorize -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -fno-omit-frame-pointer -fstack-protector --param ssp-buffer-size=4 -fexceptions -D_FORTIFY_SOURCE=2 -feliminate-unused-debug-types -Wno-error -Wp,-D_REENTRANT"
     ldflags = "-Wl,--copy-dt-needed-entries -Wl,-O1 -Wl,-z,relro -Wl,-z,now"
     buildhelper = "ccache"
     compressionlevel = 1
