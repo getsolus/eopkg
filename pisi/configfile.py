@@ -85,9 +85,9 @@ class BuildDefaults:
     jobs = "-j5"
     generateDebug = False
     enableSandbox = False # Dropping sandbox support soon
-    cflags = "-mtune=generic -march=x86-64 -ftree-vectorize -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -fno-omit-frame-pointer -fstack-protector --param ssp-buffer-size=4 -fexceptions -D_FORTIFY_SOURCE=2 -feliminate-unused-debug-types -Wno-error -Wp,-D_REENTRANT"
-    cxxflags = "-mtune=generic -march=x86-64 -ftree-vectorize -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -fno-omit-frame-pointer -fstack-protector --param ssp-buffer-size=4 -fexceptions -D_FORTIFY_SOURCE=2 -feliminate-unused-debug-types -Wno-error -Wp,-D_REENTRANT"
-    ldflags = "-Wl,--copy-dt-needed-entries -Wl,-O1 -Wl,-z,relro -Wl,-z,now"
+    cflags = "-mtune=generic -march=x86-64 -O2 -g -feliminate-unused-debug-types -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -fasynchronous-unwind-tables -ftree-loop-vectorize -ftree-vectorize -fopt-info-vec -fno-omit-frame-pointer -Wno-error -Wp,-D_REENTRANT"
+    cxxflags = "-mtune=generic -march=x86-64 -O2 -g -feliminate-unused-debug-types -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-loop-vectorize -ftree-vectorize -fopt-info-vec -fno-omit-frame-pointer -Wno-error -Wp,-D_REENTRANT"
+    ldflags = "-Wl,--copy-dt-needed-entries -Wl,-z -Wl,now -Wl,-z -Wl,relro -Wl,-z,max-page-size=0x1000"
     buildhelper = "ccache"
     compressionlevel = 1
     fallback = "https://www.solus-project.com/source"
