@@ -85,8 +85,8 @@ class BuildDefaults:
     jobs = "-j5"
     generateDebug = False
     enableSandbox = False # Dropping sandbox support soon
-    cflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -malign-data=abi -fno-omit-frame-pointer -fexceptions -fstack-protector --param ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-loop-vectorize -ftree-vectorize -feliminate-unused-debug-types -Wall -Wno-error -Wp,-D_REENTRANT"
-    cxxflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -malign-data=abi -fno-omit-frame-pointer -fexceptions -fstack-protector --param ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-loop-vectorize -ftree-vectorize -feliminate-unused-debug-types -Wall -Wno-error -Wp,-D_REENTRANT"
+    cflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -malign-data=abi -fno-omit-frame-pointer -fexceptions -Wp,-D_FORTIFY_SOURCE=2 -fstack-protector --param ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-loop-vectorize -ftree-vectorize -feliminate-unused-debug-types -Wall -Wno-error -Wp,-D_REENTRANT"
+    cxxflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -malign-data=abi -fno-omit-frame-pointer -fexceptions -Wp,-D_FORTIFY_SOURCE=2 -fstack-protector --param ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-loop-vectorize -ftree-vectorize -feliminate-unused-debug-types -Wall -Wno-error -Wp,-D_REENTRANT"
     ldflags = "-Wl,--copy-dt-needed-entries -Wl,-O1 -Wl,-z,relro -Wl,-z,now -Wl,-z,max-page-size=0x1000"
     buildhelper = "ccache"
     compressionlevel = 1
