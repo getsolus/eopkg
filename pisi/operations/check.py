@@ -30,6 +30,37 @@ def file_corrupted(pfile):
             raise e
     return False
 
+
+# These guys will change due to depmod calls.
+_blessed_kernel_borks = [
+    "modules.alias",
+    "modules.alias.bin",
+    "modules.dep",
+    "modules.dep.bin",
+    "modules.symbols",
+    "modules.symbols.bin",
+]
+
+
+def ignorance_is_bliss(f):
+    """ Too many complaints about things that are missing. """
+    p = f
+    if not p.startswith("/"):
+        p = "/{}".format(f)
+
+    pbas = os.path.basename(p)
+    p = p.replace("/lib64/", "/lib/")
+
+    # Ignore kernel depmod changes?
+    if p.startswith("/lib/modules"):
+        if pbas in _blessed_kernel_borks:
+            return True
+
+    # Running eopkg as root will mutate .pyc files. Ignore them.
+    if p.endswith(".pyc"):
+        return True
+
+
 def check_files(files, check_config=False):
     results = {
                 'missing'   :   [],
@@ -42,6 +73,8 @@ def check_files(files, check_config=False):
         if not check_config and f.type == "config":
             continue
         if not f.hash:
+            continue
+        if ignorance_is_bliss(f.path):
             continue
 
         is_file_corrupted = False
