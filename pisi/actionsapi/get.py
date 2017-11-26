@@ -124,7 +124,7 @@ def LDFLAGS():
 def makeJOBS():
     # Note: "auto" only works when /sys is mounted.
     if env.jobs == "auto":
-        procs = 2
+        procs = 4
         try:
             procs = multiprocessing.cpu_count()
         except Exception, e:
