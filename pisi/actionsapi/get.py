@@ -126,7 +126,7 @@ def makeJOBS():
     if env.jobs == "auto":
         procs = 2
         try:
-            procs = multiprocessing.cpu_count() + 1
+            procs = multiprocessing.cpu_count()
         except Exception, e:
             ctx.ui.warning("Unable to retrieve CPU count: %s" % e)
         return "-j%s" % procs
