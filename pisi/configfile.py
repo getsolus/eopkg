@@ -82,7 +82,7 @@ class BuildDefaults:
     """Default values for [build] section"""
     build_host = "solus"
     host = "x86_64-solus-linux"
-    jobs = "-j5"
+    jobs = "auto"
     generateDebug = False
     enableSandbox = False # Dropping sandbox support soon
     cflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -D_FORTIFY_SOURCE=2 -fstack-protector-strong --param ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-vectorize -feliminate-unused-debug-types -Wall -Wno-error -Wp,-D_REENTRANT"
