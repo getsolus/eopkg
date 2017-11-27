@@ -78,11 +78,16 @@ in the respective order to satisfy dependencies:
 
     ctx.ui.notify(ui.packagestogo, order = order)
 
-    for x in order:
-        if installdb.has_package(x):
-            atomicoperations.remove_single(x)
-        else:
-            ctx.ui.info(_('Package %s is not installed. Cannot remove.') % x)
+    try:
+        for x in order:
+            if installdb.has_package(x):
+                atomicoperations.remove_single(x)
+            else:
+                ctx.ui.info(_('Package %s is not installed. Cannot remove.') % x)
+    except Exception as e:
+        raise e
+    finally:
+        ctx.exec_usysconf()
 
 def plan_remove(A):
     # try to construct a pisi graph of packages to

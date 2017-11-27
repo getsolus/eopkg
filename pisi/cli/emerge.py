@@ -35,7 +35,6 @@ You can also give the name of a component.
 
     def __init__(self, args):
         super(Emerge, self).__init__(args)
-        self.comar = True
 
     name = ("emerge", "em")
 
@@ -73,5 +72,6 @@ You can also give the name of a component.
             ctx.ui.info(_('Outputting binary packages in the package cache.'))
             ctx.config.options.output_dir = ctx.config.cached_packages_dir()
 
+        pisi.api.set_can_configure(not ctx.get_option('ignore_comar'))
         pisi.api.emerge(sources)
 

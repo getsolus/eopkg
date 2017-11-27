@@ -47,13 +47,6 @@ def check_update_actions(packages):
 
     has_actions = False
 
-    if "serviceRestart" in actions:
-        has_actions = True
-        ctx.ui.warning(_("You must restart the following service(s) manually "
-                         "for the updated software to take effect:"))
-        for package, target in actions["serviceRestart"]:
-            ctx.ui.info("    - %s" % target)
-
     if "systemRestart" in actions:
         has_actions = True
         ctx.ui.warning(_("You must restart your system for the updates "
@@ -202,10 +195,15 @@ def upgrade(A=[], repo=None):
 
     operations.remove.remove_obsoleted_packages()
 
-    for path in paths:
-        ctx.ui.info(util.colorize(_("Installing %d / %d") % (paths.index(path)+1, len(paths)), "yellow"))
-        install_op = atomicoperations.Install(path, ignore_file_conflicts = True)
-        install_op.install(True)
+    try:
+        for path in paths:
+            ctx.ui.info(util.colorize(_("Installing %d / %d") % (paths.index(path)+1, len(paths)), "yellow"))
+            install_op = atomicoperations.Install(path, ignore_file_conflicts = True)
+            install_op.install(True)
+    except Exception as e:
+        raise e
+    finally:
+        ctx.exec_usysconf()
 
 def plan_upgrade(A, force_replaced=True, replaces=None):
     # FIXME: remove force_replaced

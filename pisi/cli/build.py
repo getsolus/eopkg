@@ -41,7 +41,6 @@ class Build(command.Command):
 
     def __init__(self, args):
         super(Build, self).__init__(args)
-        self.comar = True
 
     name = ("build", "bi")
 

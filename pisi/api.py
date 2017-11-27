@@ -93,48 +93,9 @@ def set_io_streams(stdout=None, stderr=None):
     if stderr:
         ctx.stderr = stderr
 
-def set_comar(enable):
-    """
-    Set comar usage
-    False means no preremove and postinstall scripts will be run
-    @param enable: Flag indicating comar usage
-    """
-    ctx.comar = enable
-
-def set_comar_updated(updated):
-    """
-    Set comar package update status
-    @param updated: True if COMAR package is updated, else False
-    """
-    ctx.comar_updated = updated
-
-def set_dbus_sockname(sockname):
-    """
-    Set dbus socket file
-    Used by YALI
-    @param sockname: Path to dbus socket file
-    """
-    ctx.dbus_sockname = sockname
-
-def set_dbus_timeout(timeout):
-    """
-    Set dbus timeout
-    Used by YALI
-    @param timeout: Timeout in seconds
-    """
-    ctx.dbus_timeout = timeout
-
-def set_signal_handling(enable):
-    """
-    Enable signal handling. Signal handling in pisi mostly used for disabling keyboard interrupts
-    in critical paths.
-    Used by YALI
-    @param enable: Flag indicating signal handling usage
-    """
-    if enable:
-        ctx.sig = pisi.signalhandler.SignalHandler()
-    else:
-        ctx.sig = None
+def set_can_configure(configure):
+    """ Specify whether we're allowed to run usysconf """
+    ctx.can_usysconf = configure
 
 def set_options(options):
     """
@@ -692,9 +653,6 @@ def generate_pending_order(A):
 
 @locked
 def configure_pending(packages=None):
-    # Import COMAR
-    import pisi.comariface
-
     # start with pending packages
     # configure them in reverse topological order of dependency
     installdb = pisi.db.installdb.InstallDB()
@@ -703,33 +661,26 @@ def configure_pending(packages=None):
     else:
         packages = set(packages).intersection(installdb.list_pending())
 
-    order = generate_pending_order(packages)
     try:
-        for x in order:
-            if installdb.has_package(x):
-                pkginfo = installdb.get_package(x)
-                pkg_path = installdb.package_path(x)
-                m = pisi.metadata.MetaData()
-                metadata_path = pisi.util.join_path(pkg_path, ctx.const.metadata_xml)
-                m.read(metadata_path)
-                # FIXME: we need a full package info here!
-                pkginfo.name = x
-                ctx.ui.notify(pisi.ui.configuring, package = pkginfo, files = None)
-                pisi.comariface.post_install(
-                    pkginfo.name,
-                    m.package.providesComar,
-                    pisi.util.join_path(pkg_path, ctx.const.comar_dir),
-                    pisi.util.join_path(pkg_path, ctx.const.metadata_xml),
-                    pisi.util.join_path(pkg_path, ctx.const.files_xml),
-                    None,
-                    None,
-                    m.package.version,
-                    m.package.release
-                )
-                ctx.ui.notify(pisi.ui.configured, package = pkginfo, files = None)
-            installdb.clear_pending(x)
-    except ImportError:
-        raise pisi.Error(_("comar package is not fully installed"))
+        ctx.exec_usysconf()
+    except Exception as e:
+        raise e
+        return
+
+    # Clear legacy "needs configuration" flag
+    order = generate_pending_order(packages)
+    for x in order:
+        if installdb.has_package(x):
+            pkginfo = installdb.get_package(x)
+            pkg_path = installdb.package_path(x)
+            m = pisi.metadata.MetaData()
+            metadata_path = pisi.util.join_path(pkg_path, ctx.const.metadata_xml)
+            m.read(metadata_path)
+            # FIXME: we need a full package info here!
+            pkginfo.name = x
+            ctx.ui.notify(pisi.ui.configuring, package = pkginfo, files = None)
+            ctx.ui.notify(pisi.ui.configured, package = pkginfo, files = None)
+        installdb.clear_pending(x)
 
 def info(package, installed = False):
     if package.endswith(ctx.const.package_suffix):
@@ -883,7 +834,6 @@ def rebuild_db(files=False):
     # save parameters and shutdown pisi
     options = ctx.config.options
     ui = ctx.ui
-    comar = ctx.comar
     pisi._cleanup()
 
     filesdb.close()
@@ -893,7 +843,6 @@ def rebuild_db(files=False):
     # reinitialize everything
     set_userinterface(ui)
     set_options(options)
-    set_comar(comar)
 
     # construct new database
     rebuild_filesdb()

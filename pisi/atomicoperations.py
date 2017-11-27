@@ -148,7 +148,6 @@ class Install(AtomicOperation):
         ctx.ui.notify(pisi.ui.installing, package=self.pkginfo, files=self.files)
 
         self.ask_reinstall = ask_reinstall
-        self.check_requirements()
         self.check_versioning(self.pkginfo.version, self.pkginfo.release)
         self.check_relations()
         self.check_operation()
@@ -157,7 +156,6 @@ class Install(AtomicOperation):
 
         self.extract_install()
         self.store_pisi_files()
-        self.postinstall()
         self.update_databases()
 
         ctx.enable_keyboard_interrupts()
@@ -168,15 +166,6 @@ class Install(AtomicOperation):
         else:
             event = pisi.ui.installed
         ctx.ui.notify(event, package = self.pkginfo, files = self.files)
-
-    def check_requirements(self):
-        """check system requirements"""
-        #TODO: IS THERE ENOUGH SPACE?
-        # what to do if / is split into /usr, /var, etc.
-        # check comar
-        if self.metadata.package.providesComar and ctx.comar:
-            import pisi.comariface as comariface
-            comariface.get_link()
 
     def check_replaces(self):
         for replaced in self.pkginfo.replaces:
@@ -274,41 +263,9 @@ class Install(AtomicOperation):
             self.old_pkginfo = self.installdb.get_info(pkg.name)
             self.old_path = self.installdb.pkg_dir(pkg.name, iversion_s, irelease_s)
             self.remove_old = Remove(pkg.name)
-            self.remove_old.run_preremove()
-            self.remove_old.run_postremove()
 
     def reinstall(self):
         return not self.operation == INSTALL
-
-    def postinstall(self):
-        self.config_later = False
-        if ctx.comar:
-            import pisi.comariface
-            try:
-                if self.operation == UPGRADE or self.operation == DOWNGRADE:
-                    fromVersion = self.old_pkginfo.version
-                    fromRelease = self.old_pkginfo.release
-                else:
-                    fromVersion = None
-                    fromRelease = None
-                ctx.ui.notify(pisi.ui.configuring, package = self.pkginfo, files = self.files)
-                pisi.comariface.post_install(
-                    self.pkginfo.name,
-                    self.metadata.package.providesComar,
-                    self.package.comar_dir(),
-                    os.path.join(self.package.pkg_dir(), ctx.const.metadata_xml),
-                    os.path.join(self.package.pkg_dir(), ctx.const.files_xml),
-                    fromVersion,
-                    fromRelease,
-                    self.metadata.package.version,
-                    self.metadata.package.release
-                    )
-                ctx.ui.notify(pisi.ui.configured, package = self.pkginfo, files = self.files)
-            except pisi.comariface.Error:
-                ctx.ui.warning(_('%s configuration failed.') % self.pkginfo.name)
-                self.config_later = True
-        else:
-            self.config_later = True
 
     def extract_install(self):
         "unzip package in place"
@@ -505,18 +462,12 @@ class Install(AtomicOperation):
         if self.reinstall():
             self.remove_old.remove_db()
 
-        if self.config_later:
-            self.installdb.mark_pending(self.pkginfo.name)
-
-        # need service or system restart?
+        # need system restart?
         if self.installdb.has_package(self.pkginfo.name):
             (version, release, build) = self.installdb.get_version(self.pkginfo.name)
             actions = self.pkginfo.get_update_actions(release)
         else:
             actions = self.pkginfo.get_update_actions("1")
-
-        for package_name in actions.get("serviceRestart", []):
-            pisi.api.add_needs_restart(package_name)
 
         for package_name in actions.get("systemRestart", []):
             pisi.api.add_needs_reboot(package_name)
@@ -578,11 +529,8 @@ class Remove(AtomicOperation):
 
         self.check_dependencies()
 
-        self.run_preremove()
         for fileinfo in self.files.list:
             self.remove_file(fileinfo, self.package_name, True)
-
-        self.run_postremove()
 
         self.update_databases()
 
@@ -651,24 +599,6 @@ class Remove(AtomicOperation):
             os.rmdir(dpath)
             dpath = os.path.dirname(dpath)
 
-    def run_preremove(self):
-        if ctx.comar:
-            import pisi.comariface
-            pisi.comariface.pre_remove(
-                self.package_name,
-                os.path.join(self.package.pkg_dir(), ctx.const.metadata_xml),
-                os.path.join(self.package.pkg_dir(), ctx.const.files_xml),
-            )
-
-    def run_postremove(self):
-        if ctx.comar:
-            import pisi.comariface
-            pisi.comariface.post_remove(
-                self.package_name,
-                os.path.join(self.package.pkg_dir(), ctx.const.metadata_xml),
-                os.path.join(self.package.pkg_dir(), ctx.const.files_xml),
-                provided_scripts=self.package.providesComar,
-            )
 
     def update_databases(self):
         self.remove_db()

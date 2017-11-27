@@ -301,7 +301,6 @@ class ArchiveTar(ArchiveBase):
             if callback:
                 callback(tarinfo, extracted=False)
 
-            startservices = []
             if tarinfo.issym() and \
                     os.path.isdir(tarinfo.name) and \
                     not os.path.islink(tarinfo.name):
@@ -344,16 +343,6 @@ class ArchiveTar(ArchiveBase):
                     except OSError, e:
                         # hmmm, not empty dir? try rename it adding .old extension.
                         if e.errno == errno.ENOTEMPTY:
-                            # if directory with dbus/pid file was moved we have to restart dbus
-                            for (path, dirs, files) in os.walk(tarinfo.name):
-                                if path.endswith("dbus") and "pid" in files:
-                                    startservices.append("dbus")
-                                    for service in ("NetworkManager", "connman", "wicd"):
-                                        if os.path.isfile("/etc/mudur/services/enabled/%s" % service):
-                                            startservices.append(service)
-                                            os.system("service % stop" % service)
-                                    os.system("service dbus stop")
-                                    break
                             os.system("mv -f %s %s.old" % (tarinfo.name, tarinfo.name))
                         else:
                             raise
@@ -375,7 +364,6 @@ class ArchiveTar(ArchiveBase):
 
             try:
                 self.tar.extract(tarinfo)
-                for service in startservices: os.system("service %s start" % service)
             except OSError, e:
                 # Handle the case where an upper directory cannot
                 # be created because of a conflict with an existing

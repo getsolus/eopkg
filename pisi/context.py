@@ -13,10 +13,15 @@
 # global variables here
 
 import signal
+import os
 
 import pisi.constants
 import pisi.signalhandler
 import pisi.ui
+
+import gettext
+__trans = gettext.translation('pisi', fallback=True)
+_ = __trans.ugettext
 
 const = pisi.constants.Constants()
 sig = pisi.signalhandler.SignalHandler()
@@ -40,10 +45,9 @@ ui = pisi.ui.UI()
 stdout = None
 stderr = None
 
-comar = True
-comar_updated = False
-dbus_sockname = None
-dbus_timeout = 60 * 60 # in seconds
+# usysconf binary
+usysconf_binary = "/usr/sbin/usysconf"
+can_usysconf = True
 
 # Bug #2879
 # FIXME: Maybe we can create a simple rollback mechanism. There are other
@@ -62,3 +66,24 @@ def keyboard_interrupt_disabled():
 
 def keyboard_interrupt_pending():
     return sig and sig.signal_pending(signal.SIGINT)
+
+def exec_usysconf():
+    """ Just stick this all in the one place """
+    global ui
+    global usysconf_binary
+    global can_usysconf
+
+    if not can_usysconf:
+        return
+
+    # We must survive not having usysconf just in case of derp.
+    if not os.path.exists(usysconf_binary):
+        ui.error(_('usysconf not installed. Please upgrade!'))
+        return
+
+    try:
+        os.system("{} run".format(usysconf_binary))
+    except Exception as e:
+        if ctx:
+            ctx.ui.error(_('Failed to configure system'))
+        raise e

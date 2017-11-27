@@ -103,10 +103,16 @@ def install_pkg_names(A, reinstall = False):
     if conflicts:
         operations.remove.remove_conflicting_packages(conflicts)
 
-    for path in paths:
-        ctx.ui.info(util.colorize(_("Installing %d / %d") % (paths.index(path)+1, len(paths)), "yellow"))
-        install_op = atomicoperations.Install(path)
-        install_op.install(False)
+    try:
+        for path in paths:
+            ctx.ui.info(util.colorize(_("Installing %d / %d") % (paths.index(path)+1, len(paths)), "yellow"))
+            install_op = atomicoperations.Install(path)
+            install_op.install(False)
+    except Exception as e:
+        raise e
+        return False
+    finally:
+        ctx.exec_usysconf()
 
     return True
 
@@ -248,8 +254,14 @@ def install_pkg_files(package_URIs, reinstall = False):
 
     ctx.ui.notify(ui.packagestogo, order = order)
 
-    for x in order:
-        atomicoperations.install_single_file(dfn[x], reinstall)
+    try:
+        for x in order:
+            atomicoperations.install_single_file(dfn[x], reinstall)
+    except Exception as e:
+        raise e
+        return False
+    finally:
+        ctx.exec_usysconf()
 
     return True
 

@@ -77,7 +77,6 @@ class Command(object):
     def __init__(self, args = None):
         # now for the real parser
         import pisi
-        self.comar = False
         self.parser = optparse.OptionParser(usage=getattr(self, "__doc__"),
                                             version="%prog " + pisi.__version__,
                                             formatter=PisiHelpFormatter())
@@ -167,7 +166,12 @@ class Command(object):
 
         pisi.api.set_userinterface(ui)
         pisi.api.set_options(self.options)
-        pisi.api.set_comar(self.comar and not ctx.get_option('ignore_comar'))
+
+        # Disable configuration for destdir ops (ISO builds and such)
+        if self.options.destdir and self.options.destdir != '/':
+            pisi.api.set_can_configure(False)
+        else:
+            pisi.api.set_can_configure(not ctx.get_option('ignore_comar'))
 
     def get_name(self):
         return self.__class__.name
@@ -196,7 +200,6 @@ class PackageOp(Command):
 
     def __init__(self, args):
         super(PackageOp, self).__init__(args)
-        self.comar = True
 
     def options(self, group):
         group.add_option("--ignore-dependency", action="store_true",
