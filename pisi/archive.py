@@ -268,6 +268,20 @@ class ArchiveTar(ArchiveBase):
         super(ArchiveTar, self).unpack(target_dir, clean_dir)
         self.unpack_dir(target_dir)
 
+    def maybe_nuke_pip(self, info):
+        if not info.name.endswith(".egg-info"):
+            return
+        if not "site-packages" in info.name:
+            return
+        if not "/python" in info.name:
+            return
+        if not info.isreg():
+            return
+        if not os.path.isdir(info.name):
+            return
+        print("Overwriting stale pip install: /{}".format(info.name))
+        shutil.rmtree(info.name)
+
     def unpack_dir(self, target_dir, callback=None):
         rmode = ""
         self.tar = None
@@ -300,6 +314,12 @@ class ArchiveTar(ArchiveBase):
         for tarinfo in self.tar:
             if callback:
                 callback(tarinfo, extracted=False)
+
+            try:
+                self.maybe_nuke_pip(tarinfo)
+            except Exception as e:
+                print("Failed to remove stale pip install: {}".format(e))
+                raise e
 
             if tarinfo.issym() and \
                     os.path.isdir(tarinfo.name) and \
