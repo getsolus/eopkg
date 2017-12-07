@@ -125,6 +125,12 @@ def list_needs_reboot():
     """
     return pisi.db.installdb.InstallDB().list_needs_reboot()
 
+def list_auto_installed():
+    """
+    Return a list of packages that have been automatically installed.
+    """
+    return pisi.db.installdb.InstallDB().list_auto_installed()
+
 def add_needs_restart(package):
     """
     Add a new package to service restart list.
@@ -137,6 +143,12 @@ def add_needs_reboot(package):
     """
     pisi.db.installdb.InstallDB().mark_needs_reboot(package)
 
+def add_auto_installed(package):
+    """
+    Add a new package to the auto installed list.
+    """
+    pisi.db.installdb.InstallDB().mark_auto_installed(package)
+
 def remove_needs_restart(package):
     """
     Remove a package from service restart list. Passing "*" will clear whole list.
@@ -148,6 +160,12 @@ def remove_needs_reboot(package):
     Remove a package from system reboot list. Passing "*" will clear whole list.
     """
     pisi.db.installdb.InstallDB().clear_needs_reboot(package)
+
+def remove_auto_install(package):
+    """
+    Remove a package from the auto install list. Passing "*" will clear whole list.
+    """
+    pisi.db.installdb.InstallDB().clear_auto_installed(package)
 
 def list_pending():
     """

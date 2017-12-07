@@ -90,6 +90,7 @@ def install_pkg_names(A, reinstall = False):
     if not ctx.get_option('ignore_package_conflicts'):
         conflicts = operations.helper.check_conflicts(order, packagedb)
 
+    automatic = operations.helper.extract_automatic(A, order)
     paths = []
     for x in order:
         ctx.ui.info(util.colorize(_("Downloading %d / %d") % (order.index(x)+1, len(order)), "yellow"))
@@ -107,6 +108,8 @@ def install_pkg_names(A, reinstall = False):
         for path in paths:
             ctx.ui.info(util.colorize(_("Installing %d / %d") % (paths.index(path)+1, len(paths)), "yellow"))
             install_op = atomicoperations.Install(path)
+            if install_op.pkginfo.name in automatic:
+                install_op.automatic = True
             install_op.install(False)
     except Exception as e:
         raise e

@@ -97,6 +97,7 @@ class Constants:
         self.__c.config_pending = "configpending"
         self.__c.needs_restart = "needsrestart"
         self.__c.needs_reboot = "needsreboot"
+        self.__c.auto_installed = "autoinstalled"
         self.__c.files_db = "files.db"
         self.__c.repos = "repos"
         self.__c.devel_package_end = "-devel"

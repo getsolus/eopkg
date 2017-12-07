@@ -60,6 +60,9 @@ opttostr = {INSTALL:"install", REMOVE:"remove", REINSTALL:"reinstall", UPGRADE:"
 class Install(AtomicOperation):
     "Install class, provides install routines for pisi packages"
 
+    # Is this an automatic install?
+    automatic = False
+
     @staticmethod
     def from_name(name, ignore_dep = None):
         packagedb = pisi.db.packagedb.PackageDB()
@@ -136,6 +139,7 @@ class Install(AtomicOperation):
         self.filesdb = pisi.db.filesdb.FilesDB()
         self.installdb = pisi.db.installdb.InstallDB()
         self.operation = INSTALL
+        self.automatic = False
 
     def install(self, ask_reinstall = True):
 
@@ -478,6 +482,12 @@ class Install(AtomicOperation):
         # installed packages
         self.installdb.add_package(self.pkginfo)
 
+        # If we're manually installed, remove flag
+        if self.automatic:
+            self.installdb.mark_auto_installed(self.pkginfo.name)
+        else:
+            self.installdb.clear_auto_installed(self.pkginfo.name)
+
         otype = "delta" if self.package_fname.endswith(ctx.const.delta_package_suffix) else None
         self.historydb.add_and_update(pkgBefore=self.old_pkginfo, pkgAfter=self.pkginfo, operation=opttostr[self.operation], otype=otype)
 
@@ -609,6 +619,7 @@ class Remove(AtomicOperation):
 
     def remove_db(self):
         self.installdb.remove_package(self.package_name)
+        self.installdb.clear_auto_installed(self.package_name)
         self.filesdb.remove_files(self.files.list)
 # FIX:DB
 #         # FIXME: something goes wrong here, if we use ctx operations ends up with segmentation fault!

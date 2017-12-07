@@ -289,6 +289,9 @@ class InstallDB(lazydb.LazyDB):
     def mark_needs_reboot(self, package):
         self.__mark_package(ctx.const.needs_reboot, package)
 
+    def mark_auto_installed(self, package):
+        self.__mark_package(ctx.const.auto_installed, package)
+
     def add_package(self, pkginfo):
         # Cleanup old revdep info
         for revdep_info in self.rev_deps_db.values():
@@ -318,6 +321,9 @@ class InstallDB(lazydb.LazyDB):
     def list_needs_reboot(self):
         return self.__get_marked_packages(ctx.const.needs_reboot)
 
+    def list_auto_installed(self):
+        return self.__get_marked_packages(ctx.const.auto_installed)
+
     def __write_marked_packages(self, _type, packages):
         info_file = os.path.join(ctx.config.info_dir(), _type)
         config = open(info_file, "w")
@@ -342,6 +348,9 @@ class InstallDB(lazydb.LazyDB):
 
     def clear_needs_reboot(self, package):
         self.__clear_marked_packages(ctx.const.needs_reboot, package)
+
+    def clear_auto_installed(self, package):
+        self.__clear_marked_packages(ctx.const.auto_installed, package)
 
     def package_path(self, package):
 

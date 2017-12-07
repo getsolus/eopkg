@@ -74,6 +74,30 @@ def expand_src_components(A):
             Ap.add(x)
     return Ap
 
+def extract_automatic(A, total):
+    """
+    Determine all automatic dependencies in the graph.
+
+    This is only applicable to packages coming from the repo
+    """
+
+    ret = set()
+    installdb = pisi.db.installdb.InstallDB()
+    packagedb = pisi.db.packagedb.PackageDB()
+
+    for i in total:
+        if i in A:
+            continue
+        repoVariant = packagedb.get_package(i)
+        # system.base candidate is never "automatic" ...
+        if repoVariant.partOf == "system.base":
+            continue
+        if installdb.has_package(i):
+            continue
+        ret.add(i)
+
+    return ret
+
 def calculate_download_sizes(order):
     total_size = cached_size = 0
 
