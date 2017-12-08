@@ -431,6 +431,17 @@ def remove(packages, ignore_dependency=False, ignore_safety=False):
     return pisi.operations.remove.remove(packages, ignore_dependency, ignore_safety)
 
 @locked
+def autoremove(packages, ignore_dependency=False, ignore_safety=False):
+    """
+    Removes the given packages from the system along with automatically installed packages
+    @param packages: list of package names -> list_of_strings
+    @param ignore_dependency: removes packages without looking into theirs reverse deps if True
+    @param ignore_safety: system.base packages can also be removed if True
+    """
+    pisi.db.historydb.HistoryDB().create_history("remove")
+    return pisi.operations.remove.remove(packages, ignore_dependency, ignore_safety, autoremove=True)
+
+@locked
 def install(packages, reinstall=False, ignore_file_conflicts=False, ignore_package_conflicts=False):
     """
     Returns True if no errors occured during the operation

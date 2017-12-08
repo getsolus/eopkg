@@ -24,7 +24,7 @@ import pisi.util as util
 import pisi.ui as ui
 import pisi.db
 
-def remove(A, ignore_dep = False, ignore_safety = False):
+def remove(A, ignore_dep = False, ignore_safety = False, autoremove = False):
     """remove set A of packages from system (A is a list of package names)"""
 
     componentdb = pisi.db.componentdb.ComponentDB()
@@ -60,7 +60,25 @@ def remove(A, ignore_dep = False, ignore_safety = False):
         return False
 
     if not ctx.config.get_option('ignore_dependency') and not ignore_dep:
-        G_f, order = plan_remove(A)
+        if autoremove:
+            G_f, order = plan_autoremove(A)
+            A3 = set(order)
+
+            if not ctx.get_option('ignore_safety') and not ctx.config.values.general.ignore_safety and not ignore_safety:
+                if componentdb.has_component('system.base'):
+                    systembase = set(componentdb.get_union_component('system.base').packages)
+                    refused = A3.intersection(systembase)
+                    if refused:
+                        raise pisi.Error(_("Safety switch prevents the removal of "
+                                           "following packages:\n") +
+                                            util.format_by_columns(sorted(refused)))
+                        A3 = A3 - systembase
+                        order = list(A3)
+                else:
+                    ctx.ui.warning(_("Safety switch: The component system.base cannot be found."))
+
+        else:
+            G_f, order = plan_remove(A)
     else:
         G_f = None
         order = A
