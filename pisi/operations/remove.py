@@ -120,6 +120,95 @@ def plan_remove(A):
     order = G_f.topological_sort()
     return G_f, order
 
+revdep_owner = None
+
+def revdep_from_hell(idb, orphans, order, pkgname):
+    """
+    Evil in a box.
+    """
+
+    global revdep_owner
+
+    revdeps = idb.get_rev_deps(pkgname)
+    for (name, rdep) in revdeps:
+        if name not in orphans and name not in order:
+            revdep_owner = name
+            return False
+        if not revdep_from_hell(idb, orphans, order, name):
+            return False
+    return True
+
+def plan_autoremove(name):
+    """
+    Attempt to plan the automatic removal of a package and associated
+    automatically installed dependencies.
+
+    This function will take special care to not remove auto-installed packages
+    that are still in use by other packages not in this list.
+    """
+    idb = pisi.db.installdb.InstallDB()
+    orphans = idb.list_auto_installed()
+    pg, pkgs = plan_remove(name)
+    order = pg.topological_sort()
+
+    murderficate = set()
+
+    # Build a first-leaf set of orphaned removals
+    for pkgID in pkgs:
+        pkg = idb.get_package(pkgID)
+        for runtimeDep in pkg.runtimeDependencies():
+            depName = runtimeDep.name()
+            if depName not in orphans:
+                continue
+            if not revdep_from_hell(idb, orphans, order, depName):
+                continue
+            murderficate.add(depName)
+
+    # Ensure our removal plan is consistent here
+    murderficate.update(set(order))
+    pg, pkgs = plan_remove(murderficate)
+
+    newSet = set(pkgs)
+
+    # Now for everyone we're removing, did that introduce through dependencies
+    # a now-orphaned package?
+    def depMangler(item):
+        pkg = idb.get_package(item)
+        for dep in pkg.runtimeDependencies():
+            nom = dep.name()
+            if nom in orphans and nom not in newSet:
+                if revdep_from_hell(idb, orphans, pkgs, nom):
+                    newSet.add(nom)
+                    depMangler(nom)
+
+    # Blast the whole pending list through the mangler
+    for item in pkgs:
+        depMangler(item)
+
+    # Return the consistently ordered graph
+    return plan_remove(newSet)
+
+def plan_autoremove_all():
+    """
+    Attempt to automatically remove all ORPHANED automatically installed
+    packages.
+
+    This will not remove any package with a dependency outside the orphan
+    set.
+    """
+    idb = pisi.db.installdb.InstallDB()
+    orphans = idb.list_auto_installed()
+
+    murderficate = set()
+    for pkgID in orphans:
+        if not idb.has_package(pkgID):
+            continue
+        if not revdep_from_hell(idb, orphans, murderficate, pkgID):
+            continue
+        murderficate.add(pkgID)
+
+    return plan_remove(murderficate)
+
 def remove_conflicting_packages(conflicts):
     if remove(conflicts, ignore_dep=True, ignore_safety=True):
         raise Exception(_("Conflicts remain"))
