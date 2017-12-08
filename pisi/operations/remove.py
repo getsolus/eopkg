@@ -24,7 +24,7 @@ import pisi.util as util
 import pisi.ui as ui
 import pisi.db
 
-def remove(A, ignore_dep = False, ignore_safety = False, autoremove = False):
+def remove(A, ignore_dep = False, ignore_safety = False, autoremove = False, force_prompt = False):
     """remove set A of packages from system (A is a list of package names)"""
 
     componentdb = pisi.db.componentdb.ComponentDB()
@@ -86,7 +86,7 @@ def remove(A, ignore_dep = False, ignore_safety = False, autoremove = False):
     ctx.ui.info(_("""The following list of packages will be removed
 in the respective order to satisfy dependencies:
 """) + util.strlist(order))
-    if len(order) > len(A_0):
+    if len(order) > len(A_0) or force_prompt:
         if not ctx.ui.confirm(_('Do you want to continue?')):
             ctx.ui.warning(_('Package removal declined'))
             return False
@@ -106,6 +106,10 @@ in the respective order to satisfy dependencies:
         raise e
     finally:
         ctx.exec_usysconf()
+
+def remove_orphans(ignore_dep = False, ignore_safety = False):
+    pg, pkgs = plan_autoremove_all()
+    return remove(pkgs, ignore_dep, ignore_safety, autoremove = False, force_prompt=True)
 
 def plan_remove(A):
     # try to construct a pisi graph of packages to

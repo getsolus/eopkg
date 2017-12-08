@@ -442,6 +442,11 @@ def autoremove(packages, ignore_dependency=False, ignore_safety=False):
     return pisi.operations.remove.remove(packages, ignore_dependency, ignore_safety, autoremove=True)
 
 @locked
+def remove_orphans(ignore_dependency=False, ignore_safety=False):
+    pisi.db.historydb.HistoryDB().create_history("remove")
+    return pisi.operations.remove.remove_orphans(ignore_dependency, ignore_safety)
+
+@locked
 def install(packages, reinstall=False, ignore_file_conflicts=False, ignore_package_conflicts=False):
     """
     Returns True if no errors occured during the operation
