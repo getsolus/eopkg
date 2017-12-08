@@ -19,6 +19,8 @@ _ = __trans.ugettext
 import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.db
+from pisi.operations.remove import list_orphans
+import pisi.util as util
 
 class ListInstalled(command.Command):
     __doc__ = _("""Print the list of all installed packages
@@ -38,7 +40,8 @@ Usage: list-installed
     def options(self):
 
         group = optparse.OptionGroup(self.parser, _("list-installed options"))
-
+        group.add_option("-a", "--automatic", action="store_true",
+                               default=False, help=_("Show automatically installed packages and the parent dependency"))
         group.add_option("-b", "--with-build-host",
                          action="store",
                          default=None,
@@ -55,6 +58,9 @@ Usage: list-installed
 
     def run(self):
         self.init(database = True, write = False)
+
+        if self.options.automatic:
+            return self.run_automatic_only()
 
         build_host = ctx.get_option("with_build_host")
         if build_host is None:
@@ -88,3 +94,25 @@ Usage: list-installed
             else:
                 package.name = package.name + ' ' * (maxlen - len(package.name))
                 ctx.ui.info('%s - %s' % (package.name, unicode(package.summary)))
+
+    def run_automatic_only(self):
+        """
+        Only list the automatically installed packages
+        """
+        orphans = list_orphans()
+        keys = orphans.keys()
+        keys.sort()
+        maxlen = max([len(x) for x in keys])
+
+        for orphan in keys:
+            owner = orphans[orphan]
+            orphan_print = orphan
+            if owner:
+                orphan_print = util.colorize(orphan_print, 'green')
+            else:
+                orphan_print = util.colorize(orphan_print, 'brightwhite')
+
+            if not owner:
+                owner = _("Orphaned package")
+            orphan_print += ' ' * max(0, maxlen - len(orphan))
+            ctx.ui.info('%s - %s ' % (orphan_print, unicode(owner)))

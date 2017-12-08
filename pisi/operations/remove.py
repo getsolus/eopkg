@@ -227,6 +227,24 @@ def plan_autoremove_all():
 
     return plan_remove(murderficate)
 
+def list_orphans():
+    """
+    Helper function to return a list of potential orphans and parents
+    """
+    idb = pisi.db.installdb.InstallDB()
+    orphans = idb.list_auto_installed()
+    global revdep_owner
+
+    ret = dict()
+    for pkgID in orphans:
+        if not idb.has_package(pkgID):
+            continue
+        if not revdep_from_hell(idb, orphans, ret.keys(), pkgID):
+            ret[pkgID] = revdep_owner
+            continue
+        ret[pkgID] = None
+    return ret
+
 def remove_conflicting_packages(conflicts):
     if remove(conflicts, ignore_dep=True, ignore_safety=True):
         raise Exception(_("Conflicts remain"))
