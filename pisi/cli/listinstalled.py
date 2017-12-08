@@ -102,7 +102,8 @@ Usage: list-installed
         orphans = list_orphans()
         keys = orphans.keys()
         keys.sort()
-        maxlen = max([len(x) for x in keys])
+        if keys and len(keys) > 0:
+            maxlen = max([len(x) for x in keys])
 
         for orphan in keys:
             owner = orphans[orphan]
