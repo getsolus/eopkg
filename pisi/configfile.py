@@ -87,7 +87,7 @@ class BuildDefaults:
     enableSandbox = False # Dropping sandbox support soon
     cflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -Wformat -Wformat-security -D_FORTIFY_SOURCE=2 -fstack-protector-strong --param ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-vectorize -feliminate-unused-debug-types -Wall -Wno-error -Wp,-D_REENTRANT"
     cxxflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -D_FORTIFY_SOURCE=2 -fstack-protector-strong --param ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-vectorize -feliminate-unused-debug-types -Wall -Wno-error -Wp,-D_REENTRANT"
-    ldflags = "-Wl,-O1 -Wl,-z,relro -Wl,-z,now -Wl,-z,max-page-size=0x1000 -Wl,-Bsymbolic-functions"
+    ldflags = "-Wl,--copy-dt-needed-entries -Wl,-O1 -Wl,-z,relro -Wl,-z,now -Wl,-z,max-page-size=0x1000 -Wl,-Bsymbolic-functions"
     buildhelper = "ccache"
     compressionlevel = 1
     fallback = "https://www.solus-project.com/source"
@@ -314,3 +314,4 @@ class ConfigurationFile(object):
                 fp.write(sect.getvalue())
 
         fp.close()
+        
