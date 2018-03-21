@@ -81,6 +81,12 @@ def exec_usysconf():
         ui.error(_('usysconf not installed. Please upgrade!'))
         return
 
+    # Tell UI tools the system configuration is running
+    try:
+        ui.notify(pisi.ui.systemconf)
+    except:
+        pass
+
     try:
         os.system("{} run".format(usysconf_binary))
     except Exception as e:
