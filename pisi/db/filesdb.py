@@ -67,7 +67,7 @@ class FilesDB(lazydb.LazyDB):
     def get_pkgconfig32_provider(self, pkgconfigName):
         """ get_pkgconfig32_provider will try known paths to find the provider
             of a given pkgconfig32 name """
-        fp = "usr/lib32/pkgconfig" + pkgconfigName + ".pc"
+        fp = "usr/lib32/pkgconfig/" + pkgconfigName + ".pc"
         if self.has_file(fp):
             return self.get_file(fp)
         return None
