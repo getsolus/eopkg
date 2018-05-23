@@ -370,6 +370,189 @@ alias, if available. Most commands in eopkg support a short form.
         Just like `--exclude`, except the package/component list is specified in
         the given filename.
 
+`list-available <la> <repo name?>`
+
+    List all available packages in all repositories, or just in the repositories
+    specified.
+
+ * `-l`, `--long`:
+
+        Use long output instead of brief one line descriptions.
+
+ * `-c`, `--component`:
+
+        List available packages under the given component.
+
+ * `-U`, `--uninstalled`:
+
+        Only show uninstalled packages, i.e. packages that are available but
+        not currently installed on the system.
+
+`list-components (lc)`
+
+        Show all available components in the combined indexes of all installed
+        repositories. Each package may belong to only one component, and these
+        are the enforced level of categorisation within a Solus repository.
+
+ * `l`, `--long`:
+
+        Show full details on each component instead of just listing the names.
+
+ * `r`, `--repository`:
+
+        Only list components in the specified repository.
+
+`list-installed (li)`:
+
+    Show a list of all installed packages.
+
+ * `-a`, `--automatic`:
+
+        Show a list of all packages that have been automatically installed as
+        a dependency of other packages, along with the package they are still
+        associated with. Orphaned packages with no relationship will be clearly
+        listed.
+
+ * `-b`, `--build-host`:
+
+        Only show packages that come from a particular build host. Useful for
+        finding packages that have been built and installed locally, as opposed
+        to from an official repository.
+
+ * `-l`, `--long`:
+
+        Show full details of each package instead of one line summaries.
+
+ * `-c`, `--component`:
+
+        Only show installed packages from the specified component.
+
+ * `-i`, `--install-info`:
+
+        Show detailed installation information for each package.
+
+`list-newest (ln) <repo?>`
+
+    List the newest packages in the repository. With no arguments, this will
+    show the newest packages in all configured repositories.
+
+ * `-s`, `--since`:
+
+        Show the newest since the specified date (YYYY-MM-DD)
+
+ * `-l`, `--last`:
+
+        Only show the newest packages since the nth (specified) repository
+        update.
+
+`list-pending (lp)`
+
+    Show all packages currently in a state of required configuration. This is
+    rarely the case and is nowadays only reserved for the building of images,
+    where `configure-pending` is invoked after all required packages are installed,
+    due to the incremental nature of `usysconf(1)`.
+
+`list-repo (lr)`
+
+    List all currently tracked repositories, and emit their status (enabled or not)
+
+`list-sources (ls)`
+
+    This is only supported with source repositories using the legacy `pspec.xml`
+    format and is no longer recommeneded or supported. When invoked, this will output
+    all source packages available for `emerge` operations.
+
+ * `-l`, `--long`:
+
+        Show detailed information on each source package.
+
+`list-upgrades (lu)`
+
+    List all package upgrades that are currently available.
+
+ * `-l`, `--long`:
+
+        Show detailed information on each package to be updated.
+
+ * `-c`, `--component`:
+
+        Only show upgrades from the given component
+
+ * `-i`, `--install-info`:
+
+        Show detailed installation information on each available upgrade
+
+`rebuild-db (rdb)`
+
+    Rebuild all `eopkg` databases. This may be required if eopkg is interrupted
+    or killed during an operation, and complains that database recovery is required
+    (DB5 errors). Running this command will reassemble the database from all the
+    installed packages.
+
+ * `-f`, `--files`:
+
+        Only rebuild the files database
+        
+`remove (rm) <package1> <package2> ...`
+
+    Remove packages from the system. Unless `--ignore-dependency` is specified,
+    any reverse dependencies will also be removed from the system. This does not
+    remove packages that are dependencies of the package being removed, however.
+    For those packages, use `rmf` or later invoke `rmo`.
+
+    
+ * `--ignore-comar`:
+
+        Bypass system configuration. Deprecated in favour of `usysconf(1)`
+
+ * `--ignore-safety`:
+
+        Ignore safety switch on `system.base` component - highly dangerous.
+
+ * `-n`, `--dry-run`:
+
+        Only show what would happen, do not actually perform changes.
+
+ * `-p`, `--purge`:
+
+        Remove files tagged as configuration files too. This primarily applies
+        to any files in `/etc/`.
+
+ * `-c`, `--component`:
+
+        Remove any packages under the given component, and any child component.
+        This is used to recursively remove components and their packages from
+        the system and should be used with great care.
+
+`remove-orphans (rmo)`
+
+    Remove any packages that were automatically installed and no longer have
+    any dependency relationship with non automatically installed packages on
+    the system.
+
+    Note that in Solus terminology an orphan is a proveable concept, not an
+    automatic heuristic. Thus, the only candidates in the algorithm are those
+    packages that were marked automatic as dependencies of another operation,
+    and are no longer required by other packages on the system that aren't
+    automatically installed.
+
+ * `--ignore-comar`:
+
+        Bypass system configuration. Deprecated in favour of `usysconf(1)`
+
+ * `--ignore-safety`:
+
+        Ignore safety switch on `system.base` component - highly dangerous.
+
+ * `-n`, `--dry-run`:
+
+        Only show what would happen, do not actually perform changes.
+
+ * `-p`, `--purge`:
+
+        Remove files tagged as configuration files too. This primarily applies
+        to any files in `/etc/`.
+    
 ## EXIT STATUS
 
 On success, 0 is returned. A non-zero return code signals a failure.
