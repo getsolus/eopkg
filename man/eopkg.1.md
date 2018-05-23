@@ -552,7 +552,136 @@ alias, if available. Most commands in eopkg support a short form.
 
         Remove files tagged as configuration files too. This primarily applies
         to any files in `/etc/`.
-    
+
+`search (sr) <term>`
+
+    Finds packages using the specified search term, which can be a regular
+    expression when quoted.
+
+ * `-l`, `--language`:
+
+        Only search for summaries/descriptions with the matching language code.
+        The default language code is `en`
+        
+ * `-r`, `--repository`:
+
+        Only search within the specified repository.
+
+ * `-i`, `--installdb`:
+
+        Only search installed packages, ignoring repository candidates.
+
+ * `-s`, `--sourcedb`:
+
+        Only search source repositories. Note that source repositores are no
+        longer supported and are now deprecated.
+
+ * `--name`:
+
+        Only search in the name field of packages
+
+ * `--summary`:
+
+        Only search in the summary field of packages
+
+ * `--description`:
+
+        Only search in the description field of packages
+
+`search-file (sf) <path>`
+
+    Locate the package which is considered to be the owner of the specified
+    path on disk. Currently only locally installed packages are supported.
+
+ * `-l`, `--long`:
+
+        Show detailed information about matching packages
+
+ * `-q`, `--quiet`:
+
+        Terse output only showing the package name, most useful in scripts.
+
+`update-repo (ur) <reponame?>`
+
+    With no arguments this command will update all repository indexes by
+    fetching them from their origin if a change has occurred. This will then
+    synchronise the remote data with the local data so that changes to the
+    repository are now visible to eopkg.
+
+    You may optionally specify a repository name to only update that repository.
+
+ * `-f`, `--force`:
+
+    Forcibly update the repository indexes, even if the checksum file for the
+    index hasn't been changed. Typically the checksum file is first consulted
+    before downloading the larger index itself.
+
+`upgrade (up) <package-name?>`
+
+    With no arguments this command will perform a full system upgrade, otherwise
+    it will update the specified packages along with any resulting dependencies.
+    Initially the remote repositories will be updated to ensure all metadata is
+    up to date.
+
+    During an upgrade, any packages marked as `Obsolete` will automatically
+    be removed from the system. Any package replacements for packages that
+    have been replaced with different upstreams, or indeed name changes, will
+    be applied too. Thus, package removals are a normal part of the upgrade
+    experience.
+
+ * `--ignore-comar`:
+
+        Bypass system configuration. Deprecated in favour of `usysconf(1)`
+
+ * `--ignore-safety`:
+
+        Ignore safety switch on `system.base` component - highly dangerous.
+
+ * `-n`, `--dry-run`:
+
+        Only show what would happen, do not actually perform changes.
+
+ * `--security-only`:
+
+        Only apply updates that have been marked as security updates.
+
+ * `-b`, `--bypass-update-repo`:
+
+        Do not update the repositories first
+
+ * `--ignore-file-conflicts`:
+
+        Allow completing the update even if file conflicts would occur.
+
+ * `--ignore-package-conflicts`:
+
+        Allow completing the upgrade even if package conflicts would occur.
+        This is not recommended and indicates a problem with the upgrade path
+        in the remote repository. You should file a bug if this happens.
+
+ * `-c`, `--component`:
+
+        Only upgrade packages from the given component.
+
+ * `-r`, `--repository`:
+
+        Only upgrade packages from the given repository.
+
+ * `-f`, `--fetch-only`:
+
+        Only download the packages, but do not apply any upgrade operations.
+
+ * `-x`, `--exclude`:
+
+        Ignore packages and components that match the specified basename here
+        when upgrading. Use this to block an update from happening whilst
+        updating all other possible updates.
+
+ * `--exclude-from <filename>`:
+
+        Just like `--exclude`, except the package/component list is specified in
+        the given filename.
+
 ## EXIT STATUS
 
 On success, 0 is returned. A non-zero return code signals a failure.
