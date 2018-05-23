@@ -119,8 +119,7 @@ updates to the system.</p>
 <p>Print the <code>eopkg(1)</code> version and exit.</p></li>
 <li><p><code>-N</code>, <code>--no-color</code></p>
 
-<p>Disable text colourisation in the output from <code>eopkg</code> and all child
-processes.</p></li>
+<p>Disable the use of ANSI escape sequences for colourisation by eopkg.</p></li>
 </ul>
 
 
@@ -131,9 +130,9 @@ alias, if available. Most commands in eopkg support a short form.</p>
 
 <p><code>add-repo (ar) &lt;repo-name> &lt;repo URI></code></p>
 
-<pre><code>Add a new repository to the system with the given name and URI. Note that
-a valid eopkg index file will start with `eopkg-index.xml` and typically
-is compressed with `.xz` or similar.
+<pre><code>Add a new repository to the system with the given name and URI. Note
+that a valid eopkg index file will start with `eopkg-index.xml` and
+typically is compressed with `.xz` or similar.
 </code></pre>
 
 <dl>
@@ -143,29 +142,30 @@ is compressed with `.xz` or similar.
 </code></pre></dd>
 <dt><code>--no-fetch</code>:</dt><dd><p></p>
 
-<pre><code> Do not download index, just register the new repository and add it to
- the system.
+<pre><code> Do not download index, just register the new repository and add
+ it to the system.
 </code></pre></dd>
-<dt><code>--at [arg]</code>:</dt><dd><p></p>
+<dt class="flush"><code>--at</code>:</dt><dd><p></p>
 
-<pre><code> Insert the new repository at the given index position. The default is `0`
+<pre><code> Insert the new repository at the given index position.
+ The default is `0`
 </code></pre></dd>
 </dl>
 
 
 <p><code>autoremove (rmf) &lt;package1> &lt;package2> ...</code></p>
 
-<pre><code>Remove a package from the system, along with reverse dependencies and any
-automatically installed packages related to this package that are now no
-longer required. This ensures a full removal for direct runtime dependencies
-instead of just reverse dependencies.
+<pre><code>Remove a package from the system, along with reverse dependencies and
+any automatically installed packages related to this package that are
+now no longer required. This ensures a full removal for direct
+runtime dependencies instead of just reverse dependencies.
 </code></pre>
 
 <dl>
 <dt><code>--ignore-dependency</code>:</dt><dd><p></p>
 
-<pre><code> Do not attempt the removal/validation of reverse dependencies that would
- otherwise be removed.
+<pre><code> Do not attempt the removal/validation of reverse dependencies that
+ would otherwise be removed.
 </code></pre></dd>
 <dt><code>--ignore-comar</code>:</dt><dd><p></p>
 
@@ -181,17 +181,18 @@ instead of just reverse dependencies.
 </code></pre></dd>
 <dt><code>-p</code>, <code>--purge</code>:</dt><dd><p></p>
 
-<pre><code> Remove files tagged as configuration files too. This primarily applies
- to any files in `/etc/`.
+<pre><code> Remove files tagged as configuration files too. This primarily
+ applies to any files in `/etc/`.
 </code></pre></dd>
 </dl>
 
 
 <p><code>blame (bl) &lt;packagename></code></p>
 
-<pre><code>Show history entry for a given package to show the packages changelog.
-This will integrate automatically with `solbuild(1)` git changelog support
-for official Solus packages, and allow inspecting each change.
+<pre><code>Show history entry for a given package to show the packages
+changelog. This will integrate automatically with `solbuild(1)`
+git changelog support for official Solus packages, and allow
+inspecting each change.
 
 By default `blame` will show the information on the highest available
 release.
@@ -211,17 +212,17 @@ release.
 
 <p><code>build (bi) &lt;path to pspec.xml&gt;</code></p>
 
-<pre><code>Consult `eopkg ? bi` for further details. The legacy `eopkg` format is no
-longer supported by Solus and is only currently used behind the scenes in
-the third party mechanism. New packages should only use `package.yml(5)` via
-`ypkg(1)` and `solbuild(1)`
+<pre><code>Consult `eopkg ? bi` for further details. The legacy `eopkg` format
+is no longer supported by Solus and is only currently used behind
+the scenes in the third party mechanism. New packages should only
+use `package.yml(5)` via `ypkg(1)` and `solbuild(1)`
 </code></pre>
 
 <p><code>check &lt;package?></code></p>
 
-<pre><code>Check the installation status (corruption, etc) of all packages, or the
-provided package names. This subcommand will check the hashes for all installed
-packages to ensure integrity.
+<pre><code>Check the installation status (corruption, etc) of all packages,
+or the provided package names. This subcommand will check the hashes
+for all installed packages to ensure integrity.
 </code></pre>
 
 <dl>
@@ -238,107 +239,111 @@ packages to ensure integrity.
 
 <p><code>clean</code></p>
 
-<pre><code>Forcibly delete any stale file locks held by previous instances of eopkg.
-This should only be used if the package manager refuses to operate due to
-a stale lockfile, perhaps caused by a previous power failure.
+<pre><code>Forcibly delete any stale file locks held by previous instances
+of eopkg. This should only be used if the package manager refuses
+to operate due to a stale lockfile, perhaps caused by a previous
+power failure.
 </code></pre>
 
 <p><code>configure-pending (cp)</code></p>
 
-<pre><code>Perform any system configuration if any packages are in a pending state.
-This will only invoke `usysconf(1)` and clear the pending state. It is
-also safe to invoke `usysconf run` directly as root.
+<pre><code>Perform any system configuration if any packages are in a pending
+state. This will only invoke `usysconf(1)` and clear the pending
+state. It is also safe to invoke `usysconf run` directly as root.
 </code></pre>
 
 <p><code>delete-cache (dc)</code></p>
 
-<pre><code>Clear out any temporary caches still held by `eopkg` for downloads and
-package files. These are automatically cleared when using the Software Centre
-but you must manually invoke `dc` if you only use the CLI approach to software
-management.
+<pre><code>Clear out any temporary caches still held by `eopkg` for downloads
+and package files. These are automatically cleared when using the
+Software Centre but you must manually invoke `dc` if you only use
+the CLI approach to software management.
 </code></pre>
 
 <p><code>delta (dt) &lt;oldpackage1> &lt;newpackage></code></p>
 
-<pre><code>Construct a delta package between the given packages. Delta packages are
-used to create smaller updates and reduce bandwidth consumption for users.
-Typically deltas are constructed by `ferryd(1)` - however for manual repo
-management you can use this command. A `.delta.eopkg` will be constructed
-in the current working directory.
+<pre><code>Construct a delta package between the given packages. Delta packages
+are used to create smaller updates and reduce bandwidth consumption
+for users. Typically deltas are constructed by `ferryd(1)` - however
+for manual repo management you can use this command. A `.delta.eopkg`
+will be constructed in the current working directory.
 </code></pre>
 
 <dl>
 <dt><code>-t</code>, <code>--newest-package</code>:</dt><dd><p></p>
 
-<pre><code> Override the "new" package detection for explicit control of the process.
+<pre><code> Override the "new" package detection for explicit control
+ of the process.
 </code></pre></dd>
 <dt><code>-O</code>, <code>--output-dir</code>:</dt><dd><p></p>
 
-<pre><code> Override the output directory for the `.delta.eopkg` instead of using the
- current working directory.
+<pre><code> Override the output directory for the `.delta.eopkg`
+ instead of using the current working directory.
 </code></pre></dd>
 <dt><code>-F</code>, <code>--package-format</code>:</dt><dd><p></p>
 
-<pre><code> Override the eopkg internal format. Expert option only, consult
- `-F help` for further details.
+<pre><code> Override the eopkg internal format. Expert option only,
+ consult `-F help` for further details.
 </code></pre></dd>
 </dl>
 
 
 <p><code>disable-repo (dr) &lt;name></code></p>
 
-<pre><code>Disable a system repository. It will no longer be accounted for in any
-operation, including search, install, and updates.
+<pre><code>Disable a system repository. It will no longer be accounted for
+in any operation, including search, install, and updates.
 </code></pre>
 
 <p><code>emerge (em) &lt;name></code></p>
 
-<pre><code>Consult `eopkg ? em` for further details. The legacy `eopkg` format is no
-longer supported by Solus and is only currently used behind the scenes in
-the third party mechanism. New packages should only use `package.yml(5)` via
-`ypkg(1)` and `solbuild(1)`
+<pre><code>Consult `eopkg ? em` for further details. The legacy `eopkg` format
+is no longer supported by Solus and is only currently used behind
+the scenes in the third party mechanism. New packages should only
+use `package.yml(5)` via `ypkg(1)` and `solbuild(1)`
 </code></pre>
 
 <p><code>enable-repo (er) &lt;name></code></p>
 
-<pre><code>Enable a previously disabled repository by name. This will allow the repo
-to be accounted for in all operations (search, updates, etc.)
+<pre><code>Enable a previously disabled repository by name. This will allow
+the repo to be accounted for in all operations (search,
+updates, etc.)
 </code></pre>
 
 <p><code>fetch (fc) &lt;name></code></p>
 
-<pre><code>Download the package file for the named package, into the current working
-directory.
+<pre><code>Download the package file for the named package, into the current
+working directory.
 </code></pre>
 
 <dl>
 <dt><code>-o</code>, <code>--output-dir</code>:</dt><dd><p></p>
 
-<pre><code> Override the output directory for the `.eopkg` instead of using the
- current working directory.
+<pre><code> Override the output directory for the `.eopkg` instead of
+ using the current working directory.
 </code></pre></dd>
 </dl>
 
 
 <p><code>help (?) &lt;subcommand?></code></p>
 
-<pre><code>Display help topics, or help for the given subcommand. Without any
-arguments the main help topic will be displayed, along with an overview
-for all subcommands.
+<pre><code>Display help topics, or help for the given subcommand. Without
+any arguments the main help topic will be displayed, along with
+an overview for all subcommands.
 </code></pre>
 
 <p><code>history (hs)</code></p>
 
-<pre><code>Manage the eopkg transaction history. Every operation via `eopkg` will
-cause a new transaction to be recorded, which can be replayed through the
-log or rolled back to.
+<pre><code>Manage the eopkg transaction history. Every operation via `eopkg`
+will cause a new transaction to be recorded, which can be replayed
+through the log or rolled back to.
 
-Note that rolling back to older snapshots has a limited shelflive due to
-the rolling nature of Solus, and that old packages may disappear that
-were previously installed as part of an older transaction.
+Note that rolling back to older snapshots has a limited shelflive
+due to the rolling nature of Solus, and that old packages may
+disappear that were previously installed as part of an older
+transaction.
 
-Without arguments, this command will just emit the history into the `less(1)`
-pager.
+Without arguments, this command will just emit the history into the
+`less(1)` pager.
 </code></pre>
 
 <dl>
@@ -348,22 +353,22 @@ pager.
 </code></pre></dd>
 <dt><code>-s</code>, <code>--snapshot</code>:</dt><dd><p></p>
 
-<pre><code> Create a new snapshot transaction to record the current system state for
- later rollback operations.
+<pre><code> Create a new snapshot transaction to record the current system
+ state for later rollback operations.
 </code></pre></dd>
 <dt><code>-t</code>, <code>--takeback</code>:</dt><dd><p></p>
 
-<pre><code> Given a transaction ID, this command will attempt to roll the system state
- back to the state of that transaction.
+<pre><code> Given a transaction ID, this command will attempt to roll the
+ system state back to the state of that transaction.
 </code></pre></dd>
 </dl>
 
 
-<p><code>index (ix) &lt;directry></code></p>
+<p><code>index (ix) &lt;directory></code></p>
 
-<pre><code>Produce an `eopkg-index` repository in the given directory containing
-information on all discovered `eokpg` files living recursively under that
-directory.
+<pre><code>Produce an `eopkg-index` repository in the given directory
+containing information on all discovered `eokpg` files living
+recursively under that directory.
 
 For more advanced repository management, please see `ferryd(1)`
 </code></pre>
@@ -381,13 +386,14 @@ For more advanced repository management, please see `ferryd(1)`
 <dt><code>--compression-types</code>:</dt><dd><p></p>
 
 <pre><code> Comma separated list of compression types to use when producing the
- index, such as `bz2`, `xz`, for additional compressed index files for
- client systems to add.
+ index, such as `bz2`, `xz`, for additional compressed index files
+ for client systems to add.
 </code></pre></dd>
 <dt><code>--skip-sources</code>:</dt><dd><p></p>
 
-<pre><code> Do not include `pspec.xml` legacy format eopkg definitions in the
- index. It is highly recommended to not use the legacy format.
+<pre><code> Do not include `pspec.xml` legacy format eopkg definitions in
+ the index. It is highly recommended to not use the legacy
+ format.
 </code></pre></dd>
 <dt><code>--skip-signing</code>:</dt><dd><p></p>
 
@@ -433,8 +439,8 @@ For more advanced repository management, please see `ferryd(1)`
 <dl>
 <dt><code>--ignore-dependency</code>:</dt><dd><p></p>
 
-<pre><code> Do not attempt the installation/validation of dependencies that would
- otherwise be installed.
+<pre><code> Do not attempt the installation/validation of dependencies that
+ would otherwise be installed.
 </code></pre></dd>
 <dt><code>--ignore-comar</code>:</dt><dd><p></p>
 
@@ -459,14 +465,13 @@ For more advanced repository management, please see `ferryd(1)`
 </code></pre></dd>
 <dt><code>--ignore-file-conflicts</code>:</dt><dd><p></p>
 
-<pre><code> Allow the package to install even if it conflicts with another package's
- files.
- Not recommended.
+<pre><code> Allow the package to install even if it conflicts with another
+ package's files. Not recommended.
 </code></pre></dd>
 <dt><code>--ignore-package-conflicts</code>:</dt><dd><p></p>
 
-<pre><code> Forcibly install a package even though it is marked as conflicting with
- another package on system. Not recommended.
+<pre><code> Forcibly install a package even though it is marked as conflicting
+ with another package on system. Not recommended.
 </code></pre></dd>
 <dt><code>-c</code>, <code>--component</code>:</dt><dd><p></p>
 
@@ -482,22 +487,23 @@ For more advanced repository management, please see `ferryd(1)`
 </code></pre></dd>
 <dt><code>-x</code>, <code>--exclude</code>:</dt><dd><p></p>
 
-<pre><code> Ignore packages and components that match the specified basename here
- when installing components and packages. Use this as a filter to install
- a component while deliberately not installing one or more of its packages.
+<pre><code> Ignore packages and components that match the specified basename
+ here when installing components and packages. Use this as a filter
+ to install a component while deliberately not installing one or
+ more of its packages.
 </code></pre></dd>
 <dt><code>--exclude-from &lt;filename></code>:</dt><dd><p></p>
 
-<pre><code> Just like `--exclude`, except the package/component list is specified in
- the given filename.
+<pre><code> Just like `--exclude`, except the package/component list is
+ specified in the given filename.
 </code></pre></dd>
 </dl>
 
 
 <p><code>list-available &lt;la> &lt;repo name?></code></p>
 
-<pre><code>List all available packages in all repositories, or just in the repositories
-specified.
+<pre><code>List all available packages in all repositories, or just in the
+repositories specified.
 </code></pre>
 
 <dl>
@@ -511,23 +517,25 @@ specified.
 </code></pre></dd>
 <dt><code>-U</code>, <code>--uninstalled</code>:</dt><dd><p></p>
 
-<pre><code> Only show uninstalled packages, i.e. packages that are available but
- not currently installed on the system.
+<pre><code> Only show uninstalled packages, i.e. packages that are available
+ but not currently installed on the system.
 </code></pre></dd>
 </dl>
 
 
 <p><code>list-components (lc)</code></p>
 
-<pre><code>    Show all available components in the combined indexes of all installed
-    repositories. Each package may belong to only one component, and these
-    are the enforced level of categorisation within a Solus repository.
+<pre><code>Show all available components in the combined indexes of all
+installed repositories. Each package may belong to only one
+component, and these are the enforced level of categorisation
+within a Solus repository.
 </code></pre>
 
 <dl>
 <dt><code>l</code>, <code>--long</code>:</dt><dd><p></p>
 
-<pre><code> Show full details on each component instead of just listing the names.
+<pre><code> Show full details on each component instead of just listing
+ the names.
 </code></pre></dd>
 <dt><code>r</code>, <code>--repository</code>:</dt><dd><p></p>
 
@@ -544,20 +552,21 @@ specified.
 <dl>
 <dt><code>-a</code>, <code>--automatic</code>:</dt><dd><p></p>
 
-<pre><code> Show a list of all packages that have been automatically installed as
- a dependency of other packages, along with the package they are still
- associated with. Orphaned packages with no relationship will be clearly
- listed.
+<pre><code> Show a list of all packages that have been automatically
+ installed as a dependency of other packages, along with
+ the package they are still associated with. Orphaned
+ packages with no relationship will be clearly listed.
 </code></pre></dd>
 <dt><code>-b</code>, <code>--build-host</code>:</dt><dd><p></p>
 
-<pre><code> Only show packages that come from a particular build host. Useful for
- finding packages that have been built and installed locally, as opposed
- to from an official repository.
+<pre><code> Only show packages that come from a particular build host.
+ Useful for finding packages that have been built and installed
+ locally, as opposed to from an official repository.
 </code></pre></dd>
 <dt><code>-l</code>, <code>--long</code>:</dt><dd><p></p>
 
-<pre><code> Show full details of each package instead of one line summaries.
+<pre><code> Show full details of each package instead of one line
+ summaries.
 </code></pre></dd>
 <dt><code>-c</code>, <code>--component</code>:</dt><dd><p></p>
 
@@ -572,8 +581,9 @@ specified.
 
 <p><code>list-newest (ln) &lt;repo?></code></p>
 
-<pre><code>List the newest packages in the repository. With no arguments, this will
-show the newest packages in all configured repositories.
+<pre><code>List the newest packages in the repository. With no arguments,
+this will show the newest packages in all configured
+repositories.
 </code></pre>
 
 <dl>
@@ -591,22 +601,25 @@ show the newest packages in all configured repositories.
 
 <p><code>list-pending (lp)</code></p>
 
-<pre><code>Show all packages currently in a state of required configuration. This is
-rarely the case and is nowadays only reserved for the building of images,
-where `configure-pending` is invoked after all required packages are installed,
-due to the incremental nature of `usysconf(1)`.
+<pre><code>Show all packages currently in a state of required configuration.
+This is rarely the case and is nowadays only reserved for the
+building of images, where `configure-pending` is invoked after
+all required packages are installed, due to the incremental nature
+of `usysconf(1)`.
 </code></pre>
 
 <p><code>list-repo (lr)</code></p>
 
-<pre><code>List all currently tracked repositories, and emit their status (enabled or not)
+<pre><code>List all currently tracked repositories, and emit their
+status (enabled or not)
 </code></pre>
 
 <p><code>list-sources (ls)</code></p>
 
-<pre><code>This is only supported with source repositories using the legacy `pspec.xml`
-format and is no longer recommeneded or supported. When invoked, this will output
-all source packages available for `emerge` operations.
+<pre><code>This is only supported with source repositories using the
+legacy `pspec.xml` ormat and is no longer recommeneded or
+supported. When invoked, this will output all source packages
+available for `emerge` operations.
 </code></pre>
 
 <dl>
@@ -633,17 +646,19 @@ all source packages available for `emerge` operations.
 </code></pre></dd>
 <dt><code>-i</code>, <code>--install-info</code>:</dt><dd><p></p>
 
-<pre><code> Show detailed installation information on each available upgrade
+<pre><code> Show detailed installation information on each
+ available upgrade
 </code></pre></dd>
 </dl>
 
 
 <p><code>rebuild-db (rdb)</code></p>
 
-<pre><code>Rebuild all `eopkg` databases. This may be required if eopkg is interrupted
-or killed during an operation, and complains that database recovery is required
-(DB5 errors). Running this command will reassemble the database from all the
-installed packages.
+<pre><code>Rebuild all `eopkg` databases. This may be required if eopkg
+is interrupted or killed during an operation, and complains
+that database recovery is required (DB5 errors). Running this
+command will reassemble the database from all the installed
+packages.
 </code></pre>
 
 <dl>
@@ -656,60 +671,68 @@ installed packages.
 
 <p><code>remove (rm) &lt;package1> &lt;package2> ...</code></p>
 
-<pre><code>Remove packages from the system. Unless `--ignore-dependency` is specified,
-any reverse dependencies will also be removed from the system. This does not
-remove packages that are dependencies of the package being removed, however.
-For those packages, use `rmf` or later invoke `rmo`.
+<pre><code>Remove packages from the system. Unless `--ignore-dependency`
+is specified, any reverse dependencies will also be removed
+from the system. This does not remove packages that are
+dependencies of the package being removed, however. For those
+packages, use `rmf` or later invoke `rmo`.
 </code></pre>
 
 <dl>
 <dt><code>--ignore-comar</code>:</dt><dd><p></p>
 
-<pre><code> Bypass system configuration. Deprecated in favour of `usysconf(1)`
+<pre><code> Bypass system configuration. Deprecated in favour
+ of `usysconf(1)`
 </code></pre></dd>
 <dt><code>--ignore-safety</code>:</dt><dd><p></p>
 
-<pre><code> Ignore safety switch on `system.base` component - highly dangerous.
+<pre><code> Ignore safety switch on `system.base` component -
+ highly dangerous.
 </code></pre></dd>
 <dt><code>-n</code>, <code>--dry-run</code>:</dt><dd><p></p>
 
-<pre><code> Only show what would happen, do not actually perform changes.
+<pre><code> Only show what would happen, do not actually perform
+ changes.
 </code></pre></dd>
 <dt><code>-p</code>, <code>--purge</code>:</dt><dd><p></p>
 
-<pre><code> Remove files tagged as configuration files too. This primarily applies
- to any files in `/etc/`.
+<pre><code> Remove files tagged as configuration files too. This
+ primarily applies to any files in `/etc/`.
 </code></pre></dd>
 <dt><code>-c</code>, <code>--component</code>:</dt><dd><p></p>
 
-<pre><code> Remove any packages under the given component, and any child component.
- This is used to recursively remove components and their packages from
- the system and should be used with great care.
+<pre><code> Remove any packages under the given component, and any
+ child component. This is used to recursively remove
+ components and their packages from the system and should
+ be used with great care.
 </code></pre></dd>
 </dl>
 
 
 <p><code>remove-orphans (rmo)</code></p>
 
-<pre><code>Remove any packages that were automatically installed and no longer have
-any dependency relationship with non automatically installed packages on
-the system.
+<pre><code>Remove any packages that were automatically installed and
+no longer have any dependency relationship with non
+automatically installed packages on the system.
 
-Note that in Solus terminology an orphan is a proveable concept, not an
-automatic heuristic. Thus, the only candidates in the algorithm are those
-packages that were marked automatic as dependencies of another operation,
-and are no longer required by other packages on the system that aren't
-automatically installed.
+Note that in Solus terminology an orphan is a proveable
+concept, not an automatic heuristic. Thus, the only
+candidates in the algorithm are those packages that
+were marked automatic as dependencies of another operation,
+and are no longer required by other packages on the system
+that aren't automatically installed.
 </code></pre>
 
 <dl>
 <dt><code>--ignore-comar</code>:</dt><dd><p></p>
 
-<pre><code> Bypass system configuration. Deprecated in favour of `usysconf(1)`
+<pre><code> Bypass system configuration. Deprecated in favour
+ of `usysconf(1)`
 </code></pre></dd>
 <dt><code>--ignore-safety</code>:</dt><dd><p></p>
 
-<pre><code> Ignore safety switch on `system.base` component - highly dangerous.
+<pre><code> Ignore safety switch on `system.base` component -
+ highly dangerous.
 </code></pre></dd>
 <dt><code>-n</code>, <code>--dry-run</code>:</dt><dd><p></p>
 
@@ -717,23 +740,23 @@ automatically installed.
 </code></pre></dd>
 <dt><code>-p</code>, <code>--purge</code>:</dt><dd><p></p>
 
-<pre><code> Remove files tagged as configuration files too. This primarily applies
- to any files in `/etc/`.
+<pre><code> Remove files tagged as configuration files too.
+ This primarily applies to any files in `/etc/`.
 </code></pre></dd>
 </dl>
 
 
 <p><code>search (sr) &lt;term></code></p>
 
-<pre><code>Finds packages using the specified search term, which can be a regular
-expression when quoted.
+<pre><code>Finds packages using the specified search term, which can
+be a regular expression when quoted.
 </code></pre>
 
 <dl>
 <dt><code>-l</code>, <code>--language</code>:</dt><dd><p></p>
 
-<pre><code> Only search for summaries/descriptions with the matching language code.
- The default language code is `en`
+<pre><code> Only search for summaries/descriptions with the matching
+ language code. The default language code is `en`
 </code></pre></dd>
 <dt><code>-r</code>, <code>--repository</code>:</dt><dd><p></p>
 
@@ -741,12 +764,13 @@ expression when quoted.
 </code></pre></dd>
 <dt><code>-i</code>, <code>--installdb</code>:</dt><dd><p></p>
 
-<pre><code> Only search installed packages, ignoring repository candidates.
+<pre><code> Only search installed packages, ignoring repository
+ candidates.
 </code></pre></dd>
 <dt><code>-s</code>, <code>--sourcedb</code>:</dt><dd><p></p>
 
-<pre><code> Only search source repositories. Note that source repositores are no
- longer supported and are now deprecated.
+<pre><code> Only search source repositories. Note that source
+ repositores are no longer supported and are now deprecated.
 </code></pre></dd>
 <dt class="flush"><code>--name</code>:</dt><dd><p></p>
 
@@ -765,8 +789,9 @@ expression when quoted.
 
 <p><code>search-file (sf) &lt;path></code></p>
 
-<pre><code>Locate the package which is considered to be the owner of the specified
-path on disk. Currently only locally installed packages are supported.
+<pre><code>Locate the package which is considered to be the owner of
+the specified path on disk. Currently only locally installed
+packages are supported.
 </code></pre>
 
 <dl>
@@ -776,60 +801,70 @@ path on disk. Currently only locally installed packages are supported.
 </code></pre></dd>
 <dt><code>-q</code>, <code>--quiet</code>:</dt><dd><p></p>
 
-<pre><code> Terse output only showing the package name, most useful in scripts.
+<pre><code> Terse output only showing the package name, most useful
+ in scripts.
 </code></pre></dd>
 </dl>
 
 
 <p><code>update-repo (ur) &lt;reponame?></code></p>
 
-<pre><code>With no arguments this command will update all repository indexes by
-fetching them from their origin if a change has occurred. This will then
-synchronise the remote data with the local data so that changes to the
-repository are now visible to eopkg.
+<pre><code>With no arguments this command will update all repository
+indexes by fetching them from their origin if a change
+has occurred. This will then synchronise the remote
+data with the local data so that changes to the repository
+are now visible to eopkg.
 
-You may optionally specify a repository name to only update that repository.
+You may optionally specify a repository name to only
+update that repository.
 </code></pre>
 
 <dl>
 <dt><code>-f</code>, <code>--force</code>:</dt><dd><p></p>
 
-<p> Forcibly update the repository indexes, even if the checksum file for the
- index hasn't been changed. Typically the checksum file is first consulted
- before downloading the larger index itself.</p></dd>
+<p> Forcibly update the repository indexes, even if the
+ checksum file for the index hasn't been changed.
+ Typically the checksum file is first consulted before
+ downloading the larger index itself.</p></dd>
 </dl>
 
 
 <p><code>upgrade (up) &lt;package-name?></code></p>
 
-<pre><code>With no arguments this command will perform a full system upgrade, otherwise
-it will update the specified packages along with any resulting dependencies.
-Initially the remote repositories will be updated to ensure all metadata is
-up to date.
+<pre><code>With no arguments this command will perform a full system
+upgrade, otherwise it will update the specified packages
+along with any resulting dependencies.
+Initially the remote repositories will be updated to ensure
+all metadata is up to date.
 
-During an upgrade, any packages marked as `Obsolete` will automatically
-be removed from the system. Any package replacements for packages that
-have been replaced with different upstreams, or indeed name changes, will
-be applied too. Thus, package removals are a normal part of the upgrade
-experience.
+During an upgrade, any packages marked as `Obsolete` will
+automatically be removed from the system. Any package
+replacements for packages that have been replaced with
+different upstreams, or indeed name changes, will
+be applied too. Thus, package removals are a normal
+part of the upgrade experience.
 </code></pre>
 
 <dl>
 <dt><code>--ignore-comar</code>:</dt><dd><p></p>
 
-<pre><code> Bypass system configuration. Deprecated in favour of `usysconf(1)`
+<pre><code> Bypass system configuration. Deprecated in favou
+  of `usysconf(1)`
 </code></pre></dd>
 <dt><code>--ignore-safety</code>:</dt><dd><p></p>
 
-<pre><code> Ignore safety switch on `system.base` component - highly dangerous.
+<pre><code> Ignore safety switch on `system.base` component -
+ highly dangerous.
 </code></pre></dd>
 <dt><code>-n</code>, <code>--dry-run</code>:</dt><dd><p></p>
 
-<pre><code> Only show what would happen, do not actually perform changes.
+<pre><code> Only show what would happen, do not actually
+ perform changes.
 </code></pre></dd>
 <dt><code>--security-only</code>:</dt><dd><p></p>
 
-<pre><code> Only apply updates that have been marked as security updates.
+<pre><code> Only apply updates that have been marked as
+ security updates.
 </code></pre></dd>
 <dt><code>-b</code>, <code>--bypass-update-repo</code>:</dt><dd><p></p>
 
@@ -837,13 +872,15 @@ experience.
 </code></pre></dd>
 <dt><code>--ignore-file-conflicts</code>:</dt><dd><p></p>
 
-<pre><code> Allow completing the update even if file conflicts would occur.
+<pre><code> Allow completing the update even if file conflicts
+ would occur.
 </code></pre></dd>
 <dt><code>--ignore-package-conflicts</code>:</dt><dd><p></p>
 
-<pre><code> Allow completing the upgrade even if package conflicts would occur.
- This is not recommended and indicates a problem with the upgrade path
- in the remote repository. You should file a bug if this happens.
+<pre><code> Allow completing the upgrade even if package conflicts
+ would occur. This is not recommended and indicates a
+ problem with the upgrade path in the remote repository.
+ You should file a bug if this happens.
 </code></pre></dd>
 <dt><code>-c</code>, <code>--component</code>:</dt><dd><p></p>
 
@@ -855,18 +892,19 @@ experience.
 </code></pre></dd>
 <dt><code>-f</code>, <code>--fetch-only</code>:</dt><dd><p></p>
 
-<pre><code> Only download the packages, but do not apply any upgrade operations.
+<pre><code> Only download the packages, but do not apply any
+ upgrade operations.
 </code></pre></dd>
 <dt><code>-x</code>, <code>--exclude</code>:</dt><dd><p></p>
 
-<pre><code> Ignore packages and components that match the specified basename here
- when upgrading. Use this to block an update from happening whilst
- updating all other possible updates.
+<pre><code> Ignore packages and components that match the specified
+ basename here when upgrading. Use this to block an update
+ from happening whilst updating all other possible updates.
 </code></pre></dd>
 <dt><code>--exclude-from &lt;filename></code>:</dt><dd><p></p>
 
-<pre><code> Just like `--exclude`, except the package/component list is specified in
- the given filename.
+<pre><code> Just like `--exclude`, except the package/component
+ list is specified in the given filename.
 </code></pre></dd>
 </dl>
 
