@@ -301,6 +301,21 @@ def join_path(a, *p):
             path += '/' + b
     return path
 
+def path_could_exists(path):
+    """
+    Returns True if the path exists, or if the path could exist, but is
+    uncheckable because we don't have permission to enter a parent dir.
+    """
+    if os.path.lexists(path):
+        return True
+
+    while True:
+        path = parenturi(path)
+        if os.path.lexists(path) and not os.access(path, os.R_OK):
+            return True
+        if path == '':
+            return False
+
 ####################################
 # File/Directory Related Functions #
 ####################################

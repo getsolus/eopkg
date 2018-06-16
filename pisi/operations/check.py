@@ -80,7 +80,7 @@ def check_files(files, check_config=False):
         is_file_corrupted = False
 
         path = os.path.join(ctx.config.dest_dir(), f.path)
-        if os.path.lexists(path):
+        if pisi.util.path_could_exists(path):
             try:
                 is_file_corrupted = file_corrupted(f)
 
