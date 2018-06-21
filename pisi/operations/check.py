@@ -28,6 +28,8 @@ def file_corrupted(pfile):
                 return True
         except pisi.util.FilePermissionDeniedError, e:
             raise e
+        except pisi.util.FileNotFoundError, e:
+            raise e
     return False
 
 
@@ -80,25 +82,24 @@ def check_files(files, check_config=False):
         is_file_corrupted = False
 
         path = os.path.join(ctx.config.dest_dir(), f.path)
-        if os.path.lexists(path):
-            try:
-                is_file_corrupted = file_corrupted(f)
+        try:
+            is_file_corrupted = file_corrupted(f)
 
-            except pisi.util.FilePermissionDeniedError, e:
-                # Can't read file, probably because of permissions, skip
-                results['denied'].append(f.path)
-
-            else:
-                if is_file_corrupted:
-                    # Detect file type
-                    if f.type == "config":
-                        results['config'].append(f.path)
-                    else:
-                        results['corrupted'].append(f.path)
-
-        else:
+        except pisi.util.FilePermissionDeniedError, e:
+            # Can't read file, probably because of permissions, skip
+            results['denied'].append(f.path)
+        
+        except pisi.util.FileNotFoundError, e:
             # Shipped file doesn't exist on the system
             results['missing'].append(f.path)
+
+        else:
+            if is_file_corrupted:
+                # Detect file type
+                if f.type == "config":
+                    results['config'].append(f.path)
+                else:
+                    results['corrupted'].append(f.path)
 
     return results
 

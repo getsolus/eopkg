@@ -56,6 +56,8 @@ class FileError(Error):
 class FilePermissionDeniedError(Error):
     pass
 
+class FileNotFoundError(Error):
+    pass
 
 #########################
 # string/list/functional#
@@ -474,6 +476,9 @@ def sha1_file(filename):
         if e.errno == 13:
             # Permission denied, the file doesn't have read permissions, skip
             raise FilePermissionDeniedError(_("You don't have necessary read permissions"))
+        elif e.errno == 2:
+            # File not found, skip
+            raise FileNotFoundError(_("File %s was not found") % filename)
         else:
             raise FileError(_("Cannot calculate SHA1 hash of %s") % filename)
 
