@@ -23,6 +23,7 @@ import pisi.uri
 import pisi.util
 import pisi.context as ctx
 import pisi.db.lazydb as lazydb
+import pisi.urlcheck
 from pisi.file import File
 
 class RepoError(pisi.Error):
@@ -41,6 +42,7 @@ class RepoOrder:
 
     def __init__(self):
         self._doc = None
+        self.legacy_repo_used = None
         self.repos = self._get_repos()
 
     def add(self, repo_name, repo_url, repo_type="remote"):
@@ -56,6 +58,12 @@ class RepoOrder:
         name_node.insertData(repo_name)
 
         url_node = repo_node.insertTag("Url")
+        old_uri = repo_url
+        repo_url = pisi.urlcheck.switch_from_legacy(repo_url)
+
+        if old_uri != repo_url: 
+            self.legacy_repo_used = True
+
         url_node.insertData(repo_url)
 
         name_node = repo_node.insertTag("Status")
@@ -91,6 +99,24 @@ class RepoOrder:
                     if status in ["active", "inactive"]:
                         return status
         return "inactive"
+
+    def get_uri(self, repo_name):
+        repo_doc = self._get_doc()
+        url = ""
+
+        for r in repo_doc.tags("Repo"):
+            name = r.getTagData("Name")
+            uri = r.getTagData("Url")
+
+            if name == repo_name:
+                url = pisi.urlcheck.switch_from_legacy(uri)
+
+                if url != uri:
+                    self.legacy_repo_used = True
+
+                break
+
+        return url.rstrip()
 
     def remove(self, repo_name):
         repo_doc = self._get_doc()
@@ -135,6 +161,8 @@ class RepoOrder:
             media = r.getTagData("Media")
             name = r.getTagData("Name")
             status = r.getTagData("Status")
+            old_url = r.getTagData("Url")
+            url = pisi.urlcheck.switch_from_legacy(old_url)
             order.setdefault(media, []).append(name)
 
         return order
@@ -143,6 +171,11 @@ class RepoDB(lazydb.LazyDB):
 
     def init(self):
         self.repoorder = RepoOrder()
+
+        if len(self.repoorder.repos) == 0:
+            repo = pisi.db.repodb.Repo(pisi.uri.URI("https://mirrors.rit.edu/solus/packages/shannon/eopkg-index.xml.xz"))
+            ctx.ui.warning("No repository found. Automatically adding Solus stable.")
+            self.add_repo("Solus", repo, ctx.get_option('at'))
 
     def has_repo(self, name):
         return name in self.list_repos(only_active=False)
@@ -176,15 +209,32 @@ class RepoDB(lazydb.LazyDB):
     def get_repo(self, repo):
         return Repo(pisi.uri.URI(self.get_repo_url(repo)))
 
-    #FIXME: this method is a quick hack around repo_info.indexuri.get_uri()
     def get_repo_url(self, repo):
-        urifile_path = pisi.util.join_path(ctx.config.index_dir(), repo, "uri")
-        uri = open(urifile_path, "r").read()
-        return uri.rstrip()
+        url = self.repoorder.get_uri(repo)
+
+        if self.repoorder.legacy_repo_used:
+            repo_doc = self.repoorder._get_doc()
+
+            for r in repo_doc.tags("Repo"):
+                name = r.getTagData("Name")
+                old_url = r.getTagData("Url")
+                url = pisi.urlcheck.switch_from_legacy(old_url)
+
+                if old_url != url:
+                    self.remove_repo(name)
+                    repo = pisi.db.repodb.Repo(pisi.uri.URI(url))
+                    self.add_repo(name, repo, ctx.get_option('at'))
+
+        return url
 
     def add_repo(self, name, repo_info, at = None):
         repo_path = pisi.util.join_path(ctx.config.index_dir(), name)
-        os.makedirs(repo_path)
+
+        try:
+            os.makedirs(repo_path)
+        except Exception, e:
+               pass
+
         urifile_path = pisi.util.join_path(ctx.config.index_dir(), name, "uri")
         open(urifile_path, "w").write(repo_info.indexuri.get_uri())
         self.repoorder.add(name, repo_info.indexuri.get_uri())

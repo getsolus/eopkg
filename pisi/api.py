@@ -780,13 +780,20 @@ def add_repo(name, indexuri, at = None):
     if not re.match("^[0-9%s\-\\_\\.\s]*$" % str(pisi.util.letters()), name):
         raise pisi.Error(_('Not a valid repo name.'))
     repodb = pisi.db.repodb.RepoDB()
-    if repodb.has_repo(name):
-        raise pisi.Error(_('Repo %s already present.') % name)
-    elif repodb.has_repo_url(indexuri, only_active = False):
-        repo = repodb.get_repo_by_url(indexuri)
-        raise pisi.Error(_('Repo already present with name %s.') % repo)
+
+    new_indexuri = pisi.urlcheck.switch_from_legacy(indexuri)
+
+    if repodb.has_repo_url(new_indexuri, only_active = False):
+        repo = repodb.get_repo_by_url(new_indexuri)
+        raise pisi.Error(_('Repo already present with name %s and same URL.') % repo)
     else:
-        repo = pisi.db.repodb.Repo(pisi.uri.URI(indexuri))
+        if repodb.has_repo(name):
+            repodb.remove_repo(name)
+
+        if new_indexuri != indexuri:
+            ctx.ui.warning("Legacy repo found. Attempting rewrite.")
+
+        repo = pisi.db.repodb.Repo(pisi.uri.URI(new_indexuri))
         repodb.add_repo(name, repo, at = at)
         pisi.db.flush_caches()
         ctx.ui.info(_('Repo %s added to system.') % name)
