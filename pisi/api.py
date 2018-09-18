@@ -785,18 +785,19 @@ def add_repo(name, indexuri, at = None):
 
     if repodb.has_repo_url(new_indexuri, only_active = False):
         repo = repodb.get_repo_by_url(new_indexuri)
-        raise pisi.Error(_('Repo already present with name %s and same URL.') % repo)
-    else:
-        if repodb.has_repo(name):
-            repodb.remove_repo(name)
+        ctx.ui.warning(_('Repo already present with name %s and same URL. Removing first.') % repo)
+        repodb.remove_repo(repo)
 
-        if new_indexuri != indexuri:
-            ctx.ui.warning("Legacy repo found. Attempting rewrite.")
+    if repodb.has_repo(name):
+        repodb.remove_repo(name)
 
-        repo = pisi.db.repodb.Repo(pisi.uri.URI(new_indexuri))
-        repodb.add_repo(name, repo, at = at)
-        pisi.db.flush_caches()
-        ctx.ui.info(_('Repo %s added to system.') % name)
+    if new_indexuri != indexuri:
+        ctx.ui.warning("Legacy repo found. Attempting rewrite.")
+
+    repo = pisi.db.repodb.Repo(pisi.uri.URI(new_indexuri))
+    repodb.add_repo(name, repo, at = at)
+    pisi.db.flush_caches()
+    ctx.ui.info(_('Repo %s added to system.') % name)
 
 @locked
 def remove_repo(name):
@@ -846,12 +847,6 @@ def __update_repo(repo, force=False):
 
         pisi.db.historydb.HistoryDB().update_repo(repo, repouri, "update")
         repodb.check_distribution(repo)
-
-        try:
-            index.check_signature(repouri, repo)
-        except pisi.file.NoSignatureFound, e:
-            ctx.ui.warning(e)
-
         ctx.ui.info(_('Package database updated.'))
     else:
         raise pisi.Error(_('No repository named %s found.') % repo)
