@@ -59,6 +59,11 @@ class CLI(pisi.ui.UI):
                 out = sys.stderr
             else:
                 out = sys.stdout
+            rows, columns = os.popen('stty size', 'r').read().split()
+            cols = int(columns)
+            if len(msg) > cols:
+                maxlen = cols - 3
+                msg = msg[:maxlen]+ '...'
             out.write(msg)
             out.flush()
 
