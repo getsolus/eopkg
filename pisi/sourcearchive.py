@@ -65,19 +65,10 @@ class SourceArchive:
                 else:
                     pisi.fetcher.fetch_url(self.url, ctx.config.archives_dir(), self.progress)
             except pisi.fetcher.FetchError:
-                if ctx.config.values.build.fallback:
-                    self.fetch_from_fallback()
-                else:
-                    raise
+                raise
 
             ctx.ui.info(_("Source archive is stored: %s/%s")
                 % (ctx.config.archives_dir(), self.url.filename()))
-
-    def fetch_from_fallback(self):
-        archive = os.path.basename(self.url.get_uri())
-        src = os.path.join(ctx.config.values.build.fallback, archive)
-        ctx.ui.warning(_('Trying fallback address: %s') % src)
-        pisi.fetcher.fetch_url(src, ctx.config.archives_dir(), self.progress)
 
     def fetch_from_mirror(self):
         uri = self.url.get_uri()
