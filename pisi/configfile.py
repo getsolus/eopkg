@@ -90,7 +90,7 @@ class BuildDefaults:
     ldflags = "-Wl,--copy-dt-needed-entries -Wl,-O1 -Wl,-z,relro -Wl,-z,now -Wl,-z,max-page-size=0x1000 -Wl,-Bsymbolic-functions -Wl,--sort-common"
     buildhelper = "ccache"
     compressionlevel = 1
-    fallback = "https://www.solus-project.com/source"
+    fallback = "https://getsol.us/sources"
     ignored_build_types = ""
 
 class DirectoriesDefaults:
