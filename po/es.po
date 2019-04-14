@@ -822,7 +822,7 @@ msgstr "Error: "
 # is this to translate ? would it work if i change this ?
 #: pisi/cli/__init__.py:161
 msgid " (yes/no)"
-msgstr " (yes/no)"
+msgstr " (yes/no): "
 
 #: pisi/cli/__init__.py:185
 msgid " [complete]\n"
@@ -898,7 +898,7 @@ msgid ""
 msgstr ""
 "Agregar repositorio %s sin actualizar base de datos ?\n"
 "En caso de confirmar, también admite el repositorio saltando la verificación de la compatibilidad con su distribución.\n"
-"Desea continuar?"
+"¿Desea continuar?"
 
 #: pisi/cli/addrepo.py:74
 #, python-format
@@ -1107,11 +1107,11 @@ msgstr "Verificando todos los paquetes instalados"
 #: pisi/cli/check.py:91
 #, python-format
 msgid "Checking integrity of %s"
-msgstr ""
+msgstr "Verificando integridad de %s"
 
 #: pisi/cli/check.py:105
 msgid "Broken"
-msgstr ""
+msgstr "Roto"
 
 #: pisi/cli/check.py:110
 msgid "Unknown"
@@ -1131,7 +1131,7 @@ msgstr ""
 #: pisi/cli/check.py:122
 #, python-format
 msgid "Access denied: /%s"
-msgstr ""
+msgstr "Accesso denegado: /%s"
 
 #: pisi/cli/check.py:126
 #, fuzzy, python-format
@@ -2978,7 +2978,7 @@ msgstr ""
 
 #: pisi/operations/emerge.py:61 pisi/operations/install.py:82
 msgid "There are extra packages due to dependencies. Do you want to continue?"
-msgstr "Hay paquetes adicionales por motivo de dependencias. Desea continuar ?"
+msgstr "Hay paquetes adicionales por motivo de dependencias. ¿Desea continuar?"
 
 #: pisi/operations/emerge.py:95
 #, python-format
