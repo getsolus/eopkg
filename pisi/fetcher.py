@@ -130,6 +130,7 @@ class Fetcher:
                            http_headers = self._get_http_headers(),
                            ftp_headers  = self._get_ftp_headers(),
                            proxies      = self._get_proxies(),
+                           retry = 3,
                            timeout      = timeout,
                            user_agent   = 'eopkg Fetcher/' + pisi.__version__)
         except urlgrabber.grabber.URLGrabError:
@@ -165,6 +166,8 @@ class Fetcher:
                            throttle     = self._get_bandwith_limit(),
                            reget        = self._test_range_support(),
                            copy_local   = 1,
+                           retry = 3, # retry 3 times
+                           timeout = 120, # Reduce from default of 5 minutes to 2 minutes
                            user_agent   = 'eopkg Fetcher/' + pisi.__version__)
         except urlgrabber.grabber.URLGrabError, e:
             raise FetchError(_('Could not fetch destination file "%s": %s') % (self.url.get_uri(), e))
