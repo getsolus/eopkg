@@ -84,7 +84,6 @@ def _cleanup():
 # Hack for pisi to work with non-patched Python. pisi needs
 # lots of work for not doing this.
 importlib.reload(sys)
-sys.setdefaultencoding('utf-8')
 
 atexit.register(_cleanup)
 
