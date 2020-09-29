@@ -1,4 +1,6 @@
 *.mo
+*.bak
+.idea
 *.pyc
 *.bak
 /build/
