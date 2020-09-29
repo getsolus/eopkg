@@ -24,21 +24,19 @@ class _constant:
         pass
 
     def __setattr__(self, name, value):
-        if self.__dict__.has_key(name):
-            raise self.ConstError, _("Can't rebind constant: %s") % name
+        if name in self.__dict__:
+            raise self.ConstError(_("Can't rebind constant: %s") % name)
         # Binding an attribute once to a const is available
         self.__dict__[name] = value
 
     def __delattr__(self, name):
-        if self.__dict__.has_key(name):
-            raise self.ConstError, _("Can't unbind constant: %s") % name
+        if name in self.__dict__:
+            raise self.ConstError(_("Can't unbind constant: %s") % name)
         # we don't have an attribute by this name
-        raise NameError, name
+        raise NameError(name)
 
-class Constants:
+class Constants(metaclass=Singleton):
     "Pisi Constants Singleton"
-
-    __metaclass__ = Singleton
 
     __c = _constant()
 
@@ -106,7 +104,7 @@ class Constants:
         self.__c.debug_component = "debug"
 
         #file/directory permissions
-        self.__c.umask = 0022
+        self.__c.umask = 0o022
 
         # functions in actions_file
         self.__c.setup_func = "setup"

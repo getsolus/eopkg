@@ -19,7 +19,7 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
-class RemoveOrphans(command.PackageOp):
+class RemoveOrphans(command.PackageOp, metaclass=command.autocommand):
     __doc__ = _("""Remove orphaned packages
 
 Usage: remove-orphans
@@ -30,7 +30,6 @@ installed as a dependency of another package.
 Only packages that have no reverse dependencies outside of the automatically
 installed list will be removed.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(RemoveOrphans, self).__init__(args)

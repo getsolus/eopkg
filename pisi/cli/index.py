@@ -32,10 +32,9 @@ everything in a single index file.
 """)
 
 
-class Index(command.Command):
+class Index(command.Command, metaclass=command.autocommand):
 
     __doc__ = usage
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(Index, self).__init__(args)

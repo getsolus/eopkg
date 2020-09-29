@@ -71,7 +71,7 @@ def readable_insinto(destinationDirectory, *sourceFiles):
         for source in sourceFileGlob:
             system('install -m0644 "%s" %s' % (source, destinationDirectory))
 
-def lib_insinto(sourceFile, destinationDirectory, permission = 0644):
+def lib_insinto(sourceFile, destinationDirectory, permission = 0o644):
     '''inserts a library fileinto destinationDirectory with given permission'''
 
     if not sourceFile or not destinationDirectory:

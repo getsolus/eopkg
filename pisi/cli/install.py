@@ -19,7 +19,7 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
-class Install(command.PackageOp):
+class Install(command.PackageOp, metaclass=command.autocommand):
     __doc__ = _("""Install eopkg packages
 
 Usage: install <package1> <package2> ... <packagen>
@@ -30,7 +30,6 @@ specified a package name, it should exist in a specified repository.
 You can also specify components instead of package names, which will be
 expanded to package names.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(Install, self).__init__(args)

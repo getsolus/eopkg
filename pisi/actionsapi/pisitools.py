@@ -96,7 +96,7 @@ def dolib(sourceFile, destinationDirectory = '/usr/lib'):
     sourceFile = join_path(os.getcwd(), sourceFile)
     destinationDirectory = join_path(get.installDIR(), destinationDirectory)
 
-    lib_insinto(sourceFile, destinationDirectory, 0755)
+    lib_insinto(sourceFile, destinationDirectory, 0o755)
 
 def dolib_a(sourceFile, destinationDirectory = '/usr/lib'):
     '''insert the static library into /usr/lib with permission 0644'''
@@ -105,7 +105,7 @@ def dolib_a(sourceFile, destinationDirectory = '/usr/lib'):
     sourceFile = join_path(os.getcwd(), sourceFile)
     destinationDirectory = join_path(get.installDIR(), destinationDirectory)
 
-    lib_insinto(sourceFile, destinationDirectory, 0644)
+    lib_insinto(sourceFile, destinationDirectory, 0o644)
 
 def dolib_so(sourceFile, destinationDirectory = '/usr/lib'):
     '''insert the dynamic library into /usr/lib with permission 0755'''
@@ -114,7 +114,7 @@ def dolib_so(sourceFile, destinationDirectory = '/usr/lib'):
     sourceFile = join_path(os.getcwd(), sourceFile)
     destinationDirectory = join_path(get.installDIR(), destinationDirectory)
 
-    lib_insinto(sourceFile, destinationDirectory, 0755)
+    lib_insinto(sourceFile, destinationDirectory, 0o755)
 
 def doman(*sourceFiles):
     '''inserts the man pages in the list of files into /usr/share/man/'''
@@ -182,7 +182,7 @@ def rename(sourceFile, destinationFile):
 
     try:
         os.rename(join_path(get.installDIR(), sourceFile), join_path(get.installDIR(), baseDir, destinationFile))
-    except OSError, e:
+    except OSError as e:
         error(_('ActionsAPI [rename]: %s: %s') % (e, sourceFile))
 
 def dosed(sourceFiles, findPattern, replacePattern = ''):

@@ -11,8 +11,8 @@
 # Please read the COPYING file.
 #
 
-ADDED, REMOVED, INIT = range(3)
-PARTOF, VERSION, CONFLICT, DEPENDENCY, REQUIRES = range(5)
+ADDED, REMOVED, INIT = list(range(3))
+PARTOF, VERSION, CONFLICT, DEPENDENCY, REQUIRES = list(range(5))
 
 class With:
     def __init__(self):
@@ -58,12 +58,12 @@ def with_added_conflict(package, **kw):
     if not len(kw):
         return with_action(CONFLICT, ADDED, [package])
 
-    if (kw.has_key("versionFrom") or
-        kw.has_key("versionTo") or
-        kw.has_key("version") or
-        kw.has_key("releaseFrom") or
-        kw.has_key("releaseTo") or
-        kw.has_key("release")):
+    if ("versionFrom" in kw or
+        "versionTo" in kw or
+        "version" in kw or
+        "releaseFrom" in kw or
+        "releaseTo" in kw or
+        "release" in kw):
         return with_action(CONFLICT, ADDED, [kw, package])
 
     # pass other keywords.
@@ -75,12 +75,12 @@ def with_added_dependency(package, **kw):
     if not len(kw):
         return with_action(DEPENDENCY, ADDED, [package])
 
-    if (kw.has_key("versionFrom") or
-        kw.has_key("versionTo") or
-        kw.has_key("version") or
-        kw.has_key("releaseFrom") or
-        kw.has_key("releaseTo") or
-        kw.has_key("release")):
+    if ("versionFrom" in kw or
+        "versionTo" in kw or
+        "version" in kw or
+        "releaseFrom" in kw or
+        "releaseTo" in kw or
+        "release" in kw):
         return with_action(DEPENDENCY, ADDED, [kw, package])
 
     # pass other keywords.

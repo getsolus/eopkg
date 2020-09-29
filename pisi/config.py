@@ -31,7 +31,7 @@ class Error(pisi.Error):
 
 class Options(object):
     def __getattr__(self, name):
-        if not self.__dict__.has_key(name):
+        if name not in self.__dict__:
             return None
         else:
             return self.__dict__[name]
@@ -39,10 +39,8 @@ class Options(object):
     def __setattr__(self, name, value):
             self.__dict__[name] = value
 
-class Config(object):
+class Config(object, metaclass=pisi.util.Singleton):
     """Config Singleton"""
-
-    __metaclass__ = pisi.util.Singleton
 
     def __init__(self, options = Options()):
         self.set_options(options)
@@ -139,7 +137,7 @@ class Config(object):
 
     def tmp_dir(self):
         sysdir = self.subdir(self.values.dirs.tmp_dir)
-        if os.environ.has_key('USER'):
+        if 'USER' in os.environ:
             userdir = self.subdir('/tmp/eopkg-' + os.environ['USER'])
         else:
             userdir = self.subdir('/tmp/eopkg-root')

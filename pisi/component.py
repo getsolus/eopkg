@@ -13,22 +13,18 @@
 import pisi.pxml.xmlfile as xmlfile
 import pisi.pxml.autoxml as autoxml
 
-class Error(object):
+class Error(object, metaclass=autoxml.autoxml):
 
-    __metaclass__ = autoxml.autoxml
+    pass
 
-class Obsolete:
-
-    __metaclass__ = autoxml.autoxml
+class Obsolete(metaclass=autoxml.autoxml):
 
     s_Package = [autoxml.String, autoxml.mandatory]
 
     def __str__(self):
         return self.package
 
-class Distribution(xmlfile.XmlFile):
-
-    __metaclass__ = autoxml.autoxml
+class Distribution(xmlfile.XmlFile, metaclass=autoxml.autoxml):
 
     tag = "PISI"
 
@@ -43,10 +39,8 @@ class Distribution(xmlfile.XmlFile):
 
     t_Obsoletes = [ [Obsolete], autoxml.optional, "Obsoletes/Package"]
 
-class Maintainer(xmlfile.XmlFile):
+class Maintainer(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     "representation for component responsibles"
-
-    __metaclass__ = autoxml.autoxml
 
     t_Name = [autoxml.Text, autoxml.mandatory]
     t_Email = [autoxml.String, autoxml.mandatory]
@@ -55,10 +49,8 @@ class Maintainer(xmlfile.XmlFile):
         s = "%s <%s>" % (self.name, self.email)
         return s
 
-class Component(xmlfile.XmlFile):
+class Component(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     "representation for component declarations"
-
-    __metaclass__ = autoxml.autoxml
 
     t_Name = [autoxml.String, autoxml.mandatory]     # fully qualified name
 
@@ -82,10 +74,8 @@ class Component(xmlfile.XmlFile):
 
     t_Sources = [ [autoxml.String], autoxml.optional, "Parts/Source"]
 
-class Components(xmlfile.XmlFile):
+class Components(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     "representation for component declarations"
-
-    __metaclass__ = autoxml.autoxml
 
     tag = "PISI"
 

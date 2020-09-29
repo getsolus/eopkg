@@ -32,7 +32,7 @@ class FilesDB(lazydb.LazyDB):
         self.__check_filesdb()
 
     def has_file(self, path):
-        return self.filesdb.has_key(hashlib.md5(path).digest())
+        return hashlib.md5(path).digest() in self.filesdb
 
     def get_file(self, path):
         return self.filesdb[hashlib.md5(path).digest()], path
@@ -81,7 +81,7 @@ class FilesDB(lazydb.LazyDB):
 
     def remove_files(self, files):
         for f in files:
-            if self.filesdb.has_key(hashlib.md5(f.path).digest()):
+            if hashlib.md5(f.path).digest() in self.filesdb:
                 del self.filesdb[hashlib.md5(f.path).digest()]
 
     def destroy(self):

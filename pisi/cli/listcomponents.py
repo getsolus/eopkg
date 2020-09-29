@@ -18,7 +18,7 @@ import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.db
 
-class ListComponents(command.Command):
+class ListComponents(command.Command, metaclass=command.autocommand):
     __doc__ = _("""List available components
 
 Usage: list-components
@@ -26,7 +26,6 @@ Usage: list-components
 Gives a brief list of eopkg components published in the
 repositories.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(ListComponents, self).__init__(args)
@@ -51,10 +50,10 @@ repositories.
         for p in l:
             component = self.componentdb.get_component(p)
             if self.options.long:
-                ctx.ui.info(unicode(component))
+                ctx.ui.info(str(component))
             else:
                 lenp = len(p)
                 #if p in installed_list:
                 #    p = util.colorize(p, 'cyan')
                 p = p + ' ' * max(0, 15 - lenp)
-                ctx.ui.info('%s - %s ' % (component.name, unicode(component.summary)))
+                ctx.ui.info('%s - %s ' % (component.name, str(component.summary)))

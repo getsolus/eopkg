@@ -55,8 +55,8 @@ class File:
     COMPRESSION_TYPE_BZ2 = 1
     COMPRESSION_TYPE_XZ = 2
 
-    (read, write) = range(2)            # modes
-    (detached, whatelse) = range(2)
+    (read, write) = list(range(2))            # modes
+    (detached, whatelse) = list(range(2))
 
     __compressed_file_extensions = {".xz": COMPRESSION_TYPE_XZ,
                                     ".bz2": COMPRESSION_TYPE_BZ2}
@@ -64,7 +64,7 @@ class File:
     @staticmethod
     def make_uri(uri):
         "handle URI arg"
-        if isinstance(uri, basestring):
+        if isinstance(uri, str):
             uri = pisi.uri.URI(uri)
         elif not isinstance(uri, pisi.uri.URI):
             raise Error(_("uri must have type either URI or string"))
@@ -73,7 +73,7 @@ class File:
     @staticmethod
     def choose_method(filename, compress):
         if compress == File.COMPRESSION_TYPE_AUTO:
-            for ext, method in File.__compressed_file_extensions.items():
+            for ext, method in list(File.__compressed_file_extensions.items()):
                 if filename.endswith(ext):
                     return method
 
@@ -254,7 +254,7 @@ class File:
                 sigfilename = File.download(pisi.uri.URI(uri + '.sig'), transfer_dir)
             except KeyboardInterrupt:
                 raise
-            except Exception, e: #FIXME: what exception could we catch here, replace with that.
+            except Exception as e: #FIXME: what exception could we catch here, replace with that.
                 raise NoSignatureFound(uri)
             if os.system('gpg --verify ' + sigfilename) != 0:
                 raise InvalidSignature(uri)
@@ -269,8 +269,8 @@ class File:
     def isatty(self):
         return self.__file__.isatty()
 
-    def next(self):
-        return self.__file__.next()
+    def __next__(self):
+        return next(self.__file__)
 
     def read(self, size = None):
         if size:
@@ -291,7 +291,7 @@ class File:
             return self.__file__.readlines()
 
     def xreadlines(self):
-        return self.__file__.xreadlines()
+        return self.__file__
 
     def seek(self, offset, whence=0):
         self.__file__.seek(offset, whence)

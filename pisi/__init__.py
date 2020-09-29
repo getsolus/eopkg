@@ -17,6 +17,7 @@ import sys
 import atexit
 import logging
 import logging.handlers
+import importlib
 
 import locale
 import gettext
@@ -37,11 +38,11 @@ __all__ = [ 'api', 'configfile', 'db']
 class Exception(Exception):
     """Class of exceptions that must be caught and handled within eopkg"""
     def __str__(self):
-        s = u''
+        s = ''
         for x in self.args:
             if s != '':
                 s += '\n'
-            s += unicode(x)
+            s += str(x)
         return s
 
 class Error(Exception):
@@ -54,7 +55,7 @@ import pisi.context as ctx
 
 def init_logging():
     log_dir = os.path.join(ctx.config.dest_dir(), ctx.config.log_dir())
-    if os.access(log_dir, os.W_OK) and not sys.modules.has_key("distutils.core"):
+    if os.access(log_dir, os.W_OK) and "distutils.core" not in sys.modules:
         handler = logging.handlers.RotatingFileHandler('%s/eopkg.log' % log_dir)
         formatter = logging.Formatter('%(asctime)-12s: %(levelname)-8s %(message)s')
         handler.setFormatter(formatter)
@@ -82,7 +83,7 @@ def _cleanup():
 
 # Hack for pisi to work with non-patched Python. pisi needs
 # lots of work for not doing this.
-reload(sys)
+importlib.reload(sys)
 sys.setdefaultencoding('utf-8')
 
 atexit.register(_cleanup)

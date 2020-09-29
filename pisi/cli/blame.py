@@ -18,14 +18,12 @@ import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.db
 
-class Blame(command.Command):
+class Blame(command.Command, metaclass=command.autocommand):
     __doc__ = _("""Information about the package owner and release
 
 Usage: blame <package> ... <package>
 
 """)
-
-    __metaclass__ = command.autocommand
 
     def __init__(self, args=None):
         super(Blame, self).__init__(args)
@@ -65,7 +63,7 @@ Usage: blame <package> ... <package>
     def print_package_info(self, package, hno=0):
         s = _('Name: %s, version: %s, release: %s\n') % (
               package.name, package.history[hno].version, package.history[hno].release)
-        s += _('Package Maintainer: %s <%s>\n') % (unicode(package.source.packager.name), package.source.packager.email)
+        s += _('Package Maintainer: %s <%s>\n') % (str(package.source.packager.name), package.source.packager.email)
         s += _('Release Updater: %s <%s>\n') % (package.history[hno].name, package.history[hno].email)
         s += _('Update Date: %s\n') % package.history[hno].date
         s += '\n%s\n' % package.history[hno].comment

@@ -113,7 +113,7 @@ def fetch_remote_file(package, errors):
         failed = False		
         try:
             pisi.fetcher.fetch_url(uri, dest, ctx.ui.Progress)
-        except pisi.fetcher.FetchError, e:
+        except pisi.fetcher.FetchError as e:
             failed = True
         if failed:
 			try:

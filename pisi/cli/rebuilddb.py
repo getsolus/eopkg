@@ -18,7 +18,7 @@ import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.api
 
-class RebuildDb(command.Command):
+class RebuildDb(command.Command, metaclass=command.autocommand):
     __doc__ = _("""Rebuild Databases
 
 Usage: rebuilddb [ <package1> <package2> ... <packagen> ]
@@ -28,7 +28,6 @@ Rebuilds the eopkg databases
 If package specs are given, they should be the names of package
 dirs under /var/lib/eopkg
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(RebuildDb, self).__init__(args)

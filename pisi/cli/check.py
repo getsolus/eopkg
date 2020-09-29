@@ -36,10 +36,9 @@ If no packages are given, checks all installed packages.
 """)
 
 
-class Check(command.Command):
+class Check(command.Command, metaclass=command.autocommand):
 
     __doc__ = usage
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(Check, self).__init__(args)

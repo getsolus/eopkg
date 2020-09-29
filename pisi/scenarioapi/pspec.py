@@ -56,7 +56,7 @@ class Pspec:
         if type(dependencies[0]) == dict:
             dep = Dependency()
             (kw, dep.package) = dependencies
-            dep.__dict__[kw.keys()[0]] = kw.values()[0]
+            dep.__dict__[list(kw.keys())[0]] = list(kw.values())[0]
             self.package.packageDependencies.append(dep)
             return
 
@@ -78,7 +78,7 @@ class Pspec:
         if type(conflicts[0]) == dict:
             conf = Conflict()
             (kw, conf.package) = conflicts
-            conf.__dict__[kw.keys()[0]] = kw.values()[0]
+            conf.__dict__[list(kw.keys())[0]] = list(kw.values())[0]
             self.package.conflicts.append(conf)
             return
 
@@ -119,9 +119,9 @@ class Pspec:
         self.pspec.source.description["en"] = description
 
     def set_packager(self, name, email):
-        self.pspec.source.packager.name = unicode(name)
+        self.pspec.source.packager.name = str(name)
         self.pspec.source.packager.email = email
-        self.update.name = unicode(name)
+        self.update.name = str(name)
         self.update.email = email
 
     def add_archive(self, sha1sum, type, uri):

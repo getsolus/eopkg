@@ -24,25 +24,19 @@ import pisi.pxml.xmlfile as xmlfile
 import pisi.pxml.autoxml as autoxml
 import pisi.util as util
 
-class Delta:
-    __metaclass__ = autoxml.autoxml
-
+class Delta(metaclass=autoxml.autoxml):
     t_PackageURI = [ autoxml.String, autoxml.optional]
     t_PackageSize = [ autoxml.Long, autoxml.optional]
     t_PackageHash = [ autoxml.String, autoxml.optional, "SHA1Sum" ]
     a_buildFrom = [autoxml.String, autoxml.optional]
     a_releaseFrom = [autoxml.String, autoxml.optional]
 
-class Source:
-    __metaclass__ = autoxml.autoxml
-
+class Source(metaclass=autoxml.autoxml):
     t_Name = [autoxml.String, autoxml.mandatory]
     t_Homepage = [autoxml.String, autoxml.optional]
     t_Packager = [specfile.Packager, autoxml.mandatory]
 
-class Package(specfile.Package, xmlfile.XmlFile):
-    __metaclass__ = autoxml.autoxml
-
+class Package(specfile.Package, xmlfile.XmlFile, metaclass=autoxml.autoxml):
     t_Build = [ autoxml.Integer, autoxml.optional]
     t_BuildHost = [autoxml.String, autoxml.optional]
     t_Distribution = [ autoxml.String, autoxml.mandatory]
@@ -85,11 +79,9 @@ class Package(specfile.Package, xmlfile.XmlFile):
 
         return s
 
-class MetaData(xmlfile.XmlFile):
+class MetaData(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     """Package metadata. Metadata is composed of Specfile and various
     other information. A metadata has two parts, Source and Package."""
-
-    __metaclass__ = autoxml.autoxml
 
     tag = "PISI"
 

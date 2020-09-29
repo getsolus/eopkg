@@ -54,7 +54,7 @@ def echo(destionationFile, content):
     except IOError:
         error(_('ActionsAPI [echo]: Can\'t append to file %s.') % (destionationFile))
 
-def chmod(filePath, mode = 0755):
+def chmod(filePath, mode = 0o755):
     '''change the mode of filePath to the mode'''
     filePathGlob = glob.glob(filePath)
     if len(filePathGlob) == 0:
@@ -175,7 +175,7 @@ def copytree(source, destination, sym = True):
                 return
         try:
             shutil.copytree(source, destination, sym)
-        except OSError, e:
+        except OSError as e:
             error(_('ActionsAPI [copytree] %s to %s: %s') % (source, destination, e))
     else:
         error(_('ActionsAPI [copytree]: Directory %s doesn\'t exists.') % (source))

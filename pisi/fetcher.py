@@ -240,15 +240,15 @@ class Fetcher:
             return False
 
         try:
-            file_obj = urllib2.urlopen(urllib2.Request(self.url.get_uri()))
-        except urllib2.URLError:
+            file_obj = urllib.request.urlopen(urllib.request.Request(self.url.get_uri()))
+        except urllib.error.URLError:
             ctx.ui.debug(_("Remote file can not be reached. Previously downloaded part of the file will be removed."))
             os.remove(self.partial_file)
             return False
 
         headers = file_obj.info()
         file_obj.close()
-        if headers.has_key('Content-Length'):
+        if 'Content-Length' in headers:
             return True
         else:
             ctx.ui.debug(_("Server doesn't support partial downloads. Previously downloaded part of the file will be over-written."))

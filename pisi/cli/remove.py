@@ -19,7 +19,7 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
-class Remove(command.PackageOp):
+class Remove(command.PackageOp, metaclass=command.autocommand):
     __doc__ = _("""Remove eopkg packages
 
 Usage: remove <package1> <package2> ... <packagen>
@@ -29,7 +29,6 @@ Remove package(s) from your system. Just give the package names to remove.
 You can also specify components instead of package names, which will be
 expanded to package names.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(Remove, self).__init__(args)

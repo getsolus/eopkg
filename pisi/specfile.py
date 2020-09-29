@@ -392,10 +392,10 @@ class Package:
     def __str__(self):
         s = _('Name: %s, version: %s, release: %s\n') \
                 % (self.name, self.version, self.release)
-        s += _('Summary: %s\n') % unicode(self.summary)
-        s += _('Description: %s\n') % unicode(self.description)
-        s += _('Licenses: %s\n') % u", ".join(self.license)
-        s += _('Component: %s\n') % unicode(self.partOf)
+        s += _('Summary: %s\n') % str(self.summary)
+        s += _('Description: %s\n') % str(self.description)
+        s += _('Licenses: %s\n') % ", ".join(self.license)
+        s += _('Component: %s\n') % str(self.partOf)
         if len(self.providesComar) > 0 or len(self.providesPkgConfig) > 0 or len(self.providesPkgConfig32) > 0:
             s += _('Provides: ')
         if len(self.providesComar) > 0:
@@ -420,9 +420,7 @@ class Package:
         return s + '\n'
 
 
-class SpecFile(xmlfile.XmlFile):
-    __metaclass__ = autoxml.autoxml #needed when we specify a superclass
-
+class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     tag = "PISI"
 
     t_Source = [ Source, autoxml.mandatory]
@@ -440,7 +438,7 @@ class SpecFile(xmlfile.XmlFile):
             deps += sum([x.dependencies for x
                          in package.packageAnyDependencies], [])
             for dep in deps:
-                for attr_name, attr_value in dep.__dict__.items():
+                for attr_name, attr_value in list(dep.__dict__.items()):
                     if attr_value != "current":
                         continue
 
@@ -478,7 +476,7 @@ class SpecFile(xmlfile.XmlFile):
             return
         try:
             doc = piksemel.parse(path)
-        except Exception, e:
+        except Exception as e:
             raise Error(_("File '%s' has invalid XML") % (path) )
 
         if doc.getTag("Source").getTagData("Name") == self.source.name:
@@ -494,10 +492,10 @@ class SpecFile(xmlfile.XmlFile):
     def __str__(self):
         s = _('Name: %s, version: %s, release: %s\n') % (
               self.source.name, self.history[0].version, self.history[0].release)
-        s += _('Summary: %s\n') % unicode(self.source.summary)
-        s += _('Description: %s\n') % unicode(self.source.description)
-        s += _('Licenses: %s\n') % u", ".join(self.source.license)
-        s += _('Component: %s\n') % unicode(self.source.partOf)
+        s += _('Summary: %s\n') % str(self.source.summary)
+        s += _('Description: %s\n') % str(self.source.description)
+        s += _('Licenses: %s\n') % ", ".join(self.source.license)
+        s += _('Component: %s\n') % str(self.source.partOf)
         s += _('Build Dependencies: ')
         for x in self.source.buildDependencies:
            s += x.package + ' '

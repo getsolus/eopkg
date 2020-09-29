@@ -14,15 +14,13 @@ from pisi import translate as _
 
 import pisi.cli.command as command
 
-class Clean(command.Command):
+class Clean(command.Command, metaclass=command.autocommand):
     __doc__ = _("""Clean stale locks
 
 Usage: clean
 
 eopkg uses filesystem locks for managing database access.
 This command deletes unused locks from the database directory.""")
-
-    __metaclass__ = command.autocommand
 
     def __init__(self, args=None):
         super(Clean, self).__init__(args)

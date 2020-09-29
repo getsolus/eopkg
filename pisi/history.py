@@ -88,9 +88,7 @@ class Operation:
     def __str__(self):
         return self.type
 
-class History(xmlfile.XmlFile):
-
-    __metaclass__ = autoxml.autoxml
+class History(xmlfile.XmlFile, metaclass=autoxml.autoxml):
 
     tag = "PISI"
 
@@ -146,7 +144,7 @@ class History(xmlfile.XmlFile):
 
     def _get_latest(self):
 
-        files = filter(lambda h:h.endswith(".xml"), os.listdir(ctx.config.history_dir()))
+        files = [h for h in os.listdir(ctx.config.history_dir()) if h.endswith(".xml")]
         if not files:
             return "001"
 
