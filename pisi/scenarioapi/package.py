@@ -21,7 +21,7 @@ from pisi.scenarioapi.withops import *
 
 import gettext
 __trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+_ = __trans.gettext
 
 class Package:
     def __init__(self, name, deps = [], cons = [], date = "2006-18-18", ver = "1.0", partOf="None"):

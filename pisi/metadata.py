@@ -19,7 +19,7 @@ a package index.
 
 import gettext
 __trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+_ = __trans.gettext
 
 import pisi.specfile as specfile
 import pisi.pxml.xmlfile as xmlfile

@@ -23,7 +23,7 @@ import gettext
 gettext.bindtextdomain('pisi', "/usr/share/locale")
 gettext.textdomain('pisi')
 __trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+_ = __trans.gettext
 
 def sig_handler(sig, frame):
     if sig == signal.SIGTERM:

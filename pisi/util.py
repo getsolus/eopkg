@@ -31,7 +31,7 @@ import unicodedata
 import gettext
 from functools import reduce
 __trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+_ = __trans.gettext
 
 class Singleton(type):
     def __init__(cls, name, bases, dict):

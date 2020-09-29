@@ -21,7 +21,7 @@ import pisi.ui
 
 import gettext
 __trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+_ = __trans.gettext
 
 const = pisi.constants.Constants()
 sig = pisi.signalhandler.SignalHandler()
