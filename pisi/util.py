@@ -22,7 +22,6 @@ import string
 import struct
 import fnmatch
 import hashlib
-import statvfs
 import termios
 import operator
 import subprocess
@@ -609,7 +608,7 @@ def strip_file(filepath, fileinfo, outpath):
 def partition_freespace(directory):
     """Return free space of given directory's partition."""
     st = os.statvfs(directory)
-    return st[statvfs.F_BSIZE] * st[statvfs.F_BFREE]
+    return st.f_frsize * st.f_bfree
 
 ########################################
 # Package/Repository Related Functions #
