@@ -451,12 +451,12 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
                         dep.__dict__[attr_name] = current_release
 
     def getClangSupported(self):
-		''' Check whether SupportsClang was used '''
-		if self.source.supportsClang is not None:
-			if self.source.supportsClang.lower() == "true":
-				return True
-		return False
-			
+        ''' Check whether SupportsClang was used '''
+        if self.source.supportsClang is not None:
+            if self.source.supportsClang.lower() == "true":
+                return True
+        return False
+
     def getSourceVersion(self):
         return self.history[0].version
 
