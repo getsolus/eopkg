@@ -20,7 +20,7 @@ import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.api
 
-class UpdateRepo(command.Command):
+class UpdateRepo(command.Command, metaclass=command.autocommand):
     __doc__ = _("""Update repository databases
 
 Usage: update-repo [<repo1> <repo2> ... <repon>]
@@ -30,7 +30,6 @@ Usage: update-repo [<repo1> <repo2> ... <repon>]
 Synchronizes the eopkg databases with the current repository.
 If no repository is given, all repositories are updated.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self,args):
         super(UpdateRepo, self).__init__(args)

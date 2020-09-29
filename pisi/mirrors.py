@@ -23,13 +23,13 @@ class Mirrors:
         self._parse(config)
 
     def get_mirrors(self, name):
-        if self.mirrors.has_key(name):
+        if name in self.mirrors:
             return list(self.mirrors[name])
 
         return None
 
     def _add_mirror(self, name, url):
-        if self.mirrors.has_key(name):
+        if name in self.mirrors:
             self.mirrors[name].append(url)
         else:
             self.mirrors[name] = [url]

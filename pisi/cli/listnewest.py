@@ -21,7 +21,7 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
-class ListNewest(command.Command):
+class ListNewest(command.Command, metaclass=command.autocommand):
     __doc__ = _("""List newest packages in the repositories
 
 Usage: list-newest [ <repo1> <repo2> ... repon ]
@@ -30,7 +30,6 @@ Gives a list of eopkg newly published packages in the specified
 repositories. If no repository is specified, we list the new
 packages from all repositories.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(ListNewest, self).__init__(args)
@@ -85,7 +84,7 @@ packages from all repositories.
             package = self.packagedb.get_package(p, repo)
             lenp = len(p)
             p = p + ' ' * max(0, maxlen - lenp)
-            ctx.ui.info('%s - %s ' % (p, unicode(package.summary)))
+            ctx.ui.info('%s - %s ' % (p, str(package.summary)))
 
-        print
+        print()
 

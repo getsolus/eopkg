@@ -32,10 +32,9 @@ a delta package with the changed files.
 """)
 
 
-class Delta(command.Command):
+class Delta(command.Command, metaclass=command.autocommand):
 
     __doc__ = usage
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(Delta, self).__init__(args)

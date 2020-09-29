@@ -52,7 +52,7 @@ class GroupDB(lazydb.LazyDB):
         return groups
 
     def __generate_groups(self, doc):
-        return dict(map(lambda x: (x.getTagData("Name"), x.toString()), doc.tags("Group")))
+        return dict([(x.getTagData("Name"), x.toString()) for x in doc.tags("Group")])
 
     def has_group(self, name, repo = None):
         return self.gdb.has_item(name, repo)

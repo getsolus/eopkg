@@ -20,14 +20,13 @@ import pisi
 import pisi.context as ctx
 import pisi.cli.command as command
 
-class SearchFile(command.Command):
+class SearchFile(command.Command, metaclass=command.autocommand):
     __doc__ = _("""Search for a file
 
 Usage: search-file <path1> <path2> ... <pathn>
 
 Finds the installed package which contains the specified file.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(SearchFile, self).__init__(args)

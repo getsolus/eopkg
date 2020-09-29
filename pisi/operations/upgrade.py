@@ -40,7 +40,7 @@ def check_update_actions(packages):
         version, release, build = installdb.get_version(package)
         pkg_actions = pkg.get_update_actions(release)
 
-        for action_name, action_targets in pkg_actions.items():
+        for action_name, action_targets in list(pkg_actions.items()):
             item = actions.setdefault(action_name, [])
             for action_target in action_targets:
                 item.append((package, action_target))
@@ -65,7 +65,7 @@ def find_upgrades(packages, replaces):
     Ap = []
     for i_pkg in packages:
 
-        if i_pkg in replaces.keys():
+        if i_pkg in list(replaces.keys()):
             # Replaced packages will be forced for upgrade, cause replaced packages are marked as obsoleted also. So we
             # pass them.
             continue
@@ -121,7 +121,7 @@ def upgrade(A=[], repo=None):
 
     # Force upgrading of installed but replaced packages or else they will be removed (they are obsoleted also).
     # This is not wanted for a replaced driver package (eg. nvidia-X).
-    A |= set(pisi.util.flatten_list(replaces.values()))
+    A |= set(pisi.util.flatten_list(list(replaces.values())))
 
     A |= upgrade_base(A)
 
@@ -163,7 +163,7 @@ def upgrade(A=[], repo=None):
     needs_confirm = check_update_actions(order)
 
     # NOTE: replaces.values() was already flattened above, it can be reused
-    if set(order) - A_0 - set(pisi.util.flatten_list(replaces.values())):
+    if set(order) - A_0 - set(pisi.util.flatten_list(list(replaces.values()))):
         ctx.ui.warning(_("There are extra packages due to dependencies."))
         needs_confirm = True
 
@@ -228,7 +228,7 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
     if force_replaced:
         if replaces is None:
             replaces = packagedb.get_replaces()
-        A |= set(pisi.util.flatten_list(replaces.values()))
+        A |= set(pisi.util.flatten_list(list(replaces.values())))
 
     # find the "install closure" graph of G_f by package
     # set A using packagedb
@@ -345,14 +345,14 @@ def upgrade_base(A = set()):
     if not ctx.config.values.general.ignore_safety and not ctx.get_option('ignore_safety'):
         if componentdb.has_component('system.base'):
             systembase = set(componentdb.get_union_component('system.base').packages)
-            extra_installs = filter(lambda x: not installdb.has_package(x), systembase - set(A))
+            extra_installs = [x for x in systembase - set(A) if not installdb.has_package(x)]
             extra_installs = pisi.blacklist.exclude_from(extra_installs, ctx.const.blacklist)
             if extra_installs:
                 ctx.ui.warning(_("Safety switch forces the installation of "
                                  "following packages:"))
                 ctx.ui.info(util.format_by_columns(sorted(extra_installs)))
             G_f, install_order = operations.install.plan_install_pkg_names(extra_installs)
-            extra_upgrades = filter(lambda x: is_upgradable(x), systembase - set(install_order))
+            extra_upgrades = [x for x in systembase - set(install_order) if is_upgradable(x)]
             upgrade_order = []
 
             extra_upgrades = pisi.blacklist.exclude_from(extra_upgrades, ctx.const.blacklist)

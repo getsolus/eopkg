@@ -26,9 +26,9 @@ def file_corrupted(pfile):
         try:
             if pisi.util.sha1_file(path) != pfile.hash:
                 return True
-        except pisi.util.FilePermissionDeniedError, e:
+        except pisi.util.FilePermissionDeniedError as e:
             raise e
-        except pisi.util.FileNotFoundError, e:
+        except pisi.util.FileNotFoundError as e:
             raise e
     return False
 
@@ -85,11 +85,11 @@ def check_files(files, check_config=False):
         try:
             is_file_corrupted = file_corrupted(f)
 
-        except pisi.util.FilePermissionDeniedError, e:
+        except pisi.util.FilePermissionDeniedError as e:
             # Can't read file, probably because of permissions, skip
             results['denied'].append(f.path)
         
-        except pisi.util.FileNotFoundError, e:
+        except pisi.util.FileNotFoundError as e:
             # Shipped file doesn't exist on the system
             results['missing'].append(f.path)
 

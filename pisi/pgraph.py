@@ -12,7 +12,7 @@
 
 """eopkg package relation graph that represents the state of packagedb"""
 
-import graph
+from . import graph
 
 # Cache the results from packagedb queries in a graph
 

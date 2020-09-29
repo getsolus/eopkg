@@ -21,7 +21,7 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
-class Upgrade(command.PackageOp):
+class Upgrade(command.PackageOp, metaclass=command.autocommand):
     __doc__ = _("""Upgrade eopkg packages
 
 Usage: Upgrade [<package1> <package2> ... <packagen>]
@@ -39,7 +39,6 @@ reinstall a package from a eopkg file, use the install command.
 You can also specify components instead of package names, which will be
 expanded to package names.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(Upgrade, self).__init__(args)

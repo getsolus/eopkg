@@ -22,13 +22,11 @@ import pisi.db
 from pisi.operations.remove import list_orphans
 import pisi.util as util
 
-class ListInstalled(command.Command):
+class ListInstalled(command.Command, metaclass=command.autocommand):
     __doc__ = _("""Print the list of all installed packages
 
 Usage: list-installed
 """)
-
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(ListInstalled, self).__init__(args)
@@ -82,25 +80,25 @@ Usage: list-installed
 
         if self.options.install_info:
             ctx.ui.info(_('Package Name          |St|        Version|  Rel.|  Distro|             Date'))
-            print         '==========================================================================='
+            print('===========================================================================')
         for pkg in installed:
             package = self.installdb.get_package(pkg)
             inst_info = self.installdb.get_info(pkg)
             if self.options.long:
-                ctx.ui.info(unicode(package))
-                ctx.ui.info(unicode(inst_info))
+                ctx.ui.info(str(package))
+                ctx.ui.info(str(inst_info))
             elif self.options.install_info:
                 ctx.ui.info('%-20s  |%s' % (package.name, inst_info.one_liner()))
             else:
                 package.name = package.name + ' ' * (maxlen - len(package.name))
-                ctx.ui.info('%s - %s' % (package.name, unicode(package.summary)))
+                ctx.ui.info('%s - %s' % (package.name, str(package.summary)))
 
     def run_automatic_only(self):
         """
         Only list the automatically installed packages
         """
         orphans = list_orphans()
-        keys = orphans.keys()
+        keys = list(orphans.keys())
         keys.sort()
         if keys and len(keys) > 0:
             maxlen = max([len(x) for x in keys])
@@ -116,4 +114,4 @@ Usage: list-installed
             if not owner:
                 owner = _("Orphaned package")
             orphan_print += ' ' * max(0, maxlen - len(orphan))
-            ctx.ui.info('%s - %s ' % (orphan_print, unicode(owner)))
+            ctx.ui.info('%s - %s ' % (orphan_print, str(owner)))

@@ -21,7 +21,7 @@ import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.db
 
-class Search(command.Command):
+class Search(command.Command, metaclass=command.autocommand):
     __doc__ = _("""Search packages
 
 Usage: search <term1> <term2> ... <termn>
@@ -32,7 +32,6 @@ Default search is done in package database. Use
 options to search in install database or source
 database.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(Search, self).__init__(args)
@@ -101,7 +100,7 @@ database.
             lenp = len(name)
 
             name = replace.sub(pisi.util.colorize(r"\1", "brightred"), name)
-            if lang and summary.has_key(lang):
+            if lang and lang in summary:
                 summary = replace.sub(pisi.util.colorize(r"\1", "brightred"), str(summary[lang]))
             else:
                 summary = replace.sub(pisi.util.colorize(r"\1", "brightred"), str(summary))

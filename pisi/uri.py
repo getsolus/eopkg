@@ -13,7 +13,7 @@
 """Simplifies working with URLs, purl module provides common URL
 parsing and processing"""
 
-import urlparse
+import urllib.parse
 import os.path
 
 import gettext
@@ -47,7 +47,7 @@ class URI(object):
     def set_uri(self, uri):
         # (scheme, location, path, params, query, fragment)
         uri = str(uri)
-        u = urlparse.urlparse(uri, "file")
+        u = urllib.parse.urlparse(uri, "file")
         self.__scheme = u[0]
         self.__location = u[1]
         self.__path = u[2]
@@ -75,7 +75,7 @@ class URI(object):
 
     def set_auth_info(self, authTuple):
         if not isinstance(authTuple, tuple):
-            raise Exception, _("setAuthInfo needs a tuple (user, pass)")
+            raise Exception(_("setAuthInfo needs a tuple (user, pass)"))
         self.__authinfo = authTuple
 
     def auth_info(self):

@@ -57,7 +57,7 @@ class ComponentDB(lazydb.LazyDB):
         return components
  
     def __generate_components(self, doc):
-        return dict(map(lambda x: (x.getTagData("Name"), x.toString()), doc.tags("Component")))
+        return dict([(x.getTagData("Name"), x.toString()) for x in doc.tags("Component")])
 
     def has_component(self, name, repo = None):
         return self.cdb.has_item(name, repo)
@@ -74,9 +74,9 @@ class ComponentDB(lazydb.LazyDB):
             lang = pisi.pxml.autoxml.LocalText.get_lang()
         found = []
         for name, xml in self.cdb.get_items_iter(repo):
-            if name not in found and terms == filter(lambda term: re.compile(rename % (lang, term), re.I).search(xml) or \
+            if name not in found and terms == [term for term in terms if re.compile(rename % (lang, term), re.I).search(xml) or \
                                                          re.compile(resum % (lang, term), re.I).search(xml) or \
-                                                         re.compile(redesc % (lang, term), re.I).search(xml), terms):
+                                                         re.compile(redesc % (lang, term), re.I).search(xml)]:
                 found.append(name)
         return found
 
@@ -132,7 +132,7 @@ class ComponentDB(lazydb.LazyDB):
         packages = []
         packages.extend(component.packages)
 
-        sub_components = filter(lambda x:x.startswith(component_name+"."), self.list_components(repo))
+        sub_components = [x for x in self.list_components(repo) if x.startswith(component_name+".")]
         for sub in sub_components:
             try:
                 packages.extend(self.get_component(sub, repo).packages)
@@ -152,7 +152,7 @@ class ComponentDB(lazydb.LazyDB):
         packages = []
         packages.extend(component.packages)
 
-        sub_components = filter(lambda x:x.startswith(component_name+"."), self.list_components())
+        sub_components = [x for x in self.list_components() if x.startswith(component_name+".")]
         for sub in sub_components:
             try:
                 packages.extend(self.get_union_component(sub).packages)
@@ -173,7 +173,7 @@ class ComponentDB(lazydb.LazyDB):
         sources = []
         sources.extend(component.sources)
 
-        sub_components = filter(lambda x:x.startswith(component_name+"."), self.list_components(repo))
+        sub_components = [x for x in self.list_components(repo) if x.startswith(component_name+".")]
         for sub in sub_components:
             try:
                 sources.extend(self.get_component(sub, repo).sources)
@@ -193,7 +193,7 @@ class ComponentDB(lazydb.LazyDB):
         sources = []
         sources.extend(component.sources)
 
-        sub_components = filter(lambda x:x.startswith(component_name+"."), self.list_components())
+        sub_components = [x for x in self.list_components() if x.startswith(component_name+".")]
         for sub in sub_components:
             try:
                 sources.extend(self.get_union_component(sub).sources)

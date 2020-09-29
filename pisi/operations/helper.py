@@ -53,7 +53,7 @@ def check_conflicts(order, packagedb):
 
     if pkg_conflicts:
         conflicts = ""
-        for pkg in pkg_conflicts.keys():
+        for pkg in list(pkg_conflicts.keys()):
             conflicts += _("[%s conflicts with: %s]\n") % (pkg, util.strlist(pkg_conflicts[pkg]))
 
         ctx.ui.info(_("The following packages have conflicts:\n%s") %

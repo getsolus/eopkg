@@ -12,7 +12,7 @@
 import os
 import fcntl
 import re
-import fetcher
+from . import fetcher
 
 import gettext
 __trans = gettext.translation('pisi', fallback=True)
@@ -233,7 +233,7 @@ def list_upgradable():
     installdb = pisi.db.installdb.InstallDB()
     is_upgradable = pisi.operations.upgrade.is_upgradable
 
-    upgradable = filter(is_upgradable, installdb.list_installed())
+    upgradable = list(filter(is_upgradable, installdb.list_installed()))
     # replaced packages can not pass is_upgradable test, so we add them manually
     upgradable.extend(list_replaces())
 
@@ -530,7 +530,7 @@ def delete_cache():
     pisi.util.clean_dir(ctx.config.archives_dir())
     ctx.ui.info(_("Cleaning temporary directory %s...") % ctx.config.tmp_dir())
     pisi.util.clean_dir(ctx.config.tmp_dir())
-    for cache in filter(lambda x: x.endswith(".cache"), os.listdir(ctx.config.cache_root_dir())):
+    for cache in [x for x in os.listdir(ctx.config.cache_root_dir()) if x.endswith(".cache")]:
         cache_file = pisi.util.join_path(ctx.config.cache_root_dir(), cache)
         ctx.ui.info(_("Removing cache file %s...") % cache_file)
         os.unlink(cache_file)
@@ -751,7 +751,7 @@ def info_name(package_name, useinstalldb=False):
     if useinstalldb and installdb.has_package(package.name):
         try:
             files = installdb.get_files(package.name)
-        except pisi.Error, e:
+        except pisi.Error as e:
             ctx.ui.warning(e)
             files = None
     else:
@@ -837,7 +837,7 @@ def __update_repo(repo, force=False):
         repouri = repodb.get_repo(repo).indexuri.get_uri()
         try:
             index.read_uri_of_repo(repouri, repo)
-        except pisi.file.AlreadyHaveException, e:
+        except pisi.file.AlreadyHaveException as e:
             ctx.ui.info(_('%s repository information is up-to-date.') % repo)
             if force:
                 ctx.ui.info(_('Updating database at any rate as requested'))
@@ -947,7 +947,7 @@ def clearCache(all=False):
 
         # sort dictionary by value from PEP-265
         from operator import itemgetter
-        return sorted(sizes.iteritems(), key=itemgetter(1), reverse=False)
+        return sorted(iter(sizes.items()), key=itemgetter(1), reverse=False)
 
     def removeOrderByLimit(cacheDir, order, limit):
         totalSize = 0
@@ -969,7 +969,7 @@ def clearCache(all=False):
 
     cacheDir = ctx.config.cached_packages_dir()
 
-    pkgList = map(lambda x: os.path.basename(x).split(ctx.const.package_suffix)[0], glob.glob("%s/*.eopkg" % cacheDir))
+    pkgList = [os.path.basename(x).split(ctx.const.package_suffix)[0] for x in glob.glob("%s/*.eopkg" % cacheDir)]
     if not all:
         # Cache limits from pisi.conf
         config = pisi.configfile.ConfigurationFile("/etc/eopkg/eopkg.conf")

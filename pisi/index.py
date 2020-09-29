@@ -37,9 +37,7 @@ import pisi.operations.build
 class Error(pisi.Error):
     pass
 
-class Index(xmlfile.XmlFile):
-    __metaclass__ = autoxml.autoxml
-
+class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     tag = "PISI"
 
     t_Distribution = [ component.Distribution, autoxml.optional ]
@@ -136,7 +134,7 @@ class Index(xmlfile.XmlFile):
                 raise
 
         try:
-            obsoletes_list = map(str, self.distribution.obsoletes)
+            obsoletes_list = list(map(str, self.distribution.obsoletes))
         except AttributeError:
             obsoletes_list = []
 
@@ -178,7 +176,7 @@ def add_package(params):
 
         package = pisi.package.Package(path, 'r')
         md = package.get_metadata()
-        md.package.packageSize = long(os.path.getsize(path))
+        md.package.packageSize = int(os.path.getsize(path))
         md.package.packageHash = util.sha1_file(path)
         if ctx.config.options and ctx.config.options.absolute_urls:
             md.package.packageURI = os.path.realpath(path)
@@ -190,7 +188,7 @@ def add_package(params):
         if md.errors():
             ctx.ui.info("")
             ctx.ui.error(_('Package %s: metadata corrupt, skipping...') % md.package.name)
-            ctx.ui.error(unicode(Error(*errs)))
+            ctx.ui.error(str(Error(*errs)))
         else:
             # No need to carry these with index (#3965)
             md.package.files = None
@@ -211,7 +209,7 @@ def add_package(params):
 
                     delta = metadata.Delta()
                     delta.packageURI = util.removepathprefix(repo_uri, delta_path)
-                    delta.packageSize = long(os.path.getsize(delta_path))
+                    delta.packageSize = int(os.path.getsize(delta_path))
                     delta.packageHash = util.sha1_file(delta_path)
                     delta.releaseFrom = src_release
 

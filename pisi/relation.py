@@ -15,9 +15,7 @@ import pisi.version
 import pisi.db
 import pisi.pxml.autoxml as autoxml
 
-class Relation:
-
-    __metaclass__ = autoxml.autoxml
+class Relation(metaclass=autoxml.autoxml):
 
     s_Package = [autoxml.String, autoxml.mandatory]
     a_version = [autoxml.String, autoxml.optional]

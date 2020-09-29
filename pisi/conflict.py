@@ -70,13 +70,13 @@ def calculate_conflicts(order, packagedb):
         # check if any package has conflicts with the installed packages
         conflicts = check_installed(pkg, order)
         if conflicts:
-            conflicting_pairs[x] = map(lambda c:str(c), conflicts)
-            conflicting_pkgs = conflicting_pkgs.union(map(lambda c:c.package, conflicts))
+            conflicting_pairs[x] = [str(c) for c in conflicts]
+            conflicting_pkgs = conflicting_pkgs.union([c.package for c in conflicts])
 
         # now check if any package has conflicts with each other
-        B_i = B_0.intersection(set(map(lambda c:c.package, pkg.conflicts)))
+        B_i = B_0.intersection(set([c.package for c in pkg.conflicts]))
         conflicts_inorder_i = set()
-        for p in map(lambda x:packagedb.get_package(x), B_i):
+        for p in [packagedb.get_package(x) for x in B_i]:
             conflicted = package_conflicts(p, pkg.conflicts)
             if conflicted:
                 conflicts_inorder_i.add(str(conflicted))

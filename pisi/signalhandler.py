@@ -32,12 +32,12 @@ class SignalHandler:
         self.signals[sig].pending = True
 
     def disable_signal(self, sig):
-        if sig not in self.signals.keys():
+        if sig not in list(self.signals.keys()):
             self.signals[sig] = Signal(sig)
             signal.signal(sig, self.signal_handler)
 
     def enable_signal(self, sig):
-        if sig in self.signals.keys():
+        if sig in list(self.signals.keys()):
             if self.signals[sig].oldhandler:
                 oldhandler = self.signals[sig].oldhandler
             else:
@@ -49,7 +49,7 @@ class SignalHandler:
                 raise exception[sig]
 
     def signal_disabled(self, sig):
-        return sig in self.signals.keys()
+        return sig in list(self.signals.keys())
 
     def signal_pending(self, sig):
         return self.signal_disabled(sig) and self.signals[sig].pending

@@ -17,7 +17,7 @@ _ = __trans.ugettext
 import pisi.cli.command as command
 import pisi.api
 
-class DisableRepo(command.Command):
+class DisableRepo(command.Command, metaclass=command.autocommand):
     __doc__ = _("""Disable repository
 
 Usage: disable-repo [<repo1> <repo2> ... <repon>]
@@ -26,7 +26,6 @@ Usage: disable-repo [<repo1> <repo2> ... <repon>]
 
 Disabled repositories are not taken into account in operations
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self,args):
         super(DisableRepo, self).__init__(args)

@@ -89,14 +89,14 @@ def auto_dodoc():
 def install(parameters=''):
     '''does ruby setup.rb install'''
     if system('ruby -w setup.rb --prefix=/%s --destdir=%s %s' % (get.defaultprefixDIR(), get.installDIR(), parameters)):
-        raise InstallError, _('Install failed.')
+        raise InstallError(_('Install failed.'))
 
     auto_dodoc()
 
 def rake_install(parameters=''):
     '''execute rake script for installation'''
     if system('rake -t -l %s %s' % (os.path.join('/', get.defaultprefixDIR(), 'lib'), parameters)):
-        raise InstallError, _('Install failed.')
+        raise InstallError(_('Install failed.'))
 
     auto_dodoc()
 
@@ -105,4 +105,4 @@ def run(parameters=''):
     export('DESTDIR', get.installDIR())
 
     if system('ruby %s' % parameters):
-        raise RuntimeError, _("Running 'ruby %s' failed.") % parameters
+        raise RuntimeError(_("Running 'ruby %s' failed.") % parameters)

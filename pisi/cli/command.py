@@ -30,7 +30,7 @@ class autocommand(type):
             raise pisi.cli.Error(_('Command lacks name'))
         longname, shortname = name
         def add_cmd(cmd):
-            if Command.cmd_dict.has_key(cmd):
+            if cmd in Command.cmd_dict:
                 raise pisi.cli.Error(_('Duplicate command %s') % cmd)
             else:
                 Command.cmd_dict[cmd] = cls
@@ -64,7 +64,7 @@ class Command(object):
     @staticmethod
     def get_command(cmd, fail=False, args=None):
 
-        if Command.cmd_dict.has_key(cmd):
+        if cmd in Command.cmd_dict:
             return Command.cmd_dict[cmd](args)
 
         if fail:
@@ -186,8 +186,8 @@ class Command(object):
     def help(self):
         """print help for the command"""
         trans = gettext.translation('pisi', fallback=True)
-        print "%s: %s\n" % (self.format_name(), trans.ugettext(self.__doc__))
-        print self.parser.format_option_help()
+        print("%s: %s\n" % (self.format_name(), trans.ugettext(self.__doc__)))
+        print(self.parser.format_option_help())
 
     def die(self):
         """exit program"""

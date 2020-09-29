@@ -48,17 +48,17 @@ def make_version(version):
             if "a" <= suffix <= "s":
                 for keyword, value in __keywords:
                     if suffix.startswith(keyword):
-                        return map(__make_version_item, ver.split(".")), value, \
-                                map(__make_version_item, suffix[len(keyword):].split("."))
+                        return list(map(__make_version_item, ver.split("."))), value, \
+                                list(map(__make_version_item, suffix[len(keyword):].split(".")))
                 else:
                     # Probably an invalid version string. Reset ver string
                     # to raise an exception in __make_version_item function.
                     ver = ""
             else:
-                return map(__make_version_item, ver.split(".")), 0, \
-                        map(__make_version_item, suffix.split("."))
+                return list(map(__make_version_item, ver.split("."))), 0, \
+                        list(map(__make_version_item, suffix.split(".")))
 
-        return map(__make_version_item, ver.split(".")), 0, [(0, None)]
+        return list(map(__make_version_item, ver.split("."))), 0, [(0, None)]
 
     except ValueError:
         raise InvalidVersionError(_("Invalid version string: '%s'") % version)
@@ -83,37 +83,37 @@ class Version(object):
         return self.__version_string
 
     def compare(self, ver):
-        if isinstance(ver, basestring):
+        if isinstance(ver, str):
             return cmp(self.__version, make_version(ver))
 
         return cmp(self.__version, ver.__version)
 
     def __lt__(self, rhs):
-        if isinstance(rhs, basestring):
+        if isinstance(rhs, str):
             return self.__version < make_version(rhs)
 
         return self.__version < rhs.__version
 
     def __le__(self, rhs):
-        if isinstance(rhs, basestring):
+        if isinstance(rhs, str):
             return self.__version <= make_version(rhs)
 
         return self.__version <= rhs.__version
 
     def __gt__(self, rhs):
-        if isinstance(rhs, basestring):
+        if isinstance(rhs, str):
             return self.__version > make_version(rhs)
 
         return self.__version > rhs.__version
 
     def __ge__(self, rhs):
-        if isinstance(rhs, basestring):
+        if isinstance(rhs, str):
             return self.__version >= make_version(rhs)
 
         return self.__version >= rhs.__version
 
     def __eq__(self, rhs):
-        if isinstance(rhs, basestring):
+        if isinstance(rhs, str):
             return self.__version_string == rhs
 
         return self.__version_string == rhs.__version_string

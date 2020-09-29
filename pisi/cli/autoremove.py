@@ -22,7 +22,7 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
-class AutoRemove(command.PackageOp):
+class AutoRemove(command.PackageOp, metaclass=command.autocommand):
     __doc__ = _("""Remove eopkg packages
 
 Usage: autoremove <package1> <package2> ... <packagen>
@@ -36,7 +36,6 @@ Any additional packages that were automatically installed as a result of
 installing the packages being removed, will also be removed if it is
 safe to do so.
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(AutoRemove, self).__init__(args)

@@ -39,7 +39,7 @@ def getAllNodes(node, tagPath):
         return []
     nodeList = [node] # basis case
     for tag in tags:
-        results = map(lambda x: getTagByName(x, tag), nodeList)
+        results = [getTagByName(x, tag) for x in nodeList]
         nodeList = []
         for x in results:
             nodeList.extend(x)

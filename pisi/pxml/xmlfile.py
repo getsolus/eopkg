@@ -56,7 +56,7 @@ class XmlFile(object):
         try:
             self.doc = iks.parseString(xml)
             return self.doc
-        except Exception, e:
+        except Exception as e:
             raise Error(_("String '%s' has invalid XML") % (xml))
 
     def readxml(self, uri, tmpDir='/tmp', sha1sum=False,
@@ -79,9 +79,9 @@ class XmlFile(object):
         try:
             self.doc = iks.parse(localpath)
             return self.doc
-        except OSError, e:
+        except OSError as e:
             raise Error(_("Unable to read file (%s): %s") %(localpath,e))
-        except Exception, e:
+        except Exception as e:
             raise Error(_("File '%s' has invalid XML") % (localpath) )
 
     def writexml(self, uri, tmpDir = '/tmp', sha1sum=False, compress=None, sign=None):

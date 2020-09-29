@@ -27,14 +27,12 @@ import pisi.cli.command as command
 # Operation names for translation
 opttrans = {"upgrade":_("upgrade"),"remove":_("remove"),"emerge":_("emerge"), "install":_("install"), "snapshot":_("snapshot"), "takeback":_("takeback"), "repoupdate":_("repository update")}
 
-class History(command.PackageOp):
+class History(command.PackageOp, metaclass=command.autocommand):
     __doc__ = _("""History of pisi operations
 
 Usage: history
 
 Lists previous operations.""")
-
-    __metaclass__ = command.autocommand
 
     def __init__(self, args=None):
         super(History, self).__init__(args)
@@ -64,19 +62,19 @@ Lists previous operations.""")
 
     def print_history(self):
         for operation in self.historydb.get_last(ctx.get_option('last')):
-            print _("Operation #%d: %s") % (operation.no, opttrans[operation.type])
-            print _("Date: %s %s") % (operation.date, operation.time)
-            print
+            print(_("Operation #%d: %s") % (operation.no, opttrans[operation.type]))
+            print(_("Date: %s %s") % (operation.date, operation.time))
+            print()
 
             if operation.type == "snapshot":
-                print _("    * There are %d packages in this snapshot.") % len(operation.packages)
+                print(_("    * There are %d packages in this snapshot.") % len(operation.packages))
             elif operation.type == "repoupdate":
                 for repo in operation.repos:
-                    print "    *",  repo
+                    print("    *",  repo)
             else:
                 for pkg in operation.packages:
-                    print "    *",  pkg
-            print
+                    print("    *",  pkg)
+            print()
 
     def redirect_output(self, func):
         if os.isatty(sys.stdout.fileno()):

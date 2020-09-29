@@ -22,14 +22,13 @@ import pisi.util as util
 import pisi.api
 import pisi.db
 
-class Info(command.Command):
+class Info(command.Command, metaclass=command.autocommand):
     __doc__ = _("""Display package information
 
 Usage: info <package1> <package2> ... <packagen>
 
 <packagei> is either a package name or a .pisi file,
 """)
-    __metaclass__ = command.autocommand
 
     def __init__(self, args):
         super(Info, self).__init__(args)
@@ -81,7 +80,7 @@ Usage: info <package1> <package2> ... <packagen>
                         index.add_component(component)
                     else:
                         if not self.options.short:
-                            ctx.ui.info(unicode(component))
+                            ctx.ui.info(str(component))
                         else:
                             ctx.ui.info("%s - %s" % (component.name, component.summary))
 
@@ -114,31 +113,31 @@ Usage: info <package1> <package2> ... <packagen>
         files.list.sort(key = lambda x:x.path)
         for fileinfo in files.list:
             if self.options.files:
-                print fileinfo
+                print(fileinfo)
             else:
-                print "/" + fileinfo.path
+                print("/" + fileinfo.path)
 
     def print_metadata(self, metadata, packagedb=None):
         if ctx.get_option('short'):
             pkg = metadata.package
-            ctx.ui.formatted_output(" - ".join((pkg.name, unicode(pkg.summary))))
+            ctx.ui.formatted_output(" - ".join((pkg.name, str(pkg.summary))))
         else:
-            ctx.ui.formatted_output(unicode(metadata.package))
+            ctx.ui.formatted_output(str(metadata.package))
             if packagedb:
                 revdeps =  [name for name, dep in packagedb.get_rev_deps(metadata.package.name)]
                 ctx.ui.formatted_output(" ".join((_("Reverse Dependencies:"), util.strlist(revdeps))))
-                print
+                print()
 
     def print_specdata(self, spec, sourcedb=None):
         src = spec.source
         if ctx.get_option('short'):
-            ctx.ui.formatted_output(" - ".join((src.name, unicode(src.summary))))
+            ctx.ui.formatted_output(" - ".join((src.name, str(src.summary))))
         else:
-            ctx.ui.formatted_output(unicode(spec))
+            ctx.ui.formatted_output(str(spec))
             if sourcedb:
                 revdeps =  [name for name, dep in sourcedb.get_rev_deps(spec.source.name)]
-                print _('Reverse Build Dependencies:'), util.strlist(revdeps)
-                print
+                print(_('Reverse Build Dependencies:'), util.strlist(revdeps))
+                print()
 
     def pisifile_info(self, package):
         metadata, files = pisi.api.info_file(package)

@@ -8,10 +8,10 @@ class autoprop(type):
     def __init__(cls, name, bases, dict):
         super(autoprop, cls).__init__(name, bases, dict)
         props = {}
-        for name in dict.keys():
+        for name in list(dict.keys()):
             if name.startswith("_get_") or name.startswith("_set_"):
                 props[name[5:]] = 1
-        for name in props.keys():
+        for name in list(props.keys()):
             fget = getattr(cls, "_get_%s" % name, None)
             fset = getattr(cls, "_set_%s" % name, None)
             setattr(cls, name, property(fget, fset))
@@ -32,8 +32,6 @@ class autoeq(type):
             return self.__dict__ == other.__dict__
         cls.__eq__ = equal
 
-class Struct:
-    __metaclass__ = autoeq
-
+class Struct(metaclass=autoeq):
     def __init__(self, **entries):
         self.__dict__.update(entries)

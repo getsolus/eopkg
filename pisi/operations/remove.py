@@ -243,7 +243,7 @@ def list_orphans():
     for pkgID in orphans:
         if not idb.has_package(pkgID):
             continue
-        if not revdep_from_hell(idb, orphans, ret.keys(), pkgID):
+        if not revdep_from_hell(idb, orphans, list(ret.keys()), pkgID):
             ret[pkgID] = revdep_owner
             continue
         ret[pkgID] = None
@@ -256,7 +256,7 @@ def remove_conflicting_packages(conflicts):
 def remove_obsoleted_packages():
     installdb = pisi.db.installdb.InstallDB()
     packagedb = pisi.db.packagedb.PackageDB()
-    obsoletes = filter(installdb.has_package, packagedb.get_obsoletes())
+    obsoletes = list(filter(installdb.has_package, packagedb.get_obsoletes()))
     if obsoletes:
         if remove(obsoletes, ignore_dep=True, ignore_safety=True):
             raise Exception(_("Obsoleted packages remaining"))

@@ -19,19 +19,15 @@ class Error(pisi.Error):
 
 __metaclass__ = autoxml.autoxml
 
-class Group(xmlfile.XmlFile):
+class Group(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     "representation for group declarations"
-
-    __metaclass__ = autoxml.autoxml
 
     t_Name = [autoxml.String, autoxml.mandatory]
     t_LocalName = [autoxml.LocalText, autoxml.mandatory]
     t_Icon = [ autoxml.String, autoxml.optional]
 
-class Groups(xmlfile.XmlFile):
+class Groups(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     "representation for component declarations"
-
-    __metaclass__ = autoxml.autoxml
 
     tag = "PISI"
 
