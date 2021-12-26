@@ -2433,15 +2433,6 @@ msgstr "репозиторий %s нуждается в обновлении"
 msgid "Error parsing repository index information. Index file does not exist or is malformed."
 msgstr "Ошибка разбора информации индекса репозитория. Файл индекса не существует или неправильный."
 
-#: pisi/db/repodb.py:264
-#, python-format
-msgid "Repository '%s' is not compatible with your distribution. Repository is disabled."
-msgstr "Репозиторий '%s' не совместим с Вашим дистрибутивом. Репозиторий отключен."
-
-#: pisi/fetcher.py:147
-msgid "Urlgrabber needs to be installed to run this command"
-msgstr "Urlgrabber должен быть установлен для запуска этой команды"
-
 #: pisi/fetcher.py:150
 msgid "Filename error"
 msgstr "Ошибка имени файла"

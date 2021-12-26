@@ -2429,10 +2429,6 @@ msgstr "Erreur d'analyse de l'index du dépôt. Le fichier d'index n'existe pas 
 msgid "Repository '%s' is not compatible with your distribution. Repository is disabled."
 msgstr "Le dépôt '%s' n'est pas compatible avec votre version de distribution. Le dépôt est désactivé."
 
-#: pisi/fetcher.py:147
-msgid "Urlgrabber needs to be installed to run this command"
-msgstr "L'utilisation de cette commande nécessite l'installation de Urlgrabber"
-
 #: pisi/fetcher.py:150
 msgid "Filename error"
 msgstr "Erreur de nom de fichier"

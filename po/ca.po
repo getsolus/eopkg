@@ -2533,10 +2533,6 @@ msgid ""
 msgstr ""
 "El repositori \"%s\" no és compatible amb la distribució. S'inhabilita."
 
-#: pisi/fetcher.py:147
-msgid "Urlgrabber needs to be installed to run this command"
-msgstr "Urlgrabber necessita estar instal·lat per executar aquesta ordre"
-
 #: pisi/fetcher.py:150
 msgid "Filename error"
 msgstr "Error de nom de fitxer"

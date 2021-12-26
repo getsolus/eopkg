@@ -2242,10 +2242,6 @@ msgstr ""
 msgid "Repository '%s' is not compatible with your distribution. Repository is disabled."
 msgstr "Repozitorij %s nije kompatibilan sa vašom distribucijom.Repozitorij je onemogućen. "
 
-#: pisi/fetcher.py:147
-msgid "Urlgrabber needs to be installed to run this command"
-msgstr ""
-
 #: pisi/fetcher.py:150
 msgid "Filename error"
 msgstr "Greška imena datoteke"

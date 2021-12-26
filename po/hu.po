@@ -2447,10 +2447,6 @@ msgstr "Hiba a tároló indexének feldolgozása során. Az index-fájl nem lét
 msgid "Repository '%s' is not compatible with your distribution. Repository is disabled."
 msgstr "A(z) tároló nem kompatíbilis az ön által használt disztribúcióval. A tárolót kikapcsoltam."
 
-#: pisi/fetcher.py:147
-msgid "Urlgrabber needs to be installed to run this command"
-msgstr "E parancs futtatásához az urlgrabber telepítése szükséges."
-
 #: pisi/fetcher.py:150
 msgid "Filename error"
 msgstr "Fájlnév hiba"
