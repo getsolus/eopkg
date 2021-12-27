@@ -2460,10 +2460,6 @@ msgstr "Depo bilgisi ayrıştırılırken hata oluştu. Katalog dosyası mevcut 
 msgid "Repository '%s' is not compatible with your distribution. Repository is disabled."
 msgstr "'%s' adlı depo dağıtımınız ile uyumlu değil. Depo etkisiz hale getirildi."
 
-#: pisi/fetcher.py:147
-msgid "Urlgrabber needs to be installed to run this command"
-msgstr "Bu komutun çalıştırılabilmesi için Urlgrabber kurulu olmalı."
-
 #: pisi/fetcher.py:150
 msgid "Filename error"
 msgstr "Dosya adı hatası"

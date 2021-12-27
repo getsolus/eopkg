@@ -2495,10 +2495,6 @@ msgstr "Error al analizar la información del repositorio. Archivo index no exis
 msgid "Repository '%s' is not compatible with your distribution. Repository is disabled."
 msgstr "Repositorio '%s' no es compatible con su distribución. Repositor deshabilitado."
 
-#: pisi/fetcher.py:147
-msgid "Urlgrabber needs to be installed to run this command"
-msgstr "Se requiere la instalación de Urlgrabber para ejecutar este comando"
-
 #: pisi/fetcher.py:150
 msgid "Filename error"
 msgstr "Error de nombre de archivo"

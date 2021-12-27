@@ -2488,10 +2488,6 @@ msgstr "Fehler beim analysieren der Index-Datei des Depots. Index-Datei fehlerha
 msgid "Repository '%s' is not compatible with your distribution. Repository is disabled."
 msgstr "Depot '%s' ist nicht kompatibel zu Ihrer Distribution. Depot ist deaktiviert."
 
-#: pisi/fetcher.py:147
-msgid "Urlgrabber needs to be installed to run this command"
-msgstr "Urlgrabber muss installiert sein um diesen Befehl auszuführen zu können"
-
 #: pisi/fetcher.py:150
 msgid "Filename error"
 msgstr "Dateinamenfehler"
