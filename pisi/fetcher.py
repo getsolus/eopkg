@@ -231,11 +231,15 @@ class Fetcher:
             return 0
 
     def _get_retry_attempts(self):
-        retry_attempts = ctx.config.options.retry_attempts or ctx.config.values.general.retry_attempts
-        if retry_attempts and retry_attempts != "5":
+        retry_attempts = 5
+        if ctx.config.options.retry_attempts != retry_attempts:
+            retry_attempts = ctx.config.options.retry_attempts
+            return retry_attempts
+        elif ctx.config.values.general.retry_attempts != str(retry_attempts):
+            retry_attempts = ctx.config.values.general.retry_attempts
             return int(retry_attempts)
         else:
-            return 5
+            return retry_attempts
 
     def _test_range_support(self):
         if not os.path.exists(self.partial_file):
