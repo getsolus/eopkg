@@ -135,10 +135,9 @@ class Fetcher:
             raise FetchError(_('Access denied to destination file: "%s"') % self.archive_file)
 
         attempt = 0
-        retries = 3
         success = False
 
-        while success is False and attempt < retries:
+        while success is False and attempt < self._get_retry_attempts():
             try:
                 fetch_handler = FetchHandler(self.url, self.partial_file, self._get_bandwidth_limit())
 
@@ -152,7 +151,7 @@ class Fetcher:
                     partial_file_size = os.path.getsize(self.partial_file)
                     opener.addheaders.append(('Range', 'bytes=%s-' % partial_file_size))
 
-                with contextlib.closing(urllib2.urlopen(self.url.get_uri(), timeout = 10)) as fp:
+                with contextlib.closing(urllib2.urlopen(self.url.get_uri(), timeout = 15)) as fp:
                     headers = fp.info()
 
                     if self.url.is_local_file():
@@ -183,8 +182,9 @@ class Fetcher:
             # WARNING : Solus specific workaround for RIT mirror issue.
             except ssl.SSLError as e:
                 attempt += 1
-                print FetchError(_('\n Timed out fetching file, retrying %d out of %d "%s": %s') % (attempt, retries, self.url.get_uri(), e))
-                time.sleep(3)
+                print FetchError(_('\n Timed out fetching file, retrying %d out of %d "%s": %s') % (attempt, self._get_retry_attempts(), self.url.get_uri(), e))
+                if attempt == self._get_retry_attempts():
+                    raise FetchError(_('Hit max retry count when downloading: "%s"') % (self.url.get_uri()))
                 pass
             except urllib2.URLError as e:
                 raise FetchError(_('Could not fetch destination file "%s": %s') % (self.url.get_uri(), e))
@@ -229,6 +229,13 @@ class Fetcher:
             return 1024 * int(bandwidth_limit)
         else:
             return 0
+
+    def _get_retry_attempts(self):
+        retry_attempts = ctx.config.options.retry_attempts or ctx.config.values.general.retry_attempts
+        if retry_attempts and retry_attempts != "5":
+            return int(retry_attempts)
+        else:
+            return 5
 
     def _test_range_support(self):
         if not os.path.exists(self.partial_file):

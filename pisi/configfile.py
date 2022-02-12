@@ -75,6 +75,7 @@ class GeneralDefaults:
     package_cache = False
     package_cache_limit = 0
     bandwidth_limit = 0
+    retry_attempts = 5
     ignore_safety = False
     ignore_delta = False
 
