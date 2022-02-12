@@ -37,6 +37,10 @@ The following options are applicable to `eopkg(1)`.
 
    Keep bandwidth usage under the specified (numeric) KBs
 
+ * `-R`, `--retry-attempts`
+
+   Set the max number of retry attempts in case of connection timeouts
+
  * `-v`, `--verbose`
 
    Detailed output
