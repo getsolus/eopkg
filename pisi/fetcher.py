@@ -184,8 +184,8 @@ class Fetcher:
                 attempt += 1
                 if attempt == self._get_retry_attempts() + 1:
                     raise FetchError(_('Hit max retry count when downloading: "%s"') % (self.url.get_uri()))
-                pass
                 ctx.ui.warning(_('\nFailed to fetch file, retrying %d out of %d "%s": %s') % (attempt, self._get_retry_attempts(), self.url.get_uri(), e))
+                pass
             except urllib2.URLError as e:
                 raise FetchError(_('Could not fetch destination file "%s": %s') % (self.url.get_uri(), e))
 
@@ -231,15 +231,12 @@ class Fetcher:
             return 0
 
     def _get_retry_attempts(self):
-        retry_attempts = 5
-        if ctx.config.options.retry_attempts != retry_attempts:
-            retry_attempts = ctx.config.options.retry_attempts
-            return int(retry_attempts)
-        elif ctx.config.values.general.retry_attempts != retry_attempts:
-            retry_attempts = ctx.config.values.general.retry_attempts
+        retry_attempts = ctx.config.options.retry_attempts or ctx.config.values.general.retry_attempts
+        if retry_attempts and retry_attempts != "0":
+            ctx.ui.warning(_("retry attempts is %s") % retry_attempts)
             return int(retry_attempts)
         else:
-            return int(retry_attempts)
+            return 5
 
     def _test_range_support(self):
         if not os.path.exists(self.partial_file):

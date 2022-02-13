@@ -102,7 +102,7 @@ class Command(object):
         group.add_option("-p", "--password", action="store")
         group.add_option("-L", "--bandwidth-limit", action="store", default = 0,
                      help = _("Keep bandwidth usage under specified KB's"))
-        group.add_option("-R", "--retry-attempts", action="store", default = 5,
+        group.add_option("-R", "--retry-attempts", action="store", default = 0,
                      help = _("Set the max number of retry attempts in case of connection timeouts"))
         group.add_option("-v", "--verbose", action="store_true",
                      dest="verbose", default=False,
