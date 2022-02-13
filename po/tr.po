@@ -1189,9 +1189,13 @@ msgstr "eopkg komutları için sistem kökünü değiştir."
 msgid "Assume yes in all yes/no queries"
 msgstr "Bütün evet/hayır sorularında cevabı evet kabul et."
 
-#: pisi/cli/command.py:105
+#: pisi/cli/command.py:103
 msgid "Keep bandwidth usage under specified KB's"
 msgstr "Bant genişliği kullanımını belirtilen kilobaytın altında tut."
+
+#: pisi/cli/command.py:105
+msgid "Set the max number of retry attempts in case of connection timeouts"
+msgstr ""
 
 #: pisi/cli/command.py:108
 msgid "Detailed output"

@@ -1178,9 +1178,13 @@ msgstr "Gyökér könyvtár megváltoztatása a eopkg parancsok számára"
 msgid "Assume yes in all yes/no queries"
 msgstr "Automatikus 'igen' válasz minden igen/nem kérdésre"
 
-#: pisi/cli/command.py:105
+#: pisi/cli/command.py:103
 msgid "Keep bandwidth usage under specified KB's"
 msgstr "Ne engedje a sávszélesség használatot a megadott KB fölé"
+
+#: pisi/cli/command.py:105
+msgid "Set the max number of retry attempts in case of connection timeouts"
+msgstr ""
 
 #: pisi/cli/command.py:108
 msgid "Detailed output"

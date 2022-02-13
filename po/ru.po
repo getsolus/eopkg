@@ -1167,9 +1167,13 @@ msgstr "Изменение корневой системы для команд e
 msgid "Assume yes in all yes/no queries"
 msgstr "Отвечать ДА на все запросы ДА/НЕТ"
 
-#: pisi/cli/command.py:105
+#: pisi/cli/command.py:103
 msgid "Keep bandwidth usage under specified KB's"
 msgstr "Ограничить пропускную способность в КБ"
+
+#: pisi/cli/command.py:105
+msgid "Set the max number of retry attempts in case of connection timeouts"
+msgstr ""
 
 #: pisi/cli/command.py:108
 msgid "Detailed output"

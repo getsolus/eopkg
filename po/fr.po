@@ -1168,9 +1168,13 @@ msgstr "Change la racine système pour les commandes eopkg"
 msgid "Assume yes in all yes/no queries"
 msgstr "Assume oui pour toutes les questions oui/non"
 
-#: pisi/cli/command.py:105
+#: pisi/cli/command.py:103
 msgid "Keep bandwidth usage under specified KB's"
 msgstr "Maintient l'utilisation de la bande passante en dessus du seuil spécifié en Ko."
+
+#: pisi/cli/command.py:105
+msgid "Set the max number of retry attempts in case of connection timeouts"
+msgstr ""
 
 #: pisi/cli/command.py:108
 msgid "Detailed output"

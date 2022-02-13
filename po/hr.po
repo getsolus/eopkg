@@ -1133,9 +1133,13 @@ msgstr "Promjena root sustava za eopkg naredbe"
 msgid "Assume yes in all yes/no queries"
 msgstr "Pretpostavimo da u svim da/ne pitanjima"
 
-#: pisi/cli/command.py:105
+#: pisi/cli/command.py:103
 msgid "Keep bandwidth usage under specified KB's"
 msgstr "Držite korištenje propusne moći pod određenim KB-a"
+
+#: pisi/cli/command.py:105
+msgid "Set the max number of retry attempts in case of connection timeouts"
+msgstr ""
 
 #: pisi/cli/command.py:108
 msgid "Detailed output"
