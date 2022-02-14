@@ -72,7 +72,7 @@ class FetchHandler:
 
         if int(self.now()) != int(self.last_updated) and self.size > 0:
             try:
-                self.rate, self.symbol = util.human_readable_rate(self.size / (self.now() - self.s_time))
+                self.rate, self.symbol = util.human_readable_rate((self.size - self.exist_size) / (self.now() - self.s_time))
             except ZeroDivisionError:
                 return
             if self.total_size:
