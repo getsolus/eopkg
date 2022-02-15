@@ -232,7 +232,7 @@ class Fetcher:
 
     def _get_retry_attempts(self):
         retry_attempts = ctx.config.options.retry_attempts or ctx.config.values.general.retry_attempts
-        if retry_attempts and retry_attempts != "0":
+        if retry_attempts and retry_attempts != "5":
             return int(retry_attempts)
         else:
             return 5
