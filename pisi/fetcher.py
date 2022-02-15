@@ -39,7 +39,7 @@ class FetchError(pisi.Error):
 
 
 class FetchHandler:
-    def __init__(self, url, archive, bandwidth_limit):
+    def __init__(self, url, archive, bandwidth_limit, start_time):
         self.url                = url
         self.percent            = None
         self.rate               = 0.0
@@ -56,6 +56,7 @@ class FetchHandler:
 
         self.now = lambda: time.time()
         self.t_diff = lambda: self.now() - self.s_time
+        self.e_diff = lambda: self.now() - start_time
 
         self.s_time = self.now()
 
@@ -76,7 +77,7 @@ class FetchHandler:
                 return
             if self.total_size:
                 self.eta = '%02d:%02d:%02d' %\
-                    tuple([i for i in time.gmtime((self.t_diff() * (100 - self.percent)) / self.percent)[3:6]])
+                    tuple([i for i in time.gmtime((self.e_diff() * (100 - self.percent)) / self.percent)[3:6]])
 
         self._update_ui()
         self._limit_bandwidth()
@@ -136,9 +137,12 @@ class Fetcher:
         attempt = 0
         success = False
 
+        self.now = lambda: time.time()
+        self.start_time = self.now()
+
         while success is False and attempt < self._get_retry_attempts() + 1:
             try:
-                fetch_handler = FetchHandler(self.url, self.partial_file, self._get_bandwidth_limit())
+                fetch_handler = FetchHandler(self.url, self.partial_file, self._get_bandwidth_limit(), self.start_time)
 
                 proxy = urllib2.ProxyHandler(self._get_proxies())
                 opener = urllib2.build_opener(proxy)
