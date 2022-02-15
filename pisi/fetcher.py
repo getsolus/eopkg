@@ -20,7 +20,6 @@ import base64
 import contextlib
 import os
 import shutil
-import ssl
 import time
 import urllib2
 
@@ -179,15 +178,12 @@ class Fetcher:
                             blocknum += 1
                             fetch_handler.update(blocknum, bs, size)
                     success = True
-            # WARNING : Solus specific workaround for RIT mirror issue.
-            except ssl.SSLError as e:
+            except IOError as e:
                 attempt += 1
                 if attempt == self._get_retry_attempts() + 1:
                     raise FetchError(_('Hit max retry count when downloading: "%s"') % (self.url.get_uri()))
                 ctx.ui.warning(_('\nFailed to fetch file, retrying %d out of %d "%s": %s') % (attempt, self._get_retry_attempts(), self.url.get_uri(), e))
                 pass
-            except urllib2.URLError as e:
-                raise FetchError(_('Could not fetch destination file "%s": %s') % (self.url.get_uri(), e))
 
         if os.stat(self.partial_file).st_size == 0:
             os.remove(self.partial_file)
