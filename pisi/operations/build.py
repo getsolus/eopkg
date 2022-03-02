@@ -280,8 +280,6 @@ class Builder:
         self.target_package_format = ctx.get_option("package_format") \
                                         or pisi.package.Package.default_format
 
-        self.read_translations(self.specdir)
-
         self.sourceArchives = pisi.sourcearchive.SourceArchives(self.spec)
 
         self.build_types = self.get_build_types()
@@ -313,10 +311,6 @@ class Builder:
         spec = pisi.specfile.SpecFile()
         spec.read(self.specuri, ctx.config.tmp_dir())
         self.spec = spec
-
-    def read_translations(self, specdir):
-        self.spec.read_translations(util.join_path(specdir,
-                                    ctx.const.translations_file))
 
     def package_filename(self, package_info, release_info=None,
                          distro_id=None, with_extension=True):
@@ -486,7 +480,6 @@ class Builder:
 
         self.fetch_actionsfile()
         self.check_build_dependencies()
-        self.fetch_translationsfile()
         self.fetch_patches()
         self.fetch_comarfiles()
         self.fetch_additionalFiles()
@@ -500,15 +493,6 @@ class Builder:
     def fetch_actionsfile(self):
         actionsuri = util.join_path(self.specdiruri, ctx.const.actions_file)
         self.download(actionsuri, self.destdir)
-
-    def fetch_translationsfile(self):
-        translationsuri = util.join_path(self.specdiruri,
-                                         ctx.const.translations_file)
-        try:
-            self.download(translationsuri, self.destdir)
-        except pisi.fetcher.FetchError:
-            # translations.xml is not mandatory for eopkg
-            pass
 
     def fetch_patches(self):
         for patch in self.spec.source.patches:
