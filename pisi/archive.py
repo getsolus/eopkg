@@ -573,7 +573,7 @@ class ArchiveZip(ArchiveBase):
     def __init__(self, file_path, arch_type="zip", mode='r'):
         super(ArchiveZip, self).__init__(file_path, arch_type)
 
-        self.zip_obj = zipfile.ZipFile(self.file_path, mode)
+        self.zip_obj = zipfile.ZipFile(self.file_path, mode, zipfile.ZIP_STORED, True)
 
     def open(self, file_path, mode="r"):
         return self.zip_obj.open(file_path, mode)
