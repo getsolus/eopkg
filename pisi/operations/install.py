@@ -273,6 +273,12 @@ def plan_install_pkg_names(A):
     # install / reinstall
 
     packagedb = pisi.db.packagedb.PackageDB()
+    installdb = pisi.db.installdb.InstallDB()
+
+    # Check if updates are available to opt into the slow path
+    updates_available = False
+    if len(pisi.api.list_upgradable()) != 0 and not ctx.get_option('ignore_revdeps_of_deps_check'):
+        updates_available = True
 
     G_f = pgraph.PGraph(packagedb)               # construct G_f
 
@@ -284,17 +290,27 @@ def plan_install_pkg_names(A):
 
     while len(B) > 0:
         Bp = set()
+        checked = list()
         for x in B:
             pkg = packagedb.get_package(x)
             for dep in pkg.runtimeDependencies():
-                ctx.ui.debug('checking %s' % str(dep))
-                # we don't deal with already *satisfied* dependencies
-                if not dep.satisfied_by_installed():
-                    if not dep.satisfied_by_repo():
-                        raise Exception(_('%s dependency of package %s is not satisfied') % (dep, pkg.name))
-                    if not dep.package in G_f.vertices():
-                        Bp.add(str(dep.package))
-                    G_f.add_dep(x, dep)
+                if not dep.package in checked:
+                    ctx.ui.debug('checking %s' % str(dep))
+                    checked.append(dep.package)
+                    # we don't deal with already *satisfied* dependencies
+                    if not dep.satisfied_by_installed():
+                        if not dep.satisfied_by_repo():
+                            raise Exception(_('%s dependency of package %s is not satisfied') % (dep, pkg.name))
+                        if not dep.package in G_f.vertices():
+                            Bp.add(str(dep.package))
+                        G_f.add_dep(x, dep)
+                    # Check for updates in the revdeps of the deps of the package(s) we are trying to install to avoid breakage.
+                    if updates_available:
+                        for name,revdep in packagedb.get_rev_deps(dep.package):
+                            if installdb.has_package(name) and not revdep.satisfied_by_installed():
+                                if not name in G_f.vertices():
+                                    Bp.add(name)
+                                G_f.add_dep(name, revdep)
         B = Bp
     if ctx.config.get_option('debug'):
         G_f.write_graphviz(sys.stdout)

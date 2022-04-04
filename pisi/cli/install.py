@@ -53,6 +53,8 @@ expanded to package names.
                      default=False, help=_("Ignore file conflicts"))
         group.add_option("--ignore-package-conflicts", action="store_true",
                      default=False, help=_("Ignore package conflicts"))
+        group.add_option("--ignore-revdeps-of-deps-check", action="store_true",
+                     default=False, help=_("Don't check for updates in reverse dependencies of runtime dependencies when updates are available"))
         group.add_option("-c", "--component", action="append",
                                default=None, help=_("Install component's and recursive components' packages"))
         group.add_option("-r", "--repository", action="store",
@@ -99,6 +101,11 @@ expanded to package names.
 
         if ctx.get_option('exclude'):
             packages = pisi.blacklist.exclude(packages, ctx.get_option('exclude'))
+
+        # See operations.install.plan_install_pkgs
+        if len(pisi.api.list_upgradable()) != 0 and not ctx.get_option('ignore_revdeps_of_deps_check'):
+            ctx.ui.warning(_("Updates available, checking reverse dependencies "
+                "of runtime dependencies for safety."))
 
         reinstall = bool(packages) and packages[0].endswith(ctx.const.package_suffix)
         pisi.api.install(packages, ctx.get_option('reinstall') or reinstall)
