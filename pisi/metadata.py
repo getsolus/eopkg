@@ -17,9 +17,7 @@ installation. Package repository also uses metadata.xml for building
 a package index.
 """
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 import pisi.specfile as specfile
 import pisi.pxml.xmlfile as xmlfile

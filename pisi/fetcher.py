@@ -23,9 +23,7 @@ import shutil
 import time
 import urllib2
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 # pisi modules
 import pisi

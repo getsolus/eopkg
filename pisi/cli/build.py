@@ -12,9 +12,7 @@
 
 import optparse
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 import pisi
 import pisi.api

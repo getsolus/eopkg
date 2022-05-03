@@ -13,9 +13,7 @@
 import os
 import sys
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 # eopkg Modules
 import pisi.actionsapi

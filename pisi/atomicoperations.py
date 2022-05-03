@@ -11,9 +11,7 @@
 
 """Atomic package operations such as install/remove/upgrade"""
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 import os
 import shutil

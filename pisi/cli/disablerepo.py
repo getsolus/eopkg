@@ -10,9 +10,7 @@
 # Please read the COPYING file.
 #
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 import pisi.cli.command as command
 import pisi.api

@@ -16,9 +16,7 @@ parsing and processing"""
 import urlparse
 import os.path
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 class URI(object):
     """URI class provides a URL parser and simplifies working with

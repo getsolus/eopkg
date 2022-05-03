@@ -17,9 +17,7 @@ from pisi.scenarioapi.package import Package
 from pisi.scenarioapi.withops import *
 from pisi.scenarioapi.constants import *
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 repodb = {}
 

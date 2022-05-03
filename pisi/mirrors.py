@@ -13,9 +13,7 @@ import os.path
 import pisi
 import pisi.context as ctx
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 class Mirrors:
     def __init__(self, config=ctx.const.mirrors_conf):

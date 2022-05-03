@@ -18,10 +18,7 @@ from pisi.scenarioapi.pspec import Pspec
 from pisi.scenarioapi.actions import Actions
 from pisi.scenarioapi.constants import *
 from pisi.scenarioapi.withops import *
-
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 class Package:
     def __init__(self, name, deps = [], cons = [], date = "2006-18-18", ver = "1.0", partOf="None"):

@@ -13,11 +13,8 @@
 import sys
 import locale
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
-
 import pisi
+from pisi import translate as _
 import pisi.context as ctx
 import pisi.ui
 import pisi.util
@@ -151,10 +148,8 @@ class CLI(pisi.ui.UI):
 
         import re, tty
 
-        locale.setlocale(locale.LC_ALL, "")
         yes_expr = re.compile(locale.nl_langinfo(locale.YESEXPR))
         no_expr = re.compile(locale.nl_langinfo(locale.NOEXPR))
-        locale.setlocale(locale.LC_ALL, "C")
 
         while True:
             tty.tcflush(sys.stdin.fileno(), 0)
