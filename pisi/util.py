@@ -28,9 +28,7 @@ import operator
 import subprocess
 import unicodedata
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 class Singleton(type):
     def __init__(cls, name, bases, dict):

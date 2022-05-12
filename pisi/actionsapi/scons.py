@@ -13,9 +13,7 @@
 # Pisi Modules
 import pisi.context as ctx
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 # ActionsAPI Modules
 import pisi.actionsapi

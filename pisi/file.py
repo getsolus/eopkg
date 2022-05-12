@@ -20,9 +20,7 @@ like all pisi classes, it has been programmed in a non-restrictive way
 import os
 import shutil
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 import pisi
 import pisi.uri

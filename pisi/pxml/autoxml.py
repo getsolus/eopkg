@@ -28,9 +28,7 @@ import StringIO
 import inspect
 import re
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 # eopkg
 import pisi

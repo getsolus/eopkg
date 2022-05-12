@@ -18,6 +18,12 @@ import atexit
 import logging
 import logging.handlers
 
+import locale
+import gettext
+locale.setlocale(locale.LC_ALL, '')
+# You usually want to import this function with the "_" alias.
+translate = gettext.translation('pisi', languages=[locale.getlocale()[0]], fallback=True).ugettext
+
 __version__ = "3.2"
 
 __all__ = [ 'api', 'configfile', 'db']

@@ -12,9 +12,7 @@
 
 import os
 import time
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 import pisi.pxml.autoxml as autoxml
 import pisi.pxml.xmlfile as xmlfile

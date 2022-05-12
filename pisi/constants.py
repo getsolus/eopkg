@@ -14,9 +14,7 @@
 If you have a "magic" constant value this is where it should be
 defined."""
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 from pisi.util import Singleton
 

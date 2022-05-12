@@ -19,9 +19,7 @@ import pisi.constants
 import pisi.signalhandler
 import pisi.ui
 
-import gettext
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
+from pisi import translate as _
 
 const = pisi.constants.Constants()
 sig = pisi.signalhandler.SignalHandler()
