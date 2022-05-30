@@ -61,11 +61,6 @@ class Index(command.Command):
                          help=_("Comma-separated compression types "
                                 "for index file"))
 
-        group.add_option("--skip-sources",
-                         action="store_true",
-                         default=False,
-                         help=_("Do not index eopkg spec files."))
-
         group.add_option("--skip-signing",
                          action="store_true",
                          default=False,
@@ -86,6 +81,5 @@ class Index(command.Command):
             compression |= ctypes.get(type_str, 0)
 
         index(self.args or ["."], ctx.get_option('output'),
-              skip_sources=ctx.get_option('skip_sources'),
               skip_signing=ctx.get_option('skip_signing'),
               compression=compression)

@@ -34,7 +34,6 @@ Usage: info <package1> <package2> ... <packagen>
         self.installdb = pisi.db.installdb.InstallDB()
         self.componentdb = pisi.db.componentdb.ComponentDB()
         self.packagedb = pisi.db.packagedb.PackageDB()
-        self.sourcedb = pisi.db.sourcedb.SourceDB()
 
     name = ("info", None)
 
@@ -106,7 +105,6 @@ Usage: info <package1> <package2> ... <packagen>
 
         self.installdb_info(arg)
         self.packagedb_info(arg)
-        self.sourcedb_info(arg)
 
     def print_files(self, files):
         files.list.sort(key = lambda x:x.path)
@@ -127,16 +125,12 @@ Usage: info <package1> <package2> ... <packagen>
                 ctx.ui.formatted_output(" ".join((_("Reverse Dependencies:"), util.strlist(revdeps))))
                 print
 
-    def print_specdata(self, spec, sourcedb=None):
+    def print_specdata(self, spec):
         src = spec.source
         if ctx.get_option('short'):
             ctx.ui.formatted_output(" - ".join((src.name, unicode(src.summary))))
         else:
             ctx.ui.formatted_output(unicode(spec))
-            if sourcedb:
-                revdeps =  [name for name, dep in sourcedb.get_rev_deps(spec.source.name)]
-                print _('Reverse Build Dependencies:'), util.strlist(revdeps)
-                print
 
     def pisifile_info(self, package):
         metadata, files = pisi.api.info_file(package)
@@ -173,15 +167,3 @@ Usage: info <package1> <package2> ... <packagen>
             self.print_metadata(metadata, self.packagedb)
         else:
             ctx.ui.info(_("%s package is not found in binary repositories") % package)
-
-    def sourcedb_info(self, package):
-        if self.sourcedb.has_spec(package):
-            repo = self.sourcedb.which_repo(package)
-            spec = self.sourcedb.get_spec(package)
-            if self.options.short:
-                ctx.ui.formatted_output(_("[source] "), noln=True, column=" ")
-            else:
-                ctx.ui.info(_('Package found in %s repository:') % repo)
-            self.print_specdata(spec, self.sourcedb)
-        else:
-            ctx.ui.info(_("%s package is not found in source repositories") % package)

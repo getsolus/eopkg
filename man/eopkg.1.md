@@ -202,13 +202,6 @@ alias, if available. Most commands in eopkg support a short form.
     Disable a system repository. It will no longer be accounted for
     in any operation, including search, install, and updates.
 
-`emerge (em) <name>`
-
-    Consult `eopkg ? em` for further details. The legacy `eopkg` format
-    is no longer supported by Solus and is only currently used behind
-    the scenes in the third party mechanism. New packages should only
-    use `package.yml(5)` via `ypkg(1)` and `solbuild(1)`
-
 `enable-repo (er) <name>`
 
     Enable a previously disabled repository by name. This will allow
@@ -281,12 +274,6 @@ alias, if available. Most commands in eopkg support a short form.
         Comma separated list of compression types to use when producing the
         index, such as `bz2`, `xz`, for additional compressed index files
         for client systems to add.
-
- * `--skip-sources`:
-
-        Do not include `pspec.xml` legacy format eopkg definitions in
-        the index. It is highly recommended to not use the legacy
-        format.
 
  * `--skip-signing`:
 
@@ -472,17 +459,6 @@ alias, if available. Most commands in eopkg support a short form.
     List all currently tracked repositories, and emit their
     status (enabled or not)
 
-`list-sources (ls)`
-
-    This is only supported with source repositories using the
-    legacy `pspec.xml` ormat and is no longer recommeneded or
-    supported. When invoked, this will output all source packages
-    available for `emerge` operations.
-
- * `-l`, `--long`:
-
-        Show detailed information on each source package.
-
 `list-upgrades (lu)`
 
     List all package upgrades that are currently available.
@@ -598,11 +574,6 @@ alias, if available. Most commands in eopkg support a short form.
 
         Only search installed packages, ignoring repository
         candidates.
-
- * `-s`, `--sourcedb`:
-
-        Only search source repositories. Note that source
-        repositores are no longer supported and are now deprecated.
 
  * `--name`:
 

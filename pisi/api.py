@@ -26,7 +26,6 @@ import pisi.db.repodb
 import pisi.db.filesdb
 import pisi.db.installdb
 import pisi.db.historydb
-import pisi.db.sourcedb
 import pisi.db.componentdb
 import pisi.db.groupdb
 import pisi.index
@@ -41,7 +40,6 @@ import pisi.operations.install
 import pisi.operations.history
 import pisi.operations.helper
 import pisi.operations.check
-import pisi.operations.emerge
 import pisi.operations.build
 import pisi.errors
 
@@ -206,14 +204,6 @@ def list_available(repo=None):
     """
     return pisi.db.packagedb.PackageDB().list_packages(repo)
 
-def list_sources(repo=None):
-    """
-    Return a list of available source packages in the given repository -> list_of_strings
-    @param repo: Repository of the source packages. If repo is None than returns
-    a list of all the available source packages in all the repositories
-    """
-    return pisi.db.sourcedb.SourceDB().list_sources(repo)
-
 def list_newest(repo=None, since=None):
     """
     Return a list of newest packages in the given repository -> list_of_strings since
@@ -341,18 +331,6 @@ def search_installed(terms, lang=None):
     """
     installdb = pisi.db.installdb.InstallDB()
     return installdb.search_package(terms, lang)
-
-def search_source(terms, lang=None, repo=None):
-    """
-    Return a list of source packages that contains all the given terms either in its name, summary or
-    description -> list_of_strings
-    @param terms: a list of terms used to search source package -> list_of_strings
-    @param lang: language of the summary and description
-    @param repo: Repository of the source packages. If repo is None than returns a list of all the source
-    packages in all the repositories that meets the search
-    """
-    sourcedb = pisi.db.sourcedb.SourceDB()
-    return sourcedb.search_spec(terms, lang, repo)
 
 def search_component(terms, lang=None, repo=None):
     """
@@ -507,15 +485,6 @@ def set_repo_activity(name, active):
     else:
         repodb.deactivate_repo(name)
     pisi.db.regenerate_caches()
-
-@locked
-def emerge(packages):
-    """
-    Builds and installs the given packages from source
-    @param packages: list of package names -> list_of_strings
-    """
-    pisi.db.historydb.HistoryDB().create_history("emerge")
-    return pisi.operations.emerge.emerge(packages)
 
 @locked
 def delete_cache():
@@ -743,7 +712,6 @@ def info_name(package_name, useinstalldb=False):
 
     metadata = pisi.metadata.MetaData()
     metadata.package = package
-    #FIXME: get it from sourcedb if available
     metadata.source = None
     #TODO: fetch the files from server if possible (wow, you maniac -- future exa)
     if useinstalldb and installdb.has_package(package.name):
@@ -757,8 +725,7 @@ def info_name(package_name, useinstalldb=False):
     return metadata, files, repo
 
 def index(dirs=None, output='eopkg-index.xml',
-          skip_sources=False, skip_signing=False,
-          compression=0):
+          skip_signing=False, compression=0):
     """Accumulate eopkg XML files in a directory, and write an index."""
     index = pisi.index.Index()
     index.distribution = None
@@ -767,7 +734,7 @@ def index(dirs=None, output='eopkg-index.xml',
     for repo_dir in dirs:
         repo_dir = str(repo_dir)
         ctx.ui.info(_('Building index of eopkg files under %s') % repo_dir)
-        index.index(repo_dir, skip_sources)
+        index.index(repo_dir)
 
     sign = None if skip_signing else pisi.file.File.detached
     index.write(output, sha1sum=True, compress=compression, sign=sign)

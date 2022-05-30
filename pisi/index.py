@@ -82,7 +82,7 @@ class Index(xmlfile.XmlFile):
         tmpdir = os.path.join(ctx.config.index_dir(), repo)
         pisi.file.File.check_signature(filename, tmpdir)
 
-    def index(self, repo_uri, skip_sources=False):
+    def index(self, repo_uri):
         self.repo_dir = repo_uri
 
         packages = []
@@ -105,8 +105,6 @@ class Index(xmlfile.XmlFile):
 
                 if fn == 'components.xml':
                     self.components.extend(add_components(os.path.join(root, fn)))
-                if fn == 'pspec.xml' and not skip_sources:
-                    specs.append((os.path.join(root, fn), repo_uri))
                 if fn == 'distribution.xml':
                     self.distribution = add_distro(os.path.join(root, fn))
                 if fn == 'groups.xml':
