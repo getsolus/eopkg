@@ -215,33 +215,6 @@ class Builder:
     """Provides the package build and creation routines"""
     #FIXME: this class and every other class must use URLs as paths!
 
-    @staticmethod
-    def from_name(name):
-        repodb = pisi.db.repodb.RepoDB()
-        sourcedb = pisi.db.sourcedb.SourceDB()
-        # download package and return an installer object
-        # find package in repository
-        sf, reponame = sourcedb.get_spec_repo(name)
-        src = sf.source
-        if src:
-
-            src_uri = pisi.uri.URI(src.sourceURI)
-            if src_uri.is_absolute_path():
-                src_path = str(src_uri)
-            else:
-                repo = repodb.get_repo(reponame)
-                #FIXME: don't use dirname to work on URLs
-                src_path = os.path.join(
-                                    os.path.dirname(repo.indexuri.get_uri()),
-                                    str(src_uri.path()))
-
-            ctx.ui.debug(_("Source URI: %s") % src_path)
-
-            return Builder(src_path)
-        else:
-            raise Error(_("Source %s not found in any active repository.")
-                        % name)
-
     def __init__(self, specuri):
 
         self.componentdb = pisi.db.componentdb.ComponentDB()
@@ -1637,10 +1610,7 @@ class Builder:
 # build functions...
 
 def build(pspec):
-    if pspec.endswith('.xml'):
-        pb = Builder(pspec)
-    else:
-        pb = Builder.from_name(pspec)
+    pb = Builder(pspec)
     try:
         pb.build()
     except ActionScriptException, e:
@@ -1705,10 +1675,7 @@ def __buildState_buildpackages(pb):
     pb.build_packages()
 
 def build_until(pspec, state):
-    if pspec.endswith('.xml'):
-        pb = Builder(pspec)
-    else:
-        pb = Builder.from_name(pspec)
+    pb = Builder(pspec)
 
     pb.compile_comar_script()
 

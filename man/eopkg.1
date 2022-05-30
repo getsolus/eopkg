@@ -201,16 +201,6 @@ in any operation, including search, install, and updates\.
 .fi
 .IP "" 0
 .P
-\fBemerge (em) <name>\fR
-.IP "" 4
-.nf
-Consult `eopkg ? em` for further details\. The legacy `eopkg` format
-is no longer supported by Solus and is only currently used behind
-the scenes in the third party mechanism\. New packages should only
-use `package\.yml(5)` via `ypkg(1)` and `solbuild(1)`
-.fi
-.IP "" 0
-.P
 \fBenable\-repo (er) <name>\fR
 .IP "" 4
 .nf
@@ -284,9 +274,6 @@ For more advanced repository management, please see `ferryd(1)`
 
 .TP
 \fB\-\-compression\-types\fR:
-
-.TP
-\fB\-\-skip\-sources\fR:
 
 .TP
 \fB\-\-skip\-signing\fR:
@@ -447,19 +434,6 @@ of `usysconf(1)`\.
 List all currently tracked repositories, and emit their
 status (enabled or not)
 .fi
-.IP "" 0
-.P
-\fBlist\-sources (ls)\fR
-.IP "" 4
-.nf
-This is only supported with source repositories using the
-legacy `pspec\.xml` ormat and is no longer recommeneded or
-supported\. When invoked, this will output all source packages
-available for `emerge` operations\.
-.fi
-.IP "" 0
-.TP
-\fB\-l\fR, \fB\-\-long\fR:
 
 .P
 \fBlist\-upgrades (lu)\fR
@@ -561,9 +535,6 @@ be a regular expression when quoted\.
 
 .TP
 \fB\-i\fR, \fB\-\-installdb\fR:
-
-.TP
-\fB\-s\fR, \fB\-\-sourcedb\fR:
 
 .TP
 \fB\-\-name\fR:

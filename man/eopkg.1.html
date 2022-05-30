@@ -359,14 +359,6 @@ will be constructed in the current working directory.
 in any operation, including search, install, and updates.
 </code></pre>
 
-<p><code>emerge (em) &lt;name&gt;</code></p>
-
-<pre><code>Consult `eopkg ? em` for further details. The legacy `eopkg` format
-is no longer supported by Solus and is only currently used behind
-the scenes in the third party mechanism. New packages should only
-use `package.yml(5)` via `ypkg(1)` and `solbuild(1)`
-</code></pre>
-
 <p><code>enable-repo (er) &lt;name&gt;</code></p>
 
 <pre><code>Enable a previously disabled repository by name. This will allow
@@ -470,15 +462,6 @@ For more advanced repository management, please see `ferryd(1)`
     <pre><code> Comma separated list of compression types to use when producing the
  index, such as `bz2`, `xz`, for additional compressed index files
  for client systems to add.
-</code></pre>
-</dt>
-<dd></dd>
-<dt>
-<code>--skip-sources</code>:
-
-    <pre><code> Do not include `pspec.xml` legacy format eopkg definitions in
- the index. It is highly recommended to not use the legacy
- format.
 </code></pre>
 </dt>
 <dd></dd>
@@ -787,24 +770,6 @@ of `usysconf(1)`.
 status (enabled or not)
 </code></pre>
 
-<p><code>list-sources (ls)</code></p>
-
-<pre><code>This is only supported with source repositories using the
-legacy `pspec.xml` ormat and is no longer recommeneded or
-supported. When invoked, this will output all source packages
-available for `emerge` operations.
-</code></pre>
-
-<dl>
-<dt>
-<code>-l</code>, <code>--long</code>:
-
-    <pre><code> Show detailed information on each source package.
-</code></pre>
-</dt>
-<dd></dd>
-</dl>
-
 <p><code>list-upgrades (lu)</code></p>
 
 <pre><code>List all package upgrades that are currently available.
@@ -983,14 +948,6 @@ be a regular expression when quoted.
 
     <pre><code> Only search installed packages, ignoring repository
  candidates.
-</code></pre>
-</dt>
-<dd></dd>
-<dt>
-<code>-s</code>, <code>--sourcedb</code>:
-
-    <pre><code> Only search source repositories. Note that source
- repositores are no longer supported and are now deprecated.
 </code></pre>
 </dt>
 <dd></dd>

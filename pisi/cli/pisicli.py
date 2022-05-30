@@ -27,7 +27,6 @@ import pisi.cli.clean
 import pisi.cli.configurepending
 import pisi.cli.deletecache
 import pisi.cli.delta
-import pisi.cli.emerge
 import pisi.cli.fetch
 import pisi.cli.index
 import pisi.cli.info
@@ -39,7 +38,6 @@ import pisi.cli.listcomponents
 import pisi.cli.listinstalled
 import pisi.cli.listpending
 import pisi.cli.listrepo
-import pisi.cli.listsources
 import pisi.cli.listupgrades
 import pisi.cli.rebuilddb
 import pisi.cli.remove
