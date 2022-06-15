@@ -209,9 +209,21 @@ class Install(AtomicOperation):
         if file_conflicts:
             file_conflicts_str = ""
             for (pkg, existing_file) in file_conflicts:
-                file_conflicts_str += _("/%s from %s package\n") % (existing_file, pkg)
-            msg = _('File conflicts:\n%s') % file_conflicts_str
-            if self.ignore_file_conflicts:
+                paths = [fileinfo.path for fileinfo in self.files.list]
+                replaced_by = False
+                if existing_file in paths:
+                    # FIXME: If the package is in the updates list assume it's been vetted for now...
+                    #        What we really want to do is see if the conflicting pkg exists in the
+                    #        install order and the conflicting file no longer exists there.
+                    if pkg in pisi.api.list_upgradable():
+                        file_conflicts_str += _("/%s from %s gets replaced by %s package\n") % (existing_file, pkg, self.pkginfo.name)
+                        replaced_by = True
+                    else:
+                        file_conflicts_str += _("/%s from %s package\n") % (existing_file, pkg)
+                else:
+                    file_conflicts_str += _("/%s from %s package\n") % (existing_file, pkg)
+                msg = _('File conflicts:\n%s') % file_conflicts_str
+            if self.ignore_file_conflicts or replaced_by:
                 ctx.ui.warning(msg)
             else:
                 raise Error(msg)
