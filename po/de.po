@@ -1720,7 +1720,7 @@ msgstr "[source] "
 #: pisi/cli/info.py:189
 #, python-format
 msgid "%s package is not found in source repositories"
-msgstr "Paket%s nicht gefunden in Quelldepots"
+msgstr "Paket %s nicht gefunden in Quelldepots"
 
 #: pisi/cli/install.py:25
 msgid ""
@@ -2701,7 +2701,7 @@ msgstr "pspec.xml verhindert verhindert Erstellen des Pakets für '%s'"
 #: pisi/operations/build.py:323
 #, python-format
 msgid "Building source package: %s"
-msgstr "Quellpaket wird erstelltt: %s"
+msgstr "Quellpaket wird erstellt: %s"
 
 #: pisi/operations/build.py:341
 msgid "ccache detected..."
