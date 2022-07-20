@@ -10,8 +10,10 @@
 # Please read the COPYING file.
 #
 
-import sys
+
 import locale
+import os
+import sys
 
 import pisi
 from pisi import translate as _
@@ -56,6 +58,11 @@ class CLI(pisi.ui.UI):
                 out = sys.stderr
             else:
                 out = sys.stdout
+            rows, columns = os.popen('stty size', 'r').read().split()
+            cols = int(columns)
+            if len(msg) > cols:
+                maxlen = cols - 2
+                msg = msg[:maxlen]+ '...\n'
             out.write(msg)
             out.flush()
 
