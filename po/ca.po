@@ -1,7 +1,7 @@
 # EOPKG.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# David Medina <rbndavid@gmail.com>, abril de 2017.
+# David Medina <rbndavid@gmail.com>, abril de 2017, 2023.
 #
 msgid ""
 msgstr ""
@@ -716,7 +716,7 @@ msgstr "El paquet %s no s'ha trobat a cap repositori actiu."
 #: pisi/atomicoperations.py:146
 #, python-format
 msgid "Installing %s, version %s, release %s"
-msgstr "S'instal·lia %s, versió %s, publicació %s"
+msgstr "S'instal·la %s, versió %s, publicació %s"
 
 #: pisi/atomicoperations.py:192 pisi/operations/build.py:765
 #, python-format
@@ -753,7 +753,7 @@ msgstr "Reinstal·lació de paquet rebutjada."
 
 #: pisi/atomicoperations.py:254
 msgid "Upgrading to new upstream version"
-msgstr "S'actualitza a la nova versió de corrent amunt"
+msgstr "S'actualitza a la nova versió d'origen"
 
 #: pisi/atomicoperations.py:257
 msgid "Upgrading to new distribution release"
