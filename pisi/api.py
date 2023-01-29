@@ -9,10 +9,12 @@
 #
 # Please read the COPYING file.
 
+import multiprocessing
 import os
 import fcntl
 import re
 import fetcher
+import signal
 
 from pisi import translate as _
 
@@ -370,6 +372,10 @@ def fetch(packages=[], path=os.path.curdir):
     """
     packagedb = pisi.db.packagedb.PackageDB()
     repodb = pisi.db.repodb.RepoDB()
+    # FIXME: Max concurrent downloads option?
+    pool = multiprocessing.Pool()
+
+    results = []
     for name in packages:
         package, repo = packagedb.get_package_repo(name)
         ctx.ui.info(_("%s package found in %s repository") % (package.name, repo))
@@ -382,8 +388,20 @@ def fetch(packages=[], path=os.path.curdir):
             url = str(pkg_uri)
         else:
             url = os.path.join(os.path.dirname(repodb.get_repo_url(repo)), str(uri.path()))
+        # FIXME: bandwidth_limit is per process and should be global now
+        res = pool.apply_async(fetcher.fetch_url, args=(url, path))
+        results.append(res)
 
-        fetcher.fetch_url(url, path, ctx.ui.Progress)
+    # Wait for results whilst handling SIGINT for pool
+    try:
+        # Require timeout due to: https://bugs.python.org/issue8296
+        [res.get(99999) for res in results]
+    # Catching KeyboardInterrupt doesn't actually pass terminate along...
+    except (signal.SIGINT, KeyboardInterrupt):
+        pool.terminate()
+    else:
+        pool.close()
+    pool.join()
 
 @locked
 def upgrade(packages=[], repo=None):
