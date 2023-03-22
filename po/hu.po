@@ -109,10 +109,10 @@ msgstr "A program futása befejeződött."
 #: pisi-cli:48
 msgid ""
 "Unhandled internal exception.\n"
-"Please file a bug report to <http://bugs.pardus.org.tr>."
+"Please file a bug report to <https://github.com/getsolus/package-management/>."
 msgstr ""
 "Nem kezelt belső hiba.\n"
-"Küldjön hibabejelentést a <http://bugs.pardus.org.tr> címen."
+"Küldjön hibabejelentést a <https://github.com/getsolus/package-management/> címen."
 
 #: pisi-cli:57
 msgid "System error. Program terminated."

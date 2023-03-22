@@ -105,10 +105,10 @@ msgstr "S'ha acabat el programa."
 #: pisi-cli:48
 msgid ""
 "Unhandled internal exception.\n"
-"Please file a bug report to <http://bugs.pardus.org.tr>."
+"Please file a bug report to <https://github.com/getsolus/package-management/>."
 msgstr ""
 "Excepció interna no gestionada.\n"
-"Si us plau, presenteu un informe d'error a <http://bugs.pardus.org.tr>."
+"Si us plau, presenteu un informe d'error a <https://github.com/getsolus/package-management/>."
 
 #: pisi-cli:57
 msgid "System error. Program terminated."
