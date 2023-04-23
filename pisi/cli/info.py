@@ -114,14 +114,18 @@ Usage: info <package1> <package2> ... <packagen>
             else:
                 print "/" + fileinfo.path
 
-    def print_metadata(self, metadata, packagedb=None):
+    def print_metadata(self, metadata, packagedb=None, repo=None):
         if ctx.get_option('short'):
             pkg = metadata.package
             ctx.ui.formatted_output(" - ".join((pkg.name, unicode(pkg.summary))))
         else:
             ctx.ui.formatted_output(unicode(metadata.package))
             if packagedb:
-                revdeps =  [name for name, dep in packagedb.get_rev_deps(metadata.package.name)]
+                if isinstance(packagedb, pisi.db.packagedb.PackageDB):
+                    revdeps_arr = packagedb.get_rev_deps(metadata.package.name, repo)
+                else:
+                    revdeps_arr = packagedb.get_rev_deps(metadata.package.name)
+                revdeps = [name for name, dep in revdeps_arr]
                 ctx.ui.formatted_output(" ".join((_("Reverse Dependencies:"), util.strlist(revdeps))))
                 print
 
@@ -153,7 +157,7 @@ Usage: info <package1> <package2> ... <packagen>
             else:
                 ctx.ui.info(_('Installed package:'))
 
-            self.print_metadata(metadata, self.installdb)
+            self.print_metadata(metadata, self.installdb, repo)
         else:
             ctx.ui.info(_("%s package is not installed") % package)
 
@@ -164,6 +168,6 @@ Usage: info <package1> <package2> ... <packagen>
                 ctx.ui.formatted_output(_("[binary] "), noln=True, column=" ")
             else:
                 ctx.ui.info(_('Package found in %s repository:') % repo)
-            self.print_metadata(metadata, self.packagedb)
+            self.print_metadata(metadata, self.packagedb, repo)
         else:
             ctx.ui.info(_("%s package is not found in binary repositories") % package)
