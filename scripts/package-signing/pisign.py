@@ -24,13 +24,13 @@ EXT_SIGN = 'sig'
 EXT_CERT = 'crt'
 
 # Signature validity
-SIGN_OK, SIGN_NO, SIGN_SELF, SIGN_UNTRUSTED, SIGN_CORRUPTED = range(5)
+SIGN_OK, SIGN_NO, SIGN_SELF, SIGN_UNTRUSTED, SIGN_CORRUPTED = list(range(5))
 
 # Certificate validity
-CERT_OK, CERT_SELF, CERT_CORRUPTED = range(3)
+CERT_OK, CERT_SELF, CERT_CORRUPTED = list(range(3))
 
 # Certificate trustworthiness
-CERT_TRUSTED, CERT_UNTRUSTED = range(2)
+CERT_TRUSTED, CERT_UNTRUSTED = list(range(2))
 
 def sign_data(data, key_file, password_fd):
     """
@@ -376,9 +376,9 @@ def print_usage():
         Prints usage information of application and exits.
     """
 
-    print "Usage:"
-    print "  %s sign <priv_key> <cert> <file1 ...>" % sys.argv[0]
-    print "  %s verify <trust_dir> <file1 ...>" % sys.argv[0]
+    print("Usage:")
+    print("  %s sign <priv_key> <cert> <file1 ...>" % sys.argv[0])
+    print("  %s verify <trust_dir> <file1 ...>" % sys.argv[0])
     sys.exit(1)
 
 def main():
@@ -410,7 +410,7 @@ def main():
                     sign_zipfile(filename, key_file, cert_file, password_fd)
                 else:
                     sign_file(filename, key_file, cert_file, password_fd)
-                print "Signed %s with %s" % (filename, key_file)
+                print("Signed %s with %s" % (filename, key_file))
 
             # Destroy temporary file
             password_fd.close()
@@ -430,15 +430,15 @@ def main():
                 else:
                     result = verify_file(filename, trust_dir)
                 if result == SIGN_OK:
-                    print "%s is signed by a trusted source." % filename
+                    print("%s is signed by a trusted source." % filename)
                 elif result == SIGN_NO:
-                    print "%s is unsigned." % filename
+                    print("%s is unsigned." % filename)
                 elif result == SIGN_SELF:
-                    print "%s is self-signed by a trusted source." % filename
+                    print("%s is self-signed by a trusted source." % filename)
                 elif result == SIGN_UNTRUSTED:
-                    print "%s is signed by an untrusted source." % filename
+                    print("%s is signed by an untrusted source." % filename)
                 else:
-                    print "%s is corrupted." % filename
+                    print("%s is corrupted." % filename)
         else:
             print_usage()
 

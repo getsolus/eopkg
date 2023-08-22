@@ -17,7 +17,7 @@ import pisi
 from optparse import OptionParser
 
 def run(cmd):
-    print 'running', cmd
+    print(('running', cmd))
     os.system(cmd)
 
 if __name__ == "__main__":
@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     (opts, args) = parser.parse_args()
 
-    print 'Exporting svn directory'
+    print('Exporting svn directory')
 
     if not os.path.exists(opts.svndist):
         os.makedirs(opts.svndist)
@@ -78,5 +78,5 @@ if __name__ == "__main__":
             time = datetime.datetime.now()
             os.rename('pisi-r%s.tar.bz2' % opts.rev , 'pisi-r%s-%s.%s.%s.tar.bz2' % (opts.rev, time.year, time.month, time.day))
 
-    print 'Have a look at %s directory' % opts.svndist
+    print(('Have a look at %s directory' % opts.svndist))
 

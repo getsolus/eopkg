@@ -21,7 +21,7 @@ import contextlib
 import os
 import shutil
 import time
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from pisi import translate as _
 
@@ -142,17 +142,17 @@ class Fetcher:
             try:
                 fetch_handler = FetchHandler(self.url, self.partial_file, self._get_bandwidth_limit(), self.start_time)
 
-                proxy = urllib2.ProxyHandler(self._get_proxies())
-                opener = urllib2.build_opener(proxy)
+                proxy = urllib.request.ProxyHandler(self._get_proxies())
+                opener = urllib.request.build_opener(proxy)
                 opener.addheaders = self._get_headers()
-                urllib2.install_opener(opener)
+                urllib.request.install_opener(opener)
                 has_range_support = self._test_range_support()
 
                 if has_range_support and os.path.exists(self.partial_file):
                     partial_file_size = os.path.getsize(self.partial_file)
                     opener.addheaders.append(('Range', 'bytes=%s-' % partial_file_size))
 
-                with contextlib.closing(urllib2.urlopen(self.url.get_uri(), timeout = 15)) as fp:
+                with contextlib.closing(urllib.request.urlopen(self.url.get_uri(), timeout = 15)) as fp:
                     headers = fp.info()
 
                     if self.url.is_local_file():

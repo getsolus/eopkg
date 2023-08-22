@@ -19,7 +19,7 @@ from pisi.delta import create_delta_package
 
 def minsandmaxes():
 
-    packages = map(lambda x: os.path.basename(x).split(".eopkg")[0], set(glob.glob("*.eopkg")) - set(glob.glob("*.delta.eopkg")))
+    packages = [os.path.basename(x).split(".eopkg")[0] for x in set(glob.glob("*.eopkg")) - set(glob.glob("*.delta.eopkg"))]
 
     versions = {}
     for file in packages:
@@ -28,7 +28,7 @@ def minsandmaxes():
 
     mins = {}
     maxs = {}
-    for pkg in versions.keys():
+    for pkg in list(versions.keys()):
         mins[pkg] = min(versions[pkg])
         maxs[pkg] = max(versions[pkg])
 
@@ -37,7 +37,7 @@ def minsandmaxes():
 if __name__ == "__main__":
 
     mi, ma = minsandmaxes()
-    for pkg in mi.keys():
+    for pkg in list(mi.keys()):
         old_pkg = "%s-%s.eopkg" % (pkg, str(mi[pkg]))
         new_pkg = "%s-%s.eopkg" % (pkg, str(ma[pkg]))
         name, version = util.parse_package_name(pkg)
@@ -46,5 +46,5 @@ if __name__ == "__main__":
         # skip if same 
             if not os.path.exists("%s-%s-%s.delta.eopkg" % (name, str(mi[pkg].build), str(ma[pkg].build))):
             # skip if delta exists
-                print "%s --> Min: %s Max: %s \n %s-%s-%s.delta.eopkg" % (pkg, old_pkg, new_pkg, name, str(mi[pkg].build), str(ma[pkg].build))
+                print(("%s --> Min: %s Max: %s \n %s-%s-%s.delta.eopkg" % (pkg, old_pkg, new_pkg, name, str(mi[pkg].build), str(ma[pkg].build))))
                 create_delta_package(old_pkg, new_pkg)

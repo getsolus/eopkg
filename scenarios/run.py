@@ -30,14 +30,14 @@ def run_scen(scenario):
     scenario()
 
 def run_all():
-    print '** Running all scenarios'
+    print('** Running all scenarios')
     for root, dirs, files in os.walk("."):
-        scensources = filter(lambda x:x.endswith('scen.py'), files)
+        scensources = [x for x in files if x.endswith('scen.py')]
         for scensource in scensources:
             clean_out()
             running = "\n* Running scenario in %s\n" % scensource
-            print running
-            print len(running) * "=" + "\n"
+            print(running)
+            print((len(running) * "=" + "\n"))
             module = __import__(scensource[:len(scensource)-3])
             run_scen(module.run)
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         for scen in scens:
             clean_out()
             scen += 'scen.py'
-            print "\n* Running scenario in %s\n" % scen
+            print(("\n* Running scenario in %s\n" % scen))
             module = __import__(scen[:len(scen)-3])
             run_scen(module.run)
     else: 

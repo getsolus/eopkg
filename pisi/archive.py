@@ -352,7 +352,7 @@ class ArchiveTar(ArchiveBase):
                                     old_path = "/" + old_path
                                 if not new_path.startswith("/"):
                                     new_path = "/" + new_path
-                                print("Moving:", old_path, " -> ", new_path)
+                                print(("Moving:", old_path, " -> ", new_path))
                                 os.system("mv -f %s %s" % (old_path, new_path))
                             else:
                                 raise

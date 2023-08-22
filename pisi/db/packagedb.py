@@ -15,8 +15,6 @@ import time
 import gzip
 import gettext
 import datetime
-__trans = gettext.translation('pisi', fallback=True)
-_ = __trans.ugettext
 
 import piksemel
 
@@ -25,6 +23,7 @@ import pisi.metadata
 import pisi.dependency
 import pisi.db.itembyrepo
 import pisi.db.lazydb as lazydb
+from pisi import translate as _
 
 class PackageDB(lazydb.LazyDB):
 
@@ -275,7 +274,7 @@ class PackageDB(lazydb.LazyDB):
                     enter_date = datetime.datetime(*time.strptime(self.get_package(pkg).history[-1].date, "%Y-%m-%d")[0:6])
                 except:
                     enter_date = datetime.datetime(*time.strptime(self.get_package(pkg).history[-1].date, "%Y-%d-%m")[0:6])
-                    
+
             if enter_date >= since_date:
                 packages.append(pkg)
         return packages

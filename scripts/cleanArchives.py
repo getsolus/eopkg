@@ -35,7 +35,7 @@ if __name__ == "__main__":
     try:
         packages = scanPSPEC(sys.argv[1])
     except:
-        print "Usage: cleanArchives.py path2repo"
+        print("Usage: cleanArchives.py path2repo")
         sys.exit(1)
 
     if "--dry-run" in sys.argv:
@@ -54,10 +54,10 @@ if __name__ == "__main__":
         files.append(URI.filename())
 
     archiveFiles = os.listdir("/var/cache/eopkg/archives/")
-    unneededFiles = filter(lambda x:x not in files, archiveFiles)
+    unneededFiles = [x for x in archiveFiles if x not in files]
 
     for i in unneededFiles:
         if not clean:
-            print("/var/cache/eopkg/archives/%s" % i)
+            print(("/var/cache/eopkg/archives/%s" % i))
         else:
             cleanArchives("/var/cache/eopkg/archives/%s" % i)

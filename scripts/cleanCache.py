@@ -23,7 +23,7 @@ def findUnneededFiles(listdir):
     for f in listdir:
         try:
             name, version = util.parse_package_name(f)
-            if dict.has_key(name):
+            if name in dict:
                 if Version(dict[name]) < Version(version):
                     dict[name] = version
             else:
@@ -42,20 +42,20 @@ def doit(root, listdir, clean, suffix = ""):
     for f in listdir:
         target = os.path.join(root, "%s%s" % (f, suffix))
         if os.path.exists(target):
-            print "%s%s" % (f, suffix)
+            print(("%s%s" % (f, suffix)))
             if clean == True:
                 try:
                     if os.path.isdir(target):
                         shutil.rmtree(target)
                     else:
                         os.remove(target)
-                except OSError,e :
+                except OSError as e :
                     usage("Permission denied: %s" % e)
 
 
 def cleanPisis(clean, root = '/var/cache/eopkg/packages'):
     # pisi packages
-    list = map(lambda x: os.path.basename(x).split(".eopkg")[0], glob.glob("%s/*.eopkg" % root))
+    list = [os.path.basename(x).split(".eopkg")[0] for x in glob.glob("%s/*.eopkg" % root)]
     list.sort()
     l = findUnneededFiles(list)
     doit(root, l, clean, ".eopkg")
@@ -71,13 +71,13 @@ def cleanBuilds(clean, root = '/var/eopkg'):
     doit(root, l, clean)
 
 def usage(msg):
-    print """
+    print(("""
 Error: %s
 
 Usage:
     cleanCache --dry-run    (Shows unneeded files)
     cleanCache --clean      (Removes unneeded files)
-    """ % msg
+    """ % msg))
 
     sys.exit(1)
 

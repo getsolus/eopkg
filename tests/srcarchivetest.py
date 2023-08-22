@@ -7,7 +7,7 @@ class SourceArchiveTestCase(unittest.TestCase):
     def testFetch(self):
         spec = SpecFile('repos/pardus-2007/system/base/curl/pspec.xml')
         srcarch = pisi.sourcearchive.SourceArchive(spec.source.archive[0])
-        self.assert_(not srcarch.fetch())
+        self.assertTrue(not srcarch.fetch())
 
     def testIscached(self):
         spec = SpecFile('repos/pardus-2007/system/base/curl/pspec.xml')
@@ -18,7 +18,7 @@ class SourceArchiveTestCase(unittest.TestCase):
         spec = SpecFile('repos/pardus-2007/system/base/curl/pspec.xml')
         targetDir = '/tmp/tests'
         srcarch = pisi.sourcearchive.SourceArchive(spec.source.archive[0])
-        self.assert_(not srcarch.unpack(targetDir))
+        self.assertTrue(not srcarch.unpack(targetDir))
 
     def testUnpack(self):
         spec = SpecFile('repos/pardus-2007/system/base/curl/pspec.xml')

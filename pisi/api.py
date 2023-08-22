@@ -912,7 +912,7 @@ def clearCache(all=False):
 
         # sort dictionary by value from PEP-265
         from operator import itemgetter
-        return sorted(iter(sizes.items()), key=itemgetter(1), reverse=False)
+        return sorted(iter(list(sizes.items())), key=itemgetter(1), reverse=False)
 
     def removeOrderByLimit(cacheDir, order, limit):
         totalSize = 0
