@@ -38,8 +38,10 @@ import pisi.context as ctx
 import pisi.util as util
 import pisi.oo as oo
 
+
 class Error(pisi.Error):
     pass
+
 
 # requirement specs
 
@@ -71,30 +73,40 @@ class LocalText(dict):
 
     def decode(self, node, errs, where=""):
         # flags, tag name, instance attribute
-        assert self.tag != ''
+        assert self.tag != ""
         nodes = xmlext.getAllNodes(node, self.tag)
         if not nodes:
             if self.req == mandatory:
                 errs.append(
-                    where + ': ' + _("At least one '{}' tag should have local text.").format(self.tag))
+                    where
+                    + ": "
+                    + _("At least one '{}' tag should have local text.").format(
+                        self.tag
+                    )
+                )
         else:
             for node in nodes:
-                lang = xmlext.getNodeAttribute(node, 'xml:lang')
+                lang = xmlext.getNodeAttribute(node, "xml:lang")
                 c = xmlext.getNodeText(node)
                 if not c:
                     errs.append(
-                        where + ': ' + _("'{0}' language of tag '{1}' is empty.").format(lang, self.tag))
+                        where
+                        + ": "
+                        + _("'{0}' language of tag '{1}' is empty.").format(
+                            lang, self.tag
+                        )
+                    )
                 # FIXME: check for dups and 'en'
                 if not lang:
-                    lang = 'en'
+                    lang = "en"
                 self[lang] = str(c)
 
     def encode(self, node, errs):
-        assert self.tag != ''
+        assert self.tag != ""
         for key in list(self.keys()):
             newnode = xmlext.addNode(node, self.tag)
-            xmlext.setNodeAttribute(newnode, 'xml:lang', key)
-            xmlext.addText(newnode, '', self[key])
+            xmlext.setNodeAttribute(newnode, "xml:lang", key)
+            xmlext.addText(newnode, "", self[key])
 
     # FIXME: maybe more appropriate for pisi.util
     @staticmethod
@@ -104,21 +116,31 @@ class LocalText(dict):
             if not lang:
                 (lang, encoding) = locale.getdefaultlocale()
             if lang is None:  # stupid python means it is C locale
-                return 'en'
+                return "en"
             else:
                 return lang[0:2]
         except KeyboardInterrupt:
             raise
-        except Exception:  # FIXME: what exception could we catch here, replace with that.
-            raise Error(
-                _('LocalText: unable to get either current or default locale.'))
+        except (
+            Exception
+        ):  # FIXME: what exception could we catch here, replace with that.
+            raise Error(_("LocalText: unable to get either current or default locale."))
 
     def errors(self, where=str()):
         errs = []
-        langs = [LocalText.get_lang(), 'en', 'tr', ]
+        langs = [
+            LocalText.get_lang(),
+            "en",
+            "tr",
+        ]
         if list(self.keys()) and not util.any(lambda x: x in self, langs):
-            errs.append(where + ': ' + _(
-                "Tag should have at least the current locale, or failing that an English or Turkish version."))
+            errs.append(
+                where
+                + ": "
+                + _(
+                    "Tag should have at least the current locale, or failing that an English or Turkish version."
+                )
+            )
         # FIXME: check if all entries are unicode
         return errs
 
@@ -126,15 +148,18 @@ class LocalText(dict):
         L = LocalText.get_lang()
         if L in self:
             f.add_flowing_data(self[L])
-        elif 'en' in self:
+        elif "en" in self:
             # fallback to English, blah
-            f.add_flowing_data(self['en'])
-        elif 'tr' in self:
+            f.add_flowing_data(self["en"])
+        elif "tr" in self:
             # fallback to Turkish
-            f.add_flowing_data(self['tr'])
+            f.add_flowing_data(self["tr"])
         else:
             errs.append(
-                _("Tag should have at least the current locale, or failing that an English or Turkish version."))
+                _(
+                    "Tag should have at least the current locale, or failing that an English or Turkish version."
+                )
+            )
 
     # FIXME: factor out these common routines
     def print_text(self, file=sys.stdout):
@@ -150,12 +175,12 @@ class LocalText(dict):
         L = LocalText.get_lang()
         if L in self:
             return str(self[L])
-        elif 'en' in self:
+        elif "en" in self:
             # fallback to English, blah
-            return str(self['en'])
-        elif 'tr' in self:
+            return str(self["en"])
+        elif "tr" in self:
             # fallback to Turkish
-            return str(self['tr'])
+            return str(self["tr"])
         else:
             return str()
 
@@ -168,10 +193,10 @@ class Writer(formatter.DumbWriter):
 
     def send_literal_data(self, data):
         self.file.write(data.encode("utf-8"))
-        i = data.rfind('\n')
+        i = data.rfind("\n")
         if i >= 0:
             self.col = 0
-            data = data[i + 1:]
+            data = data[i + 1 :]
         data = data.expandtabs()
         self.col += len(data)
         self.atbreak = 0
@@ -253,15 +278,13 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         xmlfile_support = xmlfile.XmlFile in bases
 
-        cls.autoxml_bases = [
-            base for base in bases if isinstance(
-                base, autoxml)]
+        cls.autoxml_bases = [base for base in bases if isinstance(base, autoxml)]
 
         # TODO: initialize class attribute __xml_tags
         # setattr(cls, 'xml_variables', [])
 
         # default class tag is class name
-        if 'tag' not in dict:
+        if "tag" not in dict:
             cls.tag = name
 
         # generate helper routines, for each XML component
@@ -278,7 +301,7 @@ class autoxml(oo.autosuper, oo.autoprop):
         # read declaration order from source
         # code contributed by bahadir kandemir
         try:
-            fn = re.compile(r'\s*([tas]_[a-zA-Z]+).*').findall
+            fn = re.compile(r"\s*([tas]_[a-zA-Z]+).*").findall
 
             inspect.linecache.clearcache()
             lines = list(filter(fn, inspect.getsourcelines(cls)[0]))
@@ -289,24 +312,23 @@ class autoxml(oo.autosuper, oo.autoprop):
         # there should be at most one str member, and it should be
         # the first to process
 
-        order = [x for x in decl_order if not x.startswith('s_')]
+        order = [x for x in decl_order if not x.startswith("s_")]
 
         # find string member
-        str_members = [x for x in decl_order if x.startswith('s_')]
+        str_members = [x for x in decl_order if x.startswith("s_")]
         if len(str_members) > 1:
-            raise Error('Only one str member can be defined')
+            raise Error("Only one str member can be defined")
         elif len(str_members) == 1:
             order.insert(0, str_members[0])
 
         for var in order:
-            if var.startswith('t_') or var.startswith(
-                    'a_') or var.startswith('s_'):
+            if var.startswith("t_") or var.startswith("a_") or var.startswith("s_"):
                 name = var[2:]
-                if var.startswith('a_'):
+                if var.startswith("a_"):
                     x = autoxml.gen_attr_member(cls, name)
-                elif var.startswith('t_'):
+                elif var.startswith("t_"):
                     x = autoxml.gen_tag_member(cls, name)
-                elif var.startswith('s_'):
+                elif var.startswith("s_"):
                     x = autoxml.gen_str_member(cls, name)
                 (name, init, decoder, encoder, errors, format_x) = x
                 names.append(name)
@@ -319,11 +341,10 @@ class autoxml(oo.autosuper, oo.autoprop):
         # generate top-level helper functions
         cls.initializers = inits
 
-        def initialize(self, uri=None, keepDoc=False, tmpDir='/tmp',
-                       **args):
+        def initialize(self, uri=None, keepDoc=False, tmpDir="/tmp", **args):
             if xmlfile_support:
-                if 'tag' in args:
-                    xmlfile.XmlFile.__init__(self, tag=args['tag'])
+                if "tag" in args:
+                    xmlfile.XmlFile.__init__(self, tag=args["tag"])
                 else:
                     xmlfile.XmlFile.__init__(self, tag=cls.tag)
             for base in cls.autoxml_bases:
@@ -333,7 +354,7 @@ class autoxml(oo.autosuper, oo.autoprop):
             for x in list(args.keys()):
                 setattr(self, x, args[x])
             # init hook
-            if hasattr(self, 'init'):
+            if hasattr(self, "init"):
                 self.init()
             if xmlfile_support and uri:
                 self.read(uri, keepDoc, tmpDir)
@@ -347,7 +368,7 @@ class autoxml(oo.autosuper, oo.autoprop):
                 base.decode(self, node, errs, where)
             for decode_member in decoders:  # self.__class__.decoders:
                 decode_member(self, node, errs, where)
-            if hasattr(self, 'decode_hook'):
+            if hasattr(self, "decode_hook"):
                 self.decode_hook(node, errs, where)
 
         cls.decode = decode
@@ -359,7 +380,7 @@ class autoxml(oo.autosuper, oo.autoprop):
                 base.encode(self, node, errs)
             for encode_member in encoders:  # self.__class__.encoders:
                 encode_member(self, node, errs)
-            if hasattr(self, 'encode_hook'):
+            if hasattr(self, "encode_hook"):
                 self.encode_hook(node, errs)
 
         cls.encode = encode
@@ -372,7 +393,7 @@ class autoxml(oo.autosuper, oo.autoprop):
                 errs.extend(base.errors(self, where))
             for errors in errorss:  # self.__class__.errorss:
                 errs.extend(errors(self, where))
-            if hasattr(self, 'errors_hook'):
+            if hasattr(self, "errors_hook"):
                 errs.extend(self.errors_hook(where))
             return errs
 
@@ -406,7 +427,8 @@ class autoxml(oo.autosuper, oo.autoprop):
                     ctx.ui.warning(x)
 
         cls.print_text = print_text
-        if '__str__' not in dict:
+        if "__str__" not in dict:
+
             def str(self):
                 strfile = io.StringIO()
                 self.print_text(strfile)
@@ -416,7 +438,8 @@ class autoxml(oo.autosuper, oo.autoprop):
 
             cls.__str__ = str
 
-        if '__eq__' not in dict:
+        if "__eq__" not in dict:
+
             def equal(self, other):
                 # handle None
                 if other is None:
@@ -427,7 +450,9 @@ class autoxml(oo.autosuper, oo.autoprop):
                             return False
                     except KeyboardInterrupt:
                         raise
-                    except Exception:  # FIXME: what exception could we catch here, replace with that.
+                    except (
+                        Exception
+                    ):  # FIXME: what exception could we catch here, replace with that.
                         return False
                 return True
 
@@ -438,16 +463,16 @@ class autoxml(oo.autosuper, oo.autoprop):
             cls.__ne__ = notequal
 
         if xmlfile_support:
+
             def parse(self, xml, keepDoc=False):
                 """parse XML string and decode it into a python object"""
                 self.parsexml(xml)
                 errs = []
                 self.decode(self.rootNode(), errs)
                 if errs:
-                    errs.append(
-                        _("autoxml.parse: String '{}' has errors.").format(xml))
+                    errs.append(_("autoxml.parse: String '{}' has errors.").format(xml))
                     raise Error(*errs)
-                if hasattr(self, 'read_hook'):
+                if hasattr(self, "read_hook"):
                     self.read_hook(errs)
 
                 if not keepDoc:
@@ -455,14 +480,28 @@ class autoxml(oo.autosuper, oo.autoprop):
 
                 errs = self.errors()
                 if errs:
-                    errs.append(
-                        _("autoxml.parse: String '{}' has errors.").format(xml))
+                    errs.append(_("autoxml.parse: String '{}' has errors.").format(xml))
 
-            def read(self, uri, keepDoc=False, tmpDir='/tmp',
-                     sha1sum=False, compress=None, sign=None, copylocal=False, nodecode=False):
+            def read(
+                self,
+                uri,
+                keepDoc=False,
+                tmpDir="/tmp",
+                sha1sum=False,
+                compress=None,
+                sign=None,
+                copylocal=False,
+                nodecode=False,
+            ):
                 """read XML file and decode it into a python object"""
-                read_xml = self.readxml(uri, tmpDir, sha1sum=sha1sum,
-                                        compress=compress, sign=sign, copylocal=copylocal)
+                read_xml = self.readxml(
+                    uri,
+                    tmpDir,
+                    sha1sum=sha1sum,
+                    compress=compress,
+                    sign=sign,
+                    copylocal=copylocal,
+                )
 
                 if nodecode:
                     return read_xml
@@ -470,10 +509,9 @@ class autoxml(oo.autosuper, oo.autoprop):
                 errs = []
                 self.decode(self.rootNode(), errs)
                 if errs:
-                    errs.append(
-                        _("autoxml.read: File '{}' has errors.").format(uri))
+                    errs.append(_("autoxml.read: File '{}' has errors.").format(uri))
                     raise Error(*errs)
-                if hasattr(self, 'read_hook'):
+                if hasattr(self, "read_hook"):
                     self.read_hook(errs)
 
                 if not keepDoc:
@@ -481,33 +519,36 @@ class autoxml(oo.autosuper, oo.autoprop):
 
                 errs = self.errors()
                 if errs:
-                    errs.append(
-                        _("autoxml.read: File '{}' has errors.").format(uri))
+                    errs.append(_("autoxml.read: File '{}' has errors.").format(uri))
                     raise Error(*errs)
 
-            def write(self, uri, keepDoc=False, tmpDir='/tmp',
-                      sha1sum=False, compress=None, sign=None):
+            def write(
+                self,
+                uri,
+                keepDoc=False,
+                tmpDir="/tmp",
+                sha1sum=False,
+                compress=None,
+                sign=None,
+            ):
                 """encode the contents of the python object into an XML file"""
                 errs = self.errors()
                 if errs:
-                    errs.append(
-                        _("autoxml.write: object validation has failed."))
+                    errs.append(_("autoxml.write: object validation has failed."))
                     raise Error(*errs)
                 errs = []
                 self.newDocument()
                 self.encode(self.rootNode(), errs)
-                if hasattr(self, 'write_hook'):
+                if hasattr(self, "write_hook"):
                     self.write_hook(errs)
                 if errs:
                     errs.append(
-                        _("autoxml.write: File encoding '{}' has errors.").format(uri))
+                        _("autoxml.write: File encoding '{}' has errors.").format(uri)
+                    )
                     raise Error(*errs)
                 self.writexml(
-                    uri,
-                    tmpDir,
-                    sha1sum=sha1sum,
-                    compress=compress,
-                    sign=sign)
+                    uri, tmpDir, sha1sum=sha1sum, compress=compress, sign=sign
+                )
                 if not keepDoc:
                     self.unlink()  # get rid of the tree
 
@@ -518,7 +559,7 @@ class autoxml(oo.autosuper, oo.autoprop):
     def gen_attr_member(cls, attr):
         """generate readers and writers for an attribute member"""
         # print 'attr:', attr
-        spec = getattr(cls, 'a_' + attr)
+        spec = getattr(cls, "a_" + attr)
         tag_type = spec[0]
         assert isinstance(tag_type, type(type))
 
@@ -535,15 +576,15 @@ class autoxml(oo.autosuper, oo.autoprop):
     def gen_tag_member(cls, tag):
         """generate helper funs for tag member of class"""
         # print 'tag:', tag
-        spec = getattr(cls, 't_' + tag)
+        spec = getattr(cls, "t_" + tag)
         anonfuns = cls.gen_tag(tag, spec)
         return cls.gen_named_comp(tag, spec, anonfuns)
 
     def gen_tag(cls, tag, spec):
         """generate readers and writers for the tag"""
         tag_type = spec[0]
-        if isinstance(tag_type, type) and \
-                tag_type in autoxml.basic_cons_map:
+        if isinstance(tag_type, type) and tag_type in autoxml.basic_cons_map:
+
             def readtext(node, tagpath):
                 # print 'read tag', node, tagpath
                 return xmlext.getNodeText(node, tagpath)
@@ -561,12 +602,12 @@ class autoxml(oo.autosuper, oo.autoprop):
             return cls.gen_class_tag(tag, spec)
         else:
             raise Error(
-                _('gen_tag: unrecognized tag type {} in spec.').format(
-                    str(tag_type)))
+                _("gen_tag: unrecognized tag type {} in spec.").format(str(tag_type))
+            )
 
     def gen_str_member(cls, token):
         """generate readers and writers for a string member"""
-        spec = getattr(cls, 's_' + token)
+        spec = getattr(cls, "s_" + token)
         tag_type = spec[0]
         assert isinstance(tag_type, type(type))
 
@@ -596,7 +637,7 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         def decode(self, node, errs, where):
             """decode component from DOM node"""
-            setattr(self, name, decode_a(node, errs, where + '.' + str(name)))
+            setattr(self, name, decode_a(node, errs, where + "." + str(name)))
 
         def encode(self, node, errs):
             """encode self inside, possibly new, DOM node using xml"""
@@ -611,23 +652,25 @@ class autoxml(oo.autosuper, oo.autoprop):
             errs = []
             if hasattr(self, name) and getattr(self, name):
                 value = getattr(self, name)
-                errs.extend(errors_a(value, where + '.' + name))
+                errs.extend(errors_a(value, where + "." + name))
             else:
                 if req == mandatory:
                     errs.append(
-                        where + ': ' + _('Mandatory variable {} not available.').format(name))
+                        where
+                        + ": "
+                        + _("Mandatory variable {} not available.").format(name)
+                    )
             return errs
 
         def format(self, f, errs):
             if hasattr(self, name):
                 value = getattr(self, name)
-                f.add_literal_data(token + ': ')
+                f.add_literal_data(token + ": ")
                 format_a(value, f, errs)
                 f.add_line_break()
             else:
                 if req == mandatory:
-                    errs.append(
-                        _('Mandatory variable {} not available.').format(name))
+                    errs.append(_("Mandatory variable {} not available.").format(name))
 
         return name, init, decode, encode, errors, format
 
@@ -637,8 +680,10 @@ class autoxml(oo.autosuper, oo.autoprop):
         if identifier == "":
             return ""
         else:
-            if identifier[0] == 'I':
-                lowly = 'i'  # because of pythonic idiots we can't choose locale in lower
+            if identifier[0] == "I":
+                lowly = (
+                    "i"  # because of pythonic idiots we can't choose locale in lower
+                )
             else:
                 lowly = identifier[0].lower()
             return lowly + identifier[1:]
@@ -647,10 +692,10 @@ class autoxml(oo.autosuper, oo.autoprop):
     def tagpath_head_last(tagpath):
         """returns split of the tag path into last tag and the rest"""
         try:
-            lastsep = tagpath.rindex('/')
+            lastsep = tagpath.rindex("/")
         except ValueError:
-            return '', tagpath
-        return tagpath[:lastsep], tagpath[lastsep + 1:]
+            return "", tagpath
+        return tagpath[:lastsep], tagpath[lastsep + 1 :]
 
     def parse_spec(cls, token, spec):
         """decompose member specification"""
@@ -663,7 +708,7 @@ class autoxml(oo.autosuper, oo.autoprop):
         elif isinstance(token_type, type([])):
             if isinstance(token_type[0], autoxml):
                 # if list of class, by default nested like in most PSPEC
-                path = token + '/' + token_type[0].tag
+                path = token + "/" + token_type[0].tag
             else:
                 # if list of ordpisi type, just take the name for
                 path = token
@@ -697,15 +742,21 @@ class autoxml(oo.autosuper, oo.autoprop):
                     value = autoxml.basic_cons_map[token_type](text)
                 except KeyboardInterrupt:
                     raise
-                except Exception:  # FIXME: what exception could we catch here, replace with that.
+                except (
+                    Exception
+                ):  # FIXME: what exception could we catch here, replace with that.
                     value = None
                     errs.append(
-                        where + ': ' + _('Type mismatch: read text cannot be decoded.'))
+                        where + ": " + _("Type mismatch: read text cannot be decoded.")
+                    )
                 return value
             else:
                 if req == mandatory:
                     errs.append(
-                        where + ': ' + _('Mandatory token {} not available.').format(token))
+                        where
+                        + ": "
+                        + _("Mandatory token {} not available.").format(token)
+                    )
                 return None
 
         def encode(node, value, errs):
@@ -714,14 +765,18 @@ class autoxml(oo.autosuper, oo.autoprop):
                 writetext(node, token, str(value))
             else:
                 if req == mandatory:
-                    errs.append(
-                        _('Mandatory token {} not available.').format(token))
+                    errs.append(_("Mandatory token {} not available.").format(token))
 
         def errors(value, where):
             errs = []
             if value and not isinstance(value, token_type):
                 errs.append(
-                    where + ': ' + _('Type mismatch. Expected {0}, got {1}').format(token_type, type(value)))
+                    where
+                    + ": "
+                    + _("Type mismatch. Expected {0}, got {1}").format(
+                        token_type, type(value)
+                    )
+                )
             return errs
 
         def format(value, f, errs):
@@ -751,11 +806,11 @@ class autoxml(oo.autosuper, oo.autoprop):
                     return obj
                 except Error:
                     errs.append(
-                        where + ': ' + _('Type mismatch: DOM cannot be decoded.'))
+                        where + ": " + _("Type mismatch: DOM cannot be decoded.")
+                    )
             else:
                 if req == mandatory:
-                    errs.append(
-                        where + ': ' + _('Mandatory argument not available.'))
+                    errs.append(where + ": " + _("Mandatory argument not available."))
             return None
 
         def encode(node, obj, errs):
@@ -764,14 +819,14 @@ class autoxml(oo.autosuper, oo.autoprop):
                     # FIXME: this doesn't look pretty
                     classnode = xmlext.newNode(node, tag)
                     obj.encode(classnode, errs)
-                    xmlext.addNode(node, '', classnode)
+                    xmlext.addNode(node, "", classnode)
                 except Error:
                     if req == mandatory:
                         # note: we can receive an error if obj has no content
-                        errs.append(_('Object cannot be encoded.'))
+                        errs.append(_("Object cannot be encoded."))
             else:
                 if req == mandatory:
-                    errs.append(_('Mandatory argument not available.'))
+                    errs.append(_("Mandatory argument not available."))
 
         def errors(obj, where):
             return obj.errors(where)
@@ -782,10 +837,10 @@ class autoxml(oo.autosuper, oo.autoprop):
                     obj.format(f, errs)
                 except Error:
                     if req == mandatory:
-                        errs.append(_('Object cannot be formatted.'))
+                        errs.append(_("Object cannot be formatted."))
             else:
                 if req == mandatory:
-                    errs.append(_('Mandatory argument not available.'))
+                    errs.append(_("Mandatory argument not available."))
 
         return init, decode, encode, errors, format
 
@@ -793,12 +848,12 @@ class autoxml(oo.autosuper, oo.autoprop):
         """generate a list datatype. stores comps in tag/comp_tag"""
         name, tag_type, req, path = cls.parse_spec(tag, spec)
 
-        pathcomps = path.split('/')
+        pathcomps = path.split("/")
         comp_tag = pathcomps.pop()
-        list_tagpath = util.makepath(pathcomps, sep='/', relative=True)
+        list_tagpath = util.makepath(pathcomps, sep="/", relative=True)
 
         if len(tag_type) != 1:
-            raise Error(_('List type must contain only one element.'))
+            raise Error(_("List type must contain only one element."))
 
         x = cls.gen_tag(comp_tag, [tag_type[0], mandatory])
         (init_item, decode_item, encode_item, errors_item, format_item) = x
@@ -812,13 +867,17 @@ class autoxml(oo.autosuper, oo.autoprop):
             # print node, tag + '/' + comp_tag, nodes
             if len(nodes) == 0 and req == mandatory:
                 errs.append(
-                    where + ': ' + _('Mandatory list "{0}" under "{1}" node is empty.').format(path, node.name()))
+                    where
+                    + ": "
+                    + _('Mandatory list "{0}" under "{1}" node is empty.').format(
+                        path, node.name()
+                    )
+                )
             ix = 1
             for node in nodes:
                 dummy = xmlext.newNode(node, "Dummy")
-                xmlext.addNode(dummy, '', node)
-                l.append(decode_item(
-                    dummy, errs, where + str("[{}]".format(ix))))
+                xmlext.addNode(dummy, "", node)
+                l.append(decode_item(dummy, errs, where + str("[{}]".format(ix))))
                 ix += 1
             return l
 
@@ -826,8 +885,7 @@ class autoxml(oo.autosuper, oo.autoprop):
             if l:
                 for item in l:
                     if list_tagpath:
-                        listnode = xmlext.addNode(
-                            node, list_tagpath, branch=False)
+                        listnode = xmlext.addNode(node, list_tagpath, branch=False)
                     else:
                         listnode = node
                     encode_item(listnode, item, errs)
@@ -836,13 +894,15 @@ class autoxml(oo.autosuper, oo.autoprop):
                 if req is mandatory:
                     errs.append(
                         _('Mandatory list "{0}" under "{1}" node is empty.').format(
-                            path, node.name()))
+                            path, node.name()
+                        )
+                    )
 
         def errors(l, where):
             errs = []
             ix = 1
             for node in l:
-                errs.extend(errors_item(node, where + '[{}]'.format(ix)))
+                errs.extend(errors_item(node, where + "[{}]".format(ix)))
                 ix += 1
             return errs
 
@@ -850,16 +910,16 @@ class autoxml(oo.autosuper, oo.autoprop):
             l.sort()
             for node in l:
                 format_item(node, f, errs)
-                f.add_literal_data(' ')
+                f.add_literal_data(" ")
 
         return init, decode, encode, errors, format
 
     def gen_insetclass_tag(cls, tag, spec):
         """generate a class datatype that is highly integrated
-           don't worry if that means nothing to you. this is a silly
-           hack to implement local text quickly. it's not the most
-           elegant thing in the world. it's basically a copy of
-           class tag"""
+        don't worry if that means nothing to you. this is a silly
+        hack to implement local text quickly. it's not the most
+        elegant thing in the world. it's basically a copy of
+        class tag"""
         name, tag_type, req, path = cls.parse_spec(tag, spec)
 
         def make_object():
@@ -878,11 +938,11 @@ class autoxml(oo.autosuper, oo.autoprop):
                     return obj
                 except Error:
                     errs.append(
-                        where + ': ' + _('Type mismatch: DOM cannot be decoded.'))
+                        where + ": " + _("Type mismatch: DOM cannot be decoded.")
+                    )
             else:
                 if req == mandatory:
-                    errs.append(
-                        where + ': ' + _('Mandatory argument not available.'))
+                    errs.append(where + ": " + _("Mandatory argument not available."))
             return None
 
         def encode(node, obj, errs):
@@ -893,10 +953,10 @@ class autoxml(oo.autosuper, oo.autoprop):
                 except Error:
                     if req == mandatory:
                         # note: we can receive an error if obj has no content
-                        errs.append(_('Object cannot be encoded.'))
+                        errs.append(_("Object cannot be encoded."))
             else:
                 if req == mandatory:
-                    errs.append(_('Mandatory argument not available.'))
+                    errs.append(_("Mandatory argument not available."))
 
         def errors(obj, where):
             return obj.errors(where)
@@ -907,16 +967,11 @@ class autoxml(oo.autosuper, oo.autoprop):
                     obj.format(f, errs)
                 except Error:
                     if req == mandatory:
-                        errs.append(_('Object cannot be formatted.'))
+                        errs.append(_("Object cannot be formatted."))
             else:
                 if req == mandatory:
-                    errs.append(_('Mandatory argument not available.'))
+                    errs.append(_("Mandatory argument not available."))
 
         return init, decode, encode, errors, format
 
-    basic_cons_map = {
-        bytes: bytes,
-        str: str,
-        int: int,
-        float: float
-    }
+    basic_cons_map = {bytes: bytes, str: str, int: int, float: float}

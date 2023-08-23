@@ -15,10 +15,10 @@
 #            pisi.operations.Error: Çakışmalar var
 #            Genel yardım için lütfen 'eopkg help' komutunu kullanınız.
 #
-# Problem Description: 
-# 
-# PISI upgrade command sees some system.base packages conflict with each other. It asks if you 
-# want to remove the conflicting package but does not allow it to be removed without 
+# Problem Description:
+#
+# PISI upgrade command sees some system.base packages conflict with each other. It asks if you
+# want to remove the conflicting package but does not allow it to be removed without
 # --bypass-safety parameter.
 #
 # Expected:
@@ -28,10 +28,10 @@
 
 from pisi.scenarioapi.scenario import *
 
-HASHALOT="hashalot"
-COREUTILS="coreutils"
-GLIBC="glibc"
-UTIL_LINUX="util-linux"
+HASHALOT = "hashalot"
+COREUTILS = "coreutils"
+GLIBC = "glibc"
+UTIL_LINUX = "util-linux"
 
 let_repo_had(HASHALOT, with_partof("system.base"))
 let_repo_had(COREUTILS, with_partof("system.base"))
@@ -39,6 +39,7 @@ let_repo_had(GLIBC, with_partof("system.base"))
 let_repo_had(UTIL_LINUX, with_partof("system.base"))
 
 let_pisi_had(COREUTILS, HASHALOT, GLIBC, UTIL_LINUX)
+
 
 def run():
     repo_version_bumped(GLIBC)

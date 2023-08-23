@@ -26,8 +26,10 @@ import pisi.context as ctx
 import pisi.configfile
 import pisi.util
 
+
 class Error(pisi.Error):
     pass
+
 
 class Options(object):
     def __getattr__(self, name):
@@ -37,17 +39,20 @@ class Options(object):
             return self.__dict__[name]
 
     def __setattr__(self, name, value):
-            self.__dict__[name] = value
+        self.__dict__[name] = value
+
 
 class Config(object, metaclass=pisi.util.Singleton):
     """Config Singleton"""
 
-    def __init__(self, options = Options()):
+    def __init__(self, options=Options()):
         self.set_options(options)
         if os.path.exists("/etc/eopkg/eopkg.conf"):
             self.values = pisi.configfile.ConfigurationFile("/etc/eopkg/eopkg.conf")
         else:
-            self.values = pisi.configfile.ConfigurationFile("/usr/share/defaults/eopkg/eopkg.conf")
+            self.values = pisi.configfile.ConfigurationFile(
+                "/usr/share/defaults/eopkg/eopkg.conf"
+            )
 
         # get the initial environment variables. this is needed for
         # build process.
@@ -75,15 +80,17 @@ class Config(object, metaclass=pisi.util.Singleton):
 
     def dest_dir(self):
         if self.__dest_dir is None:
-            destdir = self.get_option('destdir')
+            destdir = self.get_option("destdir")
             if destdir:
                 self.__dest_dir = os.path.abspath(destdir)
             else:
                 self.__dest_dir = self.values.general.destinationdirectory
 
             if not os.path.exists(self.__dest_dir):
-                ctx.ui.warning(_("Destination directory %s does not exist. "
-                                 "Creating it.") % self.__dest_dir)
+                ctx.ui.warning(
+                    _("Destination directory %s does not exist. " "Creating it.")
+                    % self.__dest_dir
+                )
                 os.makedirs(self.__dest_dir)
 
         return self.__dest_dir
@@ -137,15 +144,16 @@ class Config(object, metaclass=pisi.util.Singleton):
 
     def tmp_dir(self):
         sysdir = self.subdir(self.values.dirs.tmp_dir)
-        if 'USER' in os.environ:
-            userdir = self.subdir('/tmp/eopkg-' + os.environ['USER'])
+        if "USER" in os.environ:
+            userdir = self.subdir("/tmp/eopkg-" + os.environ["USER"])
         else:
-            userdir = self.subdir('/tmp/eopkg-root')
+            userdir = self.subdir("/tmp/eopkg-root")
         # check write access
         if os.access(sysdir, os.W_OK):
             return sysdir
         else:
             return userdir
 
-#TODO: remove this
+
+# TODO: remove this
 config = Config()

@@ -27,7 +27,7 @@ mandir = "/%s" % get.manDIR()
 sharedir = "%s/share/%s" % (prefix, basename)
 appsdir = "%s/apps" % sharedir
 configdir = "%s/config" % sharedir
-sysconfdir= "/etc"
+sysconfdir = "/etc"
 servicesdir = "%s/services" % sharedir
 servicetypesdir = "%s/servicetypes" % sharedir
 includedir = "%s/include/%s" % (prefix, basename)
@@ -35,13 +35,15 @@ docdir = "/%s/%s" % (get.docDIR(), basename)
 htmldir = "%s/html" % docdir
 wallpapersdir = "%s/share/wallpapers" % prefix
 
-def configure(parameters = '', installPrefix = prefix, sourceDir = '..'):
-    ''' parameters -DLIB_INSTALL_DIR="hede" -DSOMETHING_USEFUL=1'''
+
+def configure(parameters="", installPrefix=prefix, sourceDir=".."):
+    """parameters -DLIB_INSTALL_DIR="hede" -DSOMETHING_USEFUL=1"""
 
     shelltools.makedirs("build")
     shelltools.cd("build")
 
-    cmaketools.configure("-DDATA_INSTALL_DIR:PATH=%s \
+    cmaketools.configure(
+        "-DDATA_INSTALL_DIR:PATH=%s \
             -DINCLUDE_INSTALL_DIR:PATH=%s \
             -DCONFIG_INSTALL_DIR:PATH=%s \
             -DLIBEXEC_INSTALL_DIR:PATH=%s \
@@ -49,12 +51,28 @@ def configure(parameters = '', installPrefix = prefix, sourceDir = '..'):
             -DHTML_INSTALL_DIR:PATH=%s \
             -DMAN_INSTALL_DIR:PATH=%s \
             -DCMAKE_SKIP_RPATH:BOOL=ON \
-            -DLIB_INSTALL_DIR:PATH=%s %s" % (appsdir, includedir, configdir, libexecdir, sysconfdir, htmldir, mandir, libdir, parameters), installPrefix, sourceDir)
+            -DLIB_INSTALL_DIR:PATH=%s %s"
+        % (
+            appsdir,
+            includedir,
+            configdir,
+            libexecdir,
+            sysconfdir,
+            htmldir,
+            mandir,
+            libdir,
+            parameters,
+        ),
+        installPrefix,
+        sourceDir,
+    )
 
     shelltools.cd("..")
 
-def make(parameters = ''):
-    cmaketools.make('-C build %s' % parameters)
 
-def install(parameters = '', argument = 'install'):
-    cmaketools.install('-C build %s' % parameters, argument)
+def make(parameters=""):
+    cmaketools.make("-C build %s" % parameters)
+
+
+def install(parameters="", argument="install"):
+    cmaketools.install("-C build %s" % parameters, argument)

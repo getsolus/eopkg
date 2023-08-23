@@ -11,6 +11,7 @@
 
 import os
 import gettext
+
 __trans = gettext.translation("pisi", fallback=True)
 _ = __trans.ugettext
 
@@ -20,8 +21,10 @@ import pisi.util
 import pisi.db
 import pisi.fetcher
 
+
 class PackageNotFound(pisi.Error):
     pass
+
 
 def __pkg_already_installed(name, pkginfo):
     installdb = pisi.db.installdb.InstallDB()
@@ -31,8 +34,8 @@ def __pkg_already_installed(name, pkginfo):
     ver, rel = str(pkginfo).split("-")[:2]
     return (ver, rel) == installdb.get_version(name)[:-1]
 
-def __listactions(actions):
 
+def __listactions(actions):
     beinstalled = []
     beremoved = []
     configs = []
@@ -51,6 +54,7 @@ def __listactions(actions):
 
     return beinstalled, beremoved, configs
 
+
 def __getpackageurl_binman(package):
     packagedb = pisi.db.packagedb.PackageDB()
     repodb = pisi.db.repodb.RepoDB()
@@ -68,15 +72,16 @@ def __getpackageurl_binman(package):
     if not reponame:
         raise PackageNotFound
 
-    package_ = packagedb.get_package (pkg)
+    package_ = packagedb.get_package(pkg)
     repourl = repodb.get_repo_url(reponame)
-    base_package = os.path.dirname (package_.packageURI)
-    repo_base = os.path.dirname (repourl)
-    possible_url = os.path.join (repo_base, base_package, package)
+    base_package = os.path.dirname(package_.packageURI)
+    repo_base = os.path.dirname(repourl)
+    possible_url = os.path.join(repo_base, base_package, package)
     ctx.ui.info(_("Package %s found in repository %s") % (pkg, reponame))
 
-    #return _possible_ url for this package
+    # return _possible_ url for this package
     return possible_url
+
 
 def __getpackageurl(package):
     packagedb = pisi.db.packagedb.PackageDB()
@@ -96,8 +101,9 @@ def __getpackageurl(package):
         raise PackageNotFound
 
     repourl = repodb.get_repo_url(reponame)
-    #return _possible_ url for this package
+    # return _possible_ url for this package
     return os.path.join(os.path.dirname(repourl), package)
+
 
 def fetch_remote_file(package, errors):
     try:
@@ -121,11 +127,14 @@ def fetch_remote_file(package, errors):
                 pisi.fetcher.fetch_url(new_uri, dest, ctx.ui.Progress)
             except:
                 errors.append(package)
-                ctx.ui.info(pisi.util.colorize(_("%s could not be found") % (package), "red"))
+                ctx.ui.info(
+                    pisi.util.colorize(_("%s could not be found") % (package), "red")
+                )
                 return False
     else:
-        ctx.ui.info(_('%s [cached]') % uri.filename())
+        ctx.ui.info(_("%s [cached]") % uri.filename())
     return True
+
 
 def get_snapshot_actions(operation):
     actions = {}
@@ -140,6 +149,7 @@ def get_snapshot_actions(operation):
         actions[pkg] = ("remove", None, None)
 
     return actions
+
 
 def get_takeback_actions(operation):
     actions = {}
@@ -157,6 +167,7 @@ def get_takeback_actions(operation):
 
     return actions
 
+
 def plan_takeback(operation):
     historydb = pisi.db.historydb.HistoryDB()
     op = historydb.get_operation(operation)
@@ -167,31 +178,47 @@ def plan_takeback(operation):
 
     return __listactions(actions)
 
+
 def takeback(operation):
     historydb = pisi.db.historydb.HistoryDB()
     beinstalled, beremoved, configs = plan_takeback(operation)
 
     if beinstalled:
-        ctx.ui.info(_("Following packages will be installed:\n") + pisi.util.strlist(beinstalled))
+        ctx.ui.info(
+            _("Following packages will be installed:\n")
+            + pisi.util.strlist(beinstalled)
+        )
 
     if beremoved:
-        ctx.ui.info(_("Following packages will be removed:\n") + pisi.util.strlist(beremoved))
+        ctx.ui.info(
+            _("Following packages will be removed:\n") + pisi.util.strlist(beremoved)
+        )
 
-    if (beremoved or beinstalled) and not ctx.ui.confirm(_('Do you want to continue?')):
+    if (beremoved or beinstalled) and not ctx.ui.confirm(_("Do you want to continue?")):
         return
 
     errors = []
     paths = []
     for pkg in beinstalled:
-        ctx.ui.info(pisi.util.colorize(_("Downloading %d / %d") % (beinstalled.index(pkg)+1, len(beinstalled)), "yellow"))
+        ctx.ui.info(
+            pisi.util.colorize(
+                _("Downloading %d / %d")
+                % (beinstalled.index(pkg) + 1, len(beinstalled)),
+                "yellow",
+            )
+        )
         pkg += ctx.const.package_suffix
         if fetch_remote_file(pkg, errors):
             paths.append(os.path.join(ctx.config.cached_packages_dir(), pkg))
 
     if errors:
-        ctx.ui.info(_("\nFollowing packages could not be found in repositories and are not cached:\n") +
-                    pisi.util.strlist(errors))
-        if not ctx.ui.confirm(_('Do you want to continue?')):
+        ctx.ui.info(
+            _(
+                "\nFollowing packages could not be found in repositories and are not cached:\n"
+            )
+            + pisi.util.strlist(errors)
+        )
+        if not ctx.ui.confirm(_("Do you want to continue?")):
             return
 
     if beremoved:

@@ -31,11 +31,14 @@ log = None
 # used for bug #10568
 locked = False
 
+
 def set_option(opt, val):
     config.set_option(opt, val)
 
+
 def get_option(opt):
     return config and config.get_option(opt)
+
 
 ui = pisi.ui.UI()
 
@@ -53,20 +56,25 @@ can_usysconf = True
 # this is needed in build process to clean after if something goes wrong.
 build_leftover = None
 
+
 def disable_keyboard_interrupts():
     sig and sig.disable_signal(signal.SIGINT)
+
 
 def enable_keyboard_interrupts():
     sig and sig.enable_signal(signal.SIGINT)
 
+
 def keyboard_interrupt_disabled():
     return sig and sig.signal_disabled(signal.SIGINT)
+
 
 def keyboard_interrupt_pending():
     return sig and sig.signal_pending(signal.SIGINT)
 
+
 def exec_usysconf():
-    """ Just stick this all in the one place """
+    """Just stick this all in the one place"""
     global ui
     global usysconf_binary
     global can_usysconf
@@ -76,7 +84,7 @@ def exec_usysconf():
 
     # We must survive not having usysconf just in case of derp.
     if not os.path.exists(usysconf_binary):
-        ui.error(_('usysconf not installed. Please upgrade!'))
+        ui.error(_("usysconf not installed. Please upgrade!"))
         return
 
     # Tell UI tools the system configuration is running
@@ -89,5 +97,5 @@ def exec_usysconf():
         os.system("{} run".format(usysconf_binary))
     except Exception as e:
         if ctx:
-            ctx.ui.error(_('Failed to configure system'))
+            ctx.ui.error(_("Failed to configure system"))
         raise e

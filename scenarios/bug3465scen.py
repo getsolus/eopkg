@@ -14,10 +14,10 @@
 #            Program sonlandırıldı.
 #            http://paketler.pardus.org.tr/pardus-1.1/wormux-0.7-2-1.pisi indirilemiyor; HTTP
 #            Error 404: Not Found
-# 
-# Problem Description: 
 #
-# The user had not updated pisi's repository database for some time. Then, when pisi is asked 
+# Problem Description:
+#
+# The user had not updated pisi's repository database for some time. Then, when pisi is asked
 # to reinstall an installed package, it failed to fetch the requested version of the package.
 # Because the package had been upgraded at the repository and the old package has been removed.
 #
@@ -31,6 +31,7 @@ WORMUX = "wormux"
 
 let_repo_had(WORMUX)
 let_pisi_had(WORMUX)
+
 
 def run():
     repo_version_bumped(WORMUX)

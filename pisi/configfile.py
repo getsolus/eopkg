@@ -17,35 +17,35 @@
 # Configuration file is located in /etc/eopkg/eopkg.conf by default,
 # having an INI like format like below.
 #
-#[general]
-#destinationdirectory = /
-#autoclean = False
-#bandwidth_limit = 0
+# [general]
+# destinationdirectory = /
+# autoclean = False
+# bandwidth_limit = 0
 #
-#[build]
-#host = i686-pc-linux-gnu
-#generateDebug = False
-#enableSandbox = False
-#jobs = "-j3"
-#CFLAGS= -mtune=generic -march=i686 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2
-#CXXFLAGS= -mtune=generic -march=i686 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2
-#LDFLAGS= -Wl,-O1 -Wl,-z,relro -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--sort-common
-#buildhelper = None / ccache / icecream
-#compressionlevel = 1
-#fallback = "ftp://ftp.pardus.org.tr/pub/source/2009"
+# [build]
+# host = i686-pc-linux-gnu
+# generateDebug = False
+# enableSandbox = False
+# jobs = "-j3"
+# CFLAGS= -mtune=generic -march=i686 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2
+# CXXFLAGS= -mtune=generic -march=i686 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2
+# LDFLAGS= -Wl,-O1 -Wl,-z,relro -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--sort-common
+# buildhelper = None / ccache / icecream
+# compressionlevel = 1
+# fallback = "ftp://ftp.pardus.org.tr/pub/source/2009"
 #
-#[directories]
-#lib_dir = /var/lib/eopkg
-#info_dir = "/var/lib/eopkg/info"
-#history_dir = /var/lib/eopkg/history
-#archives_dir = /var/cache/eopkg/archives
-#cached_packages_dir = /var/cache/eopkg/packages
-#compiled_packages_dir = "/var/cache/eopkg/packages"
-#index_dir = /var/cache/eopkg/index
-#packages_dir = /var/cache/eopkg/package
-#tmp_dir = /var/eopkg
-#kde_dir = /usr/kde/4
-#qt_dir = /usr/qt/4
+# [directories]
+# lib_dir = /var/lib/eopkg
+# info_dir = "/var/lib/eopkg/info"
+# history_dir = /var/lib/eopkg/history
+# archives_dir = /var/cache/eopkg/archives
+# cached_packages_dir = /var/cache/eopkg/packages
+# compiled_packages_dir = "/var/cache/eopkg/packages"
+# index_dir = /var/cache/eopkg/index
+# packages_dir = /var/cache/eopkg/package
+# tmp_dir = /var/eopkg
+# kde_dir = /usr/kde/4
+# qt_dir = /usr/qt/4
 
 import os
 import re
@@ -56,11 +56,14 @@ from pisi import translate as _
 
 import pisi
 
+
 class Error(pisi.Error):
     pass
 
+
 class GeneralDefaults:
     """Default values for [general] section"""
+
     destinationdirectory = "/"
     autoclean = False
     distribution = "Solus"
@@ -77,13 +80,15 @@ class GeneralDefaults:
     ignore_safety = False
     ignore_delta = False
 
+
 class BuildDefaults:
     """Default values for [build] section"""
+
     build_host = "solus"
     host = "x86_64-solus-linux"
     jobs = "auto"
     generateDebug = False
-    enableSandbox = False # Dropping sandbox support soon
+    enableSandbox = False  # Dropping sandbox support soon
     cflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -fno-plt -Wformat -Wformat-security -D_FORTIFY_SOURCE=2 -fstack-protector-strong --param=ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-vectorize -feliminate-unused-debug-types -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -Wall -Wno-error -Wp,-D_REENTRANT"
     cxxflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -fno-plt -D_FORTIFY_SOURCE=2 -fstack-protector-strong --param=ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-vectorize -feliminate-unused-debug-types -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -Wall -Wno-error -Wp,-D_REENTRANT"
     ldflags = "-Wl,--copy-dt-needed-entries -Wl,-O1 -Wl,-z,relro -Wl,-z,now -Wl,-z,max-page-size=0x1000 -Wl,-Bsymbolic-functions -Wl,--sort-common"
@@ -91,6 +96,7 @@ class BuildDefaults:
     compressionlevel = 1
     fallback = "https://sources.getsol.us/"
     ignored_build_types = ""
+
 
 class DirectoriesDefaults:
     "Default values for [directories] section"
@@ -106,13 +112,15 @@ class DirectoriesDefaults:
     packages_dir = "/var/lib/eopkg/package"
     lock_dir = "/var/lock/subsys"
     index_dir = "/var/lib/eopkg/index"
-    tmp_dir =  "/var/eopkg"
+    tmp_dir = "/var/eopkg"
     kde_dir = "/usr/kde/4"
     qt_dir = "/usr/qt/4"
+
 
 class ConfigurationSection(object):
     """ConfigurationSection class defines a section in the configuration
     file, using defaults (above) as a fallback."""
+
     def __init__(self, section, items=[]):
         self.items = items
 
@@ -129,7 +137,6 @@ class ConfigurationSection(object):
         self.section = section
 
     def __getattr__(self, attr):
-
         # first search for attribute in the items provided in the
         # configuration file.
         if self.items:
@@ -153,8 +160,10 @@ class ConfigurationSection(object):
     def __getitem__(self, key):
         return self.__getattr__(key)
 
+
 class ConfigurationFile(object):
     """Parse and get configuration values from the configuration file"""
+
     def __init__(self, filePath):
         self.parser = configparser.ConfigParser()
         self.filePath = filePath
@@ -201,12 +210,12 @@ class ConfigurationFile(object):
         opt = None
         written = []
         optcre = re.compile(
-            r'(?P<option>[^:=\s][^:=]*)'
-            r'(?P<vi>[:=])'
-            r'(?P<padding>\s*)'
-            r'(?P<value>.*)$'
-            )
-        
+            r"(?P<option>[^:=\s][^:=]*)"
+            r"(?P<vi>[:=])"
+            r"(?P<padding>\s*)"
+            r"(?P<value>.*)$"
+        )
+
         fp = open(self.filePath, "r+")
         # Default to " = " to match write(), but use the most recent
         # separator found if the file has any options.
@@ -216,19 +225,21 @@ class ConfigurationFile(object):
             if not line:
                 break
             # Comment or blank line?
-            if line.strip() == '' or line[0] in '#;' or \
-               (line.split(None, 1)[0].lower() == 'rem' and \
-                line[0] in "rR"):
+            if (
+                line.strip() == ""
+                or line[0] in "#;"
+                or (line.split(None, 1)[0].lower() == "rem" and line[0] in "rR")
+            ):
                 current.write(line)
                 continue
             # Continuation line?
             if line[0].isspace() and sect is not None and opt:
-                if ';' in line:
+                if ";" in line:
                     # ';' is a comment delimiter only if it follows
                     # a spacing character
-                    pos = line.find(';')
-                    if line[pos-1].isspace():
-                        comment = line[pos-1:]
+                    pos = line.find(";")
+                    if line[pos - 1].isspace():
+                        comment = line[pos - 1 :]
                         # Get rid of the newline, and put in the comment.
                         current.seek(-1, 1)
                         current.write(comment + "\n")
@@ -242,7 +253,7 @@ class ConfigurationFile(object):
                     # so that any missing options can be added to it.
                     if sect:
                         sections[sect] = current
-                    sect = mo.group('header')
+                    sect = mo.group("header")
                     current = io.StringIO()
                     replacement.append(current)
                     sects = self.parser.sections()
@@ -255,25 +266,25 @@ class ConfigurationFile(object):
                 else:
                     mo = optcre.match(line)
                     if mo:
-                        padded_opt, vi, value = mo.group('option', 'vi',
-                                                         'value')
-                        padded_vi = ''.join(mo.group('vi', 'padding'))
+                        padded_opt, vi, value = mo.group("option", "vi", "value")
+                        padded_vi = "".join(mo.group("vi", "padding"))
                         comment = ""
-                        if vi in ('=', ':') and ';' in value:
+                        if vi in ("=", ":") and ";" in value:
                             # ';' is a comment delimiter only if it follows
                             # a spacing character
-                            pos = value.find(';')
-                            if value[pos-1].isspace():
-                                comment = value[pos-1:]
+                            pos = value.find(";")
+                            if value[pos - 1].isspace():
+                                comment = value[pos - 1 :]
                         # Keep track of what we rstrip to preserve formatting
                         opt = padded_opt.rstrip().lower()
-                        padded_vi = padded_opt[len(opt):] + padded_vi
+                        padded_vi = padded_opt[len(opt) :] + padded_vi
                         if self.parser.has_option(sect, opt):
                             value = self.parser.get(sect, opt)
                             # Fix continuations.
                             value = value.replace("\n", "\n\t")
-                            current.write("%s%s%s%s\n" % (opt, padded_vi,
-                                                          value, comment))
+                            current.write(
+                                "%s%s%s%s\n" % (opt, padded_vi, value, comment)
+                            )
                             written.append((sect, opt))
         if sect:
             sections[sect] = current
@@ -295,7 +306,7 @@ class ConfigurationFile(object):
                 else:
                     output = current
                     if len(written) > 0:
-                    	output.write("\n")
+                        output.write("\n")
                     output.write("[%s]\n" % (sect,))
                     sections[sect] = None
                 for opt in opts:
@@ -313,4 +324,3 @@ class ConfigurationFile(object):
                 fp.write(sect.getvalue())
 
         fp.close()
-        

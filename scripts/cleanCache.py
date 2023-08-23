@@ -18,6 +18,7 @@ import shutil
 import pisi.util as util
 from pisi.version import Version
 
+
 def findUnneededFiles(listdir):
     dict = {}
     for f in listdir:
@@ -38,7 +39,8 @@ def findUnneededFiles(listdir):
 
     return listdir
 
-def doit(root, listdir, clean, suffix = ""):
+
+def doit(root, listdir, clean, suffix=""):
     for f in listdir:
         target = os.path.join(root, "%s%s" % (f, suffix))
         if os.path.exists(target):
@@ -49,37 +51,47 @@ def doit(root, listdir, clean, suffix = ""):
                         shutil.rmtree(target)
                     else:
                         os.remove(target)
-                except OSError as e :
+                except OSError as e:
                     usage("Permission denied: %s" % e)
 
 
-def cleanPisis(clean, root = '/var/cache/eopkg/packages'):
-    # pisi packages
-    list = [os.path.basename(x).split(".eopkg")[0] for x in glob.glob("%s/*.eopkg" % root)]
+def cleanPisis(clean, root="/var/cache/eopkg/packages"):
+    # pisi packages
+    list = [
+        os.path.basename(x).split(".eopkg")[0] for x in glob.glob("%s/*.eopkg" % root)
+    ]
     list.sort()
     l = findUnneededFiles(list)
     doit(root, l, clean, ".eopkg")
 
-def cleanBuilds(clean, root = '/var/eopkg'):
-    # Build remnant
+
+def cleanBuilds(clean, root="/var/eopkg"):
+    # Build remnant
     list = []
     for f in os.listdir(root):
         if os.path.isdir(os.path.join(root, f)):
-             list.append(f)
+            list.append(f)
 
     l = findUnneededFiles(list)
     doit(root, l, clean)
 
+
 def usage(msg):
-    print(("""
+    print(
+        (
+            """
 Error: %s
 
 Usage:
     cleanCache --dry-run    (Shows unneeded files)
     cleanCache --clean      (Removes unneeded files)
-    """ % msg))
+    """
+            % msg
+        )
+    )
 
     sys.exit(1)
+
 
 if __name__ == "__main__":
     try:
@@ -100,4 +112,3 @@ if __name__ == "__main__":
 
     else:
         cleanPisis(clean)
-

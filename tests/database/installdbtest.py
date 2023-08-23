@@ -13,8 +13,8 @@
 import testcase
 import pisi
 
-class InstallDBTestCase(testcase.TestCase):
 
+class InstallDBTestCase(testcase.TestCase):
     def setUp(self):
         testcase.TestCase.setUp(self)
         self.installdb = pisi.db.installdb.InstallDB()
@@ -38,10 +38,21 @@ class InstallDBTestCase(testcase.TestCase):
     def testListInstalled(self):
         pisi.api.install(["ethtool"])
         self.installdb = pisi.db.installdb.InstallDB()
-        assert set(self.installdb.list_installed()) == set(['zlib', 'pam', 'shadow', 
-                                                            'jpeg', 'libidn', 'db4', 
-                                                            'cracklib', 'openssl', 
-                                                            'curl', 'bash', 'ethtool'])
+        assert set(self.installdb.list_installed()) == set(
+            [
+                "zlib",
+                "pam",
+                "shadow",
+                "jpeg",
+                "libidn",
+                "db4",
+                "cracklib",
+                "openssl",
+                "curl",
+                "bash",
+                "ethtool",
+            ]
+        )
 
     def testGetVersion(self):
         pisi.api.install(["ethtool"])
@@ -69,7 +80,7 @@ class InstallDBTestCase(testcase.TestCase):
         pisi.api.install(["ctorrent"])
         self.installdb = pisi.db.installdb.InstallDB()
         revdeps = self.installdb.get_rev_deps("openssl")
-        assert set(["ctorrent", "curl"]) == set(map(lambda x:x[0], revdeps))
+        assert set(["ctorrent", "curl"]) == set(map(lambda x: x[0], revdeps))
 
     def testAddRemovePackage(self):
         pisi.api.install(["ctorrent"])

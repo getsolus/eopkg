@@ -19,8 +19,10 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
+
 class RemoveOrphans(command.PackageOp, metaclass=command.autocommand):
-    __doc__ = _("""Remove orphaned packages
+    __doc__ = _(
+        """Remove orphaned packages
 
 Usage: remove-orphans
 
@@ -29,7 +31,8 @@ installed as a dependency of another package.
 
 Only packages that have no reverse dependencies outside of the automatically
 installed list will be removed.
-""")
+"""
+    )
 
     def __init__(self, args):
         super(RemoveOrphans, self).__init__(args)
@@ -39,8 +42,12 @@ installed list will be removed.
     def options(self):
         group = optparse.OptionGroup(self.parser, _("remove-orphans options"))
         super(RemoveOrphans, self).options(group)
-        group.add_option("--purge", action="store_true",
-                     default=False, help=_("Removes everything including changed config files of the package"))
+        group.add_option(
+            "--purge",
+            action="store_true",
+            default=False,
+            help=_("Removes everything including changed config files of the package"),
+        )
         self.parser.add_option_group(group)
 
     def run(self):

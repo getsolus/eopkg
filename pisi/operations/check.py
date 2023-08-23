@@ -15,6 +15,7 @@ import pisi.context as ctx
 
 from pisi import translate as _
 
+
 def file_corrupted(pfile):
     path = os.path.join(ctx.config.dest_dir(), pfile.path)
     if os.path.islink(path):
@@ -43,7 +44,7 @@ _blessed_kernel_borks = [
 
 
 def ignorance_is_bliss(f):
-    """ Too many complaints about things that are missing. """
+    """Too many complaints about things that are missing."""
     p = f
     if not p.startswith("/"):
         p = "/{}".format(f)
@@ -63,11 +64,11 @@ def ignorance_is_bliss(f):
 
 def check_files(files, check_config=False):
     results = {
-                'missing'   :   [],
-                'corrupted' :   [],
-                'denied'    :   [],
-                'config'    :   [],
-              }
+        "missing": [],
+        "corrupted": [],
+        "denied": [],
+        "config": [],
+    }
 
     for f in files:
         if not check_config and f.type == "config":
@@ -85,29 +86,32 @@ def check_files(files, check_config=False):
 
         except pisi.util.FilePermissionDeniedError as e:
             # Can't read file, probably because of permissions, skip
-            results['denied'].append(f.path)
-        
+            results["denied"].append(f.path)
+
         except pisi.util.FileNotFoundError as e:
             # Shipped file doesn't exist on the system
-            results['missing'].append(f.path)
+            results["missing"].append(f.path)
 
         else:
             if is_file_corrupted:
                 # Detect file type
                 if f.type == "config":
-                    results['config'].append(f.path)
+                    results["config"].append(f.path)
                 else:
-                    results['corrupted'].append(f.path)
+                    results["corrupted"].append(f.path)
 
     return results
+
 
 def check_config_files(package):
     config_files = pisi.db.installdb.InstallDB().get_config_files(package)
     return check_files(config_files, True)
 
+
 def check_package_files(package):
     files = pisi.db.installdb.InstallDB().get_files(package).list
     return check_files(files)
+
 
 def check_package(package, config=False):
     if config:

@@ -24,32 +24,35 @@ import pisi.pxml.xmlfile as xmlfile
 import pisi.pxml.autoxml as autoxml
 import pisi.util as util
 
+
 class Delta(metaclass=autoxml.autoxml):
-    t_PackageURI = [ autoxml.String, autoxml.optional]
-    t_PackageSize = [ autoxml.Long, autoxml.optional]
-    t_PackageHash = [ autoxml.String, autoxml.optional, "SHA1Sum" ]
+    t_PackageURI = [autoxml.String, autoxml.optional]
+    t_PackageSize = [autoxml.Long, autoxml.optional]
+    t_PackageHash = [autoxml.String, autoxml.optional, "SHA1Sum"]
     a_buildFrom = [autoxml.String, autoxml.optional]
     a_releaseFrom = [autoxml.String, autoxml.optional]
+
 
 class Source(metaclass=autoxml.autoxml):
     t_Name = [autoxml.String, autoxml.mandatory]
     t_Homepage = [autoxml.String, autoxml.optional]
     t_Packager = [specfile.Packager, autoxml.mandatory]
 
-class Package(specfile.Package, xmlfile.XmlFile, metaclass=autoxml.autoxml):
-    t_Build = [ autoxml.Integer, autoxml.optional]
-    t_BuildHost = [autoxml.String, autoxml.optional]
-    t_Distribution = [ autoxml.String, autoxml.mandatory]
-    t_DistributionRelease = [ autoxml.String, autoxml.mandatory]
-    t_Architecture = [ autoxml.String, autoxml.mandatory]
-    t_InstalledSize = [ autoxml.Long, autoxml.mandatory]
-    t_PackageSize = [ autoxml.Long, autoxml.optional]
-    t_PackageHash = [ autoxml.String, autoxml.optional, "SHA1Sum" ]
-    t_PackageURI = [ autoxml.String, autoxml.optional]
-    t_DeltaPackages = [ [Delta], autoxml.optional]
-    t_PackageFormat = [ autoxml.String, autoxml.optional]
 
-    t_Source = [ Source, autoxml.optional]
+class Package(specfile.Package, xmlfile.XmlFile, metaclass=autoxml.autoxml):
+    t_Build = [autoxml.Integer, autoxml.optional]
+    t_BuildHost = [autoxml.String, autoxml.optional]
+    t_Distribution = [autoxml.String, autoxml.mandatory]
+    t_DistributionRelease = [autoxml.String, autoxml.mandatory]
+    t_Architecture = [autoxml.String, autoxml.mandatory]
+    t_InstalledSize = [autoxml.Long, autoxml.mandatory]
+    t_PackageSize = [autoxml.Long, autoxml.optional]
+    t_PackageHash = [autoxml.String, autoxml.optional, "SHA1Sum"]
+    t_PackageURI = [autoxml.String, autoxml.optional]
+    t_DeltaPackages = [[Delta], autoxml.optional]
+    t_PackageFormat = [autoxml.String, autoxml.optional]
+
+    t_Source = [Source, autoxml.optional]
 
     def get_delta(self, release):
         for delta in self.deltaPackages:
@@ -67,17 +70,19 @@ class Package(specfile.Package, xmlfile.XmlFile, metaclass=autoxml.autoxml):
         i_size = util.human_readable_size(self.installedSize)
         size = "%.2f %s" % (i_size[0], i_size[1])
 
-        s += _('Distribution: %s, Dist. Release: %s\n') % \
-              (self.distribution, self.distributionRelease)
-        s += _('Architecture: %s, Installed Size: %s') % \
-              (self.architecture, size)
+        s += _("Distribution: %s, Dist. Release: %s\n") % (
+            self.distribution,
+            self.distributionRelease,
+        )
+        s += _("Architecture: %s, Installed Size: %s") % (self.architecture, size)
 
         if self.packageSize:
             p_size = util.human_readable_size(self.packageSize)
             size = "%.2f %s" % (p_size[0], p_size[1])
-            s += _(', Package Size: %s') % size
+            s += _(", Package Size: %s") % size
 
         return s
+
 
 class MetaData(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     """Package metadata. Metadata is composed of Specfile and various
@@ -85,16 +90,18 @@ class MetaData(xmlfile.XmlFile, metaclass=autoxml.autoxml):
 
     tag = "PISI"
 
-    t_Source = [ Source, autoxml.mandatory]
-    t_Package = [ Package, autoxml.mandatory]
-    #t_History = [ [Update], autoxml.mandatory]
+    t_Source = [Source, autoxml.mandatory]
+    t_Package = [Package, autoxml.mandatory]
+    # t_History = [ [Update], autoxml.mandatory]
 
     def from_spec(self, src, pkg, history):
         # this just copies fields, it doesn't fix every necessary field
         self.source.name = src.name
         self.source.homepage = src.homepage
         self.source.packager = src.packager
-        self.package.source = self.source # FIXME: I know that replication sucks here, but this is the easiest for now-- exa
+        self.package.source = (
+            self.source
+        )  # FIXME: I know that replication sucks here, but this is the easiest for now-- exa
         self.package.name = pkg.name
         self.package.summary = pkg.summary
         self.package.description = pkg.description
@@ -115,7 +122,7 @@ class MetaData(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         self.package.providesComar = pkg.providesComar
         self.package.providesPkgConfig = pkg.providesPkgConfig
         self.package.providesPkgConfig32 = pkg.providesPkgConfig32
-        #self.package.requiresComar = pkg.requiresComar
+        # self.package.requiresComar = pkg.requiresComar
         self.package.additionalFiles = pkg.additionalFiles
 
         # FIXME: right way to do it?

@@ -21,27 +21,31 @@ import pisi.context as ctx
 
 # ActionsAPI Modules
 import pisi.actionsapi
-import pisi.actionsapi.get          as get
-import pisi.actionsapi.autotools    as autotools
-import pisi.actionsapi.pisitools    as pisitools
-import pisi.actionsapi.shelltools   as shelltools
+import pisi.actionsapi.get as get
+import pisi.actionsapi.autotools as autotools
+import pisi.actionsapi.pisitools as pisitools
+import pisi.actionsapi.shelltools as shelltools
 
 
 class ConfigureError(pisi.actionsapi.Error):
-    def __init__(self, value=''):
+    def __init__(self, value=""):
         pisi.actionsapi.Error.__init__(self, value)
         self.value = value
         ctx.ui.error(value)
 
+
 # Internal helpers
+
 
 def __getAllSupportedFlavours():
     if os.path.exists("/etc/kernel"):
         return os.listdir("/etc/kernel")
 
+
 #################
 # Other helpers #
 #################
+
 
 def __getFlavour():
     try:
@@ -50,6 +54,7 @@ def __getFlavour():
         return ""
     else:
         return flavour
+
 
 def __getModuleFlavour():
     for fl in [_f for _f in __getAllSupportedFlavours() if "-" in _f]:
@@ -63,9 +68,11 @@ def __getModuleFlavour():
 
     return "kernel"
 
+
 def __getKernelARCH():
     """i386 is relevant for our i686 architecture."""
     return get.ARCH().replace("i686", "i386")
+
 
 def __getSuffix():
     """Read and return the value read from .suffix file."""
@@ -73,6 +80,7 @@ def __getSuffix():
     if __getFlavour():
         suffix += "-%s" % __getFlavour()
     return suffix
+
 
 def __getExtraVersion():
     extraversion = ""
@@ -91,9 +99,11 @@ def __getExtraVersion():
 
     return extraversion
 
+
 #######################
 # Configuration stuff #
 #######################
+
 
 def getKernelVersion(flavour=None):
     # Returns the KVER information to use with external module compilation
@@ -112,14 +122,19 @@ def getKernelVersion(flavour=None):
         return open(kverfile, "r").read().strip()
     else:
         # Fail
-        raise ConfigureError(_("Can't find kernel version information file %s.") % kverfile)
+        raise ConfigureError(
+            _("Can't find kernel version information file %s.") % kverfile
+        )
+
 
 def configure():
     # Copy the relevant configuration file
     shutil.copy("configs/kernel-%s-config" % get.ARCH(), ".config")
 
     # Set EXTRAVERSION
-    pisitools.dosed("Makefile", "EXTRAVERSION =.*", "EXTRAVERSION = %s" % __getExtraVersion())
+    pisitools.dosed(
+        "Makefile", "EXTRAVERSION =.*", "EXTRAVERSION = %s" % __getExtraVersion()
+    )
 
     # Configure the kernel interactively if
     # configuration contains new options
@@ -131,9 +146,11 @@ def configure():
     except:
         pass
 
+
 ###################################
 # Building and installation stuff #
 ###################################
+
 
 def dumpVersion():
     # Writes the specific kernel version into /etc/kernel
@@ -166,8 +183,10 @@ def install():
     # mod-fw= avoids firmwares from installing
     # Override DEPMOD= to not call depmod as it will be called
     # during module-init-tools' package handler
-    autotools.rawInstall("INSTALL_MOD_PATH=%s/" % get.installDIR(),
-                         "DEPMOD=/bin/true modules_install mod-fw=")
+    autotools.rawInstall(
+        "INSTALL_MOD_PATH=%s/" % get.installDIR(),
+        "DEPMOD=/bin/true modules_install mod-fw=",
+    )
 
     # Remove symlinks first
     pisitools.remove("/lib/modules/%s/source" % suffix)
@@ -183,12 +202,14 @@ def install():
 
 
 def installHeaders(extraHeaders=None):
-    """ Install the files needed to build out-of-tree kernel modules. """
+    """Install the files needed to build out-of-tree kernel modules."""
 
-    extras = ["drivers/media/dvb-core",
-              "drivers/media/dvb-frontends",
-              "drivers/media/tuners",
-              "drivers/media/platform"]
+    extras = [
+        "drivers/media/dvb-core",
+        "drivers/media/dvb-frontends",
+        "drivers/media/tuners",
+        "drivers/media/platform",
+    ]
 
     if extraHeaders:
         extras.extend(extraHeaders)
@@ -204,11 +225,14 @@ def installHeaders(extraHeaders=None):
     shelltools.makedirs(destination)
 
     # First create the skel
-    find_cmd = "find . -path %s -prune -o -type f \( -name %s \) -print" % \
-                (
-                    " -prune -o -path ".join(["'./%s/*'" % l for l in pruned]),
-                    " -o -name ".join(["'%s'" % k for k in wanted])
-                ) + " | cpio -pVd --preserve-modification-time %s" % destination
+    find_cmd = (
+        "find . -path %s -prune -o -type f \( -name %s \) -print"
+        % (
+            " -prune -o -path ".join(["'./%s/*'" % l for l in pruned]),
+            " -o -name ".join(["'%s'" % k for k in wanted]),
+        )
+        + " | cpio -pVd --preserve-modification-time %s" % destination
+    )
 
     shelltools.system(find_cmd)
 
@@ -225,9 +249,12 @@ def installHeaders(extraHeaders=None):
     shelltools.system("rm -rf %s/Documentation/DocBook" % destination)
 
     # Finally copy the include directories found in arch/
-    shelltools.system("(find arch -name include -type d -print | \
+    shelltools.system(
+        "(find arch -name include -type d -print | \
                         xargs -n1 -i: find : -type f) | \
-                        cpio -pd --preserve-modification-time %s" % destination)
+                        cpio -pd --preserve-modification-time %s"
+        % destination
+    )
 
     # Copy Modules.symvers and System.map
     shutil.copy("Module.symvers", "%s/" % destination)
@@ -242,8 +269,8 @@ def installHeaders(extraHeaders=None):
 
 
 def installLibcHeaders(excludes=None):
-    headers_tmp = os.path.join(get.installDIR(), 'tmp-headers')
-    headers_dir = os.path.join(get.installDIR(), 'usr/include')
+    headers_tmp = os.path.join(get.installDIR(), "tmp-headers")
+    headers_dir = os.path.join(get.installDIR(), "usr/include")
 
     make_cmd = "O=%s INSTALL_HDR_PATH=%s/install" % (headers_tmp, headers_tmp)
 
@@ -253,18 +280,18 @@ def installLibcHeaders(excludes=None):
     # Create directories
     shelltools.makedirs(headers_tmp)
     shelltools.makedirs(headers_dir)
-    
+
     ###################Workaround begins here ...
-    #Workaround information -- http://patches.openembedded.org/patch/33433/
-    cpy_src="%s/linux-*/arch/x86/include/generated" % (get.workDIR())
-    cpy_tgt="%s/arch/x86/include" % (headers_tmp)
+    # Workaround information -- http://patches.openembedded.org/patch/33433/
+    cpy_src = "%s/linux-*/arch/x86/include/generated" % (get.workDIR())
+    cpy_tgt = "%s/arch/x86/include" % (headers_tmp)
     shelltools.makedirs(cpy_tgt)
-    
-    copy_cmd ="cp -Rv %s %s " % (cpy_src, cpy_tgt)
-    
+
+    copy_cmd = "cp -Rv %s %s " % (cpy_src, cpy_tgt)
+
     shelltools.system(copy_cmd)
     #######################Workaround ends here ...
-    
+
     # make defconfig and install the headers
     autotools.make("%s defconfig" % make_cmd)
     autotools.rawInstall(make_cmd, "headers_install")
@@ -272,15 +299,21 @@ def installLibcHeaders(excludes=None):
     oldwd = os.getcwd()
 
     shelltools.cd(os.path.join(headers_tmp, "install", "include"))
-    shelltools.system("find . -name '.' -o -name '.*' -prune -o -print | \
-                       cpio -pVd --preserve-modification-time %s" % headers_dir)
+    shelltools.system(
+        "find . -name '.' -o -name '.*' -prune -o -print | \
+                       cpio -pVd --preserve-modification-time %s"
+        % headers_dir
+    )
 
     # Remove sound/ directory which is installed by alsa-headers
     shelltools.system("rm -rf %s/sound" % headers_dir)
 
     # Remove possible excludes given by actions.py
     if excludes:
-        shelltools.system("rm -rf %s" % " ".join(["%s/%s" % (headers_dir, exc.strip("/")) for exc in excludes]))
+        shelltools.system(
+            "rm -rf %s"
+            % " ".join(["%s/%s" % (headers_dir, exc.strip("/")) for exc in excludes])
+        )
 
     shelltools.cd(oldwd)
 

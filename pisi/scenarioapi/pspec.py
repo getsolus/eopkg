@@ -10,10 +10,19 @@
 # Please read the COPYING file.
 #
 
-from pisi.specfile import SpecFile, Package, Update, Path, Action, Archive, AnyDependency
+from pisi.specfile import (
+    SpecFile,
+    Package,
+    Update,
+    Path,
+    Action,
+    Archive,
+    AnyDependency,
+)
 from pisi.dependency import Dependency
 from pisi.conflict import Conflict
 from pisi.pxml.autoxml import LocalText
+
 
 class Pspec:
     def __init__(self, pkgname, filepath):
@@ -155,7 +164,7 @@ class Pspec:
 
         self.pspec.packages.append(self.package)
 
-    def set_history(self, date, version, comment = "No Comment", release = "1"):
+    def set_history(self, date, version, comment="No Comment", release="1"):
         self.update.date = date
         self.update.version = version
         self.update.comment = comment

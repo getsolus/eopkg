@@ -15,6 +15,8 @@ from pisi import translate as _
 import pisi.relation
 
 """ Replace relation """
+
+
 class Replace(pisi.relation.Relation):
     def __str__(self):
         s = self.package
@@ -32,8 +34,8 @@ class Replace(pisi.relation.Relation):
             s += _(" release ") + self.release
         return s
 
+
 def installed_package_replaced(repinfo):
     """determine if an installed package in *repository* replaced with
-given a package"""
+    given a package"""
     return pisi.relation.installed_package_satisfies(repinfo)
-

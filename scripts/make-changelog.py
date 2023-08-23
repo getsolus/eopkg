@@ -10,6 +10,7 @@ first_revision = "27898"
 accounts_url = "http://svn.pardus.org.tr/uludag/trunk/common/accounts"
 authors = {}
 
+
 def get_author_name_mail(author):
     if not authors:
         accounts = urllib.request.urlopen(accounts_url)
@@ -25,12 +26,15 @@ def get_author_name_mail(author):
 
     return authors[author]
 
+
 def cleanup_msg_lines(lines):
     result = []
     for line in lines:
         if line.startswith("BUG:FIXED:"):
             bug_number = line.split(":")[2]
-            line = "Fixes the bug reported at http://bugs.pardus.org.tr/%s." % bug_number
+            line = (
+                "Fixes the bug reported at http://bugs.pardus.org.tr/%s." % bug_number
+            )
 
         elif line.startswith("BUG:COMMENT:"):
             bug_number = line.split(":")[2]
@@ -43,6 +47,7 @@ def cleanup_msg_lines(lines):
 
     return result
 
+
 def strip_empty_lines(msg):
     result = []
     for line in msg.splitlines():
@@ -52,6 +57,7 @@ def strip_empty_lines(msg):
         result.append(line)
 
     return "\n".join(result)
+
 
 def create_log_entry(author, date, msg):
     if author == "transifex":
@@ -69,6 +75,7 @@ def create_log_entry(author, date, msg):
     entry = "%s %s\n%s" % (date, author, msg)
 
     return entry
+
 
 if __name__ == "__main__":
     p = os.popen("svn log -r%s:HEAD --xml" % first_revision)

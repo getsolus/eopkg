@@ -18,13 +18,16 @@ import pisi
 import pisi.context as ctx
 import pisi.cli.command as command
 
+
 class SearchFile(command.Command, metaclass=command.autocommand):
-    __doc__ = _("""Search for a file
+    __doc__ = _(
+        """Search for a file
 
 Usage: search-file <path1> <path2> ... <pathn>
 
 Finds the installed package which contains the specified file.
-""")
+"""
+    )
 
     def __init__(self, args):
         super(SearchFile, self).__init__(args)
@@ -33,10 +36,20 @@ Finds the installed package which contains the specified file.
 
     def options(self):
         group = optparse.OptionGroup(self.parser, _("search-file options"))
-        group.add_option("-l", "--long", action="store_true",
-                               default=False, help=_("Show in long format"))
-        group.add_option("-q", "--quiet", action="store_true",
-                               default=False, help=_("Show only package name"))
+        group.add_option(
+            "-l",
+            "--long",
+            action="store_true",
+            default=False,
+            help=_("Show in long format"),
+        )
+        group.add_option(
+            "-q",
+            "--quiet",
+            action="store_true",
+            default=False,
+            help=_("Show only package name"),
+        )
         self.parser.add_option_group(group)
 
     def search_file(self, path):
@@ -49,8 +62,7 @@ Finds the installed package which contains the specified file.
             ctx.ui.error(_("Path '%s' does not belong to an installed package") % path)
 
     def run(self):
-
-        self.init(database = True, write = False)
+        self.init(database=True, write=False)
 
         if not self.args:
             self.help()
@@ -59,5 +71,5 @@ Finds the installed package which contains the specified file.
         # search among existing files
         for path in self.args:
             if not ctx.config.options.quiet:
-                ctx.ui.info(_('Searching for %s') % path)
+                ctx.ui.info(_("Searching for %s") % path)
             self.search_file(path)

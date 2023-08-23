@@ -18,6 +18,7 @@ import os.path
 
 from pisi import translate as _
 
+
 class URI(object):
     """URI class provides a URL parser and simplifies working with
     URLs."""

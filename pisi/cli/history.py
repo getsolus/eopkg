@@ -23,14 +23,25 @@ import pisi.context as ctx
 import pisi.cli.command as command
 
 # Operation names for translation
-opttrans = {"upgrade":_("upgrade"),"remove":_("remove"),"emerge":_("emerge"), "install":_("install"), "snapshot":_("snapshot"), "takeback":_("takeback"), "repoupdate":_("repository update")}
+opttrans = {
+    "upgrade": _("upgrade"),
+    "remove": _("remove"),
+    "emerge": _("emerge"),
+    "install": _("install"),
+    "snapshot": _("snapshot"),
+    "takeback": _("takeback"),
+    "repoupdate": _("repository update"),
+}
+
 
 class History(command.PackageOp, metaclass=command.autocommand):
-    __doc__ = _("""History of pisi operations
+    __doc__ = _(
+        """History of pisi operations
 
 Usage: history
 
-Lists previous operations.""")
+Lists previous operations."""
+    )
 
     def __init__(self, args=None):
         super(History, self).__init__(args)
@@ -39,18 +50,34 @@ Lists previous operations.""")
     name = ("history", "hs")
 
     def options(self):
-
         group = optparse.OptionGroup(self.parser, _("history options"))
         self.add_options(group)
         self.parser.add_option_group(group)
 
     def add_options(self, group):
-        group.add_option("-l", "--last", action="store", type="int", default=0,
-                         help=_("Output only the last n operations"))
-        group.add_option("-s", "--snapshot", action="store_true", default=False,
-                         help=_("Take snapshot of the current system"))
-        group.add_option("-t", "--takeback", action="store", type="int", default=-1,
-                         help=_("Takeback to the state after the given operation finished"))
+        group.add_option(
+            "-l",
+            "--last",
+            action="store",
+            type="int",
+            default=0,
+            help=_("Output only the last n operations"),
+        )
+        group.add_option(
+            "-s",
+            "--snapshot",
+            action="store_true",
+            default=False,
+            help=_("Take snapshot of the current system"),
+        )
+        group.add_option(
+            "-t",
+            "--takeback",
+            action="store",
+            type="int",
+            default=-1,
+            help=_("Takeback to the state after the given operation finished"),
+        )
 
     def take_snapshot(self):
         pisi.api.snapshot()
@@ -59,31 +86,37 @@ Lists previous operations.""")
         pisi.api.takeback(operation)
 
     def print_history(self):
-        for operation in self.historydb.get_last(ctx.get_option('last')):
+        for operation in self.historydb.get_last(ctx.get_option("last")):
             print(_("Operation #%d: %s") % (operation.no, opttrans[operation.type]))
             print(_("Date: %s %s") % (operation.date, operation.time))
             print()
 
             if operation.type == "snapshot":
-                print(_("    * There are %d packages in this snapshot.") % len(operation.packages))
+                print(
+                    _("    * There are %d packages in this snapshot.")
+                    % len(operation.packages)
+                )
             elif operation.type == "repoupdate":
                 for repo in operation.repos:
-                    print("    *",  repo)
+                    print("    *", repo)
             else:
                 for pkg in operation.packages:
-                    print("    *",  pkg)
+                    print("    *", pkg)
             print()
 
     def redirect_output(self, func):
         if os.isatty(sys.stdout.fileno()):
+
             class LessException(Exception):
                 pass
 
-            class LessPipe():
+            class LessPipe:
                 def __init__(self):
                     import subprocess
-                    self.less = subprocess.Popen(["less", "-K", "-"],
-                                            stdin=subprocess.PIPE)
+
+                    self.less = subprocess.Popen(
+                        ["less", "-K", "-"], stdin=subprocess.PIPE
+                    )
 
                 def __del__(self):
                     self.less.stdin.close()
@@ -111,12 +144,12 @@ Lists previous operations.""")
             func()
 
     def run(self):
-        self.init(database = False, write = False)
-        if ctx.get_option('snapshot'):
+        self.init(database=False, write=False)
+        if ctx.get_option("snapshot"):
             self.take_snapshot()
             return
-        elif ctx.get_option('takeback'):
-            opno = ctx.get_option('takeback')
+        elif ctx.get_option("takeback"):
+            opno = ctx.get_option("takeback")
             if opno != -1:
                 self.takeback(opno)
                 return

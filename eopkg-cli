@@ -21,16 +21,19 @@ import pisi.cli.pisicli as pisicli
 
 from pisi import translate as _
 
+
 def sig_handler(sig, frame):
     if sig == signal.SIGTERM:
         exit()
 
+
 def exit():
     sys.exit(1)
 
+
 def handle_exception(exception, value, tb):
-    signal.signal(signal.SIGINT, signal.SIG_IGN)   # disable further interrupts
-    ui = pisi.cli.CLI() # make a temporary UI
+    signal.signal(signal.SIGINT, signal.SIG_IGN)  # disable further interrupts
+    ui = pisi.cli.CLI()  # make a temporary UI
     show_traceback = False
 
     if exception == KeyboardInterrupt:
@@ -40,15 +43,19 @@ def handle_exception(exception, value, tb):
         ui.error(_("Program terminated."))
     elif isinstance(value, pisi.Exception):
         show_traceback = True
-        ui.error(_("Unhandled internal exception.\n"
-                   "Please file a bug report to <https://github.com/getsolus/package-management/>."))
+        ui.error(
+            _(
+                "Unhandled internal exception.\n"
+                "Please file a bug report to <https://github.com/getsolus/package-management/>."
+            )
+        )
     elif isinstance(value, IOError) and value.errno == errno.EPIPE:
         # Ignore broken pipe errors
         sys.exit(0)
     else:
         # For any other exception (possibly Python exceptions) show
         # the traceback!
-        show_traceback = ctx.get_option('debug')
+        show_traceback = ctx.get_option("debug")
         ui.error(_("System error. Program terminated."))
 
     if show_traceback:
@@ -67,6 +74,7 @@ def handle_exception(exception, value, tb):
         ui.info(_("Use --debug to see a traceback."))
 
     exit()
+
 
 if __name__ == "__main__":
     sys.excepthook = handle_exception

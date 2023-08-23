@@ -13,8 +13,8 @@
 import testcase
 import pisi
 
+
 class PackageDBTestCase(testcase.TestCase):
-    
     def setUp(self):
         testcase.TestCase.setUp(self)
         self.packagedb = pisi.db.packagedb.PackageDB()
@@ -48,7 +48,9 @@ class PackageDBTestCase(testcase.TestCase):
         assert repo == "contrib-2007"
 
     def testGetObsoletes(self):
-        assert set(self.packagedb.get_obsoletes("pardus-2007")) == set(["wengophone", "rar"])
+        assert set(self.packagedb.get_obsoletes("pardus-2007")) == set(
+            ["wengophone", "rar"]
+        )
         assert set(self.packagedb.get_obsoletes("contrib-2007")) == set(["xara"])
         assert set(self.packagedb.get_obsoletes()) == set(["wengophone", "rar", "xara"])
 
@@ -62,13 +64,29 @@ class PackageDBTestCase(testcase.TestCase):
         assert not self.packagedb.get_replaces()
 
     def testListPackages(self):
-        assert set(self.packagedb.list_packages("pardus-2007")) == set(['nfdump', 'ethtool', 'ncftp', 
-                                                                        'libidn', 'zlib', 'db4', 'openssl', 
-                                                                        'jpeg', 'pam', 'shadow', 'bogofilter', 
-                                                                        'curl', 'gsl', 'bash', 'cracklib'])
+        assert set(self.packagedb.list_packages("pardus-2007")) == set(
+            [
+                "nfdump",
+                "ethtool",
+                "ncftp",
+                "libidn",
+                "zlib",
+                "db4",
+                "openssl",
+                "jpeg",
+                "pam",
+                "shadow",
+                "bogofilter",
+                "curl",
+                "gsl",
+                "bash",
+                "cracklib",
+            ]
+        )
 
-        assert set(self.packagedb.list_packages("contrib-2007")) == set(['libpcap', 'ctorrent', 'lft', 'lynx', 
-                                                                         'iat', 'cpulimit', 'rpl'])
+        assert set(self.packagedb.list_packages("contrib-2007")) == set(
+            ["libpcap", "ctorrent", "lft", "lynx", "iat", "cpulimit", "rpl"]
+        )
 
     def testSearchPackage(self):
         packages = self.packagedb.search_package(["bogo", "filter"])

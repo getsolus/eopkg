@@ -6,7 +6,7 @@
 #
 # Problem  : reverse strict deps upgrading not working
 #
-# Problem Description: 
+# Problem Description:
 #
 # pisi updates strict reverse deps if the reverse deps dependencies are not satisfied. For example if kernel is tried
 # to be upgraded all the reverse deps are forced to be upgraded automatically. When only one rev-dep module is
@@ -33,9 +33,12 @@ let_repo_had(MODULE_FGLRX, with_added_dependency(KERNEL, version="2.6.30"))
 
 let_pisi_had(KERNEL, MODULE_ALSA_DRIVER, MODULE_FGLRX)
 
+
 def run():
     repo_version_bumped(KERNEL, with_version("2.6.31"))
-    repo_version_bumped(MODULE_ALSA_DRIVER, with_added_dependency(KERNEL, version="2.6.31"))
+    repo_version_bumped(
+        MODULE_ALSA_DRIVER, with_added_dependency(KERNEL, version="2.6.31")
+    )
     repo_version_bumped(MODULE_FGLRX, with_added_dependency(KERNEL, version="2.6.31"))
     repo_updated_index()
     pisi_upgraded(MODULE_FGLRX)

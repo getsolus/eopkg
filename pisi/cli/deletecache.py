@@ -16,14 +16,17 @@ import pisi
 import pisi.api
 import pisi.cli.command as command
 
+
 class DeleteCache(command.Command, metaclass=command.autocommand):
-    __doc__ = _("""Delete cache files
+    __doc__ = _(
+        """Delete cache files
 
 Usage: delete-cache
 
 Sources, packages and temporary files are stored
 under /var directory. Since these accumulate they can
-consume a lot of disk space.""")
+consume a lot of disk space."""
+    )
 
     def __init__(self, args=None):
         super(DeleteCache, self).__init__(args)

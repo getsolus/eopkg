@@ -16,15 +16,15 @@ import pisi.context as ctx
 import pisi.db.lazydb as lazydb
 import pisi.history
 
-class HistoryDB(lazydb.LazyDB):
 
+class HistoryDB(lazydb.LazyDB):
     def init(self):
         self.__logs = self.__generate_history()
         self.history = pisi.history.History()
 
     def __generate_history(self):
         logs = [x for x in os.listdir(ctx.config.history_dir()) if x.endswith(".xml")]
-        logs.sort(lambda x,y:int(x.split("_")[0]) - int(y.split("_")[0]))
+        logs.sort(lambda x, y: int(x.split("_")[0]) - int(y.split("_")[0]))
         logs.reverse()
         return logs
 
@@ -42,18 +42,21 @@ class HistoryDB(lazydb.LazyDB):
         config_dir = os.path.join(ctx.config.history_dir(), "%03d" % operation, package)
         if os.path.exists(config_dir):
             import distutils.dir_util as dir_util
+
             dir_util.copy_tree(config_dir, "/")
 
     def save_config(self, package, config_file):
-        hist_dir = os.path.join(ctx.config.history_dir(), self.history.operation.no, package)
+        hist_dir = os.path.join(
+            ctx.config.history_dir(), self.history.operation.no, package
+        )
         if os.path.isdir(config_file):
             os.makedirs(os.path.join(hist_dir, config_file))
             return
 
         destdir = os.path.join(hist_dir, config_file[1:])
-        pisi.util.copy_file_stat(config_file, destdir);
+        pisi.util.copy_file_stat(config_file, destdir)
 
-    def update_repo(self, repo, uri, operation = None):
+    def update_repo(self, repo, uri, operation=None):
         self.history.update_repo(repo, uri, operation)
         self.update_history()
 
@@ -69,7 +72,9 @@ class HistoryDB(lazydb.LazyDB):
         return None
 
     def get_package_config_files(self, operation, package):
-        package_path = os.path.join(ctx.config.history_dir(), "%03d/%s" % (operation, package))
+        package_path = os.path.join(
+            ctx.config.history_dir(), "%03d/%s" % (operation, package)
+        )
         if not os.path.exists(package_path):
             return None
 
@@ -120,5 +125,7 @@ class HistoryDB(lazydb.LazyDB):
         if last != 1 and len(repoupdates) <= last:
             return None
 
-        hist = pisi.history.History(os.path.join(ctx.config.history_dir(), repoupdates[-last]))
+        hist = pisi.history.History(
+            os.path.join(ctx.config.history_dir(), repoupdates[-last])
+        )
         return hist.operation.date

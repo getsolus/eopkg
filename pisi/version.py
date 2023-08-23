@@ -21,22 +21,25 @@ import pisi
 # m: milestone. this was added for OO.o
 # p: patch-level
 __keywords = (
-        ("alpha",   -5),
-        ("beta",    -4),
-        ("pre",     -3),
-        ("rc",      -2),
-        ("m",       -1),
-        ("p",        1),
-        )
+    ("alpha", -5),
+    ("beta", -4),
+    ("pre", -3),
+    ("rc", -2),
+    ("m", -1),
+    ("p", 1),
+)
+
 
 class InvalidVersionError(pisi.Error):
     pass
+
 
 def __make_version_item(v):
     try:
         return int(v), None
     except ValueError:
         return int(v[:-1]), v[-1]
+
 
 def make_version(version):
     ver, sep, suffix = version.partition("_")
@@ -46,23 +49,34 @@ def make_version(version):
             if "a" <= suffix <= "s":
                 for keyword, value in __keywords:
                     if suffix.startswith(keyword):
-                        return list(map(__make_version_item, ver.split("."))), value, \
-                                list(map(__make_version_item, suffix[len(keyword):].split(".")))
+                        return (
+                            list(map(__make_version_item, ver.split("."))),
+                            value,
+                            list(
+                                map(
+                                    __make_version_item,
+                                    suffix[len(keyword) :].split("."),
+                                )
+                            ),
+                        )
                 else:
                     # Probably an invalid version string. Reset ver string
                     # to raise an exception in __make_version_item function.
                     ver = ""
             else:
-                return list(map(__make_version_item, ver.split("."))), 0, \
-                        list(map(__make_version_item, suffix.split(".")))
+                return (
+                    list(map(__make_version_item, ver.split("."))),
+                    0,
+                    list(map(__make_version_item, suffix.split("."))),
+                )
 
         return list(map(__make_version_item, ver.split("."))), 0, [(0, None)]
 
     except ValueError:
         raise InvalidVersionError(_("Invalid version string: '%s'") % version)
 
-class Version(object):
 
+class Version(object):
     __slots__ = ("__version", "__version_string")
 
     @staticmethod

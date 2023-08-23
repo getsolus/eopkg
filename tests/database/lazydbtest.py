@@ -13,16 +13,16 @@
 import unittest
 import pisi.db.lazydb as lazydb
 
-class TestDB(lazydb.LazyDB):
 
+class TestDB(lazydb.LazyDB):
     def init(self):
         self.testfield = True
 
     def getTestField(self):
         return self.testfield
 
-class LazyDBTestCase(unittest.TestCase):
 
+class LazyDBTestCase(unittest.TestCase):
     def testDatabaseMethodForcingInit(self):
         db = TestDB()
         assert db.getTestField()

@@ -21,12 +21,12 @@ import pisi.ui as ui
 import pisi.conflict
 import pisi.db
 
-def reorder_base_packages(order):
 
+def reorder_base_packages(order):
     componentdb = pisi.db.componentdb.ComponentDB()
-    
+
     """system.base packages must be first in order"""
-    systembase = componentdb.get_union_component('system.base').packages
+    systembase = componentdb.get_union_component("system.base").packages
 
     systembase_order = []
     nonbase_order = []
@@ -38,6 +38,7 @@ def reorder_base_packages(order):
 
     return systembase_order + nonbase_order
 
+
 def check_conflicts(order, packagedb):
     """check if upgrading to the latest versions will cause havoc
     done in a simple minded way without regard for dependencies of
@@ -46,21 +47,26 @@ def check_conflicts(order, packagedb):
     (C, D, pkg_conflicts) = pisi.conflict.calculate_conflicts(order, packagedb)
 
     if D:
-        raise Exception(_("Selected packages [%s] are in conflict with each other.") %
-                    util.strlist(list(D)))
+        raise Exception(
+            _("Selected packages [%s] are in conflict with each other.")
+            % util.strlist(list(D))
+        )
 
     if pkg_conflicts:
         conflicts = ""
         for pkg in list(pkg_conflicts.keys()):
-            conflicts += _("[%s conflicts with: %s]\n") % (pkg, util.strlist(pkg_conflicts[pkg]))
+            conflicts += _("[%s conflicts with: %s]\n") % (
+                pkg,
+                util.strlist(pkg_conflicts[pkg]),
+            )
 
-        ctx.ui.info(_("The following packages have conflicts:\n%s") %
-                    conflicts)
+        ctx.ui.info(_("The following packages have conflicts:\n%s") % conflicts)
 
-        if not ctx.ui.confirm(_('Remove the following conflicting packages?')):
+        if not ctx.ui.confirm(_("Remove the following conflicting packages?")):
             raise Exception(_("Conflicting packages should be removed to continue"))
 
     return list(C)
+
 
 def expand_src_components(A):
     componentdb = pisi.db.componentdb.ComponentDB()
@@ -71,6 +77,7 @@ def expand_src_components(A):
         else:
             Ap.add(x)
     return Ap
+
 
 def extract_automatic(A, total):
     """
@@ -96,6 +103,7 @@ def extract_automatic(A, total):
 
     return ret
 
+
 def calculate_download_sizes(order):
     total_size = cached_size = 0
 
@@ -109,10 +117,15 @@ def calculate_download_sizes(order):
         cached_packages_dir = None
 
     for pkg in [packagedb.get_package(name) for name in order]:
-
         delta = None
         if installdb.has_package(pkg.name):
-            (version, release, build, distro, distro_release) = installdb.get_version_and_distro_release(pkg.name)
+            (
+                version,
+                release,
+                build,
+                distro,
+                distro_release,
+            ) = installdb.get_version_and_distro_release(pkg.name)
             if distro_release == pkg.distributionRelease:
                 delta = pkg.get_delta(release)
 

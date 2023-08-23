@@ -47,11 +47,14 @@ import magic
 class Error(pisi.Error):
     pass
 
+
 class ActionScriptException(Error):
     pass
 
+
 class AbandonedFilesException(pisi.Error):
     pass
+
 
 class ExcludedArchitectureException(Error):
     pass
@@ -59,6 +62,7 @@ class ExcludedArchitectureException(Error):
 
 global debug_map
 debug_map = dict()
+
 
 # Helper Functions
 def get_file_type(path, pinfo_list):
@@ -86,6 +90,7 @@ def get_file_type(path, pinfo_list):
 
     return info.fileType, info.permanent
 
+
 def check_path_collision(package, pkgList):
     """This function will check for collision of paths in a package with
     the paths of packages in pkgList. The return value will be the
@@ -107,23 +112,26 @@ def check_path_collision(package, pkgList):
                 # pinfo.path: /usr/share
                 # path.path: /usr/share/doc
 
-                if (create_static and path.path.endswith(ar_suffix)) or \
-                        (create_debug and path.path.endswith(debug_suffix)):
+                if (create_static and path.path.endswith(ar_suffix)) or (
+                    create_debug and path.path.endswith(debug_suffix)
+                ):
                     # don't throw collision error for these files.
                     # we'll handle this in gen_files_xml..
                     continue
 
                 if util.subpath(pinfo.path, path.path):
                     collisions.append(path.path.rstrip("/"))
-                    ctx.ui.debug(_('Path %s belongs in multiple packages') %
-                                 path.path)
+                    ctx.ui.debug(_("Path %s belongs in multiple packages") % path.path)
     return collisions
+
 
 def exclude_special_files(filepath, fileinfo, ag):
     keeplist = ag.get("KeepSpecial", [])
-    patterns = {"libtool": "libtool library file",
-                "python":  "python.*byte-compiled",
-                "perl":    "Perl POD document text"}
+    patterns = {
+        "libtool": "libtool library file",
+        "python": "python.*byte-compiled",
+        "perl": "Perl POD document text",
+    }
 
     if "libtool" in keeplist:
         # Some upstream sources have buggy libtool and ltmain.sh with them,
@@ -131,12 +139,12 @@ def exclude_special_files(filepath, fileinfo, ag):
         # entries sometimes triggers compile-time errors or linkage problems.
         # Instead of patching all these buggy sources and maintain these
         # patches, eopkg removes wrong paths...
-        if re.match(patterns["libtool"], fileinfo) and \
-                not os.path.islink(filepath):
+        if re.match(patterns["libtool"], fileinfo) and not os.path.islink(filepath):
             ladata = file(filepath).read()
             new_ladata = re.sub("-L%s/\S*" % ctx.config.tmp_dir(), "", ladata)
-            new_ladata = re.sub("%s/\S*/install/" % ctx.config.tmp_dir(), "/",
-                                new_ladata)
+            new_ladata = re.sub(
+                "%s/\S*/install/" % ctx.config.tmp_dir(), "/", new_ladata
+            )
             if new_ladata != ladata:
                 file(filepath, "w").write(new_ladata)
 
@@ -150,41 +158,47 @@ def exclude_special_files(filepath, fileinfo, ag):
             # Remove dir if it becomes empty (Bug #11588)
             util.rmdirs(os.path.dirname(filepath))
 
+
 def get_debug_path(filepath, fileinfo, install_dir):
     """Query ELF files for the correct BuildID based location"""
 
-    if "SB executable" not in fileinfo and "SB relocatable" not in fileinfo \
-    and "SB shared object" not in fileinfo:
-        return (None,None)
+    if (
+        "SB executable" not in fileinfo
+        and "SB relocatable" not in fileinfo
+        and "SB shared object" not in fileinfo
+    ):
+        return (None, None)
 
-    code,out,err = pisi.util.run_batch("LC_ALL=C readelf -n \"%s\"" % filepath)
+    code, out, err = pisi.util.run_batch('LC_ALL=C readelf -n "%s"' % filepath)
     if code != 0 or not out:
-        return (None,None)
+        return (None, None)
     for line in out.split("\n"):
         if "Build ID:" not in line:
             continue
         val = line.split(":")[1].strip()
 
-        suffix = util.join_path(ctx.const.debug_files_suffix,
-                                ".build-id",
-                                val[0:2],
-                                val[2:])
+        suffix = util.join_path(
+            ctx.const.debug_files_suffix, ".build-id", val[0:2], val[2:]
+        )
 
-        path = util.join_path(os.path.dirname(install_dir),
-                                ctx.const.debug_dir_suffix,
-                                ctx.const.debug_files_suffix,
-                                ".build-id",
-                                val[0:2],
-                                val[2:])
+        path = util.join_path(
+            os.path.dirname(install_dir),
+            ctx.const.debug_dir_suffix,
+            ctx.const.debug_files_suffix,
+            ".build-id",
+            val[0:2],
+            val[2:],
+        )
 
         return (path, suffix)
+
 
 def strip_debug_action(filepath, fileinfo, install_dir, ag):
     excludelist = tuple(ag.get("NoStrip", []))
     global debug_map
 
     # real path in .pisi package
-    path = '/' + util.removepathprefix(install_dir, filepath)
+    path = "/" + util.removepathprefix(install_dir, filepath)
 
     if path.startswith(excludelist):
         return
@@ -194,14 +208,16 @@ def strip_debug_action(filepath, fileinfo, install_dir, ag):
 
     if outputpath is None:
         # Resort to old debug paths
-        outputpath = util.join_path(os.path.dirname(install_dir),
-                                    ctx.const.debug_dir_suffix,
-                                    ctx.const.debug_files_suffix,
-                                    path)
+        outputpath = util.join_path(
+            os.path.dirname(install_dir),
+            ctx.const.debug_dir_suffix,
+            ctx.const.debug_files_suffix,
+            path,
+        )
     else:
         clean = filepath.split(install_dir)[1]
-        if clean[0] != '/':
-            clean = '/%s' % clean
+        if clean[0] != "/":
+            clean = "/%s" % clean
 
         debug_map[clean] = outclean
         buildID = True
@@ -213,10 +229,10 @@ def strip_debug_action(filepath, fileinfo, install_dir, ag):
 
 class Builder:
     """Provides the package build and creation routines"""
-    #FIXME: this class and every other class must use URLs as paths!
+
+    # FIXME: this class and every other class must use URLs as paths!
 
     def __init__(self, specuri):
-
         self.componentdb = pisi.db.componentdb.ComponentDB()
         self.installdb = pisi.db.installdb.InstallDB()
         self.packagedb = pisi.db.packagedb.PackageDB()
@@ -244,12 +260,14 @@ class Builder:
 
         # Don't wait until creating .pisi file for complaining about versioning
         # scheme errors
-        self.check_versioning(self.spec.getSourceVersion(),
-                              self.spec.getSourceRelease())
+        self.check_versioning(
+            self.spec.getSourceVersion(), self.spec.getSourceRelease()
+        )
 
         # Check package format
-        self.target_package_format = ctx.get_option("package_format") \
-                                        or pisi.package.Package.default_format
+        self.target_package_format = (
+            ctx.get_option("package_format") or pisi.package.Package.default_format
+        )
 
         self.sourceArchives = pisi.sourcearchive.SourceArchives(self.spec)
 
@@ -283,20 +301,24 @@ class Builder:
         spec.read(self.specuri, ctx.config.tmp_dir())
         self.spec = spec
 
-    def package_filename(self, package_info, release_info=None,
-                         distro_id=None, with_extension=True):
-
+    def package_filename(
+        self, package_info, release_info=None, distro_id=None, with_extension=True
+    ):
         if release_info is None:
             release_info = self.spec.history[0]
 
         if distro_id is None:
             distro_id = ctx.config.values.general.distribution_id
 
-        fn = "-".join((package_info.name,
-                       release_info.version,
-                       release_info.release,
-                       distro_id,
-                       package_info.architecture))
+        fn = "-".join(
+            (
+                package_info.name,
+                release_info.version,
+                release_info.release,
+                distro_id,
+                package_info.architecture,
+            )
+        )
 
         if with_extension:
             fn += ctx.const.package_suffix
@@ -309,12 +331,16 @@ class Builder:
 
     def pkg_dir(self):
         "package build directory"
-        packageDir = self.spec.source.name + '-' + \
-                     self.spec.getSourceVersion() + '-' + \
-                     self.spec.getSourceRelease()
-        return util.join_path(ctx.config.dest_dir(),
-                              ctx.config.values.dirs.tmp_dir,
-                              packageDir)
+        packageDir = (
+            self.spec.source.name
+            + "-"
+            + self.spec.getSourceVersion()
+            + "-"
+            + self.spec.getSourceRelease()
+        )
+        return util.join_path(
+            ctx.config.dest_dir(), ctx.config.values.dirs.tmp_dir, packageDir
+        )
 
     def pkg_work_dir(self):
         suffix = "-%s" % self.build_type if self.build_type else ""
@@ -342,11 +368,10 @@ class Builder:
         architecture = ctx.config.values.general.architecture
         if architecture in self.spec.source.excludeArch:
             raise ExcludedArchitectureException(
-                    _("pspec.xml avoids this package from building for '%s'")
-                    % architecture)
+                _("pspec.xml avoids this package from building for '%s'") % architecture
+            )
 
-        ctx.ui.status(_("Building source package: %s")
-                      % self.spec.source.name)
+        ctx.ui.status(_("Building source package: %s") % self.spec.source.name)
 
         self.compile_comar_script()
 
@@ -365,12 +390,16 @@ class Builder:
             if self.has_ccache:
                 ctx.ui.info(_("ccache detected..."))
             if self.has_icecream:
-                ctx.ui.info(_("IceCream detected. Make sure your daemon "
-                              "is up and running..."))
+                ctx.ui.info(
+                    _(
+                        "IceCream detected. Make sure your daemon "
+                        "is up and running..."
+                    )
+                )
 
             self.run_setup_action()
             self.run_build_action()
-            if ctx.get_option('debug') and not ctx.get_option('ignore_check'):
+            if ctx.get_option("debug") and not ctx.get_option("ignore_check"):
                 self.run_check_action()
             self.run_install_action()
 
@@ -378,8 +407,7 @@ class Builder:
         self.build_packages()
 
     def get_build_types(self):
-        ignored_build_types = \
-                ctx.config.values.build.ignored_build_types.split(",")
+        ignored_build_types = ctx.config.values.build.ignored_build_types.split(",")
         build_types = [""]
         packages = []
 
@@ -412,15 +440,17 @@ class Builder:
         # environment. See bug #2575
         pisi.actionsapi.variables.initVariables()
 
-        env = {"PKG_DIR": self.pkg_dir(),
-               "WORK_DIR": self.pkg_work_dir(),
-               "INSTALL_DIR": self.pkg_install_dir(),
-               "PISI_BUILD_TYPE": self.build_type,
-               "SRC_NAME": self.spec.source.name,
-               "SRC_VERSION": self.spec.getSourceVersion(),
-               "SRC_RELEASE": self.spec.getSourceRelease(),
-               "PKG_SUPPORTS_CLANG" : str(self.spec.getClangSupported()),               
-               "PYTHONDONTWRITEBYTECODE": '1'}
+        env = {
+            "PKG_DIR": self.pkg_dir(),
+            "WORK_DIR": self.pkg_work_dir(),
+            "INSTALL_DIR": self.pkg_install_dir(),
+            "PISI_BUILD_TYPE": self.build_type,
+            "SRC_NAME": self.spec.source.name,
+            "SRC_VERSION": self.spec.getSourceVersion(),
+            "SRC_RELEASE": self.spec.getSourceRelease(),
+            "PKG_SUPPORTS_CLANG": str(self.spec.getClangSupported()),
+            "PYTHONDONTWRITEBYTECODE": "1",
+        }
         if self.build_type == "emul32":
             env["CC"] = "%s -m32" % os.getenv("CC")
             env["CXX"] = "%s -m32" % os.getenv("CXX")
@@ -437,8 +467,7 @@ class Builder:
             if os.path.exists("/usr/lib/ccache/bin/gcc"):
                 self.has_ccache = True
 
-                os.environ["PATH"] = "/usr/lib/ccache/bin:%(PATH)s" \
-                                                                % os.environ
+                os.environ["PATH"] = "/usr/lib/ccache/bin:%(PATH)s" % os.environ
                 # Force ccache to use /root/.ccache instead of $HOME/.ccache
                 # as $HOME can be modified through actions.py
                 os.environ["CCACHE_DIR"] = "/root/.ccache"
@@ -447,7 +476,7 @@ class Builder:
         self.specdiruri = os.path.dirname(self.specuri.get_uri())
         pkgname = os.path.basename(self.specdiruri)
         self.destdir = util.join_path(ctx.config.tmp_dir(), pkgname)
-        #self.location = os.path.dirname(self.url.uri)
+        # self.location = os.path.dirname(self.url.uri)
 
         self.fetch_actionsfile()
         self.check_build_dependencies()
@@ -468,31 +497,35 @@ class Builder:
     def fetch_patches(self):
         for patch in self.spec.source.patches:
             dir_name = os.path.dirname(patch.filename)
-            patchuri = util.join_path(self.specdiruri,
-                                      ctx.const.files_dir,
-                                      patch.filename)
-            self.download(patchuri, util.join_path(self.destdir,
-                                                   ctx.const.files_dir,
-                                                   dir_name))
+            patchuri = util.join_path(
+                self.specdiruri, ctx.const.files_dir, patch.filename
+            )
+            self.download(
+                patchuri, util.join_path(self.destdir, ctx.const.files_dir, dir_name)
+            )
 
     def fetch_comarfiles(self):
         for package in self.spec.packages:
             for pcomar in package.providesComar:
-                comaruri = util.join_path(self.specdiruri,
-                                ctx.const.comar_dir, pcomar.script)
-                self.download(comaruri, util.join_path(self.destdir,
-                                                       ctx.const.comar_dir))
+                comaruri = util.join_path(
+                    self.specdiruri, ctx.const.comar_dir, pcomar.script
+                )
+                self.download(
+                    comaruri, util.join_path(self.destdir, ctx.const.comar_dir)
+                )
 
     def fetch_additionalFiles(self):
         for pkg in self.spec.packages + [self.spec.source]:
             for afile in pkg.additionalFiles:
                 file_name = os.path.basename(afile.filename)
                 dir_name = os.path.dirname(afile.filename)
-                afileuri = util.join_path(self.specdiruri,
-                                ctx.const.files_dir, dir_name, file_name)
-                self.download(afileuri, util.join_path(self.destdir,
-                                                       ctx.const.files_dir,
-                                                       dir_name))
+                afileuri = util.join_path(
+                    self.specdiruri, ctx.const.files_dir, dir_name, file_name
+                )
+                self.download(
+                    afileuri,
+                    util.join_path(self.destdir, ctx.const.files_dir, dir_name),
+                )
 
     def download(self, uri, transferdir):
         # fix auth info and download
@@ -505,24 +538,32 @@ class Builder:
 
         diruri = util.parenturi(self.specuri.get_uri())
         parentdir = util.parenturi(diruri)
-        url = util.join_path(parentdir, 'component.xml')
+        url = util.join_path(parentdir, "component.xml")
         progress = ctx.ui.Progress
         if pisi.uri.URI(url).is_remote_file():
             try:
                 pisi.fetcher.fetch_url(url, self.pkg_work_dir(), progress)
             except pisi.fetcher.FetchError:
-                ctx.ui.warning(_("Cannot find component.xml in remote "
-                                 "directory, Source is now part of "
-                                 "unknown component"))
-                self.spec.source.partOf = 'unknown'
+                ctx.ui.warning(
+                    _(
+                        "Cannot find component.xml in remote "
+                        "directory, Source is now part of "
+                        "unknown component"
+                    )
+                )
+                self.spec.source.partOf = "unknown"
                 return
-            path = util.join_path(self.pkg_work_dir(), 'component.xml')
+            path = util.join_path(self.pkg_work_dir(), "component.xml")
         else:
             if not os.path.exists(url):
-                ctx.ui.warning(_("Cannot find component.xml in upper "
-                                 "directory, Source is now part of "
-                                 "unknown component"))
-                self.spec.source.partOf = 'unknown'
+                ctx.ui.warning(
+                    _(
+                        "Cannot find component.xml in upper "
+                        "directory, Source is now part of "
+                        "unknown component"
+                    )
+                )
+                self.spec.source.partOf = "unknown"
                 return
             path = url
         comp = component.CompatComponent()
@@ -584,9 +625,11 @@ class Builder:
 
         def is_included(path1, path2):
             "Return True if path2 includes path1"
-            return path1 == path2 \
-                    or fnmatch.fnmatch(path1, path2) \
-                    or fnmatch.fnmatch(path1, util.join_path(path2, "*"))
+            return (
+                path1 == path2
+                or fnmatch.fnmatch(path1, path2)
+                or fnmatch.fnmatch(path1, util.join_path(path2, "*"))
+            )
 
         for root, dirs, files in os.walk(install_dir):
             if not dirs and not files:
@@ -626,11 +669,9 @@ class Builder:
             buf = open(fname).read()
             return compile(buf, fname, "exec")
         except IOError as e:
-            raise Error(_("Unable to read Actions Script (%s): %s")
-                        % (fname, e))
+            raise Error(_("Unable to read Actions Script (%s): %s") % (fname, e))
         except SyntaxError as e:
-            raise Error(_("SyntaxError in Actions Script (%s): %s")
-                        % (fname, e))
+            raise Error(_("SyntaxError in Actions Script (%s): %s") % (fname, e))
 
     def load_action_script(self):
         """Compiles and executes the action script"""
@@ -642,6 +683,7 @@ class Builder:
             exec(compiled_script, localSymbols, globalSymbols)
         except Exception as e:
             import traceback
+
             traceback.print_exc(e)
             raise ActionScriptException
 
@@ -652,18 +694,15 @@ class Builder:
         """Compiles comar scripts to check syntax errors"""
         for package in self.spec.packages:
             for pcomar in package.providesComar:
-                fname = util.join_path(self.specdir, ctx.const.comar_dir,
-                                     pcomar.script)
+                fname = util.join_path(self.specdir, ctx.const.comar_dir, pcomar.script)
 
                 try:
                     buf = open(fname).read()
                     compile(buf, "error", "exec")
                 except IOError as e:
-                    raise Error(_("Unable to read COMAR script (%s): %s")
-                                % (fname, e))
+                    raise Error(_("Unable to read COMAR script (%s): %s") % (fname, e))
                 except SyntaxError as e:
-                    raise Error(_("SyntaxError in COMAR file (%s): %s")
-                                % (fname, e))
+                    raise Error(_("SyntaxError in COMAR file (%s): %s") % (fname, e))
 
     def pkg_src_dir(self):
         """Returns the real path of WorkDir for an unpacked archive."""
@@ -694,15 +733,18 @@ class Builder:
         if not os.path.exists(src_dir):
             # still not exists? so  try first from dirnames returned by os.walk
             # usualy archives contains one root dir
-            src_dir = util.join_path(self.pkg_work_dir(), os.walk(self.pkg_work_dir()).next()[1][0])
-            if self.get_state() == "unpack": ctx.ui.debug("Setting WorkDir to %s" % src_dir)
+            src_dir = util.join_path(
+                self.pkg_work_dir(), os.walk(self.pkg_work_dir()).next()[1][0]
+            )
+            if self.get_state() == "unpack":
+                ctx.ui.debug("Setting WorkDir to %s" % src_dir)
 
         return src_dir
 
     def log_sandbox_violation(self, operation, path, canonical_path):
-        ctx.ui.error(_("Sandbox violation: %s (%s -> %s)") % (operation,
-                                                              path,
-                                                              canonical_path))
+        ctx.ui.error(
+            _("Sandbox violation: %s (%s -> %s)") % (operation, path, canonical_path)
+        )
 
     def run_action_function(self, func, mandatory=False):
         """Calls the corresponding function in actions.py.
@@ -719,9 +761,11 @@ class Builder:
             raise Error(_("ERROR: WorkDir (%s) does not exist\n") % src_dir)
 
         if func in self.actionLocals:
-            if ctx.get_option('ignore_sandbox') or \
-                    not ctx.config.values.build.enablesandbox or \
-                    "emul32" in self.build_type:
+            if (
+                ctx.get_option("ignore_sandbox")
+                or not ctx.config.values.build.enablesandbox
+                or "emul32" in self.build_type
+            ):
                 self.actionLocals[func]()
             else:
                 import catbox
@@ -741,28 +785,28 @@ class Builder:
 
                 # Extra path for ccache when needed
                 if ctx.config.values.build.buildhelper == "ccache":
-                    valid_paths.append(os.environ.get("CCACHE_DIR",
-                                                      "/root/.ccache"))
+                    valid_paths.append(os.environ.get("CCACHE_DIR", "/root/.ccache"))
 
-                ret = catbox.run(self.actionLocals[func],
-                                 valid_paths,
-                                 logger=self.log_sandbox_violation)
+                ret = catbox.run(
+                    self.actionLocals[func],
+                    valid_paths,
+                    logger=self.log_sandbox_violation,
+                )
                 # Retcode can be 0 while there is a sanbox violation, so only
                 # look for violations to correctly handle it
                 if ret.violations != []:
                     ctx.ui.error(_("Sandbox violation result:"))
                     for result in ret.violations:
-                        ctx.ui.error("%s (%s -> %s)" % (result[0],
-                                                        result[1],
-                                                        result[2]))
+                        ctx.ui.error(
+                            "%s (%s -> %s)" % (result[0], result[1], result[2])
+                        )
                     raise Error(_("Sandbox violations!"))
 
                 if ret.code == 1:
                     raise ActionScriptException
         else:
             if mandatory:
-                raise Error(_("unable to call function from actions: %s")
-                            % func)
+                raise Error(_("unable to call function from actions: %s") % func)
 
         os.chdir(curDir)
         return True
@@ -775,12 +819,19 @@ class Builder:
                 path = os.path.normpath(path_info.path)
 
                 if not path.startswith("/"):
-                    raise Error(_("Source package '%s' defines a relative 'Path' element: "
-                                  "%s") % (self.spec.source.name, path_info.path))
+                    raise Error(
+                        _(
+                            "Source package '%s' defines a relative 'Path' element: "
+                            "%s"
+                        )
+                        % (self.spec.source.name, path_info.path)
+                    )
 
                 if path in paths:
-                    raise Error(_("Source package '%s' defines multiple 'Path' tags "
-                                  "for %s") % (self.spec.source.name, path_info.path))
+                    raise Error(
+                        _("Source package '%s' defines multiple 'Path' tags " "for %s")
+                        % (self.spec.source.name, path_info.path)
+                    )
 
                 paths.append(path)
 
@@ -789,8 +840,9 @@ class Builder:
             int(release)
             pisi.version.make_version(version)
         except (ValueError, pisi.version.InvalidVersionError):
-            raise Error(_("%s-%s is not a valid eopkg version format")
-                        % (version, release))
+            raise Error(
+                _("%s-%s is not a valid eopkg version format") % (version, release)
+            )
 
     def check_build_dependencies(self):
         """check and try to install build dependencies, otherwise fail."""
@@ -800,20 +852,31 @@ class Builder:
         for package in self.spec.packages:
             build_deps.extend(package.buildDependencies)
 
-        if not ctx.config.values.general.ignore_safety and \
-                not ctx.get_option('ignore_safety'):
-            if self.componentdb.has_component('system.devel'):
+        if not ctx.config.values.general.ignore_safety and not ctx.get_option(
+            "ignore_safety"
+        ):
+            if self.componentdb.has_component("system.devel"):
                 build_deps_names = set([x.package for x in build_deps])
-                devel_deps_names = set(self.componentdb.get_component('system.devel').packages)
+                devel_deps_names = set(
+                    self.componentdb.get_component("system.devel").packages
+                )
                 extra_names = devel_deps_names - build_deps_names
-                extra_names = [x for x in extra_names if not self.installdb.has_package(x)]
+                extra_names = [
+                    x for x in extra_names if not self.installdb.has_package(x)
+                ]
                 if extra_names:
-                    ctx.ui.warning(_('Safety switch: following extra packages in system.devel will be installed: ') +
-                               util.strlist(extra_names))
+                    ctx.ui.warning(
+                        _(
+                            "Safety switch: following extra packages in system.devel will be installed: "
+                        )
+                        + util.strlist(extra_names)
+                    )
                     extra_deps = [dependency.Dependency(package=x) for x in extra_names]
                     build_deps.extend(extra_deps)
             else:
-                ctx.ui.warning(_('Safety switch: the component system.devel cannot be found'))
+                ctx.ui.warning(
+                    _("Safety switch: the component system.devel cannot be found")
+                )
 
         # find out the build dependencies that are not satisfied...
         dep_unsatis = []
@@ -824,19 +887,27 @@ class Builder:
         pkgConfigs, pkgConfigs32 = self.packagedb.get_pkgconfig_providers()
 
         if dep_unsatis:
-            ctx.ui.info(_("Unsatisfied Build Dependencies:") + ' '
-                        + util.strlist([str(x) for x in dep_unsatis]))
+            ctx.ui.info(
+                _("Unsatisfied Build Dependencies:")
+                + " "
+                + util.strlist([str(x) for x in dep_unsatis])
+            )
 
             def fail():
-                raise Error(_('Cannot build package due to unsatisfied build dependencies'))
+                raise Error(
+                    _("Cannot build package due to unsatisfied build dependencies")
+                )
 
-            if not ctx.config.get_option('ignore_dependency'):
+            if not ctx.config.get_option("ignore_dependency"):
                 for dep in dep_unsatis:
                     if not dep.satisfied_by_repo():
-                        raise Error(_('Build dependency %s cannot be satisfied') % str(dep))
+                        raise Error(
+                            _("Build dependency %s cannot be satisfied") % str(dep)
+                        )
                 if ctx.ui.confirm(
-                _('Do you want to install the unsatisfied build dependencies')):
-                    ctx.ui.info(_('Installing build dependencies.'))
+                    _("Do you want to install the unsatisfied build dependencies")
+                ):
+                    ctx.ui.info(_("Installing build dependencies."))
                     depsResolved = list()
                     for dep in dep_unsatis:
                         if dep.type == "pkgconfig":
@@ -847,51 +918,58 @@ class Builder:
                                 depsResolved.append(pkgConfigs32[dep.package])
                         else:
                             depsResolved.append(dep.package)
-                    if not pisi.api.install([dep for dep in depsResolved], reinstall=True):
+                    if not pisi.api.install(
+                        [dep for dep in depsResolved], reinstall=True
+                    ):
                         fail()
                 else:
                     fail()
             else:
-                ctx.ui.warning(_('Ignoring build dependencies.'))
+                ctx.ui.warning(_("Ignoring build dependencies."))
 
     def check_patches(self):
         """check existence of patch files and their sizes."""
 
-        files_dir = os.path.abspath(util.join_path(self.specdir,
-                                                 ctx.const.files_dir))
+        files_dir = os.path.abspath(util.join_path(self.specdir, ctx.const.files_dir))
         for patch in self.spec.source.patches:
             patchFile = util.join_path(files_dir, patch.filename)
             if not os.access(patchFile, os.F_OK):
                 raise Error(_("Patch file is missing: %s\n") % patch.filename)
             if os.stat(patchFile).st_size == 0:
-                ctx.ui.warning(_('Patch file is empty: %s') % patch.filename)
+                ctx.ui.warning(_("Patch file is empty: %s") % patch.filename)
 
     def apply_patches(self):
-        files_dir = os.path.abspath(util.join_path(self.specdir,
-                                                 ctx.const.files_dir))
+        files_dir = os.path.abspath(util.join_path(self.specdir, ctx.const.files_dir))
 
         for patch in self.spec.source.patches:
             patchFile = util.join_path(files_dir, patch.filename)
             relativePath = patch.filename
             reverseApply = patch.reverse and patch.reverse.lower() == "true"
             if patch.compressionType:
-                patchFile = util.uncompress(patchFile,
-                                            compressType=patch.compressionType,
-                                            targetDir=ctx.config.tmp_dir())
+                patchFile = util.uncompress(
+                    patchFile,
+                    compressType=patch.compressionType,
+                    targetDir=ctx.config.tmp_dir(),
+                )
                 relativePath = relativePath.rsplit(".%s" % patch.compressionType, 1)[0]
 
             ctx.ui.action(_("Applying patch: %s") % patch.filename)
-            util.do_patch(self.pkg_src_dir(), patchFile,
-                          level=patch.level,
-                          name=relativePath,
-                          reverse=reverseApply)
+            util.do_patch(
+                self.pkg_src_dir(),
+                patchFile,
+                level=patch.level,
+                name=relativePath,
+                reverse=reverseApply,
+            )
         return True
 
     def generate_static_package_object(self):
         ar_files = []
         for root, dirs, files in os.walk(self.pkg_install_dir()):
             for f in files:
-                if f.endswith(ctx.const.ar_file_suffix) and util.is_ar_file(util.join_path(root, f)):
+                if f.endswith(ctx.const.ar_file_suffix) and util.is_ar_file(
+                    util.join_path(root, f)
+                ):
                     ar_files.append(util.join_path(root, f))
 
         if not len(ar_files):
@@ -900,16 +978,23 @@ class Builder:
         static_package_obj = pisi.specfile.Package()
         static_package_obj.name = self.spec.source.name + ctx.const.static_name_suffix
         # FIXME: find a better way to deal with the summary and description constants.
-        static_package_obj.summary['en'] = 'Ar files for %s' % (self.spec.source.name)
-        static_package_obj.description['en'] = 'Ar files for %s' % (self.spec.source.name)
+        static_package_obj.summary["en"] = "Ar files for %s" % (self.spec.source.name)
+        static_package_obj.description["en"] = "Ar files for %s" % (
+            self.spec.source.name
+        )
         static_package_obj.partOf = self.spec.source.partOf
         for f in ar_files:
-            static_package_obj.files.append(pisi.specfile.Path(path=f[len(self.pkg_install_dir()):], fileType="library"))
+            static_package_obj.files.append(
+                pisi.specfile.Path(
+                    path=f[len(self.pkg_install_dir()) :], fileType="library"
+                )
+            )
 
         # append all generated packages to dependencies
         for p in self.spec.packages:
             static_package_obj.packageDependencies.append(
-                pisi.dependency.Dependency(package=p.name))
+                pisi.dependency.Dependency(package=p.name)
+            )
 
         return static_package_obj
 
@@ -920,8 +1005,8 @@ class Builder:
         debug_package_obj.debug_package = True
         debug_package_obj.name = package.name + ctx.const.debug_name_suffix
         # FIXME: find a better way to deal with the summary and description constants.
-        debug_package_obj.summary['en'] = 'Debug files for %s' % (package.name)
-        debug_package_obj.description['en'] = 'Debug files for %s' % (package.name)
+        debug_package_obj.summary["en"] = "Debug files for %s" % (package.name)
+        debug_package_obj.description["en"] = "Debug files for %s" % (package.name)
         debug_package_obj.partOf = ctx.const.debug_component
 
         dependency = pisi.dependency.Dependency()
@@ -934,7 +1019,9 @@ class Builder:
             for key in debug_map:
                 v = debug_map[key]
                 if key.startswith(path_info.path):
-                    debug_path_info = pisi.specfile.Path(path=os.path.dirname(v), fileType="debug")
+                    debug_path_info = pisi.specfile.Path(
+                        path=os.path.dirname(v), fileType="debug"
+                    )
                     debug_package_obj.files.append(debug_path_info)
                     pops.append(key)
         for key in pops:
@@ -948,7 +1035,7 @@ class Builder:
         return self.filesdb.search_file(term)
 
     def get_binary_deps(self, fullpath, magic_token):
-        ''' Obtain and resolve binary dependencies for a given path '''
+        """Obtain and resolve binary dependencies for a given path"""
         bin_deps = set()
         if not os.path.exists(fullpath):
             return bin_deps
@@ -992,7 +1079,9 @@ class Builder:
         metadata.package.buildHost = ctx.config.values.build.build_host
 
         metadata.package.distribution = ctx.config.values.general.distribution
-        metadata.package.distributionRelease = ctx.config.values.general.distribution_release
+        metadata.package.distributionRelease = (
+            ctx.config.values.general.distribution_release
+        )
         metadata.package.architecture = ctx.config.values.general.architecture
         metadata.package.packageFormat = self.target_package_format
 
@@ -1016,31 +1105,54 @@ class Builder:
             path = fileinfo.path
             if path.endswith(".pc") and "pkgconfig" in path:
                 if not pkgconfigExec:
-                    ctx.ui.warning(_("pkg-config not found but package provides .pc files - skipping export of pkgconfig information"))
+                    ctx.ui.warning(
+                        _(
+                            "pkg-config not found but package provides .pc files - skipping export of pkgconfig information"
+                        )
+                    )
                     break
                 emul32pc = "usr/lib32/pkgconfig" in path
                 pcName = path.split("/")[-1].split(".pc")[0]
                 alreadyProvided = False
                 # Check its not been manually specified
-                hitlist = metadata.package.providesPkgConfig if not emul32pc else metadata.package.providesPkgConfig32
+                hitlist = (
+                    metadata.package.providesPkgConfig
+                    if not emul32pc
+                    else metadata.package.providesPkgConfig32
+                )
                 for pkgconfig in hitlist:
                     if pkgconfig.om == pcName:
                         alreadyProvided = True
                         break
                 if not alreadyProvided:
-                    pkgconfig = pisi.specfile.PkgConfigProvide() if not emul32pc else pisi.specfile.PkgConfig32Provide()
+                    pkgconfig = (
+                        pisi.specfile.PkgConfigProvide()
+                        if not emul32pc
+                        else pisi.specfile.PkgConfig32Provide()
+                    )
                     pkgconfig.om = pcName
                     pcPath = util.join_path(self.pkg_install_dir(), path)
-                    pkgextra = "PKG_CONFIG_PATH=\"/usr/lib32/pkgconfig:/usr/share/pkgconfig:/usr/lib/pkgconfig\" " if emul32pc else ""
+                    pkgextra = (
+                        'PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig:/usr/lib/pkgconfig" '
+                        if emul32pc
+                        else ""
+                    )
 
-                    code,out,err = pisi.util.run_batch("%s%s --modversion %s" % (pkgextra, pkgconfigExec, pcPath))
+                    code, out, err = pisi.util.run_batch(
+                        "%s%s --modversion %s" % (pkgextra, pkgconfigExec, pcPath)
+                    )
                     if code != 0:
-                        ctx.ui.warning(_("Unable to obtain pkgconfig module version for %s") % pcName)
+                        ctx.ui.warning(
+                            _("Unable to obtain pkgconfig module version for %s")
+                            % pcName
+                        )
                     else:
                         pkgconfig.version = out.strip().rstrip()
                     if emul32pc:
                         metadata.package.providesPkgConfig32.append(pkgconfig)
-                        ctx.ui.debug(_("Adding %s to provided pkgconfig32 list" % pcName))
+                        ctx.ui.debug(
+                            _("Adding %s to provided pkgconfig32 list" % pcName)
+                        )
                         knownPcFiles32.append(pcPath)
                     else:
                         metadata.package.providesPkgConfig.append(pkgconfig)
@@ -1063,7 +1175,9 @@ class Builder:
                 except:
                     pass
 
-                if filemagic is not None and self.is_dynamic_binary(fullpath, filemagic):
+                if filemagic is not None and self.is_dynamic_binary(
+                    fullpath, filemagic
+                ):
                     ctx.ui.debug("Checking %s for binary dependencies" % fullpath)
                     bindeps = self.get_binary_deps(fullpath, filemagic)
                     for dep in bindeps:
@@ -1072,13 +1186,19 @@ class Builder:
                             if depen.package == dep:
                                 found = True
                                 break
-                        if not found and dep not in metadata.package.packageDependencies:
+                        if (
+                            not found
+                            and dep not in metadata.package.packageDependencies
+                        ):
                             newDep = pisi.dependency.Dependency()
                             newDep.package = dep
                             pkg = self.installdb.get_package(dep)
                             newDep.releaseFrom = pkg.release
                             metadata.package.packageDependencies.append(newDep)
-                            ctx.ui.debug("%s depends on %s (>= release %s)" % (metadata.package.name, dep, pkg.release))
+                            ctx.ui.debug(
+                                "%s depends on %s (>= release %s)"
+                                % (metadata.package.name, dep, pkg.release)
+                            )
 
         # Seems insane iterating again for requirements, but we must ensure we grab
         # all pkgconfig files first! (also this is just a small list of known pc files :)
@@ -1088,18 +1208,27 @@ class Builder:
                 lines = list()
 
                 emul32pc = pcfilelist == knownPcFiles32
-                pkgextra = "PKG_CONFIG_PATH=\"/usr/lib32/pkgconfig:/usr/share/pkgconfig:/usr/lib/pkgconfig\" " if emul32pc else ""
-                code,out,err = pisi.util.run_batch("%s%s --print-requires %s" % (pkgextra, pkgconfigExec, pcFile))
+                pkgextra = (
+                    'PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig:/usr/lib/pkgconfig" '
+                    if emul32pc
+                    else ""
+                )
+                code, out, err = pisi.util.run_batch(
+                    "%s%s --print-requires %s" % (pkgextra, pkgconfigExec, pcFile)
+                )
                 for line in out.split("\n"):
                     line = line.strip().rstrip()
-                    if line == '':
+                    if line == "":
                         continue
                     lines.append(line)
                 # Cmon, give us your details!
-                code,out,err = pisi.util.run_batch("%s%s --print-requires-private %s" % (pkgextra, pkgconfigExec, pcFile))
+                code, out, err = pisi.util.run_batch(
+                    "%s%s --print-requires-private %s"
+                    % (pkgextra, pkgconfigExec, pcFile)
+                )
                 for line in out.split("\n"):
                     line = line.strip().rstrip()
-                    if line == '':
+                    if line == "":
                         continue
                     # Make sure round 1 didn't already expose this
                     if line in lines:
@@ -1109,7 +1238,7 @@ class Builder:
                 for line in lines:
                     line = line.strip().rstrip()
 
-                    if line ==  '':
+                    if line == "":
                         continue
                         # In the future we'll also provide a mechanism to support
                         # ">=" and "==" dependencies in pkgconfig, for now we'll
@@ -1118,7 +1247,11 @@ class Builder:
                         line = line.split()[0]
                     alreadyProvided = False
                     # Check its not been manually specified
-                    hitlist = metadata.package.providesPkgConfig32 if emul32pc else metadata.package.providesPkgConfig
+                    hitlist = (
+                        metadata.package.providesPkgConfig32
+                        if emul32pc
+                        else metadata.package.providesPkgConfig
+                    )
                     for pkgconfig in hitlist:
                         if pkgconfig.om == line:
                             alreadyProvided = True
@@ -1153,7 +1286,14 @@ class Builder:
                                 pkg = self.installdb.get_package(nom[0])
                             pkg = self.installdb.get_package_by_pkgconfig(line)
                     if not pkg:
-                        ctx.ui.warning("%s depends on unaccounted pkgconfig file! pkgconfig%s(%s)" % (metadata.package.name, "" if not emul32pc else "32", line))
+                        ctx.ui.warning(
+                            "%s depends on unaccounted pkgconfig file! pkgconfig%s(%s)"
+                            % (
+                                metadata.package.name,
+                                "" if not emul32pc else "32",
+                                line,
+                            )
+                        )
                         # in the future we'll raise an enormous error..
                         continue
                     # Cache for later
@@ -1174,7 +1314,11 @@ class Builder:
                         newDep.package = pkg.name
                         newDep.releaseFrom = pkg.release
                         metadata.package.packageDependencies.append(newDep)
-                        output = "%s also depends on %s (>= release %s)" % (metadata.package.name, pkg.name, pkg.release)
+                        output = "%s also depends on %s (>= release %s)" % (
+                            metadata.package.name,
+                            pkg.name,
+                            pkg.release,
+                        )
                         if cached:
                             output += " [cached]"
                         ctx.ui.debug(output)
@@ -1207,10 +1351,12 @@ class Builder:
         def add_path(path):
             # add the files under material path
             for fpath, fhash in util.get_file_hashes(path, collisions, install_dir):
-                if ctx.get_option('create_static') \
-                    and fpath.endswith(ctx.const.ar_file_suffix) \
-                    and not package.name.endswith(ctx.const.static_name_suffix) \
-                    and util.is_ar_file(fpath):
+                if (
+                    ctx.get_option("create_static")
+                    and fpath.endswith(ctx.const.ar_file_suffix)
+                    and not package.name.endswith(ctx.const.static_name_suffix)
+                    and util.is_ar_file(fpath)
+                ):
                     # if this is an ar file, and this package is not a static package,
                     # don't include this file into the package.
                     continue
@@ -1222,10 +1368,17 @@ class Builder:
                 else:
                     st = os.lstat(fpath)
 
-                frpath =  frpath.decode("latin1").encode('utf-8')
-                d[frpath] = pisi.files.FileInfo(path=frpath, type=ftype, permanent=permanent,
-                                     size=fsize, hash=fhash, uid=str(st.st_uid), gid=str(st.st_gid),
-                                     mode=oct(stat.S_IMODE(st.st_mode)))
+                frpath = frpath.decode("latin1").encode("utf-8")
+                d[frpath] = pisi.files.FileInfo(
+                    path=frpath,
+                    type=ftype,
+                    permanent=permanent,
+                    size=fsize,
+                    hash=fhash,
+                    uid=str(st.st_uid),
+                    gid=str(st.st_gid),
+                    mode=oct(stat.S_IMODE(st.st_mode)),
+                )
 
                 if stat.S_IMODE(st.st_mode) & stat.S_ISUID:
                     ctx.ui.warning(_("/%s has suid bit set") % frpath)
@@ -1251,14 +1404,18 @@ class Builder:
                 filepath = util.join_path(root, fn)
                 try:
                     fileinfo = magic.from_file(filepath)
-                    strip_debug_action(filepath, fileinfo, install_dir, self.actionGlobals)
+                    strip_debug_action(
+                        filepath, fileinfo, install_dir, self.actionGlobals
+                    )
                     exclude_special_files(filepath, fileinfo, self.actionGlobals)
                 except Exception:
                     pass
 
     def get_soname(self, path):
-        ''' Get the soname for a given path '''
-        code,out,err = pisi.util.run_batch("LC_ALL=C /usr/bin/readelf -d {}".format(path))
+        """Get the soname for a given path"""
+        code, out, err = pisi.util.run_batch(
+            "LC_ALL=C /usr/bin/readelf -d {}".format(path)
+        )
 
         if code != 0:
             return None
@@ -1271,7 +1428,7 @@ class Builder:
         return None
 
     def is_dynamic_library(self, path):
-        ''' Similar to is_dynamic_binary, but only for libraries '''
+        """Similar to is_dynamic_binary, but only for libraries"""
         if not os.path.exists(path) or not os.path.isfile(path):
             return False
         try:
@@ -1283,7 +1440,7 @@ class Builder:
         return False
 
     def is_dynamic_binary(self, path, mg):
-        ''' Determine if the given path is a dynamic binary file '''
+        """Determine if the given path is a dynamic binary file"""
         if not os.path.exists(path) or not os.path.isfile(path):
             return False
         if self.v_dyn.match(mg):
@@ -1293,10 +1450,10 @@ class Builder:
         return False
 
     def accumulate_providers(self, directory):
-        ''' Accumulate all providers from the package root '''
+        """Accumulate all providers from the package root"""
         self.soname_providers = set()
 
-        for root,dirs,files in os.walk(directory):
+        for root, dirs, files in os.walk(directory):
             for f in files:
                 p = os.path.join(root, f)
                 if not self.is_dynamic_library(p):
@@ -1306,8 +1463,10 @@ class Builder:
                     self.soname_providers.add(s)
 
     def accumulate_dependencies(self, path, emul32=False):
-        ''' Accumulate all shared dependencies of a given path '''
-        code,out,err = pisi.util.run_batch("LC_ALL=C /usr/bin/readelf -d {}".format(path))
+        """Accumulate all shared dependencies of a given path"""
+        code, out, err = pisi.util.run_batch(
+            "LC_ALL=C /usr/bin/readelf -d {}".format(path)
+        )
 
         if code != 0:
             return []
@@ -1339,13 +1498,24 @@ class Builder:
         dirname = os.path.dirname(path)
 
         # Filter rpath and same-dir files
-        filter_deps = [x for x in check_deps for y in r_paths if os.path.exists(os.path.join(y, x)) or os.path.exists(os.path.join(dirname, x))]
+        filter_deps = [
+            x
+            for x in check_deps
+            for y in r_paths
+            if os.path.exists(os.path.join(y, x))
+            or os.path.exists(os.path.join(dirname, x))
+        ]
 
         # Set from filter
         ret_deps = [s for s in check_deps if s not in filter_deps]
 
         # Join into fullpaths ready for probing
-        full_paths = [os.path.join(y,x) for x in ret_deps for y in valid_libs if os.path.exists(os.path.join(y,x))]
+        full_paths = [
+            os.path.join(y, x)
+            for x in ret_deps
+            for y in valid_libs
+            if os.path.exists(os.path.join(y, x))
+        ]
         return full_paths
 
     def build_packages(self):
@@ -1359,7 +1529,7 @@ class Builder:
         # Operations and filters for package files
         self.file_actions()
 
-        if ctx.get_option('create_static'):
+        if ctx.get_option("create_static"):
             obj = self.generate_static_package_object()
             if obj:
                 self.spec.packages.append(obj)
@@ -1391,8 +1561,9 @@ class Builder:
             for afile in package.additionalFiles:
                 src = os.path.join(ctx.const.files_dir, afile.filename)
                 dest = os.path.join(
-                        install_dir + os.path.dirname(afile.target),
-                        os.path.basename(afile.target))
+                    install_dir + os.path.dirname(afile.target),
+                    os.path.basename(afile.target),
+                )
                 util.copy_file(src, dest)
                 if afile.permission:
                     # mode is octal!
@@ -1401,21 +1572,26 @@ class Builder:
                     try:
                         os.chown(dest, pwd.getpwnam(afile.owner)[2], -1)
                     except KeyError:
-                        ctx.ui.warning(_("No user named '%s' found "
-                                         "on the system") % afile.owner)
+                        ctx.ui.warning(
+                            _("No user named '%s' found " "on the system") % afile.owner
+                        )
                 if afile.group:
                     try:
                         os.chown(dest, -1, grp.getgrnam(afile.group)[2])
                     except KeyError:
-                        ctx.ui.warning(_("No group named '%s' found "
-                                         "on the system") % afile.group)
+                        ctx.ui.warning(
+                            _("No group named '%s' found " "on the system")
+                            % afile.group
+                        )
         os.chdir(c)
 
         # Show the files those are not collected from the install dir
         abandoned_files = self.get_abandoned_files()
         if abandoned_files:
-            ctx.ui.error(_("There are abandoned files "
-                           "under the install dir (%s):") % install_dir)
+            ctx.ui.error(
+                _("There are abandoned files " "under the install dir (%s):")
+                % install_dir
+            )
 
             for f in abandoned_files:
                 ctx.ui.info("    - %s" % f)
@@ -1459,8 +1635,7 @@ class Builder:
 
             if not self.files.list:
                 if not package.debug_package:
-                    ctx.ui.warning(_("Ignoring empty package %s") \
-                                     % package.name)
+                    ctx.ui.warning(_("Ignoring empty package %s") % package.name)
                 continue
 
             ctx.ui.action(_("Building package: %s") % package.name)
@@ -1471,7 +1646,7 @@ class Builder:
 
             name = self.package_filename(self.metadata.package)
 
-            outdir = ctx.get_option('output_dir')
+            outdir = ctx.get_option("output_dir")
             if outdir:
                 name = util.join_path(outdir, name)
 
@@ -1484,15 +1659,14 @@ class Builder:
 
             ctx.ui.info(_("Creating %s...") % name)
 
-            pkg = pisi.package.Package(name, "w",
-                                       format=self.target_package_format,
-                                       tmp_dir=self.pkg_dir())
+            pkg = pisi.package.Package(
+                name, "w", format=self.target_package_format, tmp_dir=self.pkg_dir()
+            )
 
             # add comar files to package
             os.chdir(self.specdir)
             for pcomar in package.providesComar:
-                fname = util.join_path(ctx.const.comar_dir,
-                                     pcomar.script)
+                fname = util.join_path(ctx.const.comar_dir, pcomar.script)
                 pkg.add_to_package(fname)
 
             # add xmls and files
@@ -1508,7 +1682,7 @@ class Builder:
 
             for finfo in pkg.files.list:
                 orgname = util.join_path("install", finfo.path)
-                orgname = orgname.encode('utf-8').decode('utf-8').encode("latin1")
+                orgname = orgname.encode("utf-8").decode("utf-8").encode("latin1")
                 if package.debug_package:
                     orgname = util.join_path("debug", finfo.path)
                 pkg.add_to_install(orgname, finfo.path)
@@ -1535,7 +1709,6 @@ class Builder:
         else:
             ctx.ui.info(_("Keeping build directory"))
 
-
         # reset environment variables after build.  this one is for
         # buildfarm actually. buildfarm re-inits pisi for each build
         # and left environment variables go directly into initial dict
@@ -1543,11 +1716,14 @@ class Builder:
         os.environ.clear()
         os.environ.update(ctx.config.environ)
 
-    def search_old_packages_for_delta(self, release=None, max_count=0,
-                                      search_paths=None):
+    def search_old_packages_for_delta(
+        self, release=None, max_count=0, search_paths=None
+    ):
         if search_paths is None:
-            search_paths = (ctx.config.compiled_packages_dir(),
-                            ctx.config.debug_packages_dir())
+            search_paths = (
+                ctx.config.compiled_packages_dir(),
+                ctx.config.debug_packages_dir(),
+            )
 
         if release:
             self.delta_search_paths[release] = search_paths
@@ -1555,7 +1731,6 @@ class Builder:
             self.delta_history_search_paths.append((search_paths, max_count))
 
     def build_delta_packages(self, package):
-
         def find_old_package(filename, search_paths):
             for package_dir in search_paths:
                 path = util.join_path(package_dir, filename)
@@ -1590,8 +1765,7 @@ class Builder:
                 if update.release in old_packages:
                     continue
 
-                filename = self.package_filename(package.metadata.package,
-                                                 update)
+                filename = self.package_filename(package.metadata.package, update)
                 old_package = find_old_package(filename, search_paths)
                 if old_package:
                     found_old_packages[update.release] = old_package
@@ -1602,12 +1776,14 @@ class Builder:
             old_packages.update(found_old_packages)
 
         from pisi.operations.delta import create_delta_packages_from_obj
-        return create_delta_packages_from_obj(list(old_packages.values()),
-                                              package,
-                                              self.specdir)
+
+        return create_delta_packages_from_obj(
+            list(old_packages.values()), package, self.specdir
+        )
 
 
 # build functions...
+
 
 def build(pspec):
     pb = Builder(pspec)
@@ -1618,53 +1794,60 @@ def build(pspec):
         raise e
     finally:
         if ctx.ui.errors or ctx.ui.warnings:
-            ctx.ui.warning(_("*** %d error(s), %d warning(s)") \
-                            % (ctx.ui.errors, ctx.ui.warnings))
+            ctx.ui.warning(
+                _("*** %d error(s), %d warning(s)") % (ctx.ui.errors, ctx.ui.warnings)
+            )
     return pb
 
-order = {"none": 0,
-         "fetch": 1,
-         "unpack": 2,
-         "setupaction": 3,
-         "buildaction": 4,
-         "installaction": 5,
-         "buildpackages": 6}
+
+order = {
+    "none": 0,
+    "fetch": 1,
+    "unpack": 2,
+    "setupaction": 3,
+    "buildaction": 4,
+    "installaction": 5,
+    "buildpackages": 6,
+}
+
 
 def __buildState_fetch(pb):
     # fetch is the first state to run.
     pb.check_patches()
     pb.fetch_source_archives()
 
+
 def __buildState_unpack(pb, last):
     if order[last] < order["fetch"]:
         __buildState_fetch(pb)
     pb.unpack_source_archives()
+
 
 def __buildState_setupaction(pb, last):
     if order[last] < order["unpack"]:
         __buildState_unpack(pb, last)
     pb.run_setup_action()
 
-def __buildState_buildaction(pb, last):
 
+def __buildState_buildaction(pb, last):
     if order[last] < order["setupaction"]:
         __buildState_setupaction(pb, last)
     pb.run_build_action()
 
-def __buildState_checkaction(pb, last):
 
+def __buildState_checkaction(pb, last):
     if order[last] < order["buildaction"]:
         __buildState_buildaction(pb, last)
     pb.run_check_action()
 
-def __buildState_installaction(pb, last):
 
+def __buildState_installaction(pb, last):
     if order[last] < order["buildaction"]:
         __buildState_buildaction(pb, last)
     pb.run_install_action()
 
-def __buildState_buildpackages(pb):
 
+def __buildState_buildpackages(pb):
     for build_type in pb.build_types:
         pb.set_build_type(build_type)
         last = pb.get_state() or "none"
@@ -1673,6 +1856,7 @@ def __buildState_buildpackages(pb):
             __buildState_installaction(pb, last)
 
     pb.build_packages()
+
 
 def build_until(pspec, state):
     pb = Builder(pspec)

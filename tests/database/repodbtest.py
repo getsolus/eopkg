@@ -13,8 +13,8 @@
 import testcase
 import pisi
 
-class RepoDBTestCase(testcase.TestCase):
 
+class RepoDBTestCase(testcase.TestCase):
     def setUp(self):
         testcase.TestCase.setUp(self)
         self.repodb = pisi.db.repodb.RepoDB()
@@ -40,13 +40,17 @@ class RepoDBTestCase(testcase.TestCase):
         assert "test-repo" not in self.repodb.list_repos()
 
     def testListRepos(self):
-        assert set(self.repodb.list_repos()) == set(['pardus-2007', 'contrib-2007', 'pardus-2007-src'])
+        assert set(self.repodb.list_repos()) == set(
+            ["pardus-2007", "contrib-2007", "pardus-2007-src"]
+        )
 
     def testGetSourceRepos(self):
-        assert set(self.repodb.get_source_repos()) == set(['pardus-2007-src'])
+        assert set(self.repodb.get_source_repos()) == set(["pardus-2007-src"])
 
     def testGetBinaryRepos(self):
-        assert set(self.repodb.get_binary_repos()) == set(['pardus-2007', 'contrib-2007'])
+        assert set(self.repodb.get_binary_repos()) == set(
+            ["pardus-2007", "contrib-2007"]
+        )
 
     def testGetRepo(self):
         repo = self.repodb.get_repo("pardus-2007")
@@ -55,10 +59,23 @@ class RepoDBTestCase(testcase.TestCase):
 
     def testRepoOrder(self):
         repoorder = pisi.db.repodb.RepoOrder()
-        assert repoorder.get_order() == ['pardus-2007', 'contrib-2007', 'pardus-2007-src']
+        assert repoorder.get_order() == [
+            "pardus-2007",
+            "contrib-2007",
+            "pardus-2007-src",
+        ]
 
         repoorder.add("test-repo", "http://test-repo/eopkg-index.xml")
-        assert repoorder.get_order() == ['pardus-2007', 'contrib-2007', 'pardus-2007-src', 'test-repo']
+        assert repoorder.get_order() == [
+            "pardus-2007",
+            "contrib-2007",
+            "pardus-2007-src",
+            "test-repo",
+        ]
 
         repoorder.remove("test-repo")
-        assert repoorder.get_order() == ['pardus-2007', 'contrib-2007', 'pardus-2007-src']
+        assert repoorder.get_order() == [
+            "pardus-2007",
+            "contrib-2007",
+            "pardus-2007-src",
+        ]

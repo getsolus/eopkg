@@ -17,12 +17,14 @@ import pisi.context as ctx
 import pisi.util as util
 
 # lower borks for international locales. What we want is ascii lower.
-ascii_lowercase = 'abcdefghijklmnopqrstuvwxyz'
-ascii_uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+ascii_lowercase = "abcdefghijklmnopqrstuvwxyz"
+ascii_uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 lower_map = str.maketrans(ascii_uppercase, ascii_lowercase)
+
 
 class Singleton(object):
     _the_instances = {}
+
     def __new__(type):
         if not type.__name__ in Singleton._the_instances:
             Singleton._the_instances[type.__name__] = object.__new__(type)
@@ -32,11 +34,11 @@ class Singleton(object):
         return self._the_instances[type(self).__name__]
 
     def _delete(self):
-        #FIXME: After invalidate, previously initialized db object becomes stale
+        # FIXME: After invalidate, previously initialized db object becomes stale
         del self._the_instances[type(self).__name__]
 
-class LazyDB(Singleton):
 
+class LazyDB(Singleton):
     cache_version = "2.4"
 
     def __init__(self, cacheable=False, cachedir=None):
@@ -49,7 +51,10 @@ class LazyDB(Singleton):
         return self.initialized
 
     def __cache_file(self):
-        return util.join_path(ctx.config.cache_root_dir(), "%s.cache" % self.__class__.__name__.translate(lower_map))
+        return util.join_path(
+            ctx.config.cache_root_dir(),
+            "%s.cache" % self.__class__.__name__.translate(lower_map),
+        )
 
     def __cache_version_file(self):
         return "%s.version" % self.__cache_file()
@@ -66,8 +71,7 @@ class LazyDB(Singleton):
                 f.write(LazyDB.cache_version)
                 f.flush()
                 os.fsync(f.fileno())
-            pickle.dump(self._instance().__dict__,
-                         file(self.__cache_file(), 'wb'), 1)
+            pickle.dump(self._instance().__dict__, file(self.__cache_file(), "wb"), 1)
 
     def cache_valid(self):
         if not self.cachedir:
@@ -84,7 +88,7 @@ class LazyDB(Singleton):
     def cache_load(self):
         if os.path.exists(self.__cache_file()) and self.cache_valid():
             try:
-                self._instance().__dict__ = pickle.load(file(self.__cache_file(), 'rb'))
+                self._instance().__dict__ = pickle.load(file(self.__cache_file(), "rb"))
                 return True
             except (pickle.UnpicklingError, EOFError):
                 if os.access(ctx.config.cache_root_dir(), os.W_OK):
@@ -114,7 +118,9 @@ class LazyDB(Singleton):
             start = time.time()
             self.__init()
             end = time.time()
-            ctx.ui.debug("%s initialized in %s." % (self.__class__.__name__, end - start))
+            ctx.ui.debug(
+                "%s initialized in %s." % (self.__class__.__name__, end - start)
+            )
             self.initialized = True
 
         if attr not in self.__dict__:

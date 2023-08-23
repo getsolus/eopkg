@@ -34,13 +34,15 @@ import pisi.group as group
 import pisi.util as util
 import pisi.db
 
+
 class Error(pisi.Error):
     pass
 
+
 __metaclass__ = autoxml.autoxml
 
-class Packager:
 
+class Packager:
     t_Name = [autoxml.Text, autoxml.mandatory]
     t_Email = [autoxml.String, autoxml.mandatory]
 
@@ -50,7 +52,6 @@ class Packager:
 
 
 class AdditionalFile:
-
     s_Filename = [autoxml.String, autoxml.mandatory]
     a_target = [autoxml.String, autoxml.mandatory]
     a_permission = [autoxml.String, autoxml.optional]
@@ -60,51 +61,51 @@ class AdditionalFile:
     def __str__(self):
         s = "%s -> %s " % (self.filename, self.target)
         if self.permission:
-            s += '(%s)' % self.permission
+            s += "(%s)" % self.permission
         return s
 
-class Type:
 
+class Type:
     s_type = [autoxml.String, autoxml.mandatory]
     a_package = [autoxml.String, autoxml.optional]
 
-class Action:
 
+class Action:
     # Valid actions:
     #
     # reverseDependencyUpdate
     # systemRestart
     # serviceRestart
 
-    s_action  = [autoxml.String, autoxml.mandatory]
+    s_action = [autoxml.String, autoxml.mandatory]
     a_package = [autoxml.String, autoxml.optional]
-    a_target  = [autoxml.String, autoxml.optional]
+    a_target = [autoxml.String, autoxml.optional]
 
     def __str__(self):
         return self.action
 
-class Patch:
 
+class Patch:
     s_Filename = [autoxml.String, autoxml.mandatory]
     a_compressionType = [autoxml.String, autoxml.optional]
     a_level = [autoxml.Integer, autoxml.optional]
     a_reverse = [autoxml.String, autoxml.optional]
 
-    #FIXME: what's the cleanest way to give a default value for reading level?
-    #def decode_hook(self, node, errs, where):
+    # FIXME: what's the cleanest way to give a default value for reading level?
+    # def decode_hook(self, node, errs, where):
     #    if self.level == None:
     #        self.level = 0
 
     def __str__(self):
         s = self.filename
         if self.compressionType:
-            s += ' (' + self.compressionType + ')'
+            s += " (" + self.compressionType + ")"
         if self.level:
-            s += ' level:' + self.level
+            s += " level:" + self.level
         return s
 
-class Update:
 
+class Update:
     a_release = [autoxml.String, autoxml.mandatory]
     # 'type' attribute is here to keep backward compatibility
     a_type = [autoxml.String, autoxml.optional]
@@ -124,11 +125,11 @@ class Update:
             s += ", type=" + self.type
         return s
 
-class Path:
 
+class Path:
     s_Path = [autoxml.String, autoxml.mandatory]
-    a_fileType =  [autoxml.String, autoxml.optional]
-    a_permanent =  [autoxml.String, autoxml.optional]
+    a_fileType = [autoxml.String, autoxml.optional]
+    a_permanent = [autoxml.String, autoxml.optional]
 
     def __str__(self):
         s = self.path
@@ -137,7 +138,6 @@ class Path:
 
 
 class ComarProvide:
-
     s_om = [autoxml.String, autoxml.mandatory]
     a_script = [autoxml.String, autoxml.mandatory]
     a_name = [autoxml.String, autoxml.optional]
@@ -145,68 +145,69 @@ class ComarProvide:
     def __str__(self):
         # FIXME: descriptive enough?
         s = self.script
-        s += ' (' + self.om + '%s' % (' for %s' % self.name if self.name else '') + ')'
+        s += " (" + self.om + "%s" % (" for %s" % self.name if self.name else "") + ")"
         return s
+
 
 class PkgConfigProvide:
-
     s_om = [autoxml.String, autoxml.mandatory]
     a_version = [autoxml.String, autoxml.optional]
 
     def __str__(self):
         s = self.om
-        if self.a_version and self.a_version != '':
+        if self.a_version and self.a_version != "":
             s += " == " + self.a_version
         return s
+
 
 class PkgConfig32Provide:
-
     s_om = [autoxml.String, autoxml.mandatory]
     a_version = [autoxml.String, autoxml.optional]
 
     def __str__(self):
         s = self.om
-        if self.a_version and self.a_version != '':
+        if self.a_version and self.a_version != "":
             s += " == " + self.a_version
         return s
 
-class Archive:
 
-    s_uri = [ autoxml.String, autoxml.mandatory ]
-    a_type = [ autoxml.String, autoxml.optional ]
-    a_sha1sum =[ autoxml.String, autoxml.mandatory ]
-    a_target =[ autoxml.String, autoxml.optional ]
+class Archive:
+    s_uri = [autoxml.String, autoxml.mandatory]
+    a_type = [autoxml.String, autoxml.optional]
+    a_sha1sum = [autoxml.String, autoxml.mandatory]
+    a_target = [autoxml.String, autoxml.optional]
 
     def decode_hook(self, node, errs, where):
         self.name = os.path.basename(self.uri)
 
     def __str__(self):
-        s = _('URI: %s, type: %s, sha1sum: %s') % (self.uri, self.type, self.sha1sum)
+        s = _("URI: %s, type: %s, sha1sum: %s") % (self.uri, self.type, self.sha1sum)
         return s
 
-class Source:
 
+class Source:
     t_Name = [autoxml.String, autoxml.mandatory]
     t_Homepage = [autoxml.String, autoxml.optional]
     t_Packager = [Packager, autoxml.mandatory]
-    t_ExcludeArch = [ [autoxml.String], autoxml.optional]
-    t_License = [ [autoxml.String], autoxml.mandatory]
-    t_IsA = [ [autoxml.String], autoxml.optional]
+    t_ExcludeArch = [[autoxml.String], autoxml.optional]
+    t_License = [[autoxml.String], autoxml.mandatory]
+    t_IsA = [[autoxml.String], autoxml.optional]
     t_PartOf = [autoxml.String, autoxml.optional]
     t_Summary = [autoxml.LocalText, autoxml.mandatory]
     t_Description = [autoxml.LocalText, autoxml.mandatory]
-    t_Icon = [ autoxml.String, autoxml.optional]
-    t_Archive = [ [Archive], autoxml.mandatory, "Archive" ]
-    t_AdditionalFiles = [ [AdditionalFile], autoxml.optional]
-    t_BuildDependencies = [ [pisi.dependency.Dependency], autoxml.optional]
-    t_SupportsClang = [ autoxml.String, autoxml.optional, "SupportsClang" ]    
-    t_Patches = [ [Patch], autoxml.optional]
-    t_Version = [ autoxml.String, autoxml.optional]
-    t_Release = [ autoxml.String, autoxml.optional]
-    t_SourceURI = [ autoxml.String, autoxml.optional ] # used in index
+    t_Icon = [autoxml.String, autoxml.optional]
+    t_Archive = [[Archive], autoxml.mandatory, "Archive"]
+    t_AdditionalFiles = [[AdditionalFile], autoxml.optional]
+    t_BuildDependencies = [[pisi.dependency.Dependency], autoxml.optional]
+    t_SupportsClang = [autoxml.String, autoxml.optional, "SupportsClang"]
+    t_Patches = [[Patch], autoxml.optional]
+    t_Version = [autoxml.String, autoxml.optional]
+    t_Release = [autoxml.String, autoxml.optional]
+    t_SourceURI = [autoxml.String, autoxml.optional]  # used in index
 
     def buildtimeDependencies(self):
         return self.buildDependencies
+
 
 class AnyDependency:
     t_Dependencies = [[pisi.dependency.Dependency], autoxml.optional, "Dependency"]
@@ -244,29 +245,45 @@ class AnyDependency:
                 return True
         return False
 
-class Package:
 
-    t_Name = [ autoxml.String, autoxml.mandatory ]
-    t_Summary = [ autoxml.LocalText, autoxml.optional ]
-    t_Description = [ autoxml.LocalText, autoxml.optional ]
-    t_IsA = [ [autoxml.String], autoxml.optional]
+class Package:
+    t_Name = [autoxml.String, autoxml.mandatory]
+    t_Summary = [autoxml.LocalText, autoxml.optional]
+    t_Description = [autoxml.LocalText, autoxml.optional]
+    t_IsA = [[autoxml.String], autoxml.optional]
     t_PartOf = [autoxml.String, autoxml.optional]
-    t_License = [ [autoxml.String], autoxml.optional]
-    t_Icon = [ autoxml.String, autoxml.optional]
+    t_License = [[autoxml.String], autoxml.optional]
+    t_Icon = [autoxml.String, autoxml.optional]
     t_BuildFlags = [[autoxml.String], autoxml.optional, "BuildFlags/Flag"]
-    t_BuildType = [ autoxml.String, autoxml.optional ]
+    t_BuildType = [autoxml.String, autoxml.optional]
     t_BuildDependencies = [[pisi.dependency.Dependency], autoxml.optional]
-    t_PackageDependencies = [ [pisi.dependency.Dependency], autoxml.optional, "RuntimeDependencies/Dependency"]
-    t_PackageAnyDependencies = [[AnyDependency], autoxml.optional, "RuntimeDependencies/AnyDependency"]
-    t_ComponentDependencies = [ [autoxml.String], autoxml.optional, "RuntimeDependencies/Component"]
-    t_Files = [ [Path], autoxml.optional]
-    t_Conflicts = [ [pisi.conflict.Conflict], autoxml.optional, "Conflicts/Package"]
-    t_Replaces = [ [pisi.replace.Replace], autoxml.optional, "Replaces/Package"]
-    t_ProvidesComar = [ [ComarProvide], autoxml.optional, "Provides/COMAR"]
-    t_ProvidesPkgConfig = [ [PkgConfigProvide], autoxml.optional, "Provides/PkgConfig"]
-    t_ProvidesPkgConfig32 = [ [PkgConfig32Provide], autoxml.optional, "Provides/PkgConfig32"]
-    t_AdditionalFiles = [ [AdditionalFile], autoxml.optional]
-    t_History = [ [Update], autoxml.optional]
+    t_PackageDependencies = [
+        [pisi.dependency.Dependency],
+        autoxml.optional,
+        "RuntimeDependencies/Dependency",
+    ]
+    t_PackageAnyDependencies = [
+        [AnyDependency],
+        autoxml.optional,
+        "RuntimeDependencies/AnyDependency",
+    ]
+    t_ComponentDependencies = [
+        [autoxml.String],
+        autoxml.optional,
+        "RuntimeDependencies/Component",
+    ]
+    t_Files = [[Path], autoxml.optional]
+    t_Conflicts = [[pisi.conflict.Conflict], autoxml.optional, "Conflicts/Package"]
+    t_Replaces = [[pisi.replace.Replace], autoxml.optional, "Replaces/Package"]
+    t_ProvidesComar = [[ComarProvide], autoxml.optional, "Provides/COMAR"]
+    t_ProvidesPkgConfig = [[PkgConfigProvide], autoxml.optional, "Provides/PkgConfig"]
+    t_ProvidesPkgConfig32 = [
+        [PkgConfig32Provide],
+        autoxml.optional,
+        "Provides/PkgConfig32",
+    ]
+    t_AdditionalFiles = [[AdditionalFile], autoxml.optional]
+    t_History = [[Update], autoxml.optional]
 
     # FIXME: needed in build process, to distinguish dynamically generated debug packages.
     # find a better way to do this.
@@ -285,16 +302,16 @@ class Package:
         return deps
 
     def pkg_dir(self):
-        packageDir = self.name + '-' \
-                     + self.version + '-' \
-                     + self.release
+        packageDir = self.name + "-" + self.version + "-" + self.release
 
         return util.join_path(ctx.config.packages_dir(), packageDir)
 
     def satisfies_runtime_dependencies(self):
         for dep in self.runtimeDependencies():
             if not dep.satisfied_by_installed():
-                ctx.ui.error(_('%s dependency of package %s is not satisfied') % (dep, self.name))
+                ctx.ui.error(
+                    _("%s dependency of package %s is not satisfied") % (dep, self.name)
+                )
                 return False
         return True
 
@@ -390,44 +407,51 @@ class Package:
         return actions
 
     def __str__(self):
-        s = _('Name: %s, version: %s, release: %s\n') \
-                % (self.name, self.version, self.release)
-        s += _('Summary: %s\n') % str(self.summary)
-        s += _('Description: %s\n') % str(self.description)
-        s += _('Licenses: %s\n') % ", ".join(self.license)
-        s += _('Component: %s\n') % str(self.partOf)
-        if len(self.providesComar) > 0 or len(self.providesPkgConfig) > 0 or len(self.providesPkgConfig32) > 0:
-            s += _('Provides: ')
+        s = _("Name: %s, version: %s, release: %s\n") % (
+            self.name,
+            self.version,
+            self.release,
+        )
+        s += _("Summary: %s\n") % str(self.summary)
+        s += _("Description: %s\n") % str(self.description)
+        s += _("Licenses: %s\n") % ", ".join(self.license)
+        s += _("Component: %s\n") % str(self.partOf)
+        if (
+            len(self.providesComar) > 0
+            or len(self.providesPkgConfig) > 0
+            or len(self.providesPkgConfig32) > 0
+        ):
+            s += _("Provides: ")
         if len(self.providesComar) > 0:
             for x in self.providesComar:
-               s += x.om + ' '
-            s += '\n'
+                s += x.om + " "
+            s += "\n"
         if len(self.providesPkgConfig) > 0:
             for x in self.providesPkgConfig:
                 s += "pkgconfig(" + x.om + ") "
-            s += '\n'
+            s += "\n"
         if len(self.providesPkgConfig32) > 0:
             for x in self.providesPkgConfig32:
                 s += "pkgconfig32(" + x.om + ") "
-            s += '\n'
-        s += _('Dependencies: ')
+            s += "\n"
+        s += _("Dependencies: ")
         for x in self.componentDependencies:
-           s += x + ' '
+            s += x + " "
         for x in self.packageDependencies:
-           s += x.name() + ' '
+            s += x.name() + " "
         for x in self.packageAnyDependencies:
-           s += x.name() + ' '
-        return s + '\n'
+            s += x.name() + " "
+        return s + "\n"
 
 
 class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     tag = "PISI"
 
-    t_Source = [ Source, autoxml.mandatory]
-    t_Packages = [ [Package], autoxml.mandatory, "Package"]
-    t_History = [ [Update], autoxml.mandatory]
-    t_Components = [ [component.Component], autoxml.optional, "Component"]
-    t_Groups = [ [group.Group], autoxml.optional, "Group"]
+    t_Source = [Source, autoxml.mandatory]
+    t_Packages = [[Package], autoxml.mandatory, "Package"]
+    t_History = [[Update], autoxml.mandatory]
+    t_Components = [[component.Component], autoxml.optional, "Component"]
+    t_Groups = [[group.Group], autoxml.optional, "Group"]
 
     def decode_hook(self, node, errs, where):
         current_version = self.history[0].version
@@ -435,8 +459,7 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
 
         for package in self.packages:
             deps = package.packageDependencies[:]
-            deps += sum([x.dependencies for x
-                         in package.packageAnyDependencies], [])
+            deps += sum([x.dependencies for x in package.packageAnyDependencies], [])
             for dep in deps:
                 for attr_name, attr_value in list(dep.__dict__.items()):
                     if attr_value != "current":
@@ -449,7 +472,7 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
                         dep.__dict__[attr_name] = current_release
 
     def getClangSupported(self):
-        ''' Check whether SupportsClang was used '''
+        """Check whether SupportsClang was used"""
         if self.source.supportsClang is not None:
             if self.source.supportsClang.lower() == "true":
                 return True
@@ -464,12 +487,15 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     def _set_i18n(self, tag, inst):
         try:
             for summary in tag.tags("Summary"):
-                inst.summary[summary.getAttribute("xml:lang")] = summary.firstChild().data()
+                inst.summary[
+                    summary.getAttribute("xml:lang")
+                ] = summary.firstChild().data()
             for desc in tag.tags("Description"):
-                inst.description[desc.getAttribute("xml:lang")] = desc.firstChild().data()
+                inst.description[
+                    desc.getAttribute("xml:lang")
+                ] = desc.firstChild().data()
         except AttributeError:
             raise Error(_("translations.xml file is badly formed."))
-
 
     def read_translations(self, path):
         if not os.path.exists(path):
@@ -477,7 +503,7 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         try:
             doc = piksemel.parse(path)
         except Exception as e:
-            raise Error(_("File '%s' has invalid XML") % (path) )
+            raise Error(_("File '%s' has invalid XML") % (path))
 
         if doc.getTag("Source").getTagData("Name") == self.source.name:
             # Set source package translations
@@ -490,13 +516,16 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
                     break
 
     def __str__(self):
-        s = _('Name: %s, version: %s, release: %s\n') % (
-              self.source.name, self.history[0].version, self.history[0].release)
-        s += _('Summary: %s\n') % str(self.source.summary)
-        s += _('Description: %s\n') % str(self.source.description)
-        s += _('Licenses: %s\n') % ", ".join(self.source.license)
-        s += _('Component: %s\n') % str(self.source.partOf)
-        s += _('Build Dependencies: ')
+        s = _("Name: %s, version: %s, release: %s\n") % (
+            self.source.name,
+            self.history[0].version,
+            self.history[0].release,
+        )
+        s += _("Summary: %s\n") % str(self.source.summary)
+        s += _("Description: %s\n") % str(self.source.description)
+        s += _("Licenses: %s\n") % ", ".join(self.source.license)
+        s += _("Component: %s\n") % str(self.source.partOf)
+        s += _("Build Dependencies: ")
         for x in self.source.buildDependencies:
-           s += x.package + ' '
+            s += x.package + " "
         return s

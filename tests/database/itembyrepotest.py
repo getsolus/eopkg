@@ -13,15 +13,20 @@
 import testcase
 import pisi.db.itembyrepo
 
+
 class TestDB:
     def __init__(self):
         self.packages = {}
         self.obsoletes = {}
 
-        self.packages["pardus-2007"] = {"aggdraw":"package aggdraw",
-                                        "acpica":"package acpica"}
-        self.packages["contrib-2007"] = {"kdiff3":"package kdiff3",
-                                         "kmess":"package kmess"}
+        self.packages["pardus-2007"] = {
+            "aggdraw": "package aggdraw",
+            "acpica": "package acpica",
+        }
+        self.packages["contrib-2007"] = {
+            "kdiff3": "package kdiff3",
+            "kmess": "package kmess",
+        }
 
         self.obsoletes["pardus-2007"] = ["wengophone", "rar"]
         self.obsoletes["contrib-2007"] = ["xara"]
@@ -35,12 +40,12 @@ class TestDB:
             if repo:
                 repos = [repo]
             return repos
-        
+
         self.tdb.item_repos = item_repos
         self.odb.item_repos = item_repos
 
-class ItemByRepoTestCase(testcase.TestCase):
 
+class ItemByRepoTestCase(testcase.TestCase):
     testdb = TestDB()
 
     def testHasRepository(self):
@@ -70,7 +75,7 @@ class ItemByRepoTestCase(testcase.TestCase):
         db = pisi.db.itembyrepo.ItemByRepo({})
         assert db.item_repos("caracal") == ["caracal"]
         # repos were created by testcase.py
-        assert db.item_repos() == ['pardus-2007', 'contrib-2007', 'pardus-2007-src']
+        assert db.item_repos() == ["pardus-2007", "contrib-2007", "pardus-2007-src"]
 
     def testGetItem(self):
         assert self.testdb.tdb.get_item("acpica") == "package acpica"
@@ -81,11 +86,21 @@ class ItemByRepoTestCase(testcase.TestCase):
         assert self.testdb.tdb.get_item("kmess", "contrib-2007") == "package kmess"
 
     def testGetItemKeys(self):
-        assert set(self.testdb.tdb.get_item_keys("pardus-2007")) == set(["aggdraw", "acpica"])
-        assert set(self.testdb.tdb.get_item_keys("contrib-2007")) == set(["kdiff3", "kmess"])
-        assert set(self.testdb.tdb.get_item_keys()) == set(["kdiff3", "kmess", "aggdraw", "acpica"])
+        assert set(self.testdb.tdb.get_item_keys("pardus-2007")) == set(
+            ["aggdraw", "acpica"]
+        )
+        assert set(self.testdb.tdb.get_item_keys("contrib-2007")) == set(
+            ["kdiff3", "kmess"]
+        )
+        assert set(self.testdb.tdb.get_item_keys()) == set(
+            ["kdiff3", "kmess", "aggdraw", "acpica"]
+        )
 
     def testGetListItem(self):
-        assert set(self.testdb.odb.get_list_item("pardus-2007")) == set(['rar', 'wengophone'])
-        assert set(self.testdb.odb.get_list_item("contrib-2007")) == set(['xara'])
-        assert set(self.testdb.odb.get_list_item()) == set(['rar', 'xara', 'wengophone'])
+        assert set(self.testdb.odb.get_list_item("pardus-2007")) == set(
+            ["rar", "wengophone"]
+        )
+        assert set(self.testdb.odb.get_list_item("contrib-2007")) == set(["xara"])
+        assert set(self.testdb.odb.get_list_item()) == set(
+            ["rar", "xara", "wengophone"]
+        )

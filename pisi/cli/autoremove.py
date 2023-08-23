@@ -20,8 +20,10 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
+
 class AutoRemove(command.PackageOp, metaclass=command.autocommand):
-    __doc__ = _("""Remove eopkg packages
+    __doc__ = _(
+        """Remove eopkg packages
 
 Usage: autoremove <package1> <package2> ... <packagen>
 
@@ -33,7 +35,8 @@ expanded to package names.
 Any additional packages that were automatically installed as a result of
 installing the packages being removed, will also be removed if it is
 safe to do so.
-""")
+"""
+    )
 
     def __init__(self, args):
         super(AutoRemove, self).__init__(args)
@@ -44,8 +47,12 @@ safe to do so.
     def options(self):
         group = optparse.OptionGroup(self.parser, _("autoremove options"))
         super(AutoRemove, self).options(group)
-        group.add_option("--purge", action="store_true",
-                     default=False, help=_("Removes everything including changed config files of the package"))
+        group.add_option(
+            "--purge",
+            action="store_true",
+            default=False,
+            help=_("Removes everything including changed config files of the package"),
+        )
         self.parser.add_option_group(group)
 
     def run(self):

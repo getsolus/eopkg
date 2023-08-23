@@ -28,8 +28,10 @@ import piksemel as iks
 import pisi
 import pisi.file
 
+
 class Error(pisi.Error):
     pass
+
 
 class XmlFile(object):
     """A class to help reading and writing an XML file"""
@@ -57,12 +59,18 @@ class XmlFile(object):
         except Exception as e:
             raise Error(_("String '%s' has invalid XML") % (xml))
 
-    def readxml(self, uri, tmpDir='/tmp', sha1sum=False,
-                compress=None, sign=None, copylocal = False):
-
+    def readxml(
+        self,
+        uri,
+        tmpDir="/tmp",
+        sha1sum=False,
+        compress=None,
+        sign=None,
+        copylocal=False,
+    ):
         uri = pisi.file.File.make_uri(uri)
 
-        # workaround for repo index files to fix 
+        # workaround for repo index files to fix
         # rev. 17027 regression (http://liste.pardus.org.tr/gelistirici/2008-February/011133.html)
         compressed = pisi.file.File.is_compressed(str(uri))
 
@@ -71,19 +79,27 @@ class XmlFile(object):
             localpath = uri.path()
         else:
             # this is a remote file, first download it into tmpDir
-            localpath = pisi.file.File.download(uri, tmpDir, sha1sum=sha1sum, 
-                                                compress=compress,sign=sign, copylocal=copylocal)
+            localpath = pisi.file.File.download(
+                uri,
+                tmpDir,
+                sha1sum=sha1sum,
+                compress=compress,
+                sign=sign,
+                copylocal=copylocal,
+            )
 
         try:
             self.doc = iks.parse(localpath)
             return self.doc
         except OSError as e:
-            raise Error(_("Unable to read file (%s): %s") %(localpath,e))
+            raise Error(_("Unable to read file (%s): %s") % (localpath, e))
         except Exception as e:
-            raise Error(_("File '%s' has invalid XML") % (localpath) )
+            raise Error(_("File '%s' has invalid XML") % (localpath))
 
-    def writexml(self, uri, tmpDir = '/tmp', sha1sum=False, compress=None, sign=None):
-        f = pisi.file.File(uri, pisi.file.File.write, sha1sum=sha1sum, compress=compress, sign=sign)
+    def writexml(self, uri, tmpDir="/tmp", sha1sum=False, compress=None, sign=None):
+        f = pisi.file.File(
+            uri, pisi.file.File.write, sha1sum=sha1sum, compress=compress, sign=sign
+        )
         f.write(self.doc.toPrettyString())
         f.close()
 

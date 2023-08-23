@@ -12,6 +12,7 @@
 import os
 
 import gettext
+
 __trans = gettext.translation("pisi", fallback=True)
 _ = __trans.ugettext
 
@@ -27,8 +28,13 @@ def create_delta_packages_from_obj(old_packages, new_package_obj, specdir):
     new_pkg_path = new_package_obj.tmp_dir
 
     new_pkg_name = os.path.basename(new_package_obj.filepath)
-    name, new_version, new_release, new_distro_id, new_arch = \
-            util.split_package_filename(new_pkg_name)
+    (
+        name,
+        new_version,
+        new_release,
+        new_distro_id,
+        new_arch,
+    ) = util.split_package_filename(new_pkg_name)
 
     cwd = os.getcwd()
     out_dir = ctx.get_option("output_dir")
@@ -40,21 +46,37 @@ def create_delta_packages_from_obj(old_packages, new_package_obj, specdir):
         old_pkg_info = old_pkg.metadata.package
 
         if old_pkg_info.name != new_pkg_info.name:
-            ctx.ui.warning(_("The file '%s' belongs to a different package "
-                             "other than '%s'. Skipping it...")
-                             % (old_package, new_pkg_info.name))
+            ctx.ui.warning(
+                _(
+                    "The file '%s' belongs to a different package "
+                    "other than '%s'. Skipping it..."
+                )
+                % (old_package, new_pkg_info.name)
+            )
             continue
 
         if old_pkg_info.release == new_pkg_info.release:
-            ctx.ui.warning(_("Package '%s' has the same release number with "
-                             "the new package. Skipping it...") % old_package)
+            ctx.ui.warning(
+                _(
+                    "Package '%s' has the same release number with "
+                    "the new package. Skipping it..."
+                )
+                % old_package
+            )
             continue
 
-        delta_name = "-".join((old_pkg_info.name,
-                               old_pkg_info.release,
-                               new_pkg_info.release,
-                               new_distro_id,
-                               new_arch)) + ctx.const.delta_package_suffix
+        delta_name = (
+            "-".join(
+                (
+                    old_pkg_info.name,
+                    old_pkg_info.release,
+                    new_pkg_info.release,
+                    new_distro_id,
+                    new_arch,
+                )
+            )
+            + ctx.const.delta_package_suffix
+        )
 
         ctx.ui.info(_("Creating %s...") % delta_name)
 
@@ -66,9 +88,14 @@ def create_delta_packages_from_obj(old_packages, new_package_obj, specdir):
         files_delta = find_delta(old_pkg_files, new_pkg_files)
 
         if len(files_delta) == len(new_pkg_files.list):
-            ctx.ui.warning(_("All files in the package '%s' are different "
-                             "from the files in the new package. Skipping "
-                             "it...") % old_package)
+            ctx.ui.warning(
+                _(
+                    "All files in the package '%s' are different "
+                    "from the files in the new package. Skipping "
+                    "it..."
+                )
+                % old_package
+            )
             continue
 
         delta_pkg = pisi.package.Package(delta_name, "w", format=target_format)
@@ -108,10 +135,13 @@ def create_delta_packages_from_obj(old_packages, new_package_obj, specdir):
     # Return delta package names
     return delta_packages
 
+
 def create_delta_packages(old_packages, new_package):
     if new_package in old_packages:
-        ctx.ui.warning(_("New package '%s' exists in the list of old "
-                         "packages. Skipping it...") % new_package)
+        ctx.ui.warning(
+            _("New package '%s' exists in the list of old " "packages. Skipping it...")
+            % new_package
+        )
         while new_package in old_packages:
             old_packages.remove(new_package)
 
@@ -130,15 +160,14 @@ def create_delta_packages(old_packages, new_package):
     os.mkdir(install_dir)
     new_pkg.extract_install(install_dir)
 
-    delta_packages = create_delta_packages_from_obj(old_packages,
-                                                    new_pkg,
-                                                    new_pkg_path)
+    delta_packages = create_delta_packages_from_obj(old_packages, new_pkg, new_pkg_path)
 
     # Remove temp dir
     util.clean_dir(new_pkg_path)
 
     # Return delta package names
     return delta_packages
+
 
 def create_delta_package(old_package, new_package):
     packages = create_delta_packages([old_package], new_package)
@@ -149,8 +178,8 @@ def create_delta_package(old_package, new_package):
 #  Hash equal but path different ones   (these are the relocations)
 #  Hash and also path equal ones        (do nothing)
 
-def find_delta(old_files, new_files):
 
+def find_delta(old_files, new_files):
     hashto_files = {}
     for f in new_files.list:
         hashto_files.setdefault(f.hash, []).append(f)
@@ -170,8 +199,8 @@ def find_delta(old_files, new_files):
 
     return deltas
 
-def find_relocations(oldfiles, newfiles):
 
+def find_relocations(oldfiles, newfiles):
     files_new = {}
     for f in newfiles.list:
         files_new.setdefault(f.hash, []).append(f)
@@ -190,8 +219,8 @@ def find_relocations(oldfiles, newfiles):
 
     return relocations
 
-def find_permission_changes(oldfiles, newfiles):
 
+def find_permission_changes(oldfiles, newfiles):
     files_new = {}
     for f in newfiles.list:
         files_new.setdefault(f.hash, []).append(f)

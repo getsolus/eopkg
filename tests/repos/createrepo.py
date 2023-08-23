@@ -95,6 +95,7 @@ distributionTemplate = """
 </PISI>
 """
 
+
 class Component:
     def __init__(self, name):
         self.name = name
@@ -111,7 +112,7 @@ class Component:
             os.makedirs(component_path)
 
             cur_dir = os.getcwd()
-            cur_comp = ''
+            cur_comp = ""
             for subcomp in self.name.split("."):
                 os.chdir(subcomp)
 
@@ -123,8 +124,8 @@ class Component:
                 open("component.xml", "w").write(self.get_comp_template(cur_comp))
             os.chdir(cur_dir)
 
-class Package:
 
+class Package:
     def __init__(self, name, partof, deps):
         self.name = name
         self.partof = partof
@@ -132,12 +133,14 @@ class Package:
         self.component = Component(self.partof)
 
     def get_spec_template(self):
-        package =  self.name
+        package = self.name
         homepage = "www.pardus.org.tr"
         packager_name = "Joe Packager"
         packager_email = "joe@pardus.org.tr"
         summary = "%s is a very useful package" % self.name
-        description = "%s is a very useful package that is known for its usefulness." % self.name
+        description = (
+            "%s is a very useful package that is known for its usefulness." % self.name
+        )
         sha1sum = "cc64dfa6e068fe1f6fb68a635878b1ea21acfac7"
         archive = "http://cekirdek.uludag.org.tr/~faik/pisi/skeleton.tar.gz"
         date = time.strftime("%Y-%m-%d")
@@ -159,8 +162,9 @@ class Package:
         open("actions.py", "w").write(actionsTemplate % self.name)
         os.chdir(cur_dir)
 
+
 class PackageFactory:
-    def getPackage(self, name, runtimeDeps = [], component = "system.base"):
+    def getPackage(self, name, runtimeDeps=[], component="system.base"):
         return Package(name, component, runtimeDeps)
 
     def getPackageBundle(self, component, *packages):
@@ -168,6 +172,7 @@ class PackageFactory:
         for pkg in packages:
             pkgs.append(Package(pkg, component, []))
         return pkgs
+
 
 class Repository:
     def __init__(self, name, version, packages, obsoletes):
@@ -180,18 +185,20 @@ class Repository:
         obsoletes = ""
         for obs in self.obsoletes:
             obsoletes += "     <Package>%s</Package>\n" % obs
-            
-        return distributionTemplate % {"sourcename": "Pardus",
-                                       "version": self.version,
-                                       "description":self.name,
-                                       "obsoletes":obsoletes}
+
+        return distributionTemplate % {
+            "sourcename": "Pardus",
+            "version": self.version,
+            "description": self.name,
+            "obsoletes": obsoletes,
+        }
 
     def create(self):
         cur_dir = os.getcwd()
         os.makedirs(self.name)
         os.chdir(self.name)
         open("distribution.xml", "w").write(self.get_dist_template())
-        
+
         for pkg in self.packages:
             pkg.create()
 
@@ -205,11 +212,12 @@ class Repository:
         for root, dirs, files in os.walk("."):
             if "component.xml" in files:
                 component = root[2:].replace("/", ".")
-                xml_content += componentsTemplate \
-                                % {"name": component,
-                                   "local_name": component,
-                                   "summary": component,
-                                   "description": component}
+                xml_content += componentsTemplate % {
+                    "name": component,
+                    "local_name": component,
+                    "summary": component,
+                    "description": component,
+                }
 
         xml_content += "    </Components>\n</PISI>\n"
 
@@ -219,38 +227,42 @@ class Repository:
 class Pardus2007Repo(Repository):
     def __init__(self):
         Repository.__init__(self, "pardus-2007", "2007", [], ["wengophone", "rar"])
-        
-    def create(self):
 
+    def create(self):
         pf = PackageFactory()
 
         self.packages = [
             # system.base
             pf.getPackage("bash"),
             pf.getPackage("curl", ["libidn", "zlib", "openssl"]),
-            pf.getPackage("shadow", ["db4","pam", "cracklib"]),
+            pf.getPackage("shadow", ["db4", "pam", "cracklib"]),
             pf.getPackage("jpeg"),
-            
             # applications.network
             pf.getPackage("ncftp", [], "applications.network"),
             pf.getPackage("bogofilter", ["gsl"], "applications.network"),
             pf.getPackage("gsl", [], "applications.network"),
-            ]
-        
+        ]
+
         # system.base
-        self.packages.extend(pf.getPackageBundle("system.base", "libidn", "zlib", "openssl", "db4", "pam", "cracklib"))
+        self.packages.extend(
+            pf.getPackageBundle(
+                "system.base", "libidn", "zlib", "openssl", "db4", "pam", "cracklib"
+            )
+        )
 
         # applications.network
-        self.packages.extend(pf.getPackageBundle("applications.network", "ethtool", "nfdump"))
+        self.packages.extend(
+            pf.getPackageBundle("applications.network", "ethtool", "nfdump")
+        )
 
         Repository.create(self)
+
 
 class Contrib2007Repo(Repository):
     def __init__(self):
         Repository.__init__(self, "contrib-2007", "2007", [], ["xara"])
-        
-    def create(self):
 
+    def create(self):
         pf = PackageFactory()
 
         self.packages = [
@@ -259,19 +271,25 @@ class Contrib2007Repo(Repository):
             pf.getPackage("ctorrent", ["openssl"], "applications.network"),
             pf.getPackage("lft", ["libpcap"], "applications.network"),
             pf.getPackage("libpcap", [], "applications.network"),
-            ]
-        
+        ]
+
         # applications.util
-        self.packages.extend(pf.getPackageBundle("applications.util", "iat", "rpl", "cpulimit"))
+        self.packages.extend(
+            pf.getPackageBundle("applications.util", "iat", "rpl", "cpulimit")
+        )
 
         Repository.create(self)
+
 
 class BuildFarm:
     def create_index(self, repo):
         binrepo = "%s-bin" % repo
         shutil.copy("%s/distribution.xml" % repo, binrepo)
         os.system("pisi index %s --skip-signing -o %s/eopkg-index.xml" % (repo, repo))
-        os.system("pisi index --skip-signing -o %s/eopkg-index.xml %s %s" % (binrepo, binrepo, repo))
+        os.system(
+            "pisi index --skip-signing -o %s/eopkg-index.xml %s %s"
+            % (binrepo, binrepo, repo)
+        )
 
     def build(self, repos):
         for repo in repos:
@@ -281,6 +299,7 @@ class BuildFarm:
                 if "pspec.xml" in files:
                     os.system("pisi build %s/%s -O %s" % (root, "pspec.xml", binrepo))
             self.create_index(repo)
+
 
 if __name__ == "__main__":
     Pardus2007Repo().create()

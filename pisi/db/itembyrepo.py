@@ -15,6 +15,7 @@ from pisi import translate as _
 
 import pisi.db
 
+
 class ItemByRepo:
     def __init__(self, dbobj, compressed=False):
         self.dbobj = dbobj
@@ -55,7 +56,7 @@ class ItemByRepo:
         items = []
         for r in self.item_repos(repo):
             if not self.has_repo(r):
-                raise Exception(_('Repository %s does not exist.') % repo)
+                raise Exception(_("Repository %s does not exist.") % repo)
 
             if r in self.dbobj:
                 items.extend(list(self.dbobj[r].keys()))
@@ -66,7 +67,7 @@ class ItemByRepo:
         items = []
         for r in self.item_repos(repo):
             if not self.has_repo(r):
-                raise Exception(_('Repository %s does not exist.') % repo)
+                raise Exception(_("Repository %s does not exist.") % repo)
 
             if r in self.dbobj:
                 items.extend(self.dbobj[r])
@@ -76,7 +77,7 @@ class ItemByRepo:
     def get_items_iter(self, repo=None):
         for r in self.item_repos(repo):
             if not self.has_repo(r):
-                raise Exception(_('Repository %s does not exist.') % repo)
+                raise Exception(_("Repository %s does not exist.") % repo)
 
             if self.compressed:
                 for item in list(self.dbobj[r].keys()):

@@ -1,7 +1,7 @@
-
 from pisi.actionsapi import pisitools
 
 WorkDir = "skeleton"
+
 
 def install():
     pisitools.dobin("skeleton.py")

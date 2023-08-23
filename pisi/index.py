@@ -35,36 +35,42 @@ import pisi.operations.build
 class Error(pisi.Error):
     pass
 
+
 class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     tag = "PISI"
 
-    t_Distribution = [ component.Distribution, autoxml.optional ]
-    t_Specs = [ [specfile.SpecFile], autoxml.optional, "SpecFile"]
-    t_Packages = [ [metadata.Package], autoxml.optional, "Package"]
-    #t_Metadatas = [ [metadata.MetaData], autoxml.optional, "MetaData"]
-    t_Components = [ [component.Component], autoxml.optional, "Component"]
-    t_Groups = [ [group.Group], autoxml.optional, "Group"]
+    t_Distribution = [component.Distribution, autoxml.optional]
+    t_Specs = [[specfile.SpecFile], autoxml.optional, "SpecFile"]
+    t_Packages = [[metadata.Package], autoxml.optional, "Package"]
+    # t_Metadatas = [ [metadata.MetaData], autoxml.optional, "MetaData"]
+    t_Components = [[component.Component], autoxml.optional, "Component"]
+    t_Groups = [[group.Group], autoxml.optional, "Group"]
 
-    def read_uri(self, uri, tmpdir, force = False):
-        return self.read(uri, tmpDir=tmpdir, sha1sum=not force,
-                         compress=pisi.file.File.COMPRESSION_TYPE_AUTO,
-                         sign=pisi.file.File.detached,
-                         copylocal=True, nodecode=True)
+    def read_uri(self, uri, tmpdir, force=False):
+        return self.read(
+            uri,
+            tmpDir=tmpdir,
+            sha1sum=not force,
+            compress=pisi.file.File.COMPRESSION_TYPE_AUTO,
+            sign=pisi.file.File.detached,
+            copylocal=True,
+            nodecode=True,
+        )
 
     # read index for a given repo, force means download even if remote not updated
-    def read_uri_of_repo(self, uri, repo = None, force = False):
+    def read_uri_of_repo(self, uri, repo=None, force=False):
         """Read PSPEC file"""
         if repo:
             tmpdir = os.path.join(ctx.config.index_dir(), repo)
         else:
-            tmpdir = os.path.join(ctx.config.tmp_dir(), 'index')
+            tmpdir = os.path.join(ctx.config.tmp_dir(), "index")
             pisi.util.clean_dir(tmpdir)
 
         pisi.util.ensure_dirs(tmpdir)
 
         # write uri
-        urlfile = file(pisi.util.join_path(tmpdir, 'uri'), 'w')
-        urlfile.write(uri) # uri
+        urlfile = file(pisi.util.join_path(tmpdir, "uri"), "w")
+        urlfile.write(uri)  # uri
         urlfile.close()
 
         doc = self.read_uri(uri, tmpdir, force)
@@ -73,7 +79,7 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
             repo = self.distribution.name()
             # and what do we do with it? move it to index dir properly
             newtmpdir = os.path.join(ctx.config.index_dir(), repo)
-            pisi.util.clean_dir(newtmpdir) # replace newtmpdir
+            pisi.util.clean_dir(newtmpdir)  # replace newtmpdir
             shutil.move(tmpdir, newtmpdir)
 
     def check_signature(self, filename, repo):
@@ -94,18 +100,17 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
             dirs[:] = [d for d in dirs if not d.startswith(".")]
 
             for fn in files:
-
                 if fn.endswith(ctx.const.delta_package_suffix):
                     name, version = util.parse_package_name(fn)
                     deltas.setdefault(name, []).append(os.path.join(root, fn))
                 elif fn.endswith(ctx.const.package_suffix):
                     packages.append(os.path.join(root, fn))
 
-                if fn == 'components.xml':
+                if fn == "components.xml":
                     self.components.extend(add_components(os.path.join(root, fn)))
-                if fn == 'distribution.xml':
+                if fn == "distribution.xml":
                     self.distribution = add_distro(os.path.join(root, fn))
-                if fn == 'groups.xml':
+                if fn == "groups.xml":
                     self.groups.extend(add_groups(os.path.join(root, fn)))
 
         ctx.ui.info("")
@@ -139,8 +144,7 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         for pkg in util.filter_latest_packages(packages):
             pkg_name = util.parse_package_name(os.path.basename(pkg))[0]
             if pkg_name.endswith(ctx.const.debug_name_suffix):
-                pkg_name = util.remove_suffix(ctx.const.debug_name_suffix,
-                                              pkg_name)
+                pkg_name = util.remove_suffix(ctx.const.debug_name_suffix, pkg_name)
             if pkg_name not in obsoletes_list:
                 # Currently, multiprocessing.Pool.map method accepts methods
                 # with single parameters only. So we have to send our
@@ -163,14 +167,17 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         pool.close()
         pool.join()
 
+
 def add_package(params):
     try:
         path, deltas, repo_uri = params
 
-        ctx.ui.info("%-80.80s\r" % (_('Adding package to index: %s') %
-            os.path.basename(path)), noln = True)
+        ctx.ui.info(
+            "%-80.80s\r" % (_("Adding package to index: %s") % os.path.basename(path)),
+            noln=True,
+        )
 
-        package = pisi.package.Package(path, 'r')
+        package = pisi.package.Package(path, "r")
         md = package.get_metadata()
         md.package.packageSize = int(os.path.getsize(path))
         md.package.packageHash = util.sha1_file(path)
@@ -183,7 +190,9 @@ def add_package(params):
         errs = md.errors()
         if md.errors():
             ctx.ui.info("")
-            ctx.ui.error(_('Package %s: metadata corrupt, skipping...') % md.package.name)
+            ctx.ui.error(
+                _("Package %s: metadata corrupt, skipping...") % md.package.name
+            )
             ctx.ui.error(str(Error(*errs)))
         else:
             # No need to carry these with index (#3965)
@@ -191,16 +200,23 @@ def add_package(params):
             md.package.additionalFiles = None
 
             if md.package.name in deltas:
-                name, version, release, distro_id, arch = \
-                        util.split_package_filename(path)
+                name, version, release, distro_id, arch = util.split_package_filename(
+                    path
+                )
 
                 for delta_path in deltas[md.package.name]:
-                    src_release, dst_release, delta_distro_id, delta_arch = \
-                            util.split_delta_package_filename(delta_path)[1:]
+                    (
+                        src_release,
+                        dst_release,
+                        delta_distro_id,
+                        delta_arch,
+                    ) = util.split_delta_package_filename(delta_path)[1:]
 
                     # Add only delta to latest build of the package
-                    if dst_release != md.package.release or \
-                            (delta_distro_id, delta_arch) != (distro_id, arch):
+                    if dst_release != md.package.release or (
+                        delta_distro_id,
+                        delta_arch,
+                    ) != (distro_id, arch):
                         continue
 
                     delta = metadata.Delta()
@@ -227,36 +243,40 @@ def add_package(params):
 
         raise Exception
 
+
 def add_groups(path):
-    ctx.ui.info(_('Adding groups.xml to index'))
+    ctx.ui.info(_("Adding groups.xml to index"))
     groups_xml = group.Groups()
     groups_xml.read(path)
     return groups_xml.groups
 
+
 def add_components(path):
-    ctx.ui.info(_('Adding components.xml to index'))
+    ctx.ui.info(_("Adding components.xml to index"))
     components_xml = component.Components()
     components_xml.read(path)
-    #try:
+    # try:
     return components_xml.components
-    #except:
+    # except:
     #    raise Error(_('Component in %s is corrupt') % path)
-    #ctx.ui.error(str(Error(*errs)))
+    # ctx.ui.error(str(Error(*errs)))
+
 
 def add_distro(path):
-    ctx.ui.info(_('Adding distribution.xml to index'))
+    ctx.ui.info(_("Adding distribution.xml to index"))
     distro = component.Distribution()
-    #try:
+    # try:
     distro.read(path)
     return distro
-    #except:
+    # except:
     #    raise Error(_('Distribution in %s is corrupt') % path)
-    #ctx.ui.error(str(Error(*errs)))
+    # ctx.ui.error(str(Error(*errs)))
+
 
 def add_spec(params):
     try:
         path, repo_uri = params
-        #TODO: may use try/except to handle this
+        # TODO: may use try/except to handle this
         builder = pisi.operations.build.Builder(path)
         builder.fetch_component()
         sf = builder.spec
@@ -265,8 +285,10 @@ def add_spec(params):
         else:
             sf.source.sourceURI = util.removepathprefix(repo_uri, path)
 
-        ctx.ui.info("%-80.80s\r" % (_('Adding %s to source index') %
-            path), noln = False if ctx.config.get_option("verbose") else True)
+        ctx.ui.info(
+            "%-80.80s\r" % (_("Adding %s to source index") % path),
+            noln=False if ctx.config.get_option("verbose") else True,
+        )
         return sf
 
     except KeyboardInterrupt:

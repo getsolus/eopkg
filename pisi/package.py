@@ -55,7 +55,7 @@ class Package:
         archive_name = ctx.const.install_tar + archive_suffix
         return archive_name, archive_format
 
-    def __init__(self, packagefn, mode='r', format=None, tmp_dir=None):
+    def __init__(self, packagefn, mode="r", format=None, tmp_dir=None):
         self.filepath = packagefn
         url = pisi.uri.URI(packagefn)
 
@@ -63,7 +63,7 @@ class Package:
             self.fetch_remote_file(url)
 
         try:
-            self.impl = archive.ArchiveZip(self.filepath, 'zip', mode)
+            self.impl = archive.ArchiveZip(self.filepath, "zip", mode)
         except IOError as e:
             raise Error(_("Cannot open package file: %s") % e)
 
@@ -99,12 +99,17 @@ class Package:
                 pisi.file.File.download(url, dest)
             except pisi.fetcher.FetchError:
                 # Bug 3465
-                if ctx.get_option('reinstall'):
-                    raise Error(_("There was a problem while fetching '%s'.\nThe package "
-                    "may have been upgraded. Please try to upgrade the package.") % url);
+                if ctx.get_option("reinstall"):
+                    raise Error(
+                        _(
+                            "There was a problem while fetching '%s'.\nThe package "
+                            "may have been upgraded. Please try to upgrade the package."
+                        )
+                        % url
+                    )
                 raise
         else:
-            ctx.ui.info(_('%s [cached]') % url.filename())
+            ctx.ui.info(_("%s [cached]") % url.filename())
 
     def add_to_package(self, fn, an=None):
         """Add a file or directory to package"""
@@ -122,14 +127,12 @@ class Package:
             return
 
         if self.install_archive is None:
-            archive_name, archive_format = \
-                    self.archive_name_and_format(self.format)
-            self.install_archive_path = util.join_path(self.tmp_dir,
-                                                       archive_name)
+            archive_name, archive_format = self.archive_name_and_format(self.format)
+            self.install_archive_path = util.join_path(self.tmp_dir, archive_name)
             ctx.build_leftover = self.install_archive_path
             self.install_archive = archive.ArchiveTar(
-                                            self.install_archive_path,
-                                            archive_format)
+                self.install_archive_path, archive_format
+            )
 
         self.install_archive.add_to_archive(name, arcname)
 
@@ -163,23 +166,24 @@ class Package:
             ctx.build_leftover = None
 
     def get_install_archive(self):
-        archive_name, archive_format = \
-                self.archive_name_and_format(self.format)
+        archive_name, archive_format = self.archive_name_and_format(self.format)
 
         if archive_name is None or not self.impl.has_file(archive_name):
             return
 
         archive_file = self.impl.open(archive_name)
-        tar = archive.ArchiveTar(fileobj=archive_file,
-                                 arch_type=archive_format,
-                                 no_same_permissions=False,
-                                 no_same_owner=False)
+        tar = archive.ArchiveTar(
+            fileobj=archive_file,
+            arch_type=archive_format,
+            no_same_permissions=False,
+            no_same_owner=False,
+        )
 
         return tar
 
     def extract(self, outdir):
         """Extract entire package contents to directory"""
-        self.extract_dir('', outdir)         # means package root
+        self.extract_dir("", outdir)  # means package root
 
     def extract_files(self, paths, outdir):
         """Extract paths to outdir"""
@@ -214,7 +218,7 @@ class Package:
                 # accessed. Removing and creating the file will also
                 # change the inode and will do the trick (in fact, old
                 # file will be deleted only when its closed).
-                # 
+                #
                 # Also, tar.extract() doesn't write on symlinks... Not any
                 # more :).
                 if os.path.isfile(tarinfo.name) or os.path.islink(tarinfo.name):
@@ -228,13 +232,12 @@ class Package:
                 if tarinfo.name.endswith(".desktop"):
                     ctx.ui.notify(pisi.ui.desktopfile, desktopfile=tarinfo.name)
 
-
         tar = self.get_install_archive()
 
         if tar:
             tar.unpack_dir(outdir, callback=callback)
         else:
-            self.extract_dir_flat('install', outdir)
+            self.extract_dir_flat("install", outdir)
 
     def extract_dir_flat(self, dir, outdir):
         """Extract directory recursively, this function
@@ -242,8 +245,8 @@ class Package:
         this is the function used by the installer"""
         self.impl.unpack_dir_flat(dir, outdir)
 
-    def extract_to(self, outdir, clean_dir = False):
-        """Extracts contents of the archive to outdir. Before extracting if clean_dir 
+    def extract_to(self, outdir, clean_dir=False):
+        """Extracts contents of the archive to outdir. Before extracting if clean_dir
         is set, outdir is deleted with its contents"""
         self.impl.unpack(outdir, clean_dir)
 
@@ -251,7 +254,7 @@ class Package:
         """Extract eopkg control files: metadata.xml, files.xml,
         action scripts, etc."""
         self.extract_files([ctx.const.metadata_xml, ctx.const.files_xml], outdir)
-        self.extract_dir('config', outdir)
+        self.extract_dir("config", outdir)
 
     def get_metadata(self):
         """reads metadata.xml from the eopkg package and returns MetaData object"""
@@ -270,9 +273,13 @@ class Package:
         self.metadata = self.get_metadata()
 
     def pkg_dir(self):
-        packageDir = self.metadata.package.name + '-' \
-                     + self.metadata.package.version + '-' \
-                     + self.metadata.package.release
+        packageDir = (
+            self.metadata.package.name
+            + "-"
+            + self.metadata.package.version
+            + "-"
+            + self.metadata.package.release
+        )
 
         return os.path.join(ctx.config.packages_dir(), packageDir)
 

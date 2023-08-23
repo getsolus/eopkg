@@ -30,6 +30,7 @@ let_repo_had(DBUS, with_partof("system.base"))
 let_repo_had(PISI, with_partof("system.base"))
 let_pisi_had(DBUS, PISI, KERNEL, BLUEZ)
 
+
 def run():
     repo_version_bumped(KERNEL)
     repo_version_bumped(BLUEZ)

@@ -29,56 +29,63 @@ from pisi.actionsapi.shelltools import ls
 from pisi.actionsapi.pisitools import dosed
 from pisi.actionsapi.pisitools import removeDir
 
+
 class ConfigureError(pisi.actionsapi.Error):
-    def __init__(self, value=''):
+    def __init__(self, value=""):
         pisi.actionsapi.Error.__init__(self, value)
         self.value = value
         ctx.ui.error(value)
+
 
 class MakeError(pisi.actionsapi.Error):
-    def __init__(self, value=''):
+    def __init__(self, value=""):
         pisi.actionsapi.Error.__init__(self, value)
         self.value = value
         ctx.ui.error(value)
+
 
 class InstallError(pisi.actionsapi.Error):
-    def __init__(self, value=''):
+    def __init__(self, value=""):
         pisi.actionsapi.Error.__init__(self, value)
         self.value = value
         ctx.ui.error(value)
+
 
 class RunTimeError(pisi.actionsapi.Error):
-    def __init__(self, value=''):
+    def __init__(self, value=""):
         pisi.actionsapi.Error.__init__(self, value)
         self.value = value
         ctx.ui.error(value)
 
-def _presetup():
-    export ("JOBS", get.makeJOBS().replace("-j",""))
-    export ("DESTDIR", get.installDIR())
 
-def configure(parameters = ''):
+def _presetup():
+    export("JOBS", get.makeJOBS().replace("-j", ""))
+    export("DESTDIR", get.installDIR())
+
+
+def configure(parameters=""):
     '''configure source with given parameters "'''
-    _presetup ()
+    _presetup()
     cmd = "./waf configure --prefix=/usr %s" % parameters
 
-    if can_access_file('waf'):
+    if can_access_file("waf"):
         if system(cmd):
-            raise ConfigureError(_('Configure failed.'))
+            raise ConfigureError(_("Configure failed."))
     else:
-        raise ConfigureError(_('No configure script found.'))
-
-def make(parameters = ''):
-    '''make source with given parameters = "all" || "doc" etc.'''
-    _presetup ()
-    if system('./waf build %s' % parameters):
-        raise MakeError(_('Make failed.'))
+        raise ConfigureError(_("No configure script found."))
 
 
-def install(parameters = ''):
-    '''install source into install directory with given parameters'''
-    _presetup ()
+def make(parameters=""):
+    """make source with given parameters = "all" || "doc" etc."""
+    _presetup()
+    if system("./waf build %s" % parameters):
+        raise MakeError(_("Make failed."))
+
+
+def install(parameters=""):
+    """install source into install directory with given parameters"""
+    _presetup()
     cmd = "./waf install %s" % parameters
 
     if system(cmd):
-        raise InstallError(_('Install failed.'))
+        raise InstallError(_("Install failed."))

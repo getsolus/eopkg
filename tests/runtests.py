@@ -49,9 +49,10 @@ from uritest import UriTestCase
 from utiltest import UtilTestCase
 from versiontest import VersionTestCase
 
+
 def setup():
     options = pisi.config.Options()
-    options.destdir = 'repos/tmp'
+    options.destdir = "repos/tmp"
     pisi.api.set_options(options)
     pisi.api.set_comar(False)
 
@@ -59,11 +60,11 @@ def setup():
     ctx.config.values.general.distribution_release = "2007"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if os.path.exists("repos/tmp"):
         import shutil
+
         shutil.rmtree("repos/tmp")
 
     suite = unittest.TestSuite()
     unittest.main()
-

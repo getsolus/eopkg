@@ -12,5 +12,6 @@
 
 import pisi
 
+
 class Error(pisi.Error):
     pass

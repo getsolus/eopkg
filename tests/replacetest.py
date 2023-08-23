@@ -2,6 +2,7 @@ import unittest
 import pisi.replace
 import pisi.relation
 
+
 class ReplaceTestCase(unittest.TestCase):
     def testInstalledPackageReplaced(self):
         pisi.api.install(["ethtool"])

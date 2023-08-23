@@ -3,4 +3,6 @@
 .idea
 *.pyc
 *.bak
-/build/
+.vscode/
+build/
+env/

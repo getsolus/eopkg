@@ -9,8 +9,10 @@
 #
 # Please read the COPYING file.
 
+
 class _constant:
     "Constant members implementation"
+
     class ConstError(TypeError):
         pass
 
@@ -26,8 +28,8 @@ class _constant:
         # we don't have an attribute by this name
         raise NameError(name)
 
-class Constants:
 
+class Constants:
     __c = _constant()
 
     def __getattr__(self, attr):
@@ -38,6 +40,7 @@ class Constants:
 
     def __delattr__(self, attr):
         delattr(self.__c, attr)
+
 
 consts = Constants()
 

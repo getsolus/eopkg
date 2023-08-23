@@ -27,12 +27,13 @@ import pisi.files
 import pisi.util
 import pisi.db.lazydb as lazydb
 
+
 class InstallDBError(pisi.Error):
     pass
 
-class InstallInfo:
 
-    state_map = { 'i': _('installed'), 'ip':_('installed-pending') }
+class InstallInfo:
+    state_map = {"i": _("installed"), "ip": _("installed-pending")}
 
     def __init__(self, state, version, release, distribution, time):
         self.state = state
@@ -43,22 +44,31 @@ class InstallInfo:
 
     def one_liner(self):
         import time
+
         time_str = time.strftime("%d %b %Y %H:%M", self.time)
-        s = '%2s|%15s|%6s|%8s|%12s' % (self.state, self.version, self.release,
-                                       self.distribution, time_str)
+        s = "%2s|%15s|%6s|%8s|%12s" % (
+            self.state,
+            self.version,
+            self.release,
+            self.distribution,
+            time_str,
+        )
         return s
 
     def __str__(self):
-        s = _("State: %s\nVersion: %s, Release: %s\n") % \
-            (InstallInfo.state_map[self.state], self.version, self.release)
+        s = _("State: %s\nVersion: %s, Release: %s\n") % (
+            InstallInfo.state_map[self.state],
+            self.version,
+            self.release,
+        )
         import time
+
         time_str = time.strftime("%d %b %Y %H:%M", self.time)
-        s += _('Distribution: %s, Install Time: %s\n') % (self.distribution,
-                                                          time_str)
+        s += _("Distribution: %s, Install Time: %s\n") % (self.distribution, time_str)
         return s
 
-class InstallDB(lazydb.LazyDB):
 
+class InstallDB(lazydb.LazyDB):
     def __init__(self):
         lazydb.LazyDB.__init__(self, cacheable=True, cachedir=ctx.config.packages_dir())
 
@@ -89,12 +99,17 @@ class InstallDB(lazydb.LazyDB):
 
         if pkg is None:
             # If package info is broken or not available, skip it.
-            ctx.ui.warning(_("Installation info for package '%s' is broken. "
-                             "Reinstall it to fix this problem.") % package)
+            ctx.ui.warning(
+                _(
+                    "Installation info for package '%s' is broken. "
+                    "Reinstall it to fix this problem."
+                )
+                % package
+            )
             del self.installed_db[package]
             return
 
-        deps = pkg.getTag('RuntimeDependencies')
+        deps = pkg.getTag("RuntimeDependencies")
         if deps:
             for dep in deps.tags("Dependency"):
                 revdep = revdeps.setdefault(dep.firstChild().data(), {})
@@ -120,7 +135,9 @@ class InstallDB(lazydb.LazyDB):
         build_host_re = re.compile("<BuildHost>(.*?)</BuildHost>")
         found = []
         for name in self.list_installed():
-            xml = open(os.path.join(self.package_path(name), ctx.const.metadata_xml)).read()
+            xml = open(
+                os.path.join(self.package_path(name), ctx.const.metadata_xml)
+            ).read()
             matched = build_host_re.search(xml)
             if matched:
                 if build_host != matched.groups()[0]:
@@ -164,7 +181,7 @@ class InstallDB(lazydb.LazyDB):
 
     def get_config_files(self, package):
         files = self.get_files(package)
-        return [x for x in files.list if x.type == 'config']
+        return [x for x in files.list if x.type == "config"]
 
     def search_package(self, terms, lang=None, fields=None):
         """
@@ -176,29 +193,40 @@ class InstallDB(lazydb.LazyDB):
         This method will return only package that contents terms in the package
         name or summary
         """
-        resum = '<Summary xml:lang=.(%s|en).>.*?%s.*?</Summary>'
-        redesc = '<Description xml:lang=.(%s|en).>.*?%s.*?</Description>'
+        resum = "<Summary xml:lang=.(%s|en).>.*?%s.*?</Summary>"
+        redesc = "<Description xml:lang=.(%s|en).>.*?%s.*?</Description>"
         if not fields:
-            fields = {'name': True, 'summary': True, 'desc': True}
+            fields = {"name": True, "summary": True, "desc": True}
         if not lang:
             lang = pisi.pxml.autoxml.LocalText.get_lang()
         found = []
         for name in self.list_installed():
-            xml = open(os.path.join(self.package_path(name), ctx.const.metadata_xml)).read()
-            if terms == [term for term in terms if (fields['name'] and \
-                    re.compile(term, re.I).search(name)) or \
-                    (fields['summary'] and \
-                    re.compile(resum % (lang, term), re.I).search(xml)) or \
-                    (fields['desc'] and \
-                    re.compile(redesc % (lang, term), re.I).search(xml))]:
+            xml = open(
+                os.path.join(self.package_path(name), ctx.const.metadata_xml)
+            ).read()
+            if terms == [
+                term
+                for term in terms
+                if (fields["name"] and re.compile(term, re.I).search(name))
+                or (
+                    fields["summary"]
+                    and re.compile(resum % (lang, term), re.I).search(xml)
+                )
+                or (
+                    fields["desc"]
+                    and re.compile(redesc % (lang, term), re.I).search(xml)
+                )
+            ]:
                 found.append(name)
         return found
 
     def get_isa_packages(self, isa):
-        risa = '<IsA>%s</IsA>' % isa
+        risa = "<IsA>%s</IsA>" % isa
         packages = []
         for name in self.list_installed():
-            xml = open(os.path.join(self.package_path(name), ctx.const.metadata_xml)).read()
+            xml = open(
+                os.path.join(self.package_path(name), ctx.const.metadata_xml)
+            ).read()
             if re.compile(risa).search(xml):
                 packages.append(name)
         return packages
@@ -211,11 +239,7 @@ class InstallDB(lazydb.LazyDB):
         if pkg.name in self.list_pending():
             state = "ip"
 
-        info = InstallInfo(state,
-                           pkg.version,
-                           pkg.release,
-                           pkg.distribution,
-                           ctime)
+        info = InstallInfo(state, pkg.version, pkg.release, pkg.distribution, ctime)
         return info
 
     def __make_dependency(self, depStr):
@@ -230,7 +254,7 @@ class InstallDB(lazydb.LazyDB):
     def __create_dependency(self, depStr):
         if "<AnyDependency>" in depStr:
             anydependency = pisi.specfile.AnyDependency()
-            for dep in re.compile('(<Dependency .*?>.*?</Dependency>)').findall(depStr):
+            for dep in re.compile("(<Dependency .*?>.*?</Dependency>)").findall(depStr):
                 anydependency.dependencies.append(self.__make_dependency(dep))
             return anydependency
         else:
@@ -248,7 +272,9 @@ class InstallDB(lazydb.LazyDB):
         return rev_deps
 
     def pkg_dir(self, pkg, version, release):
-        return pisi.util.join_path(ctx.config.packages_dir(), pkg + '-' + version + '-' + release)
+        return pisi.util.join_path(
+            ctx.config.packages_dir(), pkg + "-" + version + "-" + release
+        )
 
     def get_package(self, package):
         metadata = pisi.metadata.MetaData()
@@ -351,8 +377,10 @@ class InstallDB(lazydb.LazyDB):
         self.__clear_marked_packages(ctx.const.auto_installed, package)
 
     def package_path(self, package):
-
         if package in self.installed_db:
-            return os.path.join(ctx.config.packages_dir(), "%s-%s" % (package, self.installed_db[package]))
+            return os.path.join(
+                ctx.config.packages_dir(),
+                "%s-%s" % (package, self.installed_db[package]),
+            )
 
-        raise Exception(_('Package %s is not installed') % package)
+        raise Exception(_("Package %s is not installed") % package)

@@ -9,8 +9,10 @@
 #
 # Please read the COPYING file.
 
+
 class AnotherInstanceError(Exception):
     pass
+
 
 class PrivilegeError(Exception):
     pass

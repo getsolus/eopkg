@@ -19,8 +19,10 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
+
 class Upgrade(command.PackageOp, metaclass=command.autocommand):
-    __doc__ = _("""Upgrade eopkg packages
+    __doc__ = _(
+        """Upgrade eopkg packages
 
 Usage: Upgrade [<package1> <package2> ... <packagen>]
 
@@ -36,7 +38,8 @@ reinstall a package from a eopkg file, use the install command.
 
 You can also specify components instead of package names, which will be
 expanded to package names.
-""")
+"""
+    )
 
     def __init__(self, args):
         super(Upgrade, self).__init__(args)
@@ -47,53 +50,99 @@ expanded to package names.
         group = optparse.OptionGroup(self.parser, _("upgrade options"))
 
         super(Upgrade, self).options(group)
-        group.add_option("--security-only", action="store_true",
-                     default=False, help=_("Security related package upgrades only"))
-        group.add_option("-b", "--bypass-update-repo", action="store_true",
-                     default=False, help=_("Do not update repositories"))
-        group.add_option("--ignore-file-conflicts", action="store_true",
-                     default=False, help=_("Ignore file conflicts"))
-        group.add_option("--ignore-package-conflicts", action="store_true",
-                     default=False, help=_("Ignore package conflicts"))
-        group.add_option("-c", "--component", action="append",
-                               default=None, help=_("Upgrade component's and recursive components' packages"))
-        group.add_option("-r", "--repository", action="store",
-                               type="string", default=None, help=_('Name of the to be upgraded packages\' repository'))
-        group.add_option("-f", "--fetch-only", action="store_true",
-                     default=False, help=_("Fetch upgrades but do not install."))
-        group.add_option("-x", "--exclude", action="append",
-                     default=None, help=_("When upgrading system, ignore packages and components whose basenames match pattern."))
-        group.add_option("--exclude-from", action="store",
-                     default=None,
-                     help=_("When upgrading system, ignore packages "
-                            "and components whose basenames match "
-                            "any pattern contained in file."))
+        group.add_option(
+            "--security-only",
+            action="store_true",
+            default=False,
+            help=_("Security related package upgrades only"),
+        )
+        group.add_option(
+            "-b",
+            "--bypass-update-repo",
+            action="store_true",
+            default=False,
+            help=_("Do not update repositories"),
+        )
+        group.add_option(
+            "--ignore-file-conflicts",
+            action="store_true",
+            default=False,
+            help=_("Ignore file conflicts"),
+        )
+        group.add_option(
+            "--ignore-package-conflicts",
+            action="store_true",
+            default=False,
+            help=_("Ignore package conflicts"),
+        )
+        group.add_option(
+            "-c",
+            "--component",
+            action="append",
+            default=None,
+            help=_("Upgrade component's and recursive components' packages"),
+        )
+        group.add_option(
+            "-r",
+            "--repository",
+            action="store",
+            type="string",
+            default=None,
+            help=_("Name of the to be upgraded packages' repository"),
+        )
+        group.add_option(
+            "-f",
+            "--fetch-only",
+            action="store_true",
+            default=False,
+            help=_("Fetch upgrades but do not install."),
+        )
+        group.add_option(
+            "-x",
+            "--exclude",
+            action="append",
+            default=None,
+            help=_(
+                "When upgrading system, ignore packages and components whose basenames match pattern."
+            ),
+        )
+        group.add_option(
+            "--exclude-from",
+            action="store",
+            default=None,
+            help=_(
+                "When upgrading system, ignore packages "
+                "and components whose basenames match "
+                "any pattern contained in file."
+            ),
+        )
 
         self.parser.add_option_group(group)
 
     def run(self):
-
         if self.options.fetch_only:
             self.init(database=True, write=False)
         else:
             self.init()
 
-        if not ctx.get_option('bypass_update_repo'):
-            ctx.ui.info(_('Updating repositories'))
+        if not ctx.get_option("bypass_update_repo"):
+            ctx.ui.info(_("Updating repositories"))
             repos = pisi.api.list_repos()
             pisi.api.update_repos(repos)
         else:
-            ctx.ui.info(_('Will not update repositories'))
+            ctx.ui.info(_("Will not update repositories"))
 
-        repository = ctx.get_option('repository')
-        components = ctx.get_option('component')
+        repository = ctx.get_option("repository")
+        components = ctx.get_option("component")
         packages = []
         if components:
             componentdb = pisi.db.componentdb.ComponentDB()
             for name in components:
                 if componentdb.has_component(name):
                     if repository:
-                        packages.extend(componentdb.get_packages(name, walk=True, repo=repository))
+                        packages.extend(
+                            componentdb.get_packages(name, walk=True, repo=repository)
+                        )
                     else:
                         packages.extend(componentdb.get_union_packages(name, walk=True))
         packages.extend(self.args)

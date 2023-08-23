@@ -21,7 +21,7 @@ from distutils.core import setup
 from distutils.command.build import build
 from distutils.command.install import install
 
-sys.path.insert(0, '.')
+sys.path.insert(0, ".")
 import pisi
 
 IN_FILES = ("eopkg.xml.in",)
@@ -37,7 +37,15 @@ class Build(build):
 
         for in_file in IN_FILES:
             name, ext = os.path.splitext(in_file)
-            self.spawn(["intltool-merge", "-x", "po", in_file, os.path.join(self.build_base, name)])
+            self.spawn(
+                [
+                    "intltool-merge",
+                    "-x",
+                    "po",
+                    in_file,
+                    os.path.join(self.build_base, name),
+                ]
+            )
 
 
 class BuildPo(build):
@@ -47,6 +55,7 @@ class BuildPo(build):
 
     def build_po(self):
         import optparse
+
         files = tempfile.mkstemp()[1]
         filelist = []
 
@@ -57,7 +66,7 @@ class BuildPo(build):
         for filename in IN_FILES:
             os.system("intltool-extract --type=gettext/xml %s" % filename)
 
-        for root,dirs,filenames in os.walk("pisi"):
+        for root, dirs, filenames in os.walk("pisi"):
             for filename in filenames:
                 if filename.endswith(".py"):
                     filelist.append(os.path.join(root, filename))
@@ -68,17 +77,23 @@ class BuildPo(build):
             _files.write("\n".join(filelist))
 
         # Generate POT file
-        os.system("xgettext -L Python \
+        os.system(
+            "xgettext -L Python \
                             --default-domain=%s \
                             --keyword=_ \
                             --keyword=N_ \
                             --files-from=%s \
-                            -o po/%s.pot" % (PROJECT, files, PROJECT))
+                            -o po/%s.pot"
+            % (PROJECT, files, PROJECT)
+        )
 
         # Update PO files
         for item in glob.glob1("po", "*.po"):
             print("Updating .. ", item)
-            os.system("msgmerge --update --no-wrap --sort-by-file po/%s po/%s.pot" % (item, PROJECT))
+            os.system(
+                "msgmerge --update --no-wrap --sort-by-file po/%s po/%s.pot"
+                % (item, PROJECT)
+            )
 
         # Cleanup
         os.unlink(files)
@@ -99,8 +114,8 @@ class Install(install):
         self.generateConfigFile()
 
     def installi18n(self):
-        for name in os.listdir('po'):
-            if not name.endswith('.po'):
+        for name in os.listdir("po"):
+            if not name.endswith(".po"):
                 continue
             lang = name[:-3]
             print("Installing '%s' translations..." % lang)
@@ -116,59 +131,74 @@ class Install(install):
         destpath = os.path.join(self.root, "usr/share/doc/pisi")
         if not os.path.exists(destpath):
             os.makedirs(destpath)
-        os.chdir('doc')
-        for pdf in glob.glob('*.pdf'):
-            print('Installing', pdf)
-            #shutil.copy(pdf, os.path.join(destpath, pdf))
-        os.chdir('..')
+        os.chdir("doc")
+        for pdf in glob.glob("*.pdf"):
+            print("Installing", pdf)
+            # shutil.copy(pdf, os.path.join(destpath, pdf))
+        os.chdir("..")
 
     def generateConfigFile(self):
         import pisi.configfile
+
         destpath = os.path.join(self.root, "usr/share/defaults/eopkg/")
         if not os.path.exists(destpath):
             os.makedirs(destpath)
 
         confFile = os.path.join(destpath, "eopkg.conf")
-        if os.path.isfile(confFile): # Don't overwrite existing eopkg.conf
+        if os.path.isfile(confFile):  # Don't overwrite existing eopkg.conf
             return
 
         eopkgconf = open(confFile, "w")
 
         klasses = inspect.getmembers(pisi.configfile, inspect.isclass)
-        defaults = [klass for klass in klasses if klass[0].endswith('Defaults')]
+        defaults = [klass for klass in klasses if klass[0].endswith("Defaults")]
 
         for d in defaults:
-            section_name = d[0][:-len('Defaults')].lower()
+            section_name = d[0][: -len("Defaults")].lower()
             eopkgconf.write("[%s]\n" % section_name)
 
-            section_members = [m for m in inspect.getmembers(d[1]) \
-                               if not m[0].startswith('__') \
-                               and not m[0].endswith('__')]
+            section_members = [
+                m
+                for m in inspect.getmembers(d[1])
+                if not m[0].startswith("__") and not m[0].endswith("__")
+            ]
 
             for member in section_members:
                 if member[1] == None or member[1] == "":
                     eopkgconf.write("# %s = %s\n" % (member[0], member[1]))
                 else:
                     eopkgconf.write("%s = %s\n" % (member[0], member[1]))
-            eopkgconf.write('\n')
+            eopkgconf.write("\n")
 
 
-
-setup(name="pisi",
-    version= pisi.__version__,
+setup(
+    name="pisi",
+    version=pisi.__version__,
     description="eopkg - package manager",
     long_description="Solus Interim Package Management",
     license="GPL-2.0-or-later",
     author="Solus (Previously Pardus Developers)",
     author_email="copyright@getsol.us",
     url="https://getsol.us",
-    package_dir = {'': ''},
-    packages = ['pisi', 'pisi.cli', 'pisi.operations', 'pisi.actionsapi', 'pisi.pxml', 'pisi.scenarioapi', 'pisi.db'],
-    scripts = ['eopkg-cli', 'scripts/lseopkg', 'scripts/uneopkg', 'scripts/check-newconfigs.py', 'scripts/revdep-rebuild'],
-    cmdclass = {'build' : Build,
-                'build_po' : BuildPo,
-                'install' : Install}
-    )
+    package_dir={"": ""},
+    packages=[
+        "pisi",
+        "pisi.cli",
+        "pisi.operations",
+        "pisi.actionsapi",
+        "pisi.pxml",
+        "pisi.scenarioapi",
+        "pisi.db",
+    ],
+    scripts=[
+        "eopkg-cli",
+        "scripts/lseopkg",
+        "scripts/uneopkg",
+        "scripts/check-newconfigs.py",
+        "scripts/revdep-rebuild",
+    ],
+    cmdclass={"build": Build, "build_po": BuildPo, "install": Install},
+)
 
 # the below stuff is really nice but we already have a version
 # we can use this stuff for svn snapshots in a separate
@@ -176,8 +206,10 @@ setup(name="pisi",
 
 PISI_VERSION = pisi.__version__
 
+
 def getRevision():
     import os
+
     try:
         p = os.popen("svn info 2> /dev/null")
         for line in p.readlines():
@@ -189,6 +221,7 @@ def getRevision():
 
     # doesn't working in a Subversion directory
     return None
+
 
 def getVersion():
     rev = getRevision()

@@ -20,13 +20,16 @@ import pisi.context as ctx
 import pisi.api
 import pisi.db
 
+
 class ListUpgrades(command.Command, metaclass=command.autocommand):
-    __doc__ = _("""List packages to be upgraded
+    __doc__ = _(
+        """List packages to be upgraded
 
 Usage: list-upgrades
 
 Lists the packages that will be upgraded.
-""")
+"""
+    )
 
     def __init__(self, args):
         super(ListUpgrades, self).__init__(args)
@@ -37,28 +40,45 @@ Lists the packages that will be upgraded.
 
     def options(self):
         group = optparse.OptionGroup(self.parser, _("list-upgrades options"))
-        group.add_option("-l", "--long", action="store_true",
-                               default=False, help=_("Show in long format"))
-        group.add_option("-c", "--component", action="store",
-                               default=None, help=_("List upgradable packages under given component"))
-        group.add_option("-i", "--install-info", action="store_true",
-                               default=False, help=_("Show detailed install info"))
+        group.add_option(
+            "-l",
+            "--long",
+            action="store_true",
+            default=False,
+            help=_("Show in long format"),
+        )
+        group.add_option(
+            "-c",
+            "--component",
+            action="store",
+            default=None,
+            help=_("List upgradable packages under given component"),
+        )
+        group.add_option(
+            "-i",
+            "--install-info",
+            action="store_true",
+            default=False,
+            help=_("Show detailed install info"),
+        )
         self.parser.add_option_group(group)
 
     def run(self):
-        self.init(database = True, write = False)
+        self.init(database=True, write=False)
         upgradable_pkgs = pisi.api.list_upgradable()
 
-        component = ctx.get_option('component')
+        component = ctx.get_option("component")
         if component:
-            #FIXME: eopkg api is insufficient to do this
+            # FIXME: eopkg api is insufficient to do this
             component_pkgs = self.componentdb.get_union_packages(component, walk=True)
             upgradable_pkgs = list(set(upgradable_pkgs) & set(component_pkgs))
 
-        upgradable_pkgs = pisi.blacklist.exclude_from(upgradable_pkgs, ctx.const.blacklist)
+        upgradable_pkgs = pisi.blacklist.exclude_from(
+            upgradable_pkgs, ctx.const.blacklist
+        )
 
         if not upgradable_pkgs:
-            ctx.ui.info(_('No packages to upgrade.'))
+            ctx.ui.info(_("No packages to upgrade."))
             return
 
         upgradable_pkgs.sort()
@@ -67,8 +87,14 @@ Lists the packages that will be upgraded.
         maxlen = max([len(_p) for _p in upgradable_pkgs])
 
         if self.options.install_info:
-            ctx.ui.info(_('Package Name          |St|        Version|  Rel.|  Distro|             Date'))
-            print('===========================================================================')
+            ctx.ui.info(
+                _(
+                    "Package Name          |St|        Version|  Rel.|  Distro|             Date"
+                )
+            )
+            print(
+                "==========================================================================="
+            )
         for pkg in upgradable_pkgs:
             package = self.installdb.get_package(pkg)
             inst_info = self.installdb.get_info(pkg)
@@ -76,7 +102,7 @@ Lists the packages that will be upgraded.
                 ctx.ui.info(package)
                 print(inst_info)
             elif self.options.install_info:
-                ctx.ui.info('%-20s |%s ' % (package.name, inst_info.one_liner()))
+                ctx.ui.info("%-20s |%s " % (package.name, inst_info.one_liner()))
             else:
-                package.name = package.name + ' ' * (maxlen - len(package.name))
-                ctx.ui.info('%s - %s' % (package.name, str(package.summary)))
+                package.name = package.name + " " * (maxlen - len(package.name))
+                ctx.ui.info("%s - %s" % (package.name, str(package.summary)))

@@ -10,11 +10,19 @@
 # Please read the COPYING file.
 #
 
+
 def invalidate_caches():
     # Invalidates pisi caches in use and forces to re-fill caches from disk when needed
-    for db in [packagedb.PackageDB(), componentdb.ComponentDB(), installdb.InstallDB(),
-               historydb.HistoryDB(), groupdb.GroupDB(), repodb.RepoDB()]:
+    for db in [
+        packagedb.PackageDB(),
+        componentdb.ComponentDB(),
+        installdb.InstallDB(),
+        historydb.HistoryDB(),
+        groupdb.GroupDB(),
+        repodb.RepoDB(),
+    ]:
         db.invalidate()
+
 
 def flush_caches():
     # Invalidate and flush caches to re-generate them when needed
@@ -22,12 +30,18 @@ def flush_caches():
         db.invalidate()
         db.cache_flush()
 
+
 def update_caches():
     # Updates ondisk caches
-    for db in [packagedb.PackageDB(), componentdb.ComponentDB(),
-               installdb.InstallDB(), groupdb.GroupDB()]:
+    for db in [
+        packagedb.PackageDB(),
+        componentdb.ComponentDB(),
+        installdb.InstallDB(),
+        groupdb.GroupDB(),
+    ]:
         if db.is_initialized():
             db.cache_save()
+
 
 def regenerate_caches():
     flush_caches()

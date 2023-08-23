@@ -24,6 +24,7 @@ import pisi.util as util
 import pisi.db
 import pisi.blacklist
 
+
 def check_update_actions(packages):
     installdb = pisi.db.installdb.InstallDB()
     packagedb = pisi.db.packagedb.PackageDB()
@@ -47,22 +48,26 @@ def check_update_actions(packages):
 
     if "systemRestart" in actions:
         has_actions = True
-        ctx.ui.warning(_("You must restart your system for the updates "
-                         "in the following package(s) to take effect:"))
+        ctx.ui.warning(
+            _(
+                "You must restart your system for the updates "
+                "in the following package(s) to take effect:"
+            )
+        )
         for package, target in actions["systemRestart"]:
             ctx.ui.info("    - %s" % package)
 
     return has_actions
 
+
 def find_upgrades(packages, replaces):
     packagedb = pisi.db.packagedb.PackageDB()
     installdb = pisi.db.installdb.InstallDB()
 
-    security_only = ctx.get_option('security_only')
+    security_only = ctx.get_option("security_only")
 
     Ap = []
     for i_pkg in packages:
-
         if i_pkg in list(replaces.keys()):
             # Replaced packages will be forced for upgrade, cause replaced packages are marked as obsoleted also. So we
             # pass them.
@@ -72,31 +77,42 @@ def find_upgrades(packages, replaces):
             ctx.ui.debug(_("Warning: package *name* ends with '.pisi'"))
 
         if not installdb.has_package(i_pkg):
-            ctx.ui.info(_('Package %s is not installed.') % i_pkg, True)
+            ctx.ui.info(_("Package %s is not installed.") % i_pkg, True)
             continue
 
         if not packagedb.has_package(i_pkg):
-            ctx.ui.info(_('Package %s is not available in repositories.') % i_pkg, True)
+            ctx.ui.info(_("Package %s is not available in repositories.") % i_pkg, True)
             continue
 
         pkg = packagedb.get_package(i_pkg)
-        (version, release, build, distro, distro_release) = installdb.get_version_and_distro_release(i_pkg)
+        (
+            version,
+            release,
+            build,
+            distro,
+            distro_release,
+        ) = installdb.get_version_and_distro_release(i_pkg)
 
         if security_only and not pkg.has_update_type("security", release):
             continue
 
-        if pkg.distribution == distro and \
-                pisi.version.make_version(pkg.distributionRelease) > pisi.version.make_version(distro_release):
+        if pkg.distribution == distro and pisi.version.make_version(
+            pkg.distributionRelease
+        ) > pisi.version.make_version(distro_release):
             Ap.append(i_pkg)
 
         else:
             if int(release) < int(pkg.release):
                 Ap.append(i_pkg)
             else:
-                ctx.ui.info(_('Package %s is already at the latest release %s.')
-                            % (pkg.name, pkg.release), True)
+                ctx.ui.info(
+                    _("Package %s is already at the latest release %s.")
+                    % (pkg.name, pkg.release),
+                    True,
+                )
 
     return Ap
+
 
 def upgrade(A=[], repo=None):
     """Re-installs packages from the repository, trying to perform
@@ -125,21 +141,21 @@ def upgrade(A=[], repo=None):
 
     A = pisi.blacklist.exclude_from(A, ctx.const.blacklist)
 
-    if ctx.get_option('exclude_from'):
-        A = pisi.blacklist.exclude_from(A, ctx.get_option('exclude_from'))
+    if ctx.get_option("exclude_from"):
+        A = pisi.blacklist.exclude_from(A, ctx.get_option("exclude_from"))
 
-    if ctx.get_option('exclude'):
-        A = pisi.blacklist.exclude(A, ctx.get_option('exclude'))
+    if ctx.get_option("exclude"):
+        A = pisi.blacklist.exclude(A, ctx.get_option("exclude"))
 
-    ctx.ui.debug('A = %s' % str(A))
+    ctx.ui.debug("A = %s" % str(A))
 
-    if len(A)==0:
-        ctx.ui.info(_('No packages to upgrade.'))
+    if len(A) == 0:
+        ctx.ui.info(_("No packages to upgrade."))
         return True
 
-    ctx.ui.debug('A = %s' % str(A))
+    ctx.ui.debug("A = %s" % str(A))
 
-    if not ctx.config.get_option('ignore_dependency'):
+    if not ctx.config.get_option("ignore_dependency"):
         G_f, order = plan_upgrade(A, replaces=replaces)
     else:
         G_f = None
@@ -148,15 +164,19 @@ def upgrade(A=[], repo=None):
     componentdb = pisi.db.componentdb.ComponentDB()
 
     # Bug 4211
-    if componentdb.has_component('system.base'):
+    if componentdb.has_component("system.base"):
         order = operations.helper.reorder_base_packages(order)
 
-    ctx.ui.status(_('The following packages will be upgraded:'))
+    ctx.ui.status(_("The following packages will be upgraded:"))
     ctx.ui.info(util.format_by_columns(sorted(order)))
 
     total_size, cached_size = operations.helper.calculate_download_sizes(order)
     total_size, symbol = util.human_readable_size(total_size)
-    ctx.ui.info(util.colorize(_('Total size of package(s): %.2f %s') % (total_size, symbol), "yellow"))
+    ctx.ui.info(
+        util.colorize(
+            _("Total size of package(s): %.2f %s") % (total_size, symbol), "yellow"
+        )
+    )
 
     needs_confirm = check_update_actions(order)
 
@@ -165,29 +185,31 @@ def upgrade(A=[], repo=None):
         ctx.ui.warning(_("There are extra packages due to dependencies."))
         needs_confirm = True
 
-    if ctx.get_option('dry_run'):
+    if ctx.get_option("dry_run"):
         return
 
-    if needs_confirm and \
-            not ctx.ui.confirm(_("Do you want to continue?")):
+    if needs_confirm and not ctx.ui.confirm(_("Do you want to continue?")):
         return False
 
-    ctx.ui.notify(ui.packagestogo, order = order)
+    ctx.ui.notify(ui.packagestogo, order=order)
 
     conflicts = []
-    if not ctx.get_option('ignore_package_conflicts'):
+    if not ctx.get_option("ignore_package_conflicts"):
         conflicts = operations.helper.check_conflicts(order, packagedb)
-
 
     automatic = operations.helper.extract_automatic(A, order)
     paths = []
     for x in order:
-        ctx.ui.info(util.colorize(_("Downloading %d / %d") % (order.index(x)+1, len(order)), "yellow"))
+        ctx.ui.info(
+            util.colorize(
+                _("Downloading %d / %d") % (order.index(x) + 1, len(order)), "yellow"
+            )
+        )
         install_op = atomicoperations.Install.from_name(x)
         paths.append(install_op.package_fname)
 
     # fetch to be upgraded packages but do not install them.
-    if ctx.get_option('fetch_only'):
+    if ctx.get_option("fetch_only"):
         return
 
     if conflicts:
@@ -197,8 +219,13 @@ def upgrade(A=[], repo=None):
 
     try:
         for path in paths:
-            ctx.ui.info(util.colorize(_("Installing %d / %d") % (paths.index(path)+1, len(paths)), "yellow"))
-            install_op = atomicoperations.Install(path, ignore_file_conflicts = True)
+            ctx.ui.info(
+                util.colorize(
+                    _("Installing %d / %d") % (paths.index(path) + 1, len(paths)),
+                    "yellow",
+                )
+            )
+            install_op = atomicoperations.Install(path, ignore_file_conflicts=True)
             if install_op.pkginfo.name in automatic:
                 install_op.automatic = True
             install_op.install(True)
@@ -207,6 +234,7 @@ def upgrade(A=[], repo=None):
     finally:
         ctx.exec_usysconf()
 
+
 def plan_upgrade(A, force_replaced=True, replaces=None):
     # FIXME: remove force_replaced
     # try to construct a pisi graph of packages to
@@ -214,7 +242,7 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
 
     packagedb = pisi.db.packagedb.PackageDB()
 
-    G_f = pgraph.PGraph(packagedb)               # construct G_f
+    G_f = pgraph.PGraph(packagedb)  # construct G_f
 
     A = set(A)
 
@@ -251,7 +279,9 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
                 # previous ones.
                 G_f.add_dep(pkg.name, dep)
             else:
-                ctx.ui.error(_('Dependency %s of %s cannot be satisfied') % (dep, pkg.name))
+                ctx.ui.error(
+                    _("Dependency %s of %s cannot be satisfied") % (dep, pkg.name)
+                )
                 raise Exception(_("Upgrade is not possible."))
 
     def add_resolvable_conflicts(pkg, Bp):
@@ -330,68 +360,102 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
 
         A = Bp
 
-    if ctx.config.get_option('debug'):
+    if ctx.config.get_option("debug"):
         G_f.write_graphviz(sys.stdout)
 
     order = G_f.topological_sort()
     order.reverse()
     return G_f, order
 
-def upgrade_base(A = set()):
+
+def upgrade_base(A=set()):
     installdb = pisi.db.installdb.InstallDB()
     componentdb = pisi.db.componentdb.ComponentDB()
-    if not ctx.config.values.general.ignore_safety and not ctx.get_option('ignore_safety'):
-        if componentdb.has_component('system.base'):
-            systembase = set(componentdb.get_union_component('system.base').packages)
-            extra_installs = [x for x in systembase - set(A) if not installdb.has_package(x)]
-            extra_installs = pisi.blacklist.exclude_from(extra_installs, ctx.const.blacklist)
+    if not ctx.config.values.general.ignore_safety and not ctx.get_option(
+        "ignore_safety"
+    ):
+        if componentdb.has_component("system.base"):
+            systembase = set(componentdb.get_union_component("system.base").packages)
+            extra_installs = [
+                x for x in systembase - set(A) if not installdb.has_package(x)
+            ]
+            extra_installs = pisi.blacklist.exclude_from(
+                extra_installs, ctx.const.blacklist
+            )
             if extra_installs:
-                ctx.ui.warning(_("Safety switch forces the installation of "
-                                 "following packages:"))
+                ctx.ui.warning(
+                    _("Safety switch forces the installation of " "following packages:")
+                )
                 ctx.ui.info(util.format_by_columns(sorted(extra_installs)))
-            G_f, install_order = operations.install.plan_install_pkg_names(extra_installs)
-            extra_upgrades = [x for x in systembase - set(install_order) if is_upgradable(x)]
+            G_f, install_order = operations.install.plan_install_pkg_names(
+                extra_installs
+            )
+            extra_upgrades = [
+                x for x in systembase - set(install_order) if is_upgradable(x)
+            ]
             upgrade_order = []
 
-            extra_upgrades = pisi.blacklist.exclude_from(extra_upgrades, ctx.const.blacklist)
+            extra_upgrades = pisi.blacklist.exclude_from(
+                extra_upgrades, ctx.const.blacklist
+            )
 
-            if ctx.get_option('exclude_from'):
-                extra_upgrades = pisi.blacklist.exclude_from(extra_upgrades, ctx.get_option('exclude_from'))
+            if ctx.get_option("exclude_from"):
+                extra_upgrades = pisi.blacklist.exclude_from(
+                    extra_upgrades, ctx.get_option("exclude_from")
+                )
 
-            if ctx.get_option('exclude'):
-                extra_upgrades = pisi.blacklist.exclude(extra_upgrades, ctx.get_option('exclude'))
+            if ctx.get_option("exclude"):
+                extra_upgrades = pisi.blacklist.exclude(
+                    extra_upgrades, ctx.get_option("exclude")
+                )
 
             if extra_upgrades:
-                ctx.ui.warning(_("Safety switch forces the upgrade of "
-                                 "following packages:"))
+                ctx.ui.warning(
+                    _("Safety switch forces the upgrade of " "following packages:")
+                )
                 ctx.ui.info(util.format_by_columns(sorted(extra_upgrades)))
                 G_f, upgrade_order = plan_upgrade(extra_upgrades, force_replaced=False)
             # return packages that must be added to any installation
             return set(install_order + upgrade_order)
         else:
-            ctx.ui.warning(_('Safety switch: The component system.base cannot be found.'))
+            ctx.ui.warning(
+                _("Safety switch: The component system.base cannot be found.")
+            )
     return set()
 
-def is_upgradable(name):
 
+def is_upgradable(name):
     installdb = pisi.db.installdb.InstallDB()
 
     if not installdb.has_package(name):
         return False
 
-    (i_version, i_release, i_build, i_distro, i_distro_release) = installdb.get_version_and_distro_release(name)
+    (
+        i_version,
+        i_release,
+        i_build,
+        i_distro,
+        i_distro_release,
+    ) = installdb.get_version_and_distro_release(name)
 
     packagedb = pisi.db.packagedb.PackageDB()
 
     try:
-        version, release, build, distro, distro_release = packagedb.get_version_and_distro_release(name, packagedb.which_repo(name))
+        (
+            version,
+            release,
+            build,
+            distro,
+            distro_release,
+        ) = packagedb.get_version_and_distro_release(name, packagedb.which_repo(name))
     except KeyboardInterrupt:
         raise
-    except Exception: #FIXME: what exception could we catch here, replace with that.
+    except Exception:  # FIXME: what exception could we catch here, replace with that.
         return False
 
-    if distro == i_distro and \
-            pisi.version.make_version(distro_release) > pisi.version.make_version(i_distro_release):
+    if distro == i_distro and pisi.version.make_version(
+        distro_release
+    ) > pisi.version.make_version(i_distro_release):
         return True
 
     return int(i_release) < int(release)

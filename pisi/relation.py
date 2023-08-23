@@ -15,8 +15,8 @@ import pisi.version
 import pisi.db
 import pisi.pxml.autoxml as autoxml
 
-class Relation(metaclass=autoxml.autoxml):
 
+class Relation(metaclass=autoxml.autoxml):
     s_Package = [autoxml.String, autoxml.mandatory]
     a_version = [autoxml.String, autoxml.optional]
     a_versionFrom = [autoxml.String, autoxml.optional]
@@ -31,12 +31,10 @@ class Relation(metaclass=autoxml.autoxml):
         else:
             v = pisi.version.make_version(version)
 
-            if self.versionFrom and \
-                    v < pisi.version.make_version(self.versionFrom):
+            if self.versionFrom and v < pisi.version.make_version(self.versionFrom):
                 return False
 
-            if self.versionTo and \
-                    v > pisi.version.make_version(self.versionTo):
+            if self.versionTo and v > pisi.version.make_version(self.versionTo):
                 return False
 
         if self.release and release != self.release:
@@ -51,6 +49,7 @@ class Relation(metaclass=autoxml.autoxml):
                 return False
 
         return True
+
 
 def installed_package_satisfies(relation):
     installdb = pisi.db.installdb.InstallDB()

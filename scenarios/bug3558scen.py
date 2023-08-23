@@ -13,14 +13,14 @@
 # Açıklama: Tüm KDE programlarının ihtiyaç duyduğu KDE kütüphaneleri
 # Bileşen: desktop.kde.base
 # Sağladıkları:
-# Bağımlılıklar:qt arts freetype fontconfig libxslt libxml2 libpcre libart_lgpl libidn utempter alsa-lib cups tiff aspell 
+# Bağımlılıklar:qt arts freetype fontconfig libxslt libxml2 libpcre libart_lgpl libidn utempter alsa-lib cups tiff aspell
 # jasper mDNSResponder ghostscript acl zpspell openexr mit-kerberos tulliana2
 # Dağıtım: Pardus, Dağıtım Sürümü: 1.1
 # Mimari: Any, Yerleşik Boyut: 222414685
 # Ters bağımlılıklar: kdebase gwenview
-# 
-# Problem Description: 
-# 
+#
+# Problem Description:
+#
 # Package's reverse dependencies disappears unexpectedly. If a package which has reverse dependencies has been upgraded.
 # The revdep list is removed from revdep db. So upgraded package will have an empty revdep list.
 #
@@ -38,6 +38,7 @@ let_repo_had(FLIGHTGEAR, with_dependencies(FLIGHTGEAR_DATA))
 let_repo_had(FLIGHTGEAR_DATA)
 
 let_pisi_had(FLIGHTGEAR, FLIGHTGEAR_DATA)
+
 
 def run():
     pisi_info(FLIGHTGEAR_DATA)

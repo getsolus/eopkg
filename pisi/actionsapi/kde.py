@@ -23,30 +23,40 @@ import pisi.actionsapi.get as get
 from pisi.actionsapi.shelltools import system
 from pisi.actionsapi.shelltools import can_access_file
 
+
 class ConfigureError(pisi.actionsapi.Error):
-    def __init__(self, value=''):
+    def __init__(self, value=""):
         pisi.actionsapi.Error.__init__(self, value)
         self.value = value
         ctx.ui.error(value)
-        if can_access_file('config.log'):
-            ctx.ui.error(_('\n!!! Please attach the config.log to your bug report:\n%s/config.log') % os.getcwd())
+        if can_access_file("config.log"):
+            ctx.ui.error(
+                _(
+                    "\n!!! Please attach the config.log to your bug report:\n%s/config.log"
+                )
+                % os.getcwd()
+            )
+
 
 class MakeError(pisi.actionsapi.Error):
-    def __init__(self, value=''):
+    def __init__(self, value=""):
         pisi.actionsapi.Error.__init__(self, value)
         self.value = value
         ctx.ui.error(value)
+
 
 class InstallError(pisi.actionsapi.Error):
-    def __init__(self, value=''):
+    def __init__(self, value=""):
         pisi.actionsapi.Error.__init__(self, value)
         self.value = value
         ctx.ui.error(value)
 
-def configure(parameters = ''):
-    ''' parameters = '--with-nls --with-libusb --with-something-usefull '''
-    if can_access_file('configure'):
-        args = './configure \
+
+def configure(parameters=""):
+    """parameters = '--with-nls --with-libusb --with-something-usefull"""
+    if can_access_file("configure"):
+        args = (
+            "./configure \
                 --prefix=%s \
                 --build=%s \
                 --with-x \
@@ -57,23 +67,31 @@ def configure(parameters = ''):
                 --with-qt-libraries=%s/lib \
                 --disable-dependency-tracking \
                 --disable-debug \
-                %s' % (get.kdeDIR(), get.HOST(), get.qtDIR(), get.qtDIR(), parameters)
+                %s"
+            % (get.kdeDIR(), get.HOST(), get.qtDIR(), get.qtDIR(), parameters)
+        )
 
         if system(args):
-            raise ConfigureError(_('Configure failed.'))
+            raise ConfigureError(_("Configure failed."))
     else:
-        raise ConfigureError(_('No configure script found.'))
+        raise ConfigureError(_("No configure script found."))
 
-def make(parameters = ''):
-    '''make source with given parameters = "all" || "doc" etc.'''
-    if system('make %s %s' % (get.makeJOBS(), parameters)):
-        raise MakeError(_('Make failed.'))
 
-def install(parameters = 'install'):
-    if can_access_file('Makefile'):
-        args = 'make DESTDIR=%s destdir=%s %s' % (get.installDIR(), get.installDIR(), parameters)
+def make(parameters=""):
+    """make source with given parameters = "all" || "doc" etc."""
+    if system("make %s %s" % (get.makeJOBS(), parameters)):
+        raise MakeError(_("Make failed."))
+
+
+def install(parameters="install"):
+    if can_access_file("Makefile"):
+        args = "make DESTDIR=%s destdir=%s %s" % (
+            get.installDIR(),
+            get.installDIR(),
+            parameters,
+        )
 
         if system(args):
-            raise InstallError(_('Install failed.'))
+            raise InstallError(_("Install failed."))
     else:
-        raise InstallError(_('No Makefile found.'))
+        raise InstallError(_("No Makefile found."))

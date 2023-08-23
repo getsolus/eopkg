@@ -12,9 +12,8 @@
 
 import signal
 
-exception = {
-    signal.SIGINT:KeyboardInterrupt
-    }
+exception = {signal.SIGINT: KeyboardInterrupt}
+
 
 class Signal:
     def __init__(self, sig):
@@ -22,8 +21,8 @@ class Signal:
         self.oldhandler = signal.getsignal(sig)
         self.pending = False
 
-class SignalHandler:
 
+class SignalHandler:
     def __init__(self):
         self.signals = {}
 

@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2006, TUBITAK/UEKAE
 #
@@ -20,6 +20,7 @@ from pisi.scenarioapi.constants import *
 from pisi import translate as _
 
 repodb = {}
+
 
 def repo_added_package(package, *args):
     if package in repodb:
@@ -43,7 +44,10 @@ def repo_added_package(package, *args):
         if _with.types == PARTOF and _with.action == INIT:
             partOf = _with.data
 
-    repodb[package] = Package(package, dependencies, conflicts, ver=version, partOf=partOf)
+    repodb[package] = Package(
+        package, dependencies, conflicts, ver=version, partOf=partOf
+    )
+
 
 def repo_removed_package(package):
     if package not in repodb:
@@ -51,6 +55,7 @@ def repo_removed_package(package):
 
     os.unlink(os.path.join(consts.repo_path, repodb[package].get_file_name()))
     del repodb[package]
+
 
 def repo_version_bumped(package, *args):
     if package not in repodb:
@@ -60,12 +65,14 @@ def repo_version_bumped(package, *args):
     repodb[package].version_bump(*args)
     os.unlink(os.path.join(consts.repo_path, old_file))
 
+
 def repo_updated_index():
     cur = os.getcwd()
     path = os.path.join(cur, consts.repo_path)
     os.chdir(consts.repo_path)
     os.system("pisi index --skip-signing %s >/dev/null 2>&1" % path)
     os.chdir(cur)
+
 
 def repo_get_url():
     return "."

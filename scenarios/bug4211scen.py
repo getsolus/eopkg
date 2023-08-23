@@ -39,8 +39,8 @@
 # xorg-proto-7.2_rc1-2-3.pisi    (190.0 KB)100%     77.64 KB/s [00:00:00] [bitti]
 # Klavye kesmesi: Çıkıyor...
 #
-# Problem Description: 
-# 
+# Problem Description:
+#
 # In an upgrade or installation PiSi does not upgrade or install system.base packages before any
 # other package.
 #
@@ -51,12 +51,12 @@
 
 from pisi.scenarioapi.scenario import *
 
-OPENOFFICE="openoffice"
-SUN_JRE="sun-jre"
-UTIL_MACROS="util-macros"
-XORG_PROTO="xorg-proto"
-COMAR="comar"
-MUDUR="mudur"
+OPENOFFICE = "openoffice"
+SUN_JRE = "sun-jre"
+UTIL_MACROS = "util-macros"
+XORG_PROTO = "xorg-proto"
+COMAR = "comar"
+MUDUR = "mudur"
 
 let_repo_had(COMAR, with_partof("system.base"))
 let_repo_had(MUDUR, with_partof("system.base"))
@@ -66,6 +66,7 @@ let_repo_had(OPENOFFICE, with_dependencies(SUN_JRE))
 let_repo_had(SUN_JRE)
 
 let_pisi_had(UTIL_MACROS, XORG_PROTO, COMAR, MUDUR, OPENOFFICE, SUN_JRE)
+
 
 def run():
     repo_version_bumped(SUN_JRE)
@@ -77,4 +78,3 @@ def run():
 
     repo_updated_index()
     pisi_upgraded(OPENOFFICE, SUN_JRE)
-

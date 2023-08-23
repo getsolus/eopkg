@@ -17,14 +17,17 @@ from pisi import translate as _
 import pisi.api
 import pisi.cli.command as command
 
+
 class ConfigurePending(command.PackageOp, metaclass=command.autocommand):
-    __doc__ = _("""Configure pending packages
+    __doc__ = _(
+        """Configure pending packages
 
 If COMAR configuration of some packages were not
 done at installation time, they are added to a list
 of packages waiting to be configured. This command
 configures those packages.
-""")
+"""
+    )
 
     def __init__(self, args):
         super(ConfigurePending, self).__init__(args)
@@ -37,6 +40,5 @@ configures those packages.
         self.parser.add_option_group(group)
 
     def run(self):
-
         self.init()
         pisi.api.configure_pending(self.args)

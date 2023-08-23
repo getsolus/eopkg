@@ -4,8 +4,8 @@ import pisi
 import pisi.context as ctx
 import pisi.conflict
 
-class ConflictTestCase(unittest.TestCase):
 
+class ConflictTestCase(unittest.TestCase):
     def testInstalledPackageConflicts(self):
         pisi.api.install(["ethtool"])
         confinfo = pisi.conflict.Conflict()
@@ -40,7 +40,7 @@ class ConflictTestCase(unittest.TestCase):
         pisi.api.remove_repo("repo1")
 
     def testInterRepoCrossConflicts(self):
-        #If this fails, it may affect database test case results
+        # If this fails, it may affect database test case results
         pisi.api.add_repo("repo1", "repos/repo1-bin/eopkg-index.xml")
         pisi.api.update_repo("repo1")
 

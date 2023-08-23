@@ -21,48 +21,57 @@ import importlib
 
 import locale
 import gettext
-locale.setlocale(locale.LC_ALL, '')
+
+locale.setlocale(locale.LC_ALL, "")
 # You usually want to import this function with the "_" alias.
 try:
-    translate = gettext.translation('pisi', languages=[locale.getlocale()[0]]).ugettext
+    translate = gettext.translation("pisi", languages=[locale.getlocale()[0]]).ugettext
 except:
     # No .mo files found. Just return plain English.
-    def translate(msg): return msg
+    def translate(msg):
+        return msg
 
 
 __version__ = "3.2"
 
-__all__ = [ 'api', 'configfile', 'db']
+__all__ = ["api", "configfile", "db"]
+
 
 # FIXME: Exception shadows builtin Exception. This is no good.
 class Exception(Exception):
     """Class of exceptions that must be caught and handled within eopkg"""
+
     def __str__(self):
-        s = ''
+        s = ""
         for x in self.args:
-            if s != '':
-                s += '\n'
+            if s != "":
+                s += "\n"
             s += str(x)
         return s
 
+
 class Error(Exception):
     """Class of exceptions that lead to program termination"""
+
     pass
+
 
 import pisi.api
 import pisi.config
 import pisi.context as ctx
 
+
 def init_logging():
     log_dir = os.path.join(ctx.config.dest_dir(), ctx.config.log_dir())
     if os.access(log_dir, os.W_OK) and "distutils.core" not in sys.modules:
-        handler = logging.handlers.RotatingFileHandler('%s/eopkg.log' % log_dir)
-        formatter = logging.Formatter('%(asctime)-12s: %(levelname)-8s %(message)s')
+        handler = logging.handlers.RotatingFileHandler("%s/eopkg.log" % log_dir)
+        formatter = logging.Formatter("%(asctime)-12s: %(levelname)-8s %(message)s")
         handler.setFormatter(formatter)
-        ctx.log = logging.getLogger('pisi')
+        ctx.log = logging.getLogger("pisi")
         ctx.log.addHandler(handler)
         ctx.loghandler = handler
         ctx.log.setLevel(logging.DEBUG)
+
 
 def _cleanup():
     """Close the database cleanly and do other cleanup."""
@@ -80,6 +89,7 @@ def _cleanup():
 
     ctx.ui.close()
     ctx.enable_keyboard_interrupts()
+
 
 # Hack for pisi to work with non-patched Python. pisi needs
 # lots of work for not doing this.

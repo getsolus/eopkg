@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2006, TUBITAK/UEKAE
 #
@@ -20,8 +20,11 @@ from pisi.scenarioapi.constants import *
 from pisi.scenarioapi.withops import *
 from pisi import translate as _
 
+
 class Package:
-    def __init__(self, name, deps = [], cons = [], date = "2006-18-18", ver = "1.0", partOf="None"):
+    def __init__(
+        self, name, deps=[], cons=[], date="2006-18-18", ver="1.0", partOf="None"
+    ):
         self.name = name
         self.dependencies = deps
         self.conflicts = cons
@@ -33,12 +36,20 @@ class Package:
         self.create_package()
 
     def create_pisi(self):
-        os.system("pisi build %s -O %s > /dev/null 2>&1" % (consts.pspec_path, consts.repo_path))
+        os.system(
+            "pisi build %s -O %s > /dev/null 2>&1"
+            % (consts.pspec_path, consts.repo_path)
+        )
 
     def create_package(self):
         pspec = Pspec(self.name, consts.pspec_path)
-        pspec.set_source(consts.homepage, consts.summary % self.name,
-                         consts.description % self.name, consts.license, self.partOf)
+        pspec.set_source(
+            consts.homepage,
+            consts.summary % self.name,
+            consts.description % self.name,
+            consts.license,
+            self.partOf,
+        )
         pspec.set_packager(consts.packager_name, consts.packager_email)
         pspec.add_archive(consts.skel_sha1sum, consts.skel_type, consts.skel_uri)
         pspec.set_package(self.dependencies, self.conflicts)
@@ -56,8 +67,14 @@ class Package:
 
     def get_file_name(self):
         # use glob. there may be buildnos at the end of the package name
-        pkg = consts.repo_path + self.name + "-" + \
-              self.version + "-" + self.pspec.pspec.history[0].release
+        pkg = (
+            consts.repo_path
+            + self.name
+            + "-"
+            + self.version
+            + "-"
+            + self.pspec.pspec.history[0].release
+        )
 
         found = glob.glob(pkg + consts.glob_pisis)
         if not found:
@@ -91,6 +108,7 @@ class Package:
         self.actions.name = self.name
         self.actions.write()
         self.create_pisi()
+
 
 if __name__ == "__main__":
     p = Package("w0rmux", [], [], "0.7")

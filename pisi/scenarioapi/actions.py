@@ -10,8 +10,8 @@
 # Please read the COPYING file.
 #
 
-class Actions:
 
+class Actions:
     template = """
 from pisi.actionsapi import pisitools
 

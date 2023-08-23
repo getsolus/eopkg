@@ -24,20 +24,24 @@ import pisi.db.lazydb as lazydb
 import pisi.urlcheck
 from pisi.file import File
 
+
 class RepoError(pisi.Error):
     pass
 
+
 class IncompatibleRepoError(RepoError):
     pass
+
 
 class Repo:
     def __init__(self, indexuri):
         self.indexuri = indexuri
 
+
 medias = (cd, usb, remote, local) = list(range(4))
 
-class RepoOrder:
 
+class RepoOrder:
     def __init__(self):
         self._doc = None
         self.legacy_repo_used = None
@@ -59,7 +63,7 @@ class RepoOrder:
         old_uri = repo_url
         repo_url = pisi.urlcheck.switch_from_legacy(repo_url)
 
-        if old_uri != repo_url: 
+        if old_uri != repo_url:
             self.legacy_repo_used = True
 
         url_node.insertData(repo_url)
@@ -128,7 +132,7 @@ class RepoOrder:
     def get_order(self):
         order = []
 
-        #FIXME: get media order from pisi.conf
+        # FIXME: get media order from pisi.conf
         for m in ["cd", "usb", "remote", "local"]:
             if m in self.repos:
                 order.extend(self.repos[m])
@@ -165,20 +169,22 @@ class RepoOrder:
 
         return order
 
-class RepoDB(lazydb.LazyDB):
 
+class RepoDB(lazydb.LazyDB):
     def init(self):
         self.repoorder = RepoOrder()
 
         if len(self.repoorder.repos) == 0:
-            repo = pisi.db.repodb.Repo(pisi.uri.URI("https://cdn.getsol.us/repo/shannon/eopkg-index.xml.xz"))
+            repo = pisi.db.repodb.Repo(
+                pisi.uri.URI("https://cdn.getsol.us/repo/shannon/eopkg-index.xml.xz")
+            )
             ctx.ui.warning("No repository found. Automatically adding Solus stable.")
-            self.add_repo("Solus", repo, ctx.get_option('at'))
+            self.add_repo("Solus", repo, ctx.get_option("at"))
 
     def has_repo(self, name):
         return name in self.list_repos(only_active=False)
 
-    def has_repo_url(self, url, only_active = True):
+    def has_repo_url(self, url, only_active=True):
         return url in self.list_repo_urls(only_active)
 
     def get_repo_doc(self, repo_name):
@@ -186,11 +192,10 @@ class RepoDB(lazydb.LazyDB):
 
         index_path = repo.indexuri.get_uri()
 
-        #FIXME Local index files should also be cached.
+        # FIXME Local index files should also be cached.
         if File.is_compressed(index_path) or repo.indexuri.is_remote_file():
             index = os.path.basename(index_path)
-            index_path = pisi.util.join_path(ctx.config.index_dir(),
-                                             repo_name, index)
+            index_path = pisi.util.join_path(ctx.config.index_dir(), repo_name, index)
 
             if File.is_compressed(index_path):
                 index_path = os.path.splitext(index_path)[0]
@@ -202,7 +207,11 @@ class RepoDB(lazydb.LazyDB):
         try:
             return piksemel.parse(index_path)
         except Exception as e:
-            raise RepoError(_("Error parsing repository index information. Index file does not exist or is malformed."))
+            raise RepoError(
+                _(
+                    "Error parsing repository index information. Index file does not exist or is malformed."
+                )
+            )
 
     def get_repo(self, repo):
         return Repo(pisi.uri.URI(self.get_repo_url(repo)))
@@ -221,17 +230,17 @@ class RepoDB(lazydb.LazyDB):
                 if old_url != url:
                     self.remove_repo(name)
                     repo = pisi.db.repodb.Repo(pisi.uri.URI(url))
-                    self.add_repo(name, repo, ctx.get_option('at'))
+                    self.add_repo(name, repo, ctx.get_option("at"))
 
         return url
 
-    def add_repo(self, name, repo_info, at = None):
+    def add_repo(self, name, repo_info, at=None):
         repo_path = pisi.util.join_path(ctx.config.index_dir(), name)
 
         try:
             os.makedirs(repo_path)
         except Exception as e:
-               pass
+            pass
 
         urifile_path = pisi.util.join_path(ctx.config.index_dir(), name, "uri")
         open(urifile_path, "w").write(repo_info.indexuri.get_uri())
@@ -256,7 +265,11 @@ class RepoDB(lazydb.LazyDB):
         return repos
 
     def list_repos(self, only_active=True):
-        return [x for x in self.repoorder.get_order() if (True if not only_active else self.repo_active(x))]
+        return [
+            x
+            for x in self.repoorder.get_order()
+            if (True if not only_active else self.repo_active(x))
+        ]
 
     def list_repo_urls(self, only_active=True):
         repos = []
@@ -292,7 +305,7 @@ class RepoDB(lazydb.LazyDB):
         return distro and distro.getTagData("Version")
 
     def check_distribution(self, name):
-        if ctx.get_option('ignore_check'):
+        if ctx.get_option("ignore_check"):
             return
 
         dist_name = self.get_distribution(name)
@@ -303,11 +316,14 @@ class RepoDB(lazydb.LazyDB):
 
         dist_release = self.get_distribution_release(name)
         if dist_release is not None:
-            compatible &= \
-                dist_release == ctx.config.values.general.distribution_release
+            compatible &= dist_release == ctx.config.values.general.distribution_release
 
         if not compatible:
             self.deactivate_repo(name)
             raise IncompatibleRepoError(
-                    _("Repository '%s' is not compatible with your "
-                      "distribution. Repository is disabled.") % name)
+                _(
+                    "Repository '%s' is not compatible with your "
+                    "distribution. Repository is disabled."
+                )
+                % name
+            )

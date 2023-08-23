@@ -12,9 +12,13 @@ import unittest
 
 from pisi.mirrors import Mirrors
 
+
 class MirrorsTestCase(unittest.TestCase):
     def testGetMirrors(self):
         mirrors = Mirrors("mirrors.conf")
         assert ["http://www.eu.apache.org/dist/"] == mirrors.get_mirrors("apache")
-        assert ['http://search.cpan.org/CPAN/', 'http://cpan.ulak.net.tr/'] == mirrors.get_mirrors("cpan")
+        assert [
+            "http://search.cpan.org/CPAN/",
+            "http://cpan.ulak.net.tr/",
+        ] == mirrors.get_mirrors("cpan")
         assert ["http://ftp.gnu.org/gnu/"] == mirrors.get_mirrors("gnu")

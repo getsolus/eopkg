@@ -5,6 +5,7 @@ import os
 import codecs
 import xml.dom.minidom as mdom
 
+
 def find_pspecs(folder):
     paks = []
     for root, dirs, files in os.walk(folder):
@@ -15,12 +16,20 @@ def find_pspecs(folder):
             dirs.remove(".svn")
     return paks
 
+
 def addText(doc, parent, text):
-    cdata =doc.createTextNode(text)
+    cdata = doc.createTextNode(text)
     parent.appendChild(cdata)
 
+
 def getTags(parent, childName):
-    return [x for x in parent.childNodes if x.nodeType == x.ELEMENT_NODE if x.tagName == childName]
+    return [
+        x
+        for x in parent.childNodes
+        if x.nodeType == x.ELEMENT_NODE
+        if x.tagName == childName
+    ]
+
 
 def getNodeText(node, tag, default=None):
     try:
@@ -29,11 +38,13 @@ def getNodeText(node, tag, default=None):
         c = default
     return c
 
+
 def newNode(doc, tag, text):
     node = doc.createElement(tag)
     cdata = doc.createTextNode(text)
     node.appendChild(cdata)
     return node
+
 
 def fixIndent(doc, node):
     for x in node.childNodes:
@@ -43,14 +54,17 @@ def fixIndent(doc, node):
         else:
             x.data = "\n" + x.data[5:]
 
+
 def fixTags(doc, hist):
     for update in hist.childNodes:
         if update.nodeType == update.ELEMENT_NODE:
-            rno =  getNodeText(update, "Release")
+            rno = getNodeText(update, "Release")
             update.setAttribute("release", rno)
             if rno == "1":
                 comment = newNode(doc, "Comment", "First release.")
-                paker = getTags(getTags(doc.documentElement, "Source")[0], "Packager")[0]
+                paker = getTags(getTags(doc.documentElement, "Source")[0], "Packager")[
+                    0
+                ]
                 name = newNode(doc, "Name", getNodeText(paker, "Name"))
                 email = newNode(doc, "Email", getNodeText(paker, "Email"))
             else:
@@ -64,6 +78,7 @@ def fixTags(doc, hist):
             update.appendChild(email)
             addText(doc, update, "\n        ")
 
+
 def fixPspec(path):
     doc = mdom.parse(path)
     pisi = doc.documentElement
@@ -75,9 +90,10 @@ def fixPspec(path):
     fixTags(doc, item)
     pisi.appendChild(item)
     addText(doc, pisi, "\n")
-    f = codecs.open(path,'w', "utf-8")
+    f = codecs.open(path, "w", "utf-8")
     f.write(doc.toxml())
     f.close()
+
 
 pakages = find_pspecs(sys.argv[1])
 for pak in pakages:

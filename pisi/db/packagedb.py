@@ -25,16 +25,16 @@ import pisi.db.itembyrepo
 import pisi.db.lazydb as lazydb
 from pisi import translate as _
 
-class PackageDB(lazydb.LazyDB):
 
+class PackageDB(lazydb.LazyDB):
     def __init__(self):
         lazydb.LazyDB.__init__(self, cacheable=True)
 
     def init(self):
-        self.__package_nodes = {} # Packages
-        self.__revdeps = {}       # Reverse dependencies
-        self.__obsoletes = {}     # Obsoletes
-        self.__replaces = {}      # Replaces
+        self.__package_nodes = {}  # Packages
+        self.__revdeps = {}  # Reverse dependencies
+        self.__obsoletes = {}  # Obsoletes
+        self.__replaces = {}  # Replaces
 
         repodb = pisi.db.repodb.RepoDB()
 
@@ -51,7 +51,11 @@ class PackageDB(lazydb.LazyDB):
         self.rpdb = pisi.db.itembyrepo.ItemByRepo(self.__replaces)
 
     def __generate_replaces(self, doc):
-        return [x.getTagData("Name") for x in doc.tags("Package") if x.getTagData("Replaces")]
+        return [
+            x.getTagData("Name")
+            for x in doc.tags("Package")
+            if x.getTagData("Replaces")
+        ]
 
     def __generate_obsoletes(self, doc):
         distribution = doc.getTag("Distribution")
@@ -64,16 +68,23 @@ class PackageDB(lazydb.LazyDB):
         return [x.firstChild().data() for x in obsoletes.tags("Package")]
 
     def __generate_packages(self, doc):
-        return dict([(x.getTagData("Name"), gzip.zlib.compress(x.toString())) for x in doc.tags("Package")])
+        return dict(
+            [
+                (x.getTagData("Name"), gzip.zlib.compress(x.toString()))
+                for x in doc.tags("Package")
+            ]
+        )
 
     def __generate_revdeps(self, doc):
         revdeps = {}
         for node in doc.tags("Package"):
-            name = node.getTagData('Name')
-            deps = node.getTag('RuntimeDependencies')
+            name = node.getTagData("Name")
+            deps = node.getTag("RuntimeDependencies")
             if deps:
                 for dep in deps.tags("Dependency"):
-                    revdeps.setdefault(dep.firstChild().data(), set()).add((name, dep.toString()))
+                    revdeps.setdefault(dep.firstChild().data(), set()).add(
+                        (name, dep.toString())
+                    )
         return revdeps
 
     def has_package(self, name, repo=None):
@@ -84,12 +95,12 @@ class PackageDB(lazydb.LazyDB):
         return pkg
 
     def get_pkgconfig_providers(self, repo=None):
-        """ get_pkgconfig_providers will return a tuple of two dicts
+        """get_pkgconfig_providers will return a tuple of two dicts
 
-            The first dict ([0]) contains the standard pkgconfig mapping
-            to package name.
-            The second dict ([1]) contains the pkgconfig32 mapping to
-            package name.
+        The first dict ([0]) contains the standard pkgconfig mapping
+        to package name.
+        The second dict ([1]) contains the pkgconfig32 mapping to
+        package name.
         """
         repodb = pisi.db.repodb.RepoDB()
 
@@ -110,30 +121,34 @@ class PackageDB(lazydb.LazyDB):
         return (pkgConfigs, pkgConfigs32)
 
     def get_package_by_pkgconfig(self, pkgconfig):
-        """ This method is deprecated. Use get_pkgconfig_providers instead """
+        """This method is deprecated. Use get_pkgconfig_providers instead"""
         provs = self.get_pkgconfig_providers()[0]
         if pkgconfig in provs:
             return self.get_package(provs[pkgconfig])
         return None
 
     def get_package_by_pkgconfig32(self, pkgconfig):
-        """ This method is deprecated. Use get_pkgconfig_providers instead """
+        """This method is deprecated. Use get_pkgconfig_providers instead"""
         provs = self.get_pkgconfig_providers()[1]
         if pkgconfig in provs:
             return self.get_package(provs[pkgconfig])
         return None
 
     def search_in_packages(self, packages, terms, lang=None):
-        resum = '<Summary xml:lang=.(%s|en).>.*?%s.*?</Summary>'
-        redesc = '<Description xml:lang=.(%s|en).>.*?%s.*?</Description>'
+        resum = "<Summary xml:lang=.(%s|en).>.*?%s.*?</Summary>"
+        redesc = "<Description xml:lang=.(%s|en).>.*?%s.*?</Description>"
         if not lang:
             lang = pisi.pxml.autoxml.LocalText.get_lang()
         found = []
         for name in packages:
             xml = self.pdb.get_item(name)
-            if terms == [term for term in terms if re.compile(term, re.I).search(name) or \
-                                            re.compile(resum % (lang, term), re.I).search(xml) or \
-                                            re.compile(redesc % (lang, term), re.I).search(xml)]:
+            if terms == [
+                term
+                for term in terms
+                if re.compile(term, re.I).search(name)
+                or re.compile(resum % (lang, term), re.I).search(xml)
+                or re.compile(redesc % (lang, term), re.I).search(xml)
+            ]:
                 found.append(name)
         return found
 
@@ -147,20 +162,27 @@ class PackageDB(lazydb.LazyDB):
         This method will return only package that contents terms in the package
         name or summary
         """
-        resum = '<Summary xml:lang=.(%s|en).>.*?%s.*?</Summary>'
-        redesc = '<Description xml:lang=.(%s|en).>.*?%s.*?</Description>'
+        resum = "<Summary xml:lang=.(%s|en).>.*?%s.*?</Summary>"
+        redesc = "<Description xml:lang=.(%s|en).>.*?%s.*?</Description>"
         if not lang:
             lang = pisi.pxml.autoxml.LocalText.get_lang()
         if not fields:
-            fields = {'name': True, 'summary': True, 'desc': True}
+            fields = {"name": True, "summary": True, "desc": True}
         found = []
         for name, xml in self.pdb.get_items_iter(repo):
-            if terms == [term for term in terms if (fields['name'] and \
-                    re.compile(term, re.I).search(name)) or \
-                    (fields['summary'] and \
-                    re.compile(resum % (lang, term), re.I).search(xml)) or \
-                    (fields['desc'] and \
-                    re.compile(redesc % (lang, term), re.I).search(xml))]:
+            if terms == [
+                term
+                for term in terms
+                if (fields["name"] and re.compile(term, re.I).search(name))
+                or (
+                    fields["summary"]
+                    and re.compile(resum % (lang, term), re.I).search(xml)
+                )
+                or (
+                    fields["desc"]
+                    and re.compile(redesc % (lang, term), re.I).search(xml)
+                )
+            ]:
                 found.append(name)
         return found
 
@@ -180,14 +202,14 @@ class PackageDB(lazydb.LazyDB):
 
     def get_version_and_distro_release(self, name, repo):
         if not self.has_package(name, repo):
-            raise Exception(_('Package %s not found.') % name)
+            raise Exception(_("Package %s not found.") % name)
 
         pkg_doc = piksemel.parseString(self.pdb.get_item(name, repo))
         return self.__get_version(pkg_doc) + self.__get_distro_release(pkg_doc)
 
     def get_version(self, name, repo):
         if not self.has_package(name, repo):
-            raise Exception(_('Package %s not found.') % name)
+            raise Exception(_("Package %s not found.") % name)
 
         pkg_doc = piksemel.parseString(self.pdb.get_item(name, repo))
         return self.__get_version(pkg_doc)
@@ -220,7 +242,9 @@ class PackageDB(lazydb.LazyDB):
     def get_rev_deps(self, name, repo=None):
         try:
             rvdb = self.rvdb.get_item(name, repo)
-        except Exception: #FIXME: what exception could we catch here, replace with that.
+        except (
+            Exception
+        ):  # FIXME: what exception could we catch here, replace with that.
             return []
 
         rev_deps = []
@@ -261,19 +285,33 @@ class PackageDB(lazydb.LazyDB):
         if since:
             since_date = datetime.datetime(*time.strptime(since, "%Y-%m-%d")[0:6])
         else:
-            since_date = datetime.datetime(*time.strptime(historydb.get_last_repo_update(), "%Y-%m-%d")[0:6])
+            since_date = datetime.datetime(
+                *time.strptime(historydb.get_last_repo_update(), "%Y-%m-%d")[0:6]
+            )
 
         for pkg in self.list_packages(repo):
             failed = False
             try:
-                enter_date = datetime.datetime(*time.strptime(self.get_package(pkg).history[-1].date, "%m-%d-%Y")[0:6])
+                enter_date = datetime.datetime(
+                    *time.strptime(self.get_package(pkg).history[-1].date, "%m-%d-%Y")[
+                        0:6
+                    ]
+                )
             except:
                 failed = True
             if failed:
                 try:
-                    enter_date = datetime.datetime(*time.strptime(self.get_package(pkg).history[-1].date, "%Y-%m-%d")[0:6])
+                    enter_date = datetime.datetime(
+                        *time.strptime(
+                            self.get_package(pkg).history[-1].date, "%Y-%m-%d"
+                        )[0:6]
+                    )
                 except:
-                    enter_date = datetime.datetime(*time.strptime(self.get_package(pkg).history[-1].date, "%Y-%d-%m")[0:6])
+                    enter_date = datetime.datetime(
+                        *time.strptime(
+                            self.get_package(pkg).history[-1].date, "%Y-%d-%m"
+                        )[0:6]
+                    )
 
             if enter_date >= since_date:
                 packages.append(pkg)

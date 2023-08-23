@@ -22,7 +22,10 @@ import pisi.util as util
 import pisi.ui as ui
 import pisi.db
 
-def remove(A, ignore_dep = False, ignore_safety = False, autoremove = False, force_prompt = False):
+
+def remove(
+    A, ignore_dep=False, ignore_safety=False, autoremove=False, force_prompt=False
+):
     """remove set A of packages from system (A is a list of package names)"""
 
     componentdb = pisi.db.componentdb.ComponentDB()
@@ -33,47 +36,66 @@ def remove(A, ignore_dep = False, ignore_safety = False, autoremove = False, for
     # filter packages that are not installed
     A_0 = A = set(A)
 
-    if not ctx.get_option('ignore_safety') and not ctx.config.values.general.ignore_safety and not ignore_safety:
-        if componentdb.has_component('system.base'):
-            systembase = set(componentdb.get_union_component('system.base').packages)
+    if (
+        not ctx.get_option("ignore_safety")
+        and not ctx.config.values.general.ignore_safety
+        and not ignore_safety
+    ):
+        if componentdb.has_component("system.base"):
+            systembase = set(componentdb.get_union_component("system.base").packages)
             refused = A.intersection(systembase)
             if refused:
-                raise pisi.Error(_("Safety switch prevents the removal of "
-                                   "following packages:\n") +
-                                    util.format_by_columns(sorted(refused)))
+                raise pisi.Error(
+                    _("Safety switch prevents the removal of " "following packages:\n")
+                    + util.format_by_columns(sorted(refused))
+                )
                 A = A - systembase
         else:
-            ctx.ui.warning(_("Safety switch: The component system.base cannot be found."))
+            ctx.ui.warning(
+                _("Safety switch: The component system.base cannot be found.")
+            )
 
     Ap = []
     for x in A:
         if installdb.has_package(x):
             Ap.append(x)
         else:
-            ctx.ui.info(_('Package %s does not exist. Cannot remove.') % x)
+            ctx.ui.info(_("Package %s does not exist. Cannot remove.") % x)
     A = set(Ap)
 
-    if len(A)==0:
-        ctx.ui.info(_('No packages to remove.'))
+    if len(A) == 0:
+        ctx.ui.info(_("No packages to remove."))
         return False
 
-    if not ctx.config.get_option('ignore_dependency') and not ignore_dep:
+    if not ctx.config.get_option("ignore_dependency") and not ignore_dep:
         if autoremove:
             G_f, order = plan_autoremove(A)
             A3 = set(order)
 
-            if not ctx.get_option('ignore_safety') and not ctx.config.values.general.ignore_safety and not ignore_safety:
-                if componentdb.has_component('system.base'):
-                    systembase = set(componentdb.get_union_component('system.base').packages)
+            if (
+                not ctx.get_option("ignore_safety")
+                and not ctx.config.values.general.ignore_safety
+                and not ignore_safety
+            ):
+                if componentdb.has_component("system.base"):
+                    systembase = set(
+                        componentdb.get_union_component("system.base").packages
+                    )
                     refused = A3.intersection(systembase)
                     if refused:
-                        raise pisi.Error(_("Safety switch prevents the removal of "
-                                           "following packages:\n") +
-                                            util.format_by_columns(sorted(refused)))
+                        raise pisi.Error(
+                            _(
+                                "Safety switch prevents the removal of "
+                                "following packages:\n"
+                            )
+                            + util.format_by_columns(sorted(refused))
+                        )
                         A3 = A3 - systembase
                         order = list(A3)
                 else:
-                    ctx.ui.warning(_("Safety switch: The component system.base cannot be found."))
+                    ctx.ui.warning(
+                        _("Safety switch: The component system.base cannot be found.")
+                    )
 
         else:
             G_f, order = plan_remove(A)
@@ -81,33 +103,40 @@ def remove(A, ignore_dep = False, ignore_safety = False, autoremove = False, for
         G_f = None
         order = A
 
-    ctx.ui.info(_("""The following list of packages will be removed
+    ctx.ui.info(
+        _(
+            """The following list of packages will be removed
 in the respective order to satisfy dependencies:
-""") + util.strlist(order))
+"""
+        )
+        + util.strlist(order)
+    )
     if len(order) > len(A_0) or force_prompt:
-        if not ctx.ui.confirm(_('Do you want to continue?')):
-            ctx.ui.warning(_('Package removal declined'))
+        if not ctx.ui.confirm(_("Do you want to continue?")):
+            ctx.ui.warning(_("Package removal declined"))
             return False
 
-    if ctx.get_option('dry_run'):
+    if ctx.get_option("dry_run"):
         return
 
-    ctx.ui.notify(ui.packagestogo, order = order)
+    ctx.ui.notify(ui.packagestogo, order=order)
 
     try:
         for x in order:
             if installdb.has_package(x):
                 atomicoperations.remove_single(x)
             else:
-                ctx.ui.info(_('Package %s is not installed. Cannot remove.') % x)
+                ctx.ui.info(_("Package %s is not installed. Cannot remove.") % x)
     except Exception as e:
         raise e
     finally:
         ctx.exec_usysconf()
 
-def remove_orphans(ignore_dep = False, ignore_safety = False):
+
+def remove_orphans(ignore_dep=False, ignore_safety=False):
     pg, pkgs = plan_autoremove_all()
-    return remove(pkgs, ignore_dep, ignore_safety, autoremove = False, force_prompt=True)
+    return remove(pkgs, ignore_dep, ignore_safety, autoremove=False, force_prompt=True)
+
 
 def plan_remove(A):
     # try to construct a pisi graph of packages to
@@ -115,7 +144,7 @@ def plan_remove(A):
 
     installdb = pisi.db.installdb.InstallDB()
 
-    G_f = pgraph.PGraph(installdb)               # construct G_f
+    G_f = pgraph.PGraph(installdb)  # construct G_f
 
     # find the (install closure) graph of G_f by package
     # set A using packagedb
@@ -126,21 +155,27 @@ def plan_remove(A):
         Bp = set()
         for x in B:
             rev_deps = installdb.get_rev_deps(x)
-            for (rev_dep, depinfo) in rev_deps:
+            for rev_dep, depinfo in rev_deps:
                 # we don't deal with uninstalled rev deps
                 # and unsatisfied dependencies (this is important, too)
                 # satisfied_by_any_installed_other_than is for AnyDependency
-                if installdb.has_package(rev_dep) and depinfo.satisfied_by_installed() and not depinfo.satisfied_by_any_installed_other_than(x):
+                if (
+                    installdb.has_package(rev_dep)
+                    and depinfo.satisfied_by_installed()
+                    and not depinfo.satisfied_by_any_installed_other_than(x)
+                ):
                     if not rev_dep in G_f.vertices():
                         Bp.add(rev_dep)
                         G_f.add_plain_dep(rev_dep, x)
         B = Bp
-    if ctx.config.get_option('debug'):
+    if ctx.config.get_option("debug"):
         G_f.write_graphviz(sys.stdout)
     order = G_f.topological_sort()
     return G_f, order
 
+
 revdep_owner = None
+
 
 def revdep_from_hell(idb, orphans, order, pkgname):
     """
@@ -150,13 +185,14 @@ def revdep_from_hell(idb, orphans, order, pkgname):
     global revdep_owner
 
     revdeps = idb.get_rev_deps(pkgname)
-    for (name, rdep) in revdeps:
+    for name, rdep in revdeps:
         if name not in orphans and name not in order:
             revdep_owner = name
             return False
         if not revdep_from_hell(idb, orphans, order, name):
             return False
     return True
+
 
 def plan_autoremove(name):
     """
@@ -208,6 +244,7 @@ def plan_autoremove(name):
     # Return the consistently ordered graph
     return plan_remove(newSet)
 
+
 def plan_autoremove_all():
     """
     Attempt to automatically remove all ORPHANED automatically installed
@@ -229,6 +266,7 @@ def plan_autoremove_all():
 
     return plan_remove(murderficate)
 
+
 def list_orphans():
     """
     Helper function to return a list of potential orphans and parents
@@ -247,9 +285,11 @@ def list_orphans():
         ret[pkgID] = None
     return ret
 
+
 def remove_conflicting_packages(conflicts):
     if remove(conflicts, ignore_dep=True, ignore_safety=True):
         raise Exception(_("Conflicts remain"))
+
 
 def remove_obsoleted_packages():
     installdb = pisi.db.installdb.InstallDB()
@@ -258,6 +298,7 @@ def remove_obsoleted_packages():
     if obsoletes:
         if remove(obsoletes, ignore_dep=True, ignore_safety=True):
             raise Exception(_("Obsoleted packages remaining"))
+
 
 def remove_replaced_packages(replaced):
     if remove(replaced, ignore_dep=True, ignore_safety=True):

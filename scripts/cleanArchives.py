@@ -15,6 +15,7 @@ import sys
 import pisi.uri
 import pisi.specfile
 
+
 def scanPSPEC(folder):
     packages = []
     for root, dirs, files in os.walk(folder):
@@ -25,11 +26,13 @@ def scanPSPEC(folder):
             dirs.remove(".svn")
     return packages
 
+
 def cleanArchives(file):
     try:
         os.remove(file)
     except OSError:
         print("Permission denied...")
+
 
 if __name__ == "__main__":
     try:

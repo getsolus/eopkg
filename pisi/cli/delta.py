@@ -19,7 +19,8 @@ import pisi.cli.command as command
 import pisi.context as ctx
 
 
-usage = _("""Creates delta packages
+usage = _(
+    """Creates delta packages
 
 Usages: delta oldpackage1 oldpackage2 ...  newpackage
         delta -t newpackage oldpackage1 oldpackage2 ...
@@ -27,11 +28,11 @@ Usages: delta oldpackage1 oldpackage2 ...  newpackage
 Delta command finds the changed files between the given
 packages by comparing the sha1sum of files and creates
 a delta package with the changed files.
-""")
+"""
+)
 
 
 class Delta(command.Command, metaclass=command.autocommand):
-
     __doc__ = usage
 
     def __init__(self, args):
@@ -45,22 +46,35 @@ class Delta(command.Command, metaclass=command.autocommand):
         self.parser.add_option_group(group)
 
     def add_options(self, group):
-        group.add_option("-t", "--newest-package",
-                         action="store",
-                         default=None,
-                         help=_("Use arg as the new package and treat "
-                                "other arguments as old packages."))
+        group.add_option(
+            "-t",
+            "--newest-package",
+            action="store",
+            default=None,
+            help=_(
+                "Use arg as the new package and treat "
+                "other arguments as old packages."
+            ),
+        )
 
-        group.add_option("-O", "--output-dir",
-                         action="store",
-                         default=None,
-                         help=_("Output directory for produced packages."))
+        group.add_option(
+            "-O",
+            "--output-dir",
+            action="store",
+            default=None,
+            help=_("Output directory for produced packages."),
+        )
 
-        group.add_option("-F", "--package-format",
-                         action="store",
-                         help=_("Create the binary package using the given "
-                                "format. Use '-F help' to see a list of "
-                                "supported formats."))
+        group.add_option(
+            "-F",
+            "--package-format",
+            action="store",
+            help=_(
+                "Create the binary package using the given "
+                "format. Use '-F help' to see a list of "
+                "supported formats."
+            ),
+        )
 
     def run(self):
         self.init(database=False, write=False)
@@ -85,8 +99,9 @@ class Delta(command.Command, metaclass=command.autocommand):
             new_package = self.args[-1]
             old_packages = self.args[:-1]
 
-        if not ctx.get_option('output_dir'):
-            ctx.config.options.output_dir = '.'
+        if not ctx.get_option("output_dir"):
+            ctx.config.options.output_dir = "."
 
         from pisi.operations.delta import create_delta_packages
+
         create_delta_packages(old_packages, new_package)

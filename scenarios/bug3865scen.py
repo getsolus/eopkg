@@ -7,8 +7,8 @@
 # Problem  : A need arised between the packages libmp4v2 and faad2 that libmp4v2 has to
 #            define that it only conflicts with the faad2 until release 3.
 #
-# Problem Description: 
-# 
+# Problem Description:
+#
 # PiSi is incapable to define conflict versioning info. libmp4v2 only conflicts with faad2
 # package's release no 3. But because PiSi does not understand that, two packages can not
 # be installed together.
@@ -27,6 +27,7 @@ let_repo_had(LIBMP4V2)
 let_repo_had(FAAD2, with_version("0.2.1"))
 
 let_pisi_had(LIBMP4V2, FAAD2)
+
 
 def run():
     repo_version_bumped(LIBMP4V2, with_added_conflict(FAAD2, versionTo="0.2.1"))

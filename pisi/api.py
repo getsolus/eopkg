@@ -43,32 +43,44 @@ import pisi.operations.check
 import pisi.operations.build
 import pisi.errors
 
+
 def locked(func):
     """
     Decorator for synchronizing privileged functions
     """
-    def wrapper(*__args,**__kw):
+
+    def wrapper(*__args, **__kw):
         try:
-            lock = file(pisi.util.join_path(pisi.context.config.lock_dir(), 'pisi'), 'w')
+            lock = file(
+                pisi.util.join_path(pisi.context.config.lock_dir(), "pisi"), "w"
+            )
         except IOError:
-            raise pisi.errors.PrivilegeError(_("You have to be root for this operation."))
+            raise pisi.errors.PrivilegeError(
+                _("You have to be root for this operation.")
+            )
 
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             ctx.locked = True
         except IOError:
             if not ctx.locked:
-                raise pisi.errors.AnotherInstanceError(_("Another instance of eopkg is running. Only one instance is allowed."))
+                raise pisi.errors.AnotherInstanceError(
+                    _(
+                        "Another instance of eopkg is running. Only one instance is allowed."
+                    )
+                )
 
         try:
             pisi.db.invalidate_caches()
-            ret = func(*__args,**__kw)
+            ret = func(*__args, **__kw)
             pisi.db.update_caches()
             return ret
         finally:
             ctx.locked = False
             lock.close()
+
     return wrapper
+
 
 def set_userinterface(ui):
     """
@@ -76,6 +88,7 @@ def set_userinterface(ui):
     @param ui: User interface
     """
     ctx.ui = ui
+
 
 def set_io_streams(stdout=None, stderr=None):
     """
@@ -89,9 +102,11 @@ def set_io_streams(stdout=None, stderr=None):
     if stderr:
         ctx.stderr = stderr
 
+
 def set_can_configure(configure):
-    """ Specify whether we're allowed to run usysconf """
+    """Specify whether we're allowed to run usysconf"""
     ctx.can_usysconf = configure
+
 
 def set_options(options):
     """
@@ -109,11 +124,13 @@ def set_options(options):
     """
     ctx.config.set_options(options)
 
+
 def list_needs_restart():
     """
     Return a list of packages that need a service restart.
     """
     return pisi.db.installdb.InstallDB().list_needs_restart()
+
 
 def list_needs_reboot():
     """
@@ -121,11 +138,13 @@ def list_needs_reboot():
     """
     return pisi.db.installdb.InstallDB().list_needs_reboot()
 
+
 def list_auto_installed():
     """
     Return a list of packages that have been automatically installed.
     """
     return pisi.db.installdb.InstallDB().list_auto_installed()
+
 
 def add_needs_restart(package):
     """
@@ -133,11 +152,13 @@ def add_needs_restart(package):
     """
     pisi.db.installdb.InstallDB().mark_needs_restart(package)
 
+
 def add_needs_reboot(package):
     """
     Add a new package to system reboot list.
     """
     pisi.db.installdb.InstallDB().mark_needs_reboot(package)
+
 
 def add_auto_installed(package):
     """
@@ -145,11 +166,13 @@ def add_auto_installed(package):
     """
     pisi.db.installdb.InstallDB().mark_auto_installed(package)
 
+
 def remove_needs_restart(package):
     """
     Remove a package from service restart list. Passing "*" will clear whole list.
     """
     pisi.db.installdb.InstallDB().clear_needs_restart(package)
+
 
 def remove_needs_reboot(package):
     """
@@ -157,11 +180,13 @@ def remove_needs_reboot(package):
     """
     pisi.db.installdb.InstallDB().clear_needs_reboot(package)
 
+
 def remove_auto_install(package):
     """
     Remove a package from the auto install list. Passing "*" will clear whole list.
     """
     pisi.db.installdb.InstallDB().clear_auto_installed(package)
+
 
 def list_pending():
     """
@@ -169,11 +194,13 @@ def list_pending():
     """
     return pisi.db.installdb.InstallDB().list_pending()
 
+
 def list_installed():
     """
     Return a list of installed packages -> list_of_strings
     """
     return pisi.db.installdb.InstallDB().list_installed()
+
 
 def list_obsoleted(repo=None):
     """
@@ -182,6 +209,7 @@ def list_obsoleted(repo=None):
     a list of all the obsoleted packages in all the repositories
     """
     return pisi.db.packagedb.PackageDB().get_obsoletes(repo)
+
 
 def list_replaces(repo=None):
     """
@@ -196,6 +224,7 @@ def list_replaces(repo=None):
     """
     return pisi.db.packagedb.PackageDB().get_replaces(repo)
 
+
 def list_available(repo=None):
     """
     Return a list of available packages in the given repository -> list_of_strings
@@ -203,6 +232,7 @@ def list_available(repo=None):
     a list of all the available packages in all the repositories
     """
     return pisi.db.packagedb.PackageDB().list_packages(repo)
+
 
 def list_newest(repo=None, since=None):
     """
@@ -213,6 +243,7 @@ def list_newest(repo=None, since=None):
     @param since: yyyy-mm-dd formatted
     """
     return pisi.db.packagedb.PackageDB().list_newest(repo, since)
+
 
 def list_upgradable():
     """
@@ -230,12 +261,14 @@ def list_upgradable():
 
     return upgradable
 
+
 def list_repos(only_active=True):
     """
     Return a list of the repositories -> list_of_strings
     @param only_active: return only the active repos list -> list_of_strings
     """
     return pisi.db.repodb.RepoDB().list_repos(only_active)
+
 
 def get_install_order(packages):
     """
@@ -247,6 +280,7 @@ def get_install_order(packages):
     i_graph, order = install_order(packages)
     return order
 
+
 def get_remove_order(packages):
     """
     Return a list of packages in the remove order -> list_of_strings
@@ -255,6 +289,7 @@ def get_remove_order(packages):
     remove_order = pisi.operations.remove.plan_remove
     i_graph, order = remove_order(packages)
     return order
+
 
 def get_upgrade_order(packages):
     """
@@ -266,6 +301,7 @@ def get_upgrade_order(packages):
     i_graph, order = upgrade_order(packages)
     return order
 
+
 def get_base_upgrade_order(packages):
     """
     Return a list of packages of the system.base component that needs to be upgraded
@@ -276,6 +312,7 @@ def get_base_upgrade_order(packages):
     upgrade_order = pisi.operations.upgrade.upgrade_base
     order = upgrade_order(packages)
     return list(order)
+
 
 def get_conflicts(packages):
     """
@@ -301,6 +338,7 @@ def get_conflicts(packages):
     """
     return pisi.conflict.calculate_conflicts(packages, pisi.db.packagedb.PackageDB())
 
+
 def check(package, config=False):
     """
     Returns a dictionary that contains a list of both corrupted and missing files
@@ -309,6 +347,7 @@ def check(package, config=False):
     of the package but the config files
     """
     return pisi.operations.check.check_package(package, config)
+
 
 def search_package(terms, lang=None, repo=None):
     """
@@ -322,6 +361,7 @@ def search_package(terms, lang=None, repo=None):
     packagedb = pisi.db.packagedb.PackageDB()
     return packagedb.search_package(terms, lang, repo)
 
+
 def search_installed(terms, lang=None):
     """
     Return a list of components that contains all the given terms either in its name, summary or
@@ -331,6 +371,7 @@ def search_installed(terms, lang=None):
     """
     installdb = pisi.db.installdb.InstallDB()
     return installdb.search_package(terms, lang)
+
 
 def search_component(terms, lang=None, repo=None):
     """
@@ -343,6 +384,7 @@ def search_component(terms, lang=None, repo=None):
     """
     componentdb = pisi.db.componentdb.ComponentDB()
     return componentdb.search_component(terms, lang, repo)
+
 
 def search_file(term):
     """
@@ -357,9 +399,10 @@ def search_file(term):
     >>> [("kvm", (["lib/modules/2.6.18.8-86/extra/kvm-amd.ko","lib/modules/2.6.18.8-86/extra/kvm-intel.ko"])),]
     """
     filesdb = pisi.db.filesdb.FilesDB()
-    if term.startswith("/"): # FIXME: why? why?
+    if term.startswith("/"):  # FIXME: why? why?
         term = term[1:]
     return filesdb.search_file(term)
+
 
 def fetch(packages=[], path=os.path.curdir):
     """
@@ -375,15 +418,20 @@ def fetch(packages=[], path=os.path.curdir):
         ctx.ui.info(_("%s package found in %s repository") % (package.name, repo))
         uri = pisi.uri.URI(package.packageURI)
         output = os.path.join(path, uri.path())
-        if os.path.exists(output) and package.packageHash == pisi.util.sha1_file(output):
+        if os.path.exists(output) and package.packageHash == pisi.util.sha1_file(
+            output
+        ):
             ctx.ui.warning(_("%s package already fetched") % uri.path())
             continue
         if uri.is_absolute_path():
             url = str(pkg_uri)
         else:
-            url = os.path.join(os.path.dirname(repodb.get_repo_url(repo)), str(uri.path()))
+            url = os.path.join(
+                os.path.dirname(repodb.get_repo_url(repo)), str(uri.path())
+            )
 
         fetcher.fetch_url(url, path, ctx.ui.Progress)
+
 
 @locked
 def upgrade(packages=[], repo=None):
@@ -394,6 +442,7 @@ def upgrade(packages=[], repo=None):
     """
     pisi.db.historydb.HistoryDB().create_history("upgrade")
     return pisi.operations.upgrade.upgrade(packages, repo)
+
 
 @locked
 def remove(packages, ignore_dependency=False, ignore_safety=False):
@@ -406,6 +455,7 @@ def remove(packages, ignore_dependency=False, ignore_safety=False):
     pisi.db.historydb.HistoryDB().create_history("remove")
     return pisi.operations.remove.remove(packages, ignore_dependency, ignore_safety)
 
+
 @locked
 def autoremove(packages, ignore_dependency=False, ignore_safety=False):
     """
@@ -415,15 +465,24 @@ def autoremove(packages, ignore_dependency=False, ignore_safety=False):
     @param ignore_safety: system.base packages can also be removed if True
     """
     pisi.db.historydb.HistoryDB().create_history("remove")
-    return pisi.operations.remove.remove(packages, ignore_dependency, ignore_safety, autoremove=True)
+    return pisi.operations.remove.remove(
+        packages, ignore_dependency, ignore_safety, autoremove=True
+    )
+
 
 @locked
 def remove_orphans(ignore_dependency=False, ignore_safety=False):
     pisi.db.historydb.HistoryDB().create_history("remove")
     return pisi.operations.remove.remove_orphans(ignore_dependency, ignore_safety)
 
+
 @locked
-def install(packages, reinstall=False, ignore_file_conflicts=False, ignore_package_conflicts=False):
+def install(
+    packages,
+    reinstall=False,
+    ignore_file_conflicts=False,
+    ignore_package_conflicts=False,
+):
     """
     Returns True if no errors occured during the operation
     @param packages: list of package names -> list_of_strings
@@ -436,17 +495,18 @@ def install(packages, reinstall=False, ignore_file_conflicts=False, ignore_packa
 
     pisi.db.historydb.HistoryDB().create_history("install")
 
-    if not ctx.get_option('ignore_file_conflicts'):
-        ctx.set_option('ignore_file_conflicts', ignore_file_conflicts)
+    if not ctx.get_option("ignore_file_conflicts"):
+        ctx.set_option("ignore_file_conflicts", ignore_file_conflicts)
 
-    if not ctx.get_option('ignore_package_conflicts'):
-        ctx.set_option('ignore_package_conflicts', ignore_package_conflicts)
+    if not ctx.get_option("ignore_package_conflicts"):
+        ctx.set_option("ignore_package_conflicts", ignore_package_conflicts)
 
     # Install pisi package files or pisi packages from a repository
     if packages and packages[0].endswith(ctx.const.package_suffix):
         return pisi.operations.install.install_pkg_files(packages, reinstall)
     else:
         return pisi.operations.install.install_pkg_names(packages, reinstall)
+
 
 @locked
 def takeback(operation):
@@ -461,6 +521,7 @@ def takeback(operation):
 
     pisi.operations.history.takeback(operation)
 
+
 def get_takeback_plan(operation):
     """
     Calculates and returns the plan of the takeback operation that contains information of which
@@ -470,6 +531,7 @@ def get_takeback_plan(operation):
 
     beinstalled, beremoved, configs = pisi.operations.history.plan_takeback(operation)
     return beinstalled, beremoved
+
 
 @locked
 def set_repo_activity(name, active):
@@ -486,6 +548,7 @@ def set_repo_activity(name, active):
         repodb.deactivate_repo(name)
     pisi.db.regenerate_caches()
 
+
 @locked
 def delete_cache():
     """
@@ -497,10 +560,13 @@ def delete_cache():
     pisi.util.clean_dir(ctx.config.archives_dir())
     ctx.ui.info(_("Cleaning temporary directory %s...") % ctx.config.tmp_dir())
     pisi.util.clean_dir(ctx.config.tmp_dir())
-    for cache in [x for x in os.listdir(ctx.config.cache_root_dir()) if x.endswith(".cache")]:
+    for cache in [
+        x for x in os.listdir(ctx.config.cache_root_dir()) if x.endswith(".cache")
+    ]:
         cache_file = pisi.util.join_path(ctx.config.cache_root_dir(), cache)
         ctx.ui.info(_("Removing cache file %s...") % cache_file)
         os.unlink(cache_file)
+
 
 @locked
 def snapshot():
@@ -528,11 +594,14 @@ def snapshot():
                 historydb.save_config(name, fpath)
 
         processed += 1
-        ctx.ui.display_progress(operation = "snapshot",
-                                percent = progress.update(processed),
-                                info = _("Taking snapshot of the system"))
+        ctx.ui.display_progress(
+            operation="snapshot",
+            percent=progress.update(processed),
+            info=_("Taking snapshot of the system"),
+        )
 
     historydb.update_history()
+
 
 def calculate_download_size(packages):
     """
@@ -541,6 +610,7 @@ def calculate_download_size(packages):
     """
     total_size, cached_size = pisi.operations.helper.calculate_download_sizes(packages)
     return total_size, cached_size
+
 
 def get_package_requirements(packages):
     """
@@ -565,7 +635,7 @@ def get_package_requirements(packages):
     for i_pkg in packages:
         try:
             pkg = packagedb.get_package(i_pkg)
-        except Exception: #FIXME: Should catch RepoItemNotFound exception
+        except Exception:  # FIXME: Should catch RepoItemNotFound exception
             pass
 
         version, release, build = installdb.get_version(i_pkg)
@@ -577,9 +647,11 @@ def get_package_requirements(packages):
 
     return requirements
 
+
 # ****** Danger Zone Below! Tressspassers' eyes will explode! ********** #
 
-def package_graph(A, packagedb, ignore_installed = False, reverse=False):
+
+def package_graph(A, packagedb, ignore_installed=False, reverse=False):
     """Construct a package relations graph.
 
     Graph will contain all dependencies of packages A, if ignore_installed
@@ -587,26 +659,26 @@ def package_graph(A, packagedb, ignore_installed = False, reverse=False):
 
     """
 
-    ctx.ui.debug('A = %s' % str(A))
+    ctx.ui.debug("A = %s" % str(A))
 
     # try to construct a pisi graph of packages to
     # install / reinstall
 
-    G_f = pgraph.PGraph(packagedb)             # construct G_f
+    G_f = pgraph.PGraph(packagedb)  # construct G_f
 
     # find the "install closure" graph of G_f by package
     # set A using packagedb
     for x in A:
         G_f.add_package(x)
     B = A
-    #state = {}
+    # state = {}
     while len(B) > 0:
         Bp = set()
         for x in B:
             pkg = packagedb.get_package(x)
-            #print pkg
+            # print pkg
             if reverse:
-                for name,dep in packagedb.get_rev_deps(x):
+                for name, dep in packagedb.get_rev_deps(x):
                     if ignore_installed:
                         if dep.satisfied_by_installed():
                             continue
@@ -624,10 +696,11 @@ def package_graph(A, packagedb, ignore_installed = False, reverse=False):
         B = Bp
     return G_f
 
+
 def generate_pending_order(A):
     # returns pending package list in reverse topological order of dependency
     installdb = pisi.db.installdb.InstallDB()
-    G_f = pgraph.PGraph(installdb) # construct G_f
+    G_f = pgraph.PGraph(installdb)  # construct G_f
     for x in A:
         G_f.add_package(x)
     B = A
@@ -639,18 +712,20 @@ def generate_pending_order(A):
                 if dep.package in G_f.vertices():
                     G_f.add_dep(x, dep)
         B = Bp
-    if ctx.get_option('debug'):
+    if ctx.get_option("debug"):
         import sys
+
         G_f.write_graphviz(sys.stdout)
     order = G_f.topological_sort()
     order.reverse()
 
     componentdb = pisi.db.componentdb.ComponentDB()
     # Bug 4211
-    if componentdb.has_component('system.base'):
+    if componentdb.has_component("system.base"):
         order = reorder_base_packages(order)
 
     return order
+
 
 @locked
 def configure_pending(packages=None):
@@ -679,25 +754,27 @@ def configure_pending(packages=None):
             m.read(metadata_path)
             # FIXME: we need a full package info here!
             pkginfo.name = x
-            ctx.ui.notify(pisi.ui.configuring, package = pkginfo, files = None)
-            ctx.ui.notify(pisi.ui.configured, package = pkginfo, files = None)
+            ctx.ui.notify(pisi.ui.configuring, package=pkginfo, files=None)
+            ctx.ui.notify(pisi.ui.configured, package=pkginfo, files=None)
         installdb.clear_pending(x)
 
-def info(package, installed = False):
+
+def info(package, installed=False):
     if package.endswith(ctx.const.package_suffix):
         return info_file(package)
     else:
         metadata, files, repo = info_name(package, installed)
         return metadata, files
 
-def info_file(package_fn):
 
+def info_file(package_fn):
     if not os.path.exists(package_fn):
-        raise pisi.Error (_('File %s not found') % package_fn)
+        raise pisi.Error(_("File %s not found") % package_fn)
 
     package = pisi.package.Package(package_fn)
     package.read()
     return package.metadata, package.files
+
 
 def info_name(package_name, useinstalldb=False):
     """Fetch package information for the given package."""
@@ -713,7 +790,7 @@ def info_name(package_name, useinstalldb=False):
     metadata = pisi.metadata.MetaData()
     metadata.package = package
     metadata.source = None
-    #TODO: fetch the files from server if possible (wow, you maniac -- future exa)
+    # TODO: fetch the files from server if possible (wow, you maniac -- future exa)
     if useinstalldb and installdb.has_package(package.name):
         try:
             files = installdb.get_files(package.name)
@@ -724,33 +801,36 @@ def info_name(package_name, useinstalldb=False):
         files = None
     return metadata, files, repo
 
-def index(dirs=None, output='eopkg-index.xml',
-          skip_signing=False, compression=0):
+
+def index(dirs=None, output="eopkg-index.xml", skip_signing=False, compression=0):
     """Accumulate eopkg XML files in a directory, and write an index."""
     index = pisi.index.Index()
     index.distribution = None
     if not dirs:
-        dirs = ['.']
+        dirs = ["."]
     for repo_dir in dirs:
         repo_dir = str(repo_dir)
-        ctx.ui.info(_('Building index of eopkg files under %s') % repo_dir)
+        ctx.ui.info(_("Building index of eopkg files under %s") % repo_dir)
         index.index(repo_dir)
 
     sign = None if skip_signing else pisi.file.File.detached
     index.write(output, sha1sum=True, compress=compression, sign=sign)
-    ctx.ui.info(_('Index file written'))
+    ctx.ui.info(_("Index file written"))
+
 
 @locked
-def add_repo(name, indexuri, at = None):
+def add_repo(name, indexuri, at=None):
     if not re.match("^[0-9%s\-\\_\\.\s]*$" % str(pisi.util.letters()), name):
-        raise pisi.Error(_('Not a valid repo name.'))
+        raise pisi.Error(_("Not a valid repo name."))
     repodb = pisi.db.repodb.RepoDB()
 
     new_indexuri = pisi.urlcheck.switch_from_legacy(indexuri)
 
-    if repodb.has_repo_url(new_indexuri, only_active = False):
+    if repodb.has_repo_url(new_indexuri, only_active=False):
         repo = repodb.get_repo_by_url(new_indexuri)
-        ctx.ui.warning(_('Repo already present with name %s and same URL. Removing first.') % repo)
+        ctx.ui.warning(
+            _("Repo already present with name %s and same URL. Removing first.") % repo
+        )
         repodb.remove_repo(repo)
 
     if repodb.has_repo(name):
@@ -760,9 +840,10 @@ def add_repo(name, indexuri, at = None):
         ctx.ui.warning("Legacy repo found. Attempting rewrite.")
 
     repo = pisi.db.repodb.Repo(pisi.uri.URI(new_indexuri))
-    repodb.add_repo(name, repo, at = at)
+    repodb.add_repo(name, repo, at=at)
     pisi.db.flush_caches()
-    ctx.ui.info(_('Repo %s added to system.') % name)
+    ctx.ui.info(_("Repo %s added to system.") % name)
+
 
 @locked
 def remove_repo(name):
@@ -770,10 +851,10 @@ def remove_repo(name):
     if repodb.has_repo(name):
         repodb.remove_repo(name)
         pisi.db.flush_caches()
-        ctx.ui.info(_('Repo %s removed from system.') % name)
+        ctx.ui.info(_("Repo %s removed from system.") % name)
     else:
-        raise pisi.Error(_('Repository %s does not exist. Cannot remove.')
-                 % name)
+        raise pisi.Error(_("Repository %s does not exist. Cannot remove.") % name)
+
 
 @locked
 def update_repos(repos, force=False):
@@ -786,6 +867,7 @@ def update_repos(repos, force=False):
         if updated:
             pisi.db.regenerate_caches()
 
+
 @locked
 def update_repo(repo, force=False):
     pisi.db.historydb.HistoryDB().create_history("repoupdate")
@@ -793,9 +875,10 @@ def update_repo(repo, force=False):
     if updated:
         pisi.db.regenerate_caches()
 
+
 def __update_repo(repo, force=False):
-    ctx.ui.action(_('Updating repository: %s') % repo)
-    ctx.ui.notify(pisi.ui.updatingrepo, name = repo)
+    ctx.ui.action(_("Updating repository: %s") % repo)
+    ctx.ui.notify(pisi.ui.updatingrepo, name=repo)
     repodb = pisi.db.repodb.RepoDB()
     index = pisi.index.Index()
     if repodb.has_repo(repo):
@@ -803,34 +886,34 @@ def __update_repo(repo, force=False):
         try:
             index.read_uri_of_repo(repouri, repo)
         except pisi.file.AlreadyHaveException as e:
-            ctx.ui.info(_('%s repository information is up-to-date.') % repo)
+            ctx.ui.info(_("%s repository information is up-to-date.") % repo)
             if force:
-                ctx.ui.info(_('Updating database at any rate as requested'))
-                index.read_uri_of_repo(repouri, repo, force = force)
+                ctx.ui.info(_("Updating database at any rate as requested"))
+                index.read_uri_of_repo(repouri, repo, force=force)
             else:
                 return False
 
         pisi.db.historydb.HistoryDB().update_repo(repo, repouri, "update")
         repodb.check_distribution(repo)
-        ctx.ui.info(_('Package database updated.'))
+        ctx.ui.info(_("Package database updated."))
     else:
-        raise pisi.Error(_('No repository named %s found.') % repo)
+        raise pisi.Error(_("No repository named %s found.") % repo)
 
     return True
+
 
 # FIXME: rebuild_db is only here for filesdb and it really is ugly. we should not need any rebuild.
 @locked
 def rebuild_db(files=False):
-
     filesdb = pisi.db.filesdb.FilesDB()
     installdb = pisi.db.installdb.InstallDB()
 
     def rebuild_filesdb():
         for pkg in list_installed():
-            ctx.ui.info(_('Adding \'%s\' to db... ') % pkg, noln=True)
+            ctx.ui.info(_("Adding '%s' to db... ") % pkg, noln=True)
             files = installdb.get_files(pkg)
             filesdb.add_files(pkg, files)
-            ctx.ui.info(_('OK.'))
+            ctx.ui.info(_("OK."))
 
     # save parameters and shutdown pisi
     options = ctx.config.options
@@ -848,6 +931,7 @@ def rebuild_db(files=False):
     # construct new database
     rebuild_filesdb()
 
+
 ############# FIXME: this was a quick fix. ##############################
 
 # api was importing other module's functions and providing them as api functions. This is wrong.
@@ -859,25 +943,30 @@ def rebuild_db(files=False):
 # from pisi.build import build_until
 # from pisi.atomicoperations import resurrect_package, build
 
+
 def calculate_conflicts(*args, **kw):
     return pisi.conflict.calculate_conflicts(*args, **kw)
+
 
 def reorder_base_packages(*args, **kw):
     return pisi.operations.helper.reorder_base_packages(*args, **kw)
 
+
 def build_until(*args, **kw):
     return pisi.operations.build.build_until(*args, **kw)
+
 
 def build(*args, **kw):
     return pisi.atomicoperations.build(*args, **kw)
 
+
 ########################################################################
+
 
 ## Deletes the cached pisi packages to keep the package cache dir within cache limits
 #  @param all When set all the cached packages will be deleted
 @locked
 def clearCache(all=False):
-
     import glob
 
     def getPackageLists(pkgList):
@@ -908,10 +997,13 @@ def clearCache(all=False):
     def getRemoveOrder(cacheDir, pkgList):
         sizes = {}
         for pkg in pkgList:
-            sizes[pkg] = os.stat(os.path.join(cacheDir, pkg) + ctx.const.package_suffix).st_size
+            sizes[pkg] = os.stat(
+                os.path.join(cacheDir, pkg) + ctx.const.package_suffix
+            ).st_size
 
         # sort dictionary by value from PEP-265
         from operator import itemgetter
+
         return sorted(iter(list(sizes.items())), key=itemgetter(1), reverse=False)
 
     def removeOrderByLimit(cacheDir, order, limit):
@@ -934,11 +1026,16 @@ def clearCache(all=False):
 
     cacheDir = ctx.config.cached_packages_dir()
 
-    pkgList = [os.path.basename(x).split(ctx.const.package_suffix)[0] for x in glob.glob("%s/*.eopkg" % cacheDir)]
+    pkgList = [
+        os.path.basename(x).split(ctx.const.package_suffix)[0]
+        for x in glob.glob("%s/*.eopkg" % cacheDir)
+    ]
     if not all:
         # Cache limits from pisi.conf
         config = pisi.configfile.ConfigurationFile("/etc/eopkg/eopkg.conf")
-        cacheLimit = int(config.get("general", "package_cache_limit")) * 1024 * 1024 # is this safe?
+        cacheLimit = (
+            int(config.get("general", "package_cache_limit")) * 1024 * 1024
+        )  # is this safe?
         if not cacheLimit:
             return
 

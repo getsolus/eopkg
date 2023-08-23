@@ -15,24 +15,27 @@ from pisi import translate as _
 import pisi.cli.command as command
 import pisi.api
 
+
 class EnableRepo(command.Command, metaclass=command.autocommand):
-    __doc__ = _("""Enable repository
+    __doc__ = _(
+        """Enable repository
 
 Usage: enable-repo [<repo1> <repo2> ... <repon>]
 
 <repoi>: repository name
 
 Disabled repositories are not taken into account in operations
-""")
+"""
+    )
 
-    def __init__(self,args):
+    def __init__(self, args):
         super(EnableRepo, self).__init__(args)
         self.repodb = pisi.db.repodb.RepoDB()
 
     name = ("enable-repo", "er")
 
     def run(self):
-        self.init(database = True)
+        self.init(database=True)
 
         if not self.args:
             self.help()

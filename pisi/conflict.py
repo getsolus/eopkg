@@ -17,6 +17,8 @@ from pisi import translate as _
 import pisi.relation
 
 """ Conflict relation """
+
+
 class Conflict(pisi.relation.Relation):
     def __str__(self):
         s = self.package
@@ -34,10 +36,12 @@ class Conflict(pisi.relation.Relation):
             s += _(" release ") + self.release
         return s
 
+
 def installed_package_conflicts(confinfo):
     """determine if an installed package in *repository* conflicts with
-given conflicting spec"""
+    given conflicting spec"""
     return pisi.relation.installed_package_satisfies(confinfo)
+
 
 def package_conflicts(pkg, confs):
     for c in confs:
@@ -46,8 +50,8 @@ def package_conflicts(pkg, confs):
 
     return None
 
-def calculate_conflicts(order, packagedb):
 
+def calculate_conflicts(order, packagedb):
     # check conflicting packages in the installed system
     def check_installed(pkg, order):
         conflicts = []
