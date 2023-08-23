@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2005 - 2007, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -22,65 +20,52 @@
  this implementation uses piksemel
 """
 
+import xml.etree.ElementTree as xml
+from typing import Iterable, Iterator
+
 from pisi import translate as _
 
-import pisi
-import piksemel as iks
 
-parse = iks.parse
-newDocument = iks.newDocument
-
-
-def getAllNodes(node, tagPath):
+def getAllNodes(node: xml.Element, tagPath: str) -> list[xml.Element]:
     """retrieve all nodes that match a given tag path."""
     tags = tagPath.split("/")
     if len(tags) == 0:
         return []
     nodeList = [node]  # basis case
     for tag in tags:
-        results = [getTagByName(x, tag) for x in nodeList]
         nodeList = []
-        for x in results:
+        for x in (getTagByName(x, tag) for x in nodeList):
             nodeList.extend(x)
-            pass  # emacs indentation error, keep it here
         if len(nodeList) == 0:
             return []
     return nodeList
 
 
-def getNodeAttribute(node, attrname):
+def getNodeAttribute(node: xml.Element, attrname: str) -> str | None:
     """get named attribute from DOM node"""
-    return node.getAttribute(attrname)
+    return node.attrib.get(attrname)
 
 
-def setNodeAttribute(node, attrname, value):
-    """get named attribute from DOM node"""
-    return node.setAttribute(attrname, value)
+def setNodeAttribute(node: xml.Element, attrname: str, value: str):
+    """set named attribute from DOM node"""
+    node.attrib[attrname] = value
 
 
-def getChildElts(parent):
+def getChildElts(parent: xml.Element) -> Iterator[xml.Element]:
     """get only child elements"""
-    return [x for x in parent.tags()]
+    return iter(parent)
 
 
-def getTagByName(parent, childName):
-    return [x for x in parent.tags(childName)]
+def getTagByName(parent: xml.Element, childName: str) -> Iterator[xml.Element]:
+    return parent.iterfind(childName)
 
 
-def getNodeText(node, tagpath=""):
+def getNodeText(node: xml.Element, tagpath="") -> str | None:
     """get the first child and expect it to be text!"""
-    if tagpath != "":
-        node = getNode(node, tagpath)
-        if not node:
-            return None
-    child = node.firstChild()
-    if not child:
+    child = getNode(node, tagpath)
+    if child is None:
         return None
-    if child.type() == iks.DATA:
-        # in any case, strip whitespaces...
-        return child.data().strip()
-    else:
-        raise XmlError(_("getNodeText: Expected text node, got something else!"))
+    return child.text
 
 
 def getChildText(node_s, tagpath):
@@ -91,53 +76,38 @@ def getChildText(node_s, tagpath):
     return getNodeText(node)
 
 
-def getNode(node, tagpath):
-    """returns the *first* matching node for given tag path."""
-
-    if tagpath == "":
-        return node
-
-    assert type(tagpath) == str
-    tags = tagpath.split("/")
-    assert len(tags) > 0
-
-    # iterative code to search for the path
-    for tag in tags:
-        currentNode = None
-        for child in node.tags():
-            if child.name() == tag:
-                currentNode = child
-                break
-        if not currentNode:
-            return None
-        else:
-            node = currentNode
-    return currentNode
+def getNode(node: xml.Element, tagpath: str) -> xml.Element | None:
+    """
+    returns the *first* matching node for given tag path.
+    tagpath is an XPath.
+    """
+    return node.find(tagpath)
 
 
-def createTagPath(node, tags):
+def createTagPath(node: xml.Element, tags: Iterable[str]):
     """create new child at the end of a tag chain starting from node
     no matter what"""
-    if len(tags) == 0:
-        return node
     for tag in tags:
-        node = node.insertTag(tag)
+        node = xml.SubElement(node, tag)
     return node
 
 
-def addTagPath(node, tags, newnode=None):
+def addTagPath(
+    node: xml.Element, tags: Iterable[str], newnode: xml.Element | None = None
+):
     """add newnode at the end of a tag chain, smart one"""
     node = createTagPath(node, tags)
     if newnode:  # node to add specified
-        node.insertNode(newnode)
+        node.append(newnode)
     return node
 
 
-def addNode(node, tagpath, newnode=None, branch=True):
+def addNode(
+    node: xml.Element, tagpath: str, newnode: xml.Element | None = None, branch=True
+) -> xml.Element:
     """add a new node at the end of the tree and returns it
     if newnode is given adds that node, too."""
 
-    assert type(tagpath) == str
     tags = []
     if tagpath != "":
         tags = tagpath.split("/")  # tag chain
@@ -156,7 +126,7 @@ def addNode(node, tagpath, newnode=None, branch=True):
 
     while len(tags) > rem:
         tag = tags.pop(0)
-        nodeList = getTagByName(node, tag)
+        nodeList = list(getTagByName(node, tag))
         if len(nodeList) == 0:  # couldn't find
             tags.insert(0, tag)  # put it back in
             return addTagPath(node, tags, newnode)
@@ -166,13 +136,11 @@ def addNode(node, tagpath, newnode=None, branch=True):
         # had only one tag..
         return addTagPath(node, tags, newnode)
 
-    return node
-
 
 def addText(node, tagpath, text):
     node = addNode(node, tagpath)
     node.insertData(text)
 
 
-def newNode(node, tag):
-    return iks.newDocument(tag)
+def newNode(node, tag: str) -> xml.Element:
+    return xml.Element(tag)
