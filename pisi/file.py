@@ -98,7 +98,7 @@ class File:
         if compress == File.COMPRESSION_TYPE_XZ:
             import lzma
 
-            open(localfile[:-3], "w").write(lzma.LZMAFile(localfile).read())
+            open(localfile[:-3], "wb").write(lzma.LZMAFile(localfile).read())
             localfile = localfile[:-3]
         elif compress == File.COMPRESSION_TYPE_BZ2:
             import bz2
@@ -129,7 +129,7 @@ class File:
             sha1filename = File.download(
                 pisi.uri.URI(uri.get_uri() + ".sha1sum"), transfer_dir
             )
-            sha1f = file(sha1filename)
+            sha1f = open(sha1filename)
             newsha1 = sha1f.read().split("\n")[0]
 
         if uri.is_remote_file() or copylocal:
