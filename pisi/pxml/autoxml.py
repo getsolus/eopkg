@@ -22,7 +22,6 @@
 # System
 import locale
 import types
-import formatter
 import sys
 import io
 import inspect
@@ -32,6 +31,7 @@ from pisi import translate as _
 
 # eopkg
 import pisi
+import pisi.pxml.formatter as formatter
 import pisi.pxml.xmlext as xmlext
 import pisi.pxml.xmlfile as xmlfile
 import pisi.context as ctx
