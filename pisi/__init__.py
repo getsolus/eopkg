@@ -25,7 +25,7 @@ import gettext
 locale.setlocale(locale.LC_ALL, "")
 # You usually want to import this function with the "_" alias.
 try:
-    translate = gettext.translation("pisi", languages=[locale.getlocale()[0]]).ugettext
+    translate = gettext.translation("pisi", languages=[locale.getlocale()[0]]).gettext
 except:
     # No .mo files found. Just return plain English.
     def translate(msg):
