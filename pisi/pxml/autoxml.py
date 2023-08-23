@@ -50,7 +50,7 @@ mandatory, optional = list(range(2))  # poor man's enum
 # basic types
 
 String = str
-Text = bytes
+Text = str
 Integer = int
 Long = int
 Float = float
@@ -192,7 +192,7 @@ class Writer(formatter.DumbWriter):
         formatter.DumbWriter.__init__(self, file, maxcol)
 
     def send_literal_data(self, data):
-        self.file.write(data)
+        self.file.write(data.encode())
         i = data.rfind("\n")
         if i >= 0:
             self.col = 0
@@ -791,8 +791,8 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         def make_object():
             obj = tag_type.__new__(tag_type)
-            #obj.__init__(tag=tag, req=req)
-            obj.__init__()
+            obj.__init__(tag=tag, req=req)
+            #obj.__init__()
             return obj
 
         def init():
@@ -976,4 +976,4 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         return init, decode, encode, errors, format
 
-    basic_cons_map = {bytes: bytes, str: str, int: int, float: float}
+    basic_cons_map = {bytes: str, str: str, int: int, float: float}
