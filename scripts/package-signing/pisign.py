@@ -339,9 +339,9 @@ def sign_file(filename, key_file, cert_file, password_fd):
         cert_file: Certificate
         password_fd: File that contains passphrase
     """
-    data = file(filename).read()
+    data = open(filename).read()
     signed_binary = sign_data(data, key_file, password_fd)
-    cert_data = file(cert_file).read()
+    cert_data = open(cert_file).read()
 
     # Save certificate
     file("%s.%s" % (filename, EXT_CERT), "w").write(cert_data)
@@ -368,7 +368,7 @@ def sign_zipfile(filename, key_file, cert_file, password_fd):
     signed_ascii = base64.b64encode(signed_binary)
 
     # Encode certificate
-    cert_data = file(cert_file).read()
+    cert_data = open(cert_file).read()
     cert_ascii = base64.b64encode(cert_data)
 
     # Add signed data as ZIP comment

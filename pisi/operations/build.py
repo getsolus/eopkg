@@ -140,7 +140,7 @@ def exclude_special_files(filepath, fileinfo, ag):
         # Instead of patching all these buggy sources and maintain these
         # patches, eopkg removes wrong paths...
         if re.match(patterns["libtool"], fileinfo) and not os.path.islink(filepath):
-            ladata = file(filepath).read()
+            ladata = open(filepath).read()
             new_ladata = re.sub("-L%s/\S*" % ctx.config.tmp_dir(), "", ladata)
             new_ladata = re.sub(
                 "%s/\S*/install/" % ctx.config.tmp_dir(), "/", new_ladata

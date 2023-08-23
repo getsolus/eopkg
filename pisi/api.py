@@ -51,7 +51,7 @@ def locked(func):
 
     def wrapper(*__args, **__kw):
         try:
-            lock = file(
+            lock = open(
                 pisi.util.join_path(pisi.context.config.lock_dir(), "pisi"), "w"
             )
         except IOError:

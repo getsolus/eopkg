@@ -71,7 +71,7 @@ class LazyDB(Singleton):
                 f.write(LazyDB.cache_version)
                 f.flush()
                 os.fsync(f.fileno())
-            pickle.dump(self._instance().__dict__, file(self.__cache_file(), "wb"), 1)
+            pickle.dump(self._instance().__dict__, open(self.__cache_file(), "wb"), 1)
 
     def cache_valid(self):
         if not self.cachedir:
@@ -88,7 +88,7 @@ class LazyDB(Singleton):
     def cache_load(self):
         if os.path.exists(self.__cache_file()) and self.cache_valid():
             try:
-                self._instance().__dict__ = pickle.load(file(self.__cache_file(), "rb"))
+                self._instance().__dict__ = pickle.load(open(self.__cache_file(), "rb"), encoding='utf8', errors='ignore')
                 return True
             except (pickle.UnpicklingError, EOFError):
                 if os.access(ctx.config.cache_root_dir(), os.W_OK):

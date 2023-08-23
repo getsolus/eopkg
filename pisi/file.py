@@ -220,7 +220,7 @@ class File:
             access = "r"
         else:
             access = "w"
-        self.__file__ = file(localfile, access)
+        self.__file__ = open(localfile, access)
         self.localfile = localfile
 
     def local_file(self):

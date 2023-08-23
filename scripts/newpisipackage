@@ -175,7 +175,7 @@ temp_translation = '''<?xml version="1.0" ?>
 
 def write(filename, data):
     try:
-       f = file("%s/%s" % (target, filename), "w")
+       f = open("%s/%s" % (target, filename), "w")
        f.write(data)
        f.close()
     except:

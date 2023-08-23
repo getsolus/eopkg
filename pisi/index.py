@@ -69,7 +69,7 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         pisi.util.ensure_dirs(tmpdir)
 
         # write uri
-        urlfile = file(pisi.util.join_path(tmpdir, "uri"), "w")
+        urlfile = open(pisi.util.join_path(tmpdir, "uri"), "w")
         urlfile.write(uri)  # uri
         urlfile.close()
 
