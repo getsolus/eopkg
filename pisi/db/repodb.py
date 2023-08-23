@@ -92,7 +92,7 @@ class RepoOrder:
         for r in repo_doc.iterfind("Repo"):
             if r.findtext("Name") == repo_name:
                 status_elem = r.find("Status")
-                if status_elem:
+                if status_elem is not None:
                     if status_elem.text in ["active", "inactive"]:
                         return status_elem.text
         return "inactive"
