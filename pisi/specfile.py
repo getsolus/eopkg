@@ -39,10 +39,7 @@ class Error(pisi.Error):
     pass
 
 
-__metaclass__ = autoxml.autoxml
-
-
-class Packager:
+class Packager(metaclass=autoxml.autoxml):
     t_Name = [autoxml.Text, autoxml.mandatory]
     t_Email = [autoxml.String, autoxml.mandatory]
 
@@ -51,7 +48,7 @@ class Packager:
         return s
 
 
-class AdditionalFile:
+class AdditionalFile(metaclass=autoxml.autoxml):
     s_Filename = [autoxml.String, autoxml.mandatory]
     a_target = [autoxml.String, autoxml.mandatory]
     a_permission = [autoxml.String, autoxml.optional]
@@ -65,12 +62,12 @@ class AdditionalFile:
         return s
 
 
-class Type:
+class Type(metaclass=autoxml.autoxml):
     s_type = [autoxml.String, autoxml.mandatory]
     a_package = [autoxml.String, autoxml.optional]
 
 
-class Action:
+class Action(metaclass=autoxml.autoxml):
     # Valid actions:
     #
     # reverseDependencyUpdate
@@ -85,7 +82,7 @@ class Action:
         return self.action
 
 
-class Patch:
+class Patch(metaclass=autoxml.autoxml):
     s_Filename = [autoxml.String, autoxml.mandatory]
     a_compressionType = [autoxml.String, autoxml.optional]
     a_level = [autoxml.Integer, autoxml.optional]
@@ -105,7 +102,7 @@ class Patch:
         return s
 
 
-class Update:
+class Update(metaclass=autoxml.autoxml):
     a_release = [autoxml.String, autoxml.mandatory]
     # 'type' attribute is here to keep backward compatibility
     a_type = [autoxml.String, autoxml.optional]
@@ -126,7 +123,7 @@ class Update:
         return s
 
 
-class Path:
+class Path(metaclass=autoxml.autoxml):
     s_Path = [autoxml.String, autoxml.mandatory]
     a_fileType = [autoxml.String, autoxml.optional]
     a_permanent = [autoxml.String, autoxml.optional]
@@ -137,7 +134,7 @@ class Path:
         return s
 
 
-class ComarProvide:
+class ComarProvide(metaclass=autoxml.autoxml):
     s_om = [autoxml.String, autoxml.mandatory]
     a_script = [autoxml.String, autoxml.mandatory]
     a_name = [autoxml.String, autoxml.optional]
@@ -149,7 +146,7 @@ class ComarProvide:
         return s
 
 
-class PkgConfigProvide:
+class PkgConfigProvide(metaclass=autoxml.autoxml):
     s_om = [autoxml.String, autoxml.mandatory]
     a_version = [autoxml.String, autoxml.optional]
 
@@ -160,7 +157,7 @@ class PkgConfigProvide:
         return s
 
 
-class PkgConfig32Provide:
+class PkgConfig32Provide(metaclass=autoxml.autoxml):
     s_om = [autoxml.String, autoxml.mandatory]
     a_version = [autoxml.String, autoxml.optional]
 
@@ -171,7 +168,7 @@ class PkgConfig32Provide:
         return s
 
 
-class Archive:
+class Archive(metaclass=autoxml.autoxml):
     s_uri = [autoxml.String, autoxml.mandatory]
     a_type = [autoxml.String, autoxml.optional]
     a_sha1sum = [autoxml.String, autoxml.mandatory]
@@ -185,7 +182,7 @@ class Archive:
         return s
 
 
-class Source:
+class Source(metaclass=autoxml.autoxml):
     t_Name = [autoxml.String, autoxml.mandatory]
     t_Homepage = [autoxml.String, autoxml.optional]
     t_Packager = [Packager, autoxml.mandatory]
@@ -209,7 +206,7 @@ class Source:
         return self.buildDependencies
 
 
-class AnyDependency:
+class AnyDependency(metaclass=autoxml.autoxml):
     t_Dependencies = [[pisi.dependency.Dependency], autoxml.optional, "Dependency"]
 
     def __str__(self):
@@ -246,7 +243,7 @@ class AnyDependency:
         return False
 
 
-class Package:
+class Package(metaclass=autoxml.autoxml):
     t_Name = [autoxml.String, autoxml.mandatory]
     t_Summary = [autoxml.LocalText, autoxml.optional]
     t_Description = [autoxml.LocalText, autoxml.optional]

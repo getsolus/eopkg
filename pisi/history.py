@@ -18,10 +18,8 @@ import pisi.pxml.autoxml as autoxml
 import pisi.pxml.xmlfile as xmlfile
 import pisi.context as ctx
 
-__metaclass__ = autoxml.autoxml
 
-
-class PackageInfo:
+class PackageInfo(metaclass=autoxml.autoxml):
     a_version = [autoxml.String, autoxml.mandatory]
     a_release = [autoxml.String, autoxml.mandatory]
 
@@ -33,7 +31,7 @@ class PackageInfo:
         return "-".join((self.version, self.release, distro_id, arch))
 
 
-class Repo:
+class Repo(metaclass=autoxml.autoxml):
     a_operation = [autoxml.String, autoxml.mandatory]
 
     t_Name = [autoxml.String, autoxml.mandatory]
@@ -50,7 +48,7 @@ class Repo:
             pass  # TBD
 
 
-class Package:
+class Package(metaclass=autoxml.autoxml):
     a_operation = [autoxml.String, autoxml.mandatory]
     a_type = [autoxml.String, autoxml.optional]
 
@@ -90,7 +88,7 @@ class Package:
             return ""
 
 
-class Operation:
+class Operation(metaclass=autoxml.autoxml):
     a_type = [autoxml.String, autoxml.mandatory]
     a_date = [autoxml.String, autoxml.mandatory]
     a_time = [autoxml.String, autoxml.mandatory]

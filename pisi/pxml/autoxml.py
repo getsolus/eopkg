@@ -791,7 +791,8 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         def make_object():
             obj = tag_type.__new__(tag_type)
-            obj.__init__(tag=tag, req=req)
+            #obj.__init__(tag=tag, req=req)
+            obj.__init__()
             return obj
 
         def init():
@@ -803,6 +804,7 @@ class autoxml(oo.autosuper, oo.autoprop):
                 try:
                     obj = make_object()
                     obj.decode(node, errs, where)
+                    #obj.decode(node, errs)
                     return obj
                 except Error:
                     errs.append(

@@ -19,9 +19,6 @@ class Error(pisi.Error):
     pass
 
 
-__metaclass__ = autoxml.autoxml
-
-
 class Group(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     "representation for group declarations"
 
