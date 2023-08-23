@@ -21,12 +21,11 @@
  this implementation uses piksemel
 """
 
-from pisi import translate as _
-
-import piksemel as iks
+import xml.etree.ElementTree as xml
 
 import pisi
 import pisi.file
+from pisi import translate as _
 
 
 class Error(pisi.Error):
@@ -36,25 +35,25 @@ class Error(pisi.Error):
 class XmlFile(object):
     """A class to help reading and writing an XML file"""
 
-    def __init__(self, tag):
+    def __init__(self, tag: str):
         self.rootTag = tag
 
     def newDocument(self):
         """clear DOM"""
-        self.doc = iks.newDocument(self.rootTag)
+        self.doc = xml.ElementTree(xml.Element(self.rootTag))
 
     def unlink(self):
         """deallocate DOM structure"""
         del self.doc
 
-    def rootNode(self):
+    def rootNode(self) -> xml.Element:
         """returns root document element"""
-        return self.doc
+        return self.doc.getroot()
 
-    def parsexml(self, xml):
+    def parsexml(self, s: str):
         """parses xml string and returns DOM"""
         try:
-            self.doc = iks.parseString(xml)
+            self.doc = xml.ElementTree(xml.fromstring(s))
             return self.doc
         except Exception as e:
             raise Error(_("String '%s' has invalid XML") % (xml))
@@ -89,7 +88,7 @@ class XmlFile(object):
             )
 
         try:
-            self.doc = iks.parse(localpath)
+            self.doc = xml.parse(localpath)
             return self.doc
         except OSError as e:
             raise Error(_("Unable to read file (%s): %s") % (localpath, e))
@@ -97,11 +96,19 @@ class XmlFile(object):
             raise Error(_("File '%s' has invalid XML") % (localpath))
 
     def writexml(self, uri, tmpDir="/tmp", sha1sum=False, compress=None, sign=None):
-        f = pisi.file.File(
-            uri, pisi.file.File.write, sha1sum=sha1sum, compress=compress, sign=sign
-        )
-        f.write(self.doc.toPrettyString())
-        f.close()
+        try:
+            f = pisi.file.File(
+                uri,
+                pisi.file.File.MODE_WRITE,
+                sha1sum=sha1sum,
+                compress=compress,
+                sign=sign,
+            )
+            xml.indent(self.doc)
+            f.write()
+        finally:
+            f.close()
 
-    def writexmlfile(self, f):
-        f.write(self.doc.toPrettyString())
+    def writexmlfile(self, file: pisi.file.File):
+        xml.indent(self.doc)
+        file.write(xml.tostring(self.doc.getroot()))
