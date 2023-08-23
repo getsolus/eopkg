@@ -14,7 +14,6 @@ import os
 import re
 import shelve
 import hashlib
-import pickle
 
 import pisi
 import pisi.context as ctx
@@ -111,4 +110,3 @@ class FilesDB(lazydb.LazyDB):
             flag = "r"
 
         self.filesdb = shelve.open("/var/lib/eopkg/info/files.db", flag)
-        #self.filesdb = pickle.load(open(files_db, flag), encoding='utf8', errors='ignore')
