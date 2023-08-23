@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2005-2010, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -10,20 +8,18 @@
 # Please read the COPYING file.
 #
 
+import datetime
+import gzip
 import re
 import time
-import gzip
-import gettext
-import datetime
-
-import piksemel
+import xml.etree.ElementTree as xml
+from typing import Iterator
 
 import pisi.db
-import pisi.metadata
 import pisi.dependency
-import pisi.db.itembyrepo
-import pisi.db.lazydb as lazydb
+import pisi.metadata
 from pisi import translate as _
+from pisi.db import historydb, itembyrepo, lazydb, repodb
 
 
 class PackageDB(lazydb.LazyDB):
@@ -45,10 +41,10 @@ class PackageDB(lazydb.LazyDB):
             self.__obsoletes[repo] = self.__generate_obsoletes(doc)
             self.__replaces[repo] = self.__generate_replaces(doc)
 
-        self.pdb = pisi.db.itembyrepo.ItemByRepo(self.__package_nodes, compressed=True)
-        self.rvdb = pisi.db.itembyrepo.ItemByRepo(self.__revdeps)
-        self.odb = pisi.db.itembyrepo.ItemByRepo(self.__obsoletes)
-        self.rpdb = pisi.db.itembyrepo.ItemByRepo(self.__replaces)
+        self.pdb = itembyrepo.ItemByRepo(self.__package_nodes, compressed=True)
+        self.rvdb = itembyrepo.ItemByRepo(self.__revdeps)
+        self.odb = itembyrepo.ItemByRepo(self.__obsoletes)
+        self.rpdb = itembyrepo.ItemByRepo(self.__replaces)
 
     def __generate_replaces(self, doc):
         return [
@@ -57,15 +53,14 @@ class PackageDB(lazydb.LazyDB):
             if x.getTagData("Replaces")
         ]
 
-    def __generate_obsoletes(self, doc):
-        distribution = doc.getTag("Distribution")
-        obsoletes = distribution and distribution.getTag("Obsoletes")
-        src_repo = doc.getTag("SpecFile") is not None
+    def __generate_obsoletes(self, doc: xml.ElementTree) -> Iterator[str]:
+        distribution = doc.find("Distribution")
+        obsoletes = distribution and distribution.find("Obsoletes")
+        src_repo = doc.find("SpecFile") is not None
 
-        if not obsoletes or src_repo:
-            return []
-
-        return [x.firstChild().data() for x in obsoletes.tags("Package")]
+        if obsoletes is None or src_repo:
+            return iter(())
+        return (x.text for x in obsoletes.iterfind("Package") if x.text is not None)
 
     def __generate_packages(self, doc):
         return dict(
@@ -102,22 +97,22 @@ class PackageDB(lazydb.LazyDB):
         The second dict ([1]) contains the pkgconfig32 mapping to
         package name.
         """
-        repodb = pisi.db.repodb.RepoDB()
+        db = repodb.RepoDB()
 
         pkgConfigs = dict()
         pkgConfigs32 = dict()
 
-        for repo in repodb.list_repos(repo):
-            doc = repodb.get_repo_doc(repo)
-            for pkg in doc.tags("Package"):
-                prov = pkg.getTag("Provides")
-                name = pkg.getTagData("Name")
-                if not prov:
+        for repo in db.list_repos(repo):
+            doc = db.get_repo_doc(repo)
+            for pkg in doc.iterfind("Package"):
+                prov = pkg.find("Provides")
+                name = pkg.findtext("Name")
+                if prov is None or name is None:
                     continue
-                for node in prov.tags("PkgConfig32"):
-                    pkgConfigs32[node.firstChild().data()] = name
-                for node in prov.tags("PkgConfig"):
-                    pkgConfigs[node.firstChild().data()] = name
+                for node in prov.iterfind("PkgConfig32"):
+                    pkgConfigs32[node.text] = name
+                for node in prov.iterfind("PkgConfig"):
+                    pkgConfigs[node.text] = name
         return (pkgConfigs, pkgConfigs32)
 
     def get_package_by_pkgconfig(self, pkgconfig):
@@ -186,32 +181,38 @@ class PackageDB(lazydb.LazyDB):
                 found.append(name)
         return found
 
-    def __get_version(self, meta_doc):
-        history = meta_doc.getTag("History")
-        version = history.getTag("Update").getTagData("Version")
-        release = history.getTag("Update").getAttribute("release")
+    def __get_version(self, meta_doc: xml.ElementTree) -> tuple[str, str, None] | None:
+        history = meta_doc.find("History")
+        if history is None:
+            return None
+        update = history.find("Update")
+        if update is None:
+            return None
+        return (
+            update.findtext("Version") or "",
+            update.attrib.get("release") or "",
+            None,  # TODO Remove None
+        )
 
-        # TODO Remove None
-        return version, release, None
-
-    def __get_distro_release(self, meta_doc):
-        distro = meta_doc.getTagData("Distribution")
-        release = meta_doc.getTagData("DistributionRelease")
-
+    def __get_distro_release(self, meta_doc: xml.ElementTree) -> tuple[str, str] | None:
+        distro = meta_doc.findtext("Distribution")
+        release = meta_doc.findtext("DistributionRelease")
+        if distro is None or release is None:
+            return None
         return distro, release
 
     def get_version_and_distro_release(self, name, repo):
         if not self.has_package(name, repo):
             raise Exception(_("Package %s not found.") % name)
 
-        pkg_doc = piksemel.parseString(self.pdb.get_item(name, repo))
+        pkg_doc = xml.ElementTree(xml.fromstring(self.pdb.get_item(name, repo)))
         return self.__get_version(pkg_doc) + self.__get_distro_release(pkg_doc)
 
     def get_version(self, name, repo):
         if not self.has_package(name, repo):
             raise Exception(_("Package %s not found.") % name)
 
-        pkg_doc = piksemel.parseString(self.pdb.get_item(name, repo))
+        pkg_doc = xml.ElementTree(xml.fromstring(self.pdb.get_item(name, repo)))
         return self.__get_version(pkg_doc)
 
     def get_package_repo(self, name, repo=None):
@@ -249,7 +250,7 @@ class PackageDB(lazydb.LazyDB):
 
         rev_deps = []
         for pkg, dep in rvdb:
-            node = piksemel.parseString(dep)
+            node = xml.ElementTree(xml.fromstring(dep))
             dependency = pisi.dependency.Dependency()
             dependency.package = node.firstChild().data()
             if node.attributes():
@@ -264,7 +265,7 @@ class PackageDB(lazydb.LazyDB):
 
         for pkg_name in self.rpdb.get_list_item():
             xml = self.pdb.get_item(pkg_name, repo)
-            package = piksemel.parseString(xml)
+            package = xml.ElementTree(xml.fromstring(xml))
             replaces_tag = package.getTag("Replaces")
             if replaces_tag:
                 for node in replaces_tag.tags("Package"):
@@ -281,12 +282,12 @@ class PackageDB(lazydb.LazyDB):
 
     def list_newest(self, repo, since=None):
         packages = []
-        historydb = pisi.db.historydb.HistoryDB()
+        db = historydb.HistoryDB()
         if since:
             since_date = datetime.datetime(*time.strptime(since, "%Y-%m-%d")[0:6])
         else:
             since_date = datetime.datetime(
-                *time.strptime(historydb.get_last_repo_update(), "%Y-%m-%d")[0:6]
+                *time.strptime(db.get_last_repo_update(), "%Y-%m-%d")[0:6]
             )
 
         for pkg in self.list_packages(repo):
