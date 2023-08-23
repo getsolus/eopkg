@@ -14,6 +14,7 @@ import os
 import re
 import shelve
 import hashlib
+import pickle
 
 import pisi
 import pisi.context as ctx
@@ -32,10 +33,10 @@ class FilesDB(lazydb.LazyDB):
         self.__check_filesdb()
 
     def has_file(self, path):
-        return hashlib.md5(path).digest() in self.filesdb
+        return hashlib.md5(path.encode()).hexdigest() in self.filesdb
 
     def get_file(self, path):
-        return self.filesdb[hashlib.md5(path).digest()], path
+        return self.filesdb[hashlib.md5(path.encode()).hexdigest()], path
 
     def search_file(self, term):
         if self.has_file(term):
@@ -84,8 +85,8 @@ class FilesDB(lazydb.LazyDB):
 
     def remove_files(self, files):
         for f in files:
-            if hashlib.md5(f.path).digest() in self.filesdb:
-                del self.filesdb[hashlib.md5(f.path).digest()]
+            if hashlib.md5(f.path.encode()).hexdigest() in self.filesdb:
+                del self.filesdb[hashlib.md5(f.path.encode()).hexdigest()]
 
     def destroy(self):
         files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
@@ -109,4 +110,5 @@ class FilesDB(lazydb.LazyDB):
         else:
             flag = "r"
 
-        self.filesdb = shelve.open(files_db, flag)
+        self.filesdb = shelve.open("/var/lib/eopkg/info/files.db", flag)
+        #self.filesdb = pickle.load(open(files_db, flag), encoding='utf8', errors='ignore')

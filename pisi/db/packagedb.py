@@ -65,7 +65,7 @@ class PackageDB(lazydb.LazyDB):
     def __generate_packages(self, doc):
         return dict(
             [
-                (x.getTagData("Name"), gzip.zlib.compress(x.toString()))
+                (x.getTagData("Name"), gzip.zlib.compress(x.toString().encode()))
                 for x in doc.tags("Package")
             ]
         )
@@ -141,8 +141,8 @@ class PackageDB(lazydb.LazyDB):
                 term
                 for term in terms
                 if re.compile(term, re.I).search(name)
-                or re.compile(resum % (lang, term), re.I).search(xml)
-                or re.compile(redesc % (lang, term), re.I).search(xml)
+                or re.compile(resum % (lang, term), re.I).search(xml.decode())
+                or re.compile(redesc % (lang, term), re.I).search(xml.decode())
             ]:
                 found.append(name)
         return found
@@ -171,11 +171,11 @@ class PackageDB(lazydb.LazyDB):
                 if (fields["name"] and re.compile(term, re.I).search(name))
                 or (
                     fields["summary"]
-                    and re.compile(resum % (lang, term), re.I).search(xml)
+                    and re.compile(resum % (lang, term), re.I).search(xml.decode())
                 )
                 or (
                     fields["desc"]
-                    and re.compile(redesc % (lang, term), re.I).search(xml)
+                    and re.compile(redesc % (lang, term), re.I).search(xml.decode())
                 )
             ]:
                 found.append(name)

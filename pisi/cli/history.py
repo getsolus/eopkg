@@ -127,7 +127,7 @@ Lists previous operations."""
 
                 def write(self, s):
                     try:
-                        self.less.stdin.write(s)
+                        self.less.stdin.write(s.encode())
                     except IOError:
                         raise LessException
 

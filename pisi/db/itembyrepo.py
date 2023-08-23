@@ -10,7 +10,7 @@
 # Please read the COPYING file.
 #
 
-import gzip
+import zlib
 from pisi import translate as _
 
 import pisi.db
@@ -79,12 +79,8 @@ class ItemByRepo:
             if not self.has_repo(r):
                 raise Exception(_("Repository %s does not exist.") % repo)
 
-            if self.compressed:
-                for item in list(self.dbobj[r].keys()):
-                    yield item, gzip.zlib.decompress(self.dbobj[r][item])
-            else:
-                for item in list(self.dbobj[r].keys()):
-                    yield item, self.dbobj[r][item]
+            for item, data in self.dbobj[r].items():
+                yield item, zlib.decompress(data) if self.compressed else data
 
     def item_repos(self, repo=None):
         repos = pisi.db.repodb.RepoDB().list_repos()
