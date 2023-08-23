@@ -60,7 +60,7 @@ class File:
     COMPRESSION_TYPE_BZ2 = 1
     COMPRESSION_TYPE_XZ = 2
 
-    (read, write) = list(range(2))  # modes
+    (MODE_READ, MODE_WRITE) = list(range(2))  # modes
     (detached, whatelse) = list(range(2))
 
     __compressed_file_extensions = {
@@ -202,21 +202,21 @@ class File:
         self.sign = sign
 
         uri = File.make_uri(uri)
-        if mode == File.read or mode == File.write:
+        if mode == File.MODE_READ or mode == File.MODE_WRITE:
             self.mode = mode
         else:
             raise Error(_("File mode must be either File.read or File.write"))
         if uri.is_remote_file():
-            if self.mode == File.read:
+            if self.mode == File.MODE_READ:
                 localfile = File.download(uri, transfer_dir, sha1sum, compress, sign)
             else:
                 raise Error(_("Remote write not implemented"))
         else:
             localfile = uri.get_uri()
-            if self.mode == File.read:
+            if self.mode == File.MODE_READ:
                 localfile = File.decompress(localfile, self.compress)
 
-        if self.mode == File.read:
+        if self.mode == File.MODE_READ:
             access = "r"
         else:
             access = "w"
@@ -230,7 +230,7 @@ class File:
     def close(self, delete_transfer=False):
         "this method must be called at the end of operation"
         self.__file__.close()
-        if self.mode == File.write:
+        if self.mode == File.MODE_WRITE:
             compressed_files = []
             ctypes = self.compress or 0
             if ctypes & File.COMPRESSION_TYPE_XZ:
