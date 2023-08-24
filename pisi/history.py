@@ -20,8 +20,8 @@ import pisi.context as ctx
 
 
 class PackageInfo(metaclass=autoxml.autoxml):
-    a_version = [autoxml.String, autoxml.mandatory]
-    a_release = [autoxml.String, autoxml.mandatory]
+    a_version = [autoxml.String, autoxml.MANDATORY]
+    a_release = [autoxml.String, autoxml.MANDATORY]
 
     def __str__(self):
         # FIXME: Do not get these from the config file
@@ -32,10 +32,10 @@ class PackageInfo(metaclass=autoxml.autoxml):
 
 
 class Repo(metaclass=autoxml.autoxml):
-    a_operation = [autoxml.String, autoxml.mandatory]
+    a_operation = [autoxml.String, autoxml.MANDATORY]
 
-    t_Name = [autoxml.String, autoxml.mandatory]
-    t_Uri = [autoxml.String, autoxml.mandatory]
+    t_Name = [autoxml.String, autoxml.MANDATORY]
+    t_Uri = [autoxml.String, autoxml.MANDATORY]
 
     def __str__(self):
         # "update", "remove", "add"
@@ -49,12 +49,12 @@ class Repo(metaclass=autoxml.autoxml):
 
 
 class Package(metaclass=autoxml.autoxml):
-    a_operation = [autoxml.String, autoxml.mandatory]
-    a_type = [autoxml.String, autoxml.optional]
+    a_operation = [autoxml.String, autoxml.MANDATORY]
+    a_type = [autoxml.String, autoxml.OPTIONAL]
 
-    t_Name = [autoxml.String, autoxml.mandatory]
-    t_Before = [PackageInfo, autoxml.optional]
-    t_After = [PackageInfo, autoxml.optional]
+    t_Name = [autoxml.String, autoxml.MANDATORY]
+    t_Before = [PackageInfo, autoxml.OPTIONAL]
+    t_After = [PackageInfo, autoxml.OPTIONAL]
 
     def __str__(self):
         # "upgrade", "remove", "install", "reinstall", "downgrade"
@@ -89,12 +89,12 @@ class Package(metaclass=autoxml.autoxml):
 
 
 class Operation(metaclass=autoxml.autoxml):
-    a_type = [autoxml.String, autoxml.mandatory]
-    a_date = [autoxml.String, autoxml.mandatory]
-    a_time = [autoxml.String, autoxml.mandatory]
+    a_type = [autoxml.String, autoxml.MANDATORY]
+    a_date = [autoxml.String, autoxml.MANDATORY]
+    a_time = [autoxml.String, autoxml.MANDATORY]
 
-    t_Packages = [[Package], autoxml.optional, "Package"]
-    t_Repos = [[Repo], autoxml.optional, "Repository"]
+    t_Packages = [[Package], autoxml.OPTIONAL, "Package"]
+    t_Repos = [[Repo], autoxml.OPTIONAL, "Repository"]
 
     def __str__(self):
         return self.type
@@ -103,7 +103,7 @@ class Operation(metaclass=autoxml.autoxml):
 class History(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     tag = "PISI"
 
-    t_Operation = [Operation, autoxml.mandatory]
+    t_Operation = [Operation, autoxml.MANDATORY]
 
     def create(self, operation):
         if operation not in [

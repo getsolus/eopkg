@@ -20,14 +20,14 @@ import pisi.pxml.autoxml as autoxml
 class FileInfo(metaclass=autoxml.autoxml):
     """File holds the information for a File node/tag in files.xml"""
 
-    t_Path = [autoxml.String, autoxml.mandatory]
-    t_Type = [autoxml.String, autoxml.mandatory]
-    t_Size = [autoxml.Long, autoxml.optional]
-    t_Uid = [autoxml.String, autoxml.optional]
-    t_Gid = [autoxml.String, autoxml.optional]
-    t_Mode = [autoxml.String, autoxml.optional]
-    t_Hash = [autoxml.String, autoxml.optional, "SHA1Sum"]
-    t_Permanent = [autoxml.String, autoxml.optional]
+    t_Path = [autoxml.String, autoxml.MANDATORY]
+    t_Type = [autoxml.String, autoxml.MANDATORY]
+    t_Size = [autoxml.Long, autoxml.OPTIONAL]
+    t_Uid = [autoxml.String, autoxml.OPTIONAL]
+    t_Gid = [autoxml.String, autoxml.OPTIONAL]
+    t_Mode = [autoxml.String, autoxml.OPTIONAL]
+    t_Hash = [autoxml.String, autoxml.OPTIONAL, "SHA1Sum"]
+    t_Permanent = [autoxml.String, autoxml.OPTIONAL]
 
     def __str__(self):
         s = "/%s, type: %s, size: %s, sha1sum: %s" % (
@@ -42,7 +42,7 @@ class FileInfo(metaclass=autoxml.autoxml):
 class Files(autoxml.xmlfile.XmlFile, metaclass=autoxml.autoxml):
     tag = "Files"
 
-    t_List = [[FileInfo], autoxml.optional, "File"]
+    t_List = [[FileInfo], autoxml.OPTIONAL, "File"]
 
     def append(self, fileinfo):
         self.list.append(fileinfo)

@@ -35,8 +35,8 @@ class Error(pisi.Error):
 
 
 class Packager(metaclass=autoxml.autoxml):
-    t_Name = [autoxml.Text, autoxml.mandatory]
-    t_Email = [autoxml.String, autoxml.mandatory]
+    t_Name = [autoxml.Text, autoxml.MANDATORY]
+    t_Email = [autoxml.String, autoxml.MANDATORY]
 
     def __str__(self):
         s = "%s <%s>" % (self.name, self.email)
@@ -44,11 +44,11 @@ class Packager(metaclass=autoxml.autoxml):
 
 
 class AdditionalFile(metaclass=autoxml.autoxml):
-    s_Filename = [autoxml.String, autoxml.mandatory]
-    a_target = [autoxml.String, autoxml.mandatory]
-    a_permission = [autoxml.String, autoxml.optional]
-    a_owner = [autoxml.String, autoxml.optional]
-    a_group = [autoxml.String, autoxml.optional]
+    s_Filename = [autoxml.String, autoxml.MANDATORY]
+    a_target = [autoxml.String, autoxml.MANDATORY]
+    a_permission = [autoxml.String, autoxml.OPTIONAL]
+    a_owner = [autoxml.String, autoxml.OPTIONAL]
+    a_group = [autoxml.String, autoxml.OPTIONAL]
 
     def __str__(self):
         s = "%s -> %s " % (self.filename, self.target)
@@ -58,8 +58,8 @@ class AdditionalFile(metaclass=autoxml.autoxml):
 
 
 class Type(metaclass=autoxml.autoxml):
-    s_type = [autoxml.String, autoxml.mandatory]
-    a_package = [autoxml.String, autoxml.optional]
+    s_type = [autoxml.String, autoxml.MANDATORY]
+    a_package = [autoxml.String, autoxml.OPTIONAL]
 
 
 class Action(metaclass=autoxml.autoxml):
@@ -69,19 +69,19 @@ class Action(metaclass=autoxml.autoxml):
     # systemRestart
     # serviceRestart
 
-    s_action = [autoxml.String, autoxml.mandatory]
-    a_package = [autoxml.String, autoxml.optional]
-    a_target = [autoxml.String, autoxml.optional]
+    s_action = [autoxml.String, autoxml.MANDATORY]
+    a_package = [autoxml.String, autoxml.OPTIONAL]
+    a_target = [autoxml.String, autoxml.OPTIONAL]
 
     def __str__(self):
         return self.action
 
 
 class Patch(metaclass=autoxml.autoxml):
-    s_Filename = [autoxml.String, autoxml.mandatory]
-    a_compressionType = [autoxml.String, autoxml.optional]
-    a_level = [autoxml.Integer, autoxml.optional]
-    a_reverse = [autoxml.String, autoxml.optional]
+    s_Filename = [autoxml.String, autoxml.MANDATORY]
+    a_compressionType = [autoxml.String, autoxml.OPTIONAL]
+    a_level = [autoxml.Integer, autoxml.OPTIONAL]
+    a_reverse = [autoxml.String, autoxml.OPTIONAL]
 
     # FIXME: what's the cleanest way to give a default value for reading level?
     # def decode_hook(self, node, errs, where):
@@ -98,16 +98,16 @@ class Patch(metaclass=autoxml.autoxml):
 
 
 class Update(metaclass=autoxml.autoxml):
-    a_release = [autoxml.String, autoxml.mandatory]
+    a_release = [autoxml.String, autoxml.MANDATORY]
     # 'type' attribute is here to keep backward compatibility
-    a_type = [autoxml.String, autoxml.optional]
-    t_types = [[Type], autoxml.optional, "Type"]
-    t_Date = [autoxml.String, autoxml.mandatory]
-    t_Version = [autoxml.String, autoxml.mandatory]
-    t_Comment = [autoxml.String, autoxml.optional]
-    t_Name = [autoxml.Text, autoxml.optional]
-    t_Email = [autoxml.String, autoxml.optional]
-    t_Requires = [[Action], autoxml.optional]
+    a_type = [autoxml.String, autoxml.OPTIONAL]
+    t_types = [[Type], autoxml.OPTIONAL, "Type"]
+    t_Date = [autoxml.String, autoxml.MANDATORY]
+    t_Version = [autoxml.String, autoxml.MANDATORY]
+    t_Comment = [autoxml.String, autoxml.OPTIONAL]
+    t_Name = [autoxml.Text, autoxml.OPTIONAL]
+    t_Email = [autoxml.String, autoxml.OPTIONAL]
+    t_Requires = [[Action], autoxml.OPTIONAL]
 
     def __str__(self):
         s = self.date
@@ -119,9 +119,9 @@ class Update(metaclass=autoxml.autoxml):
 
 
 class Path(metaclass=autoxml.autoxml):
-    s_Path = [autoxml.String, autoxml.mandatory]
-    a_fileType = [autoxml.String, autoxml.optional]
-    a_permanent = [autoxml.String, autoxml.optional]
+    s_Path = [autoxml.String, autoxml.MANDATORY]
+    a_fileType = [autoxml.String, autoxml.OPTIONAL]
+    a_permanent = [autoxml.String, autoxml.OPTIONAL]
 
     def __str__(self):
         s = self.path
@@ -130,9 +130,9 @@ class Path(metaclass=autoxml.autoxml):
 
 
 class ComarProvide(metaclass=autoxml.autoxml):
-    s_om = [autoxml.String, autoxml.mandatory]
-    a_script = [autoxml.String, autoxml.mandatory]
-    a_name = [autoxml.String, autoxml.optional]
+    s_om = [autoxml.String, autoxml.MANDATORY]
+    a_script = [autoxml.String, autoxml.MANDATORY]
+    a_name = [autoxml.String, autoxml.OPTIONAL]
 
     def __str__(self):
         # FIXME: descriptive enough?
@@ -142,8 +142,8 @@ class ComarProvide(metaclass=autoxml.autoxml):
 
 
 class PkgConfigProvide(metaclass=autoxml.autoxml):
-    s_om = [autoxml.String, autoxml.mandatory]
-    a_version = [autoxml.String, autoxml.optional]
+    s_om = [autoxml.String, autoxml.MANDATORY]
+    a_version = [autoxml.String, autoxml.OPTIONAL]
 
     def __str__(self):
         s = self.om
@@ -153,8 +153,8 @@ class PkgConfigProvide(metaclass=autoxml.autoxml):
 
 
 class PkgConfig32Provide(metaclass=autoxml.autoxml):
-    s_om = [autoxml.String, autoxml.mandatory]
-    a_version = [autoxml.String, autoxml.optional]
+    s_om = [autoxml.String, autoxml.MANDATORY]
+    a_version = [autoxml.String, autoxml.OPTIONAL]
 
     def __str__(self):
         s = self.om
@@ -164,10 +164,10 @@ class PkgConfig32Provide(metaclass=autoxml.autoxml):
 
 
 class Archive(metaclass=autoxml.autoxml):
-    s_uri = [autoxml.String, autoxml.mandatory]
-    a_type = [autoxml.String, autoxml.optional]
-    a_sha1sum = [autoxml.String, autoxml.mandatory]
-    a_target = [autoxml.String, autoxml.optional]
+    s_uri = [autoxml.String, autoxml.MANDATORY]
+    a_type = [autoxml.String, autoxml.OPTIONAL]
+    a_sha1sum = [autoxml.String, autoxml.MANDATORY]
+    a_target = [autoxml.String, autoxml.OPTIONAL]
 
     def decode_hook(self, node, errs, where):
         self.name = os.path.basename(self.uri)
@@ -178,31 +178,31 @@ class Archive(metaclass=autoxml.autoxml):
 
 
 class Source(metaclass=autoxml.autoxml):
-    t_Name = [autoxml.String, autoxml.mandatory]
-    t_Homepage = [autoxml.String, autoxml.optional]
-    t_Packager = [Packager, autoxml.mandatory]
-    t_ExcludeArch = [[autoxml.String], autoxml.optional]
-    t_License = [[autoxml.String], autoxml.mandatory]
-    t_IsA = [[autoxml.String], autoxml.optional]
-    t_PartOf = [autoxml.String, autoxml.optional]
-    t_Summary = [autoxml.LocalText, autoxml.mandatory]
-    t_Description = [autoxml.LocalText, autoxml.mandatory]
-    t_Icon = [autoxml.String, autoxml.optional]
-    t_Archive = [[Archive], autoxml.mandatory, "Archive"]
-    t_AdditionalFiles = [[AdditionalFile], autoxml.optional]
-    t_BuildDependencies = [[pisi.dependency.Dependency], autoxml.optional]
-    t_SupportsClang = [autoxml.String, autoxml.optional, "SupportsClang"]
-    t_Patches = [[Patch], autoxml.optional]
-    t_Version = [autoxml.String, autoxml.optional]
-    t_Release = [autoxml.String, autoxml.optional]
-    t_SourceURI = [autoxml.String, autoxml.optional]  # used in index
+    t_Name = [autoxml.String, autoxml.MANDATORY]
+    t_Homepage = [autoxml.String, autoxml.OPTIONAL]
+    t_Packager = [Packager, autoxml.MANDATORY]
+    t_ExcludeArch = [[autoxml.String], autoxml.OPTIONAL]
+    t_License = [[autoxml.String], autoxml.MANDATORY]
+    t_IsA = [[autoxml.String], autoxml.OPTIONAL]
+    t_PartOf = [autoxml.String, autoxml.OPTIONAL]
+    t_Summary = [autoxml.LocalText, autoxml.MANDATORY]
+    t_Description = [autoxml.LocalText, autoxml.MANDATORY]
+    t_Icon = [autoxml.String, autoxml.OPTIONAL]
+    t_Archive = [[Archive], autoxml.MANDATORY, "Archive"]
+    t_AdditionalFiles = [[AdditionalFile], autoxml.OPTIONAL]
+    t_BuildDependencies = [[pisi.dependency.Dependency], autoxml.OPTIONAL]
+    t_SupportsClang = [autoxml.String, autoxml.OPTIONAL, "SupportsClang"]
+    t_Patches = [[Patch], autoxml.OPTIONAL]
+    t_Version = [autoxml.String, autoxml.OPTIONAL]
+    t_Release = [autoxml.String, autoxml.OPTIONAL]
+    t_SourceURI = [autoxml.String, autoxml.OPTIONAL]  # used in index
 
     def buildtimeDependencies(self):
         return self.buildDependencies
 
 
 class AnyDependency(metaclass=autoxml.autoxml):
-    t_Dependencies = [[pisi.dependency.Dependency], autoxml.optional, "Dependency"]
+    t_Dependencies = [[pisi.dependency.Dependency], autoxml.OPTIONAL, "Dependency"]
 
     def __str__(self):
         return "{%s}" % _(" or ").join([str(dep) for dep in self.dependencies])
@@ -239,43 +239,43 @@ class AnyDependency(metaclass=autoxml.autoxml):
 
 
 class Package(metaclass=autoxml.autoxml):
-    t_Name = [autoxml.String, autoxml.mandatory]
-    t_Summary = [autoxml.LocalText, autoxml.optional]
-    t_Description = [autoxml.LocalText, autoxml.optional]
-    t_IsA = [[autoxml.String], autoxml.optional]
-    t_PartOf = [autoxml.String, autoxml.optional]
-    t_License = [[autoxml.String], autoxml.optional]
-    t_Icon = [autoxml.String, autoxml.optional]
-    t_BuildFlags = [[autoxml.String], autoxml.optional, "BuildFlags/Flag"]
-    t_BuildType = [autoxml.String, autoxml.optional]
-    t_BuildDependencies = [[pisi.dependency.Dependency], autoxml.optional]
+    t_Name = [autoxml.String, autoxml.MANDATORY]
+    t_Summary = [autoxml.LocalText, autoxml.OPTIONAL]
+    t_Description = [autoxml.LocalText, autoxml.OPTIONAL]
+    t_IsA = [[autoxml.String], autoxml.OPTIONAL]
+    t_PartOf = [autoxml.String, autoxml.OPTIONAL]
+    t_License = [[autoxml.String], autoxml.OPTIONAL]
+    t_Icon = [autoxml.String, autoxml.OPTIONAL]
+    t_BuildFlags = [[autoxml.String], autoxml.OPTIONAL, "BuildFlags/Flag"]
+    t_BuildType = [autoxml.String, autoxml.OPTIONAL]
+    t_BuildDependencies = [[pisi.dependency.Dependency], autoxml.OPTIONAL]
     t_PackageDependencies = [
         [pisi.dependency.Dependency],
-        autoxml.optional,
+        autoxml.OPTIONAL,
         "RuntimeDependencies/Dependency",
     ]
     t_PackageAnyDependencies = [
         [AnyDependency],
-        autoxml.optional,
+        autoxml.OPTIONAL,
         "RuntimeDependencies/AnyDependency",
     ]
     t_ComponentDependencies = [
         [autoxml.String],
-        autoxml.optional,
+        autoxml.OPTIONAL,
         "RuntimeDependencies/Component",
     ]
-    t_Files = [[Path], autoxml.optional]
-    t_Conflicts = [[pisi.conflict.Conflict], autoxml.optional, "Conflicts/Package"]
-    t_Replaces = [[pisi.replace.Replace], autoxml.optional, "Replaces/Package"]
-    t_ProvidesComar = [[ComarProvide], autoxml.optional, "Provides/COMAR"]
-    t_ProvidesPkgConfig = [[PkgConfigProvide], autoxml.optional, "Provides/PkgConfig"]
+    t_Files = [[Path], autoxml.OPTIONAL]
+    t_Conflicts = [[pisi.conflict.Conflict], autoxml.OPTIONAL, "Conflicts/Package"]
+    t_Replaces = [[pisi.replace.Replace], autoxml.OPTIONAL, "Replaces/Package"]
+    t_ProvidesComar = [[ComarProvide], autoxml.OPTIONAL, "Provides/COMAR"]
+    t_ProvidesPkgConfig = [[PkgConfigProvide], autoxml.OPTIONAL, "Provides/PkgConfig"]
     t_ProvidesPkgConfig32 = [
         [PkgConfig32Provide],
-        autoxml.optional,
+        autoxml.OPTIONAL,
         "Provides/PkgConfig32",
     ]
-    t_AdditionalFiles = [[AdditionalFile], autoxml.optional]
-    t_History = [[Update], autoxml.optional]
+    t_AdditionalFiles = [[AdditionalFile], autoxml.OPTIONAL]
+    t_History = [[Update], autoxml.OPTIONAL]
 
     # FIXME: needed in build process, to distinguish dynamically generated debug packages.
     # find a better way to do this.
@@ -439,11 +439,11 @@ class Package(metaclass=autoxml.autoxml):
 class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     tag = "PISI"
 
-    t_Source = [Source, autoxml.mandatory]
-    t_Packages = [[Package], autoxml.mandatory, "Package"]
-    t_History = [[Update], autoxml.mandatory]
-    t_Components = [[component.Component], autoxml.optional, "Component"]
-    t_Groups = [[group.Group], autoxml.optional, "Group"]
+    t_Source = [Source, autoxml.MANDATORY]
+    t_Packages = [[Package], autoxml.MANDATORY, "Package"]
+    t_History = [[Update], autoxml.MANDATORY]
+    t_Components = [[component.Component], autoxml.OPTIONAL, "Component"]
+    t_Groups = [[group.Group], autoxml.OPTIONAL, "Group"]
 
     def decode_hook(self, node, errs, where):
         current_version = self.history[0].version

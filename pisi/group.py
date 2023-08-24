@@ -22,9 +22,9 @@ class Error(pisi.Error):
 class Group(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     "representation for group declarations"
 
-    t_Name = [autoxml.String, autoxml.mandatory]
-    t_LocalName = [autoxml.LocalText, autoxml.mandatory]
-    t_Icon = [autoxml.String, autoxml.optional]
+    t_Name = [autoxml.String, autoxml.MANDATORY]
+    t_LocalName = [autoxml.LocalText, autoxml.MANDATORY]
+    t_Icon = [autoxml.String, autoxml.OPTIONAL]
 
 
 class Groups(xmlfile.XmlFile, metaclass=autoxml.autoxml):
@@ -32,4 +32,4 @@ class Groups(xmlfile.XmlFile, metaclass=autoxml.autoxml):
 
     tag = "PISI"
 
-    t_Groups = [[Group], autoxml.optional, "Groups/Group"]
+    t_Groups = [[Group], autoxml.OPTIONAL, "Groups/Group"]

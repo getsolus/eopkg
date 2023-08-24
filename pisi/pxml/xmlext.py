@@ -60,20 +60,12 @@ def getTagByName(parent: xml.Element, childName: str) -> Iterator[xml.Element]:
     return parent.iterfind(childName)
 
 
-def getNodeText(node: xml.Element, tagpath="") -> str | None:
+def getNodeText(node: xml.Element, tagpath: str) -> str | None:
     """get the first child and expect it to be text!"""
     child = getNode(node, tagpath)
     if child is None:
         return None
     return child.text
-
-
-def getChildText(node_s, tagpath):
-    """get the text of a child at the end of a tag path"""
-    node = getNode(node_s, tagpath)
-    if not node:
-        return None
-    return getNodeText(node)
 
 
 def getNode(node: xml.Element, tagpath: str) -> xml.Element | None:
@@ -142,5 +134,5 @@ def addText(node, tagpath, text):
     node.insertData(text)
 
 
-def newNode(node, tag: str) -> xml.Element:
+def newNode(tag: str) -> xml.Element:
     return xml.Element(tag)

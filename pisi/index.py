@@ -39,12 +39,12 @@ class Error(pisi.Error):
 class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     tag = "PISI"
 
-    t_Distribution = [component.Distribution, autoxml.optional]
-    t_Specs = [[specfile.SpecFile], autoxml.optional, "SpecFile"]
-    t_Packages = [[metadata.Package], autoxml.optional, "Package"]
+    t_Distribution = [component.Distribution, autoxml.OPTIONAL]
+    t_Specs = [[specfile.SpecFile], autoxml.OPTIONAL, "SpecFile"]
+    t_Packages = [[metadata.Package], autoxml.OPTIONAL, "Package"]
     # t_Metadatas = [ [metadata.MetaData], autoxml.optional, "MetaData"]
-    t_Components = [[component.Component], autoxml.optional, "Component"]
-    t_Groups = [[group.Group], autoxml.optional, "Group"]
+    t_Components = [[component.Component], autoxml.OPTIONAL, "Component"]
+    t_Groups = [[group.Group], autoxml.OPTIONAL, "Group"]
 
     def read_uri(self, uri, tmpdir, force=False):
         return self.read(

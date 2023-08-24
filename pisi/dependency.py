@@ -20,7 +20,7 @@ import pisi.pxml.autoxml as autoxml
 
 
 class Dependency(pisi.relation.Relation):
-    a_type = [autoxml.String, autoxml.optional]
+    a_type = [autoxml.String, autoxml.OPTIONAL]
 
     def __str__(self):
         s = self.package

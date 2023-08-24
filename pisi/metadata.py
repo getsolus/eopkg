@@ -26,33 +26,33 @@ import pisi.util as util
 
 
 class Delta(metaclass=autoxml.autoxml):
-    t_PackageURI = [autoxml.String, autoxml.optional]
-    t_PackageSize = [autoxml.Long, autoxml.optional]
-    t_PackageHash = [autoxml.String, autoxml.optional, "SHA1Sum"]
-    a_buildFrom = [autoxml.String, autoxml.optional]
-    a_releaseFrom = [autoxml.String, autoxml.optional]
+    t_PackageURI = [autoxml.String, autoxml.OPTIONAL]
+    t_PackageSize = [autoxml.Long, autoxml.OPTIONAL]
+    t_PackageHash = [autoxml.String, autoxml.OPTIONAL, "SHA1Sum"]
+    a_buildFrom = [autoxml.String, autoxml.OPTIONAL]
+    a_releaseFrom = [autoxml.String, autoxml.OPTIONAL]
 
 
 class Source(metaclass=autoxml.autoxml):
-    t_Name = [autoxml.String, autoxml.mandatory]
-    t_Homepage = [autoxml.String, autoxml.optional]
-    t_Packager = [specfile.Packager, autoxml.mandatory]
+    t_Name = [autoxml.String, autoxml.MANDATORY]
+    t_Homepage = [autoxml.String, autoxml.OPTIONAL]
+    t_Packager = [specfile.Packager, autoxml.MANDATORY]
 
 
 class Package(specfile.Package, xmlfile.XmlFile, metaclass=autoxml.autoxml):
-    t_Build = [autoxml.Integer, autoxml.optional]
-    t_BuildHost = [autoxml.String, autoxml.optional]
-    t_Distribution = [autoxml.String, autoxml.mandatory]
-    t_DistributionRelease = [autoxml.String, autoxml.mandatory]
-    t_Architecture = [autoxml.String, autoxml.mandatory]
-    t_InstalledSize = [autoxml.Long, autoxml.mandatory]
-    t_PackageSize = [autoxml.Long, autoxml.optional]
-    t_PackageHash = [autoxml.String, autoxml.optional, "SHA1Sum"]
-    t_PackageURI = [autoxml.String, autoxml.optional]
-    t_DeltaPackages = [[Delta], autoxml.optional]
-    t_PackageFormat = [autoxml.String, autoxml.optional]
+    t_Build = [autoxml.Integer, autoxml.OPTIONAL]
+    t_BuildHost = [autoxml.String, autoxml.OPTIONAL]
+    t_Distribution = [autoxml.String, autoxml.MANDATORY]
+    t_DistributionRelease = [autoxml.String, autoxml.MANDATORY]
+    t_Architecture = [autoxml.String, autoxml.MANDATORY]
+    t_InstalledSize = [autoxml.Long, autoxml.MANDATORY]
+    t_PackageSize = [autoxml.Long, autoxml.OPTIONAL]
+    t_PackageHash = [autoxml.String, autoxml.OPTIONAL, "SHA1Sum"]
+    t_PackageURI = [autoxml.String, autoxml.OPTIONAL]
+    t_DeltaPackages = [[Delta], autoxml.OPTIONAL]
+    t_PackageFormat = [autoxml.String, autoxml.OPTIONAL]
 
-    t_Source = [Source, autoxml.optional]
+    t_Source = [Source, autoxml.OPTIONAL]
 
     def get_delta(self, release):
         for delta in self.deltaPackages:
@@ -90,8 +90,8 @@ class MetaData(xmlfile.XmlFile, metaclass=autoxml.autoxml):
 
     tag = "PISI"
 
-    t_Source = [Source, autoxml.mandatory]
-    t_Package = [Package, autoxml.mandatory]
+    t_Source = [Source, autoxml.MANDATORY]
+    t_Package = [Package, autoxml.MANDATORY]
     # t_History = [ [Update], autoxml.mandatory]
 
     def from_spec(self, src, pkg, history):

@@ -17,13 +17,13 @@ import pisi.pxml.autoxml as autoxml
 
 
 class Relation(metaclass=autoxml.autoxml):
-    s_Package = [autoxml.String, autoxml.mandatory]
-    a_version = [autoxml.String, autoxml.optional]
-    a_versionFrom = [autoxml.String, autoxml.optional]
-    a_versionTo = [autoxml.String, autoxml.optional]
-    a_release = [autoxml.String, autoxml.optional]
-    a_releaseFrom = [autoxml.String, autoxml.optional]
-    a_releaseTo = [autoxml.String, autoxml.optional]
+    s_Package = [autoxml.String, autoxml.MANDATORY]
+    a_version = [autoxml.String, autoxml.OPTIONAL]
+    a_versionFrom = [autoxml.String, autoxml.OPTIONAL]
+    a_versionTo = [autoxml.String, autoxml.OPTIONAL]
+    a_release = [autoxml.String, autoxml.OPTIONAL]
+    a_releaseFrom = [autoxml.String, autoxml.OPTIONAL]
+    a_releaseTo = [autoxml.String, autoxml.OPTIONAL]
 
     def satisfies_relation(self, version, release):
         if self.version and version != self.version:
