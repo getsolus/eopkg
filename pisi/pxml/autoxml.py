@@ -64,11 +64,23 @@ class LocalText(dict):
         self.req = req
         dict.__init__(self)
 
-    def decode(self, node, errs, where=""):
-        # flags, tag name, instance attribute
-        assert self.tag != ""
-        nodes = xmlext.getAllNodes(node, self.tag)
-        if not nodes:
+    def decode(self, node: xml.Element, errs, where=""):
+        lang: str | None = None
+        for child in node.iterfind(self.tag):
+            lang = child.attrib.get("{http://www.w3.org/XML/1998/namespace}lang")
+            # FIXME: check for dups and 'en'
+            if not lang:
+                lang = "en"
+            c = child.text
+            if not c:
+                errs.append(
+                    where
+                    + ": "
+                    + _("'{0}' language of tag '{1}' is empty.").format(lang, self.tag)
+                )
+                continue
+            self[lang] = str(c)
+        if lang is None:
             if self.req == MANDATORY:
                 errs.append(
                     where
@@ -77,22 +89,6 @@ class LocalText(dict):
                         self.tag
                     )
                 )
-        else:
-            for node in nodes:
-                lang = xmlext.getNodeAttribute(node, "xml:lang")
-                c = xmlext.getNodeText(node)
-                if not c:
-                    errs.append(
-                        where
-                        + ": "
-                        + _("'{0}' language of tag '{1}' is empty.").format(
-                            lang, self.tag
-                        )
-                    )
-                # FIXME: check for dups and 'en'
-                if not lang:
-                    lang = "en"
-                self[lang] = str(c)
 
     def encode(self, node, errs):
         assert self.tag != ""
