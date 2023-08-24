@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2009, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -10,13 +8,10 @@
 # Please read the COPYING file.
 #
 
-from pisi import translate as _
-
 import pisi
-import pisi.db.repodb
-import pisi.db.itembyrepo
 import pisi.group
-import pisi.db.lazydb as lazydb
+from pisi import translate as _
+from pisi.db import lazydb
 
 
 class GroupNotFound(Exception):

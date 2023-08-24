@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2008, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -12,21 +10,23 @@
 
 import os
 
-import pisi.context as ctx
-import pisi.db.lazydb as lazydb
-import pisi.history
+from pisi import context as ctx
+from pisi import history, util
+from pisi.db import lazydb
 
 
 class HistoryDB(lazydb.LazyDB):
     def init(self):
         self.__logs = self.__generate_history()
-        self.history = pisi.history.History()
+        self.history = history.History()
 
     def __generate_history(self):
-        #logs = [x for x in os.listdir(ctx.config.history_dir()) if x.endswith(".xml")]
-        #logs.sort(lambda x, y: int(x.split("_")[0]) - int(y.split("_")[0]))
-        #logs.reverse()
-        logs = list(filter(lambda x:x.endswith(".xml"), os.listdir(ctx.config.history_dir())))
+        # logs = [x for x in os.listdir(ctx.config.history_dir()) if x.endswith(".xml")]
+        # logs.sort(lambda x, y: int(x.split("_")[0]) - int(y.split("_")[0]))
+        # logs.reverse()
+        logs = list(
+            filter(lambda x: x.endswith(".xml"), os.listdir(ctx.config.history_dir()))
+        )
         logs.sort(key=lambda x: int(x.split("_")[0]), reverse=True)
         return logs
 
@@ -56,7 +56,7 @@ class HistoryDB(lazydb.LazyDB):
             return
 
         destdir = os.path.join(hist_dir, config_file[1:])
-        pisi.util.copy_file_stat(config_file, destdir)
+        util.copy_file_stat(config_file, destdir)
 
     def update_repo(self, repo, uri, operation=None):
         self.history.update_repo(repo, uri, operation)
@@ -68,7 +68,7 @@ class HistoryDB(lazydb.LazyDB):
     def get_operation(self, operation):
         for log in self.__logs:
             if log.startswith("%03d_" % operation):
-                hist = pisi.history.History(os.path.join(ctx.config.history_dir(), log))
+                hist = history.History(os.path.join(ctx.config.history_dir(), log))
                 hist.operation.no = int(log.split("_")[0])
                 return hist.operation
         return None
@@ -107,14 +107,14 @@ class HistoryDB(lazydb.LazyDB):
             if log.startswith("%03d_" % operation):
                 return
 
-            hist = pisi.history.History(os.path.join(ctx.config.history_dir(), log))
+            hist = history.History(os.path.join(ctx.config.history_dir(), log))
             hist.operation.no = int(log.split("_")[0])
             yield hist.operation
 
     def get_last(self, count=0):
         count = count or len(self.__logs)
         for log in self.__logs[:count]:
-            hist = pisi.history.History(os.path.join(ctx.config.history_dir(), log))
+            hist = history.History(os.path.join(ctx.config.history_dir(), log))
             hist.operation.no = int(log.split("_")[0])
             yield hist.operation
 
@@ -127,7 +127,7 @@ class HistoryDB(lazydb.LazyDB):
         if last != 1 and len(repoupdates) <= last:
             return None
 
-        hist = pisi.history.History(
+        hist = history.History(
             os.path.join(ctx.config.history_dir(), repoupdates[-last])
         )
         return hist.operation.date

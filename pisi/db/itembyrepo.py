@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2007 - 2011, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -42,7 +40,7 @@ class ItemByRepo:
         for r in self.item_repos(repo):
             if r in self.dbobj and item in self.dbobj[r]:
                 if self.compressed:
-                    return gzip.zlib.decompress(self.dbobj[r][item]), r
+                    return zlib.decompress(self.dbobj[r][item]), r
                 else:
                     return self.dbobj[r][item], r
 

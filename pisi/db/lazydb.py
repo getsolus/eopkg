@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2007-2011, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -13,8 +11,9 @@
 import os
 import pickle
 import time
-import pisi.context as ctx
-import pisi.util as util
+
+from pisi import context as ctx
+from pisi import util
 
 # lower borks for international locales. What we want is ascii lower.
 ascii_lowercase = "abcdefghijklmnopqrstuvwxyz"
@@ -88,7 +87,9 @@ class LazyDB(Singleton):
     def cache_load(self):
         if os.path.exists(self.__cache_file()) and self.cache_valid():
             try:
-                self._instance().__dict__ = pickle.load(open(self.__cache_file(), "rb"), encoding='utf8', errors='ignore')
+                self._instance().__dict__ = pickle.load(
+                    open(self.__cache_file(), "rb"), encoding="utf8", errors="ignore"
+                )
                 return True
             except (pickle.UnpicklingError, EOFError):
                 if os.access(ctx.config.cache_root_dir(), os.W_OK):

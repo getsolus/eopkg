@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2005 - 2009, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -9,6 +7,9 @@
 #
 # Please read the COPYING file.
 #
+
+
+from pisi.db import componentdb, groupdb, historydb, installdb, packagedb, repodb
 
 
 def invalidate_caches():

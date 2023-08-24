@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2005 - 2007, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -10,14 +8,14 @@
 # Please read the COPYING file.
 #
 
+import hashlib
 import os
 import re
 import shelve
-import hashlib
 
 import pisi
-import pisi.context as ctx
-import pisi.db.lazydb as lazydb
+from pisi import context as ctx
+from pisi.db import lazydb
 
 # FIXME:
 # We could traverse through files.xml files of the packages to find the path and

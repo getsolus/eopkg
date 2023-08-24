@@ -12,8 +12,8 @@ import re
 import xml.etree.ElementTree as xml
 
 import pisi
-import pisi.component
 from pisi import translate as _
+from pisi.component import Component
 from pisi.db import itembyrepo, lazydb, repodb
 
 
@@ -122,7 +122,7 @@ class ComponentDB(lazydb.LazyDB):
 
     # Returns the component with combined packages and sources from all repos that contain this component
     def get_union_component(self, component_name: str):
-        component = pisi.component.Component()
+        component = Component()
         component.parse(self.cdb.get_item(component_name))
 
         for repo in repodb.RepoDB().list_repos():
