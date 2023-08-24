@@ -9,10 +9,10 @@
 #
 
 import datetime
-import gzip
 import re
 import time
 import xml.etree.ElementTree as xml
+import zlib
 from typing import Iterator
 
 import pisi.db
@@ -46,12 +46,13 @@ class PackageDB(lazydb.LazyDB):
         self.odb = itembyrepo.ItemByRepo(self.__obsoletes)
         self.rpdb = itembyrepo.ItemByRepo(self.__replaces)
 
-    def __generate_replaces(self, doc):
-        return [
-            x.getTagData("Name")
-            for x in doc.tags("Package")
-            if x.getTagData("Replaces")
-        ]
+    def __generate_replaces(self, doc: xml.ElementTree) -> Iterator[str]:
+        for pkg in doc.iterfind("Package"):
+            if not pkg.findtext("Replaces"):
+                continue
+            name = pkg.findtext("Name")
+            if name is not None:
+                yield name
 
     def __generate_obsoletes(self, doc: xml.ElementTree) -> Iterator[str]:
         distribution = doc.find("Distribution")
@@ -62,30 +63,39 @@ class PackageDB(lazydb.LazyDB):
             return iter(())
         return (x.text for x in obsoletes.iterfind("Package") if x.text is not None)
 
-    def __generate_packages(self, doc):
-        return dict(
-            [
-                (x.getTagData("Name"), gzip.zlib.compress(x.toString().encode()))
-                for x in doc.tags("Package")
-            ]
-        )
+    def __generate_packages(self, doc: xml.ElementTree) -> dict[str, bytes]:
+        def source():
+            for pkg in doc.iterfind("Package"):
+                name = pkg.findtext("Name")
+                if not name:
+                    continue
+                xml.indent(pkg)
+                yield (name, zlib.compress(xml.tostring(pkg)))
 
-    def __generate_revdeps(self, doc):
-        revdeps = {}
-        for node in doc.tags("Package"):
-            name = node.getTagData("Name")
-            deps = node.getTag("RuntimeDependencies")
-            if deps:
-                for dep in deps.tags("Dependency"):
-                    revdeps.setdefault(dep.firstChild().data(), set()).add(
-                        (name, dep.toString())
-                    )
+        return dict(source())
+
+    def __generate_revdeps(
+        self, doc: xml.ElementTree
+    ) -> dict[str, set[tuple[str, bytes]]]:
+        revdeps: dict[str, set[tuple[str, bytes]]] = {}
+        for pkg in doc.iterfind("Package"):
+            name = pkg.findtext("Name")
+            if not name:
+                continue
+            deps = pkg.find("RuntimeDependencies")
+            if not deps:
+                continue
+            for dep in deps.iterfind("Dependency"):
+                if not dep.text:
+                    continue
+                xml.indent(dep)
+                revdeps.setdefault(dep.text, set()).add((name, xml.tostring(pkg)))
         return revdeps
 
-    def has_package(self, name, repo=None):
+    def has_package(self, name: str, repo=None):
         return self.pdb.has_item(name, repo)
 
-    def get_package(self, name, repo=None):
+    def get_package(self, name: str, repo=None):
         pkg, repo = self.get_package_repo(name, repo)
         return pkg
 
@@ -107,7 +117,7 @@ class PackageDB(lazydb.LazyDB):
             for pkg in doc.iterfind("Package"):
                 prov = pkg.find("Provides")
                 name = pkg.findtext("Name")
-                if prov is None or name is None:
+                if not prov or not name:
                     continue
                 for node in prov.iterfind("PkgConfig32"):
                     pkgConfigs32[node.text] = name
@@ -197,16 +207,22 @@ class PackageDB(lazydb.LazyDB):
     def __get_distro_release(self, meta_doc: xml.ElementTree) -> tuple[str, str] | None:
         distro = meta_doc.findtext("Distribution")
         release = meta_doc.findtext("DistributionRelease")
-        if distro is None or release is None:
+        if not distro or not release:
             return None
         return distro, release
 
-    def get_version_and_distro_release(self, name, repo):
+    def get_version_and_distro_release(
+        self, name: str, repo
+    ) -> tuple[str, str, None, str, str] | None:
         if not self.has_package(name, repo):
             raise Exception(_("Package %s not found.") % name)
 
         pkg_doc = xml.ElementTree(xml.fromstring(self.pdb.get_item(name, repo)))
-        return self.__get_version(pkg_doc) + self.__get_distro_release(pkg_doc)
+        version = self.__get_version(pkg_doc)
+        release = self.__get_distro_release(pkg_doc)
+        if not version or not release:
+            return None
+        return version + release
 
     def get_version(self, name, repo):
         if not self.has_package(name, repo):
@@ -227,35 +243,39 @@ class PackageDB(lazydb.LazyDB):
     def get_obsoletes(self, repo=None):
         return self.odb.get_list_item(repo)
 
-    def get_isa_packages(self, isa):
-        repodb = pisi.db.repodb.RepoDB()
-
+    def get_isa_packages(self, isa: str) -> set[str]:
+        db = repodb.RepoDB()
         packages = set()
-        for repo in repodb.list_repos():
-            doc = repodb.get_repo_doc(repo)
-            for package in doc.tags("Package"):
-                if package.getTagData("IsA"):
-                    for node in package.tags("IsA"):
-                        if node.firstChild().data() == isa:
-                            packages.add(package.getTagData("Name"))
-        return list(packages)
+        for repo in db.list_repos():
+            doc = db.get_repo_doc(repo)
+            for package in doc.iterfind("Package"):
+                if not package.findtext("IsA"):
+                    continue
+                for node in package.iterfind("IsA"):
+                    if node.text != isa:
+                        continue
+                    name = package.findtext("Name")
+                    if not name:
+                        continue
+                    packages.add(name)
+        return packages
 
-    def get_rev_deps(self, name, repo=None):
+    def get_rev_deps(self, name: str, repo=None):
         try:
             rvdb = self.rvdb.get_item(name, repo)
-        except (
-            Exception
-        ):  # FIXME: what exception could we catch here, replace with that.
+        except Exception:
+            # FIXME: what exception could we catch here, replace with that.
             return []
 
         rev_deps = []
         for pkg, dep in rvdb:
-            node = xml.ElementTree(xml.fromstring(dep))
+            node = xml.fromstring(dep)
             dependency = pisi.dependency.Dependency()
-            dependency.package = node.firstChild().data()
-            if node.attributes():
-                attr = node.attributes()[0]
-                dependency.__dict__[attr] = node.getAttribute(attr)
+            dependency.package = node.text
+
+            attr = next(iter(node.attrib.items()), None)
+            if attr:
+                dependency.__dict__[attr[0]] = attr[1]
             rev_deps.append((pkg, dependency))
         return rev_deps
 
@@ -264,11 +284,11 @@ class PackageDB(lazydb.LazyDB):
         pairs = {}
 
         for pkg_name in self.rpdb.get_list_item():
-            xml = self.pdb.get_item(pkg_name, repo)
-            package = xml.ElementTree(xml.fromstring(xml))
-            replaces_tag = package.getTag("Replaces")
+            xml_content = self.pdb.get_item(pkg_name, repo)
+            package = xml.ElementTree(xml.fromstring(xml_content))
+            replaces_tag = package.find("Replaces")
             if replaces_tag:
-                for node in replaces_tag.tags("Package"):
+                for node in replaces_tag.iterfind("Package"):
                     r = pisi.relation.Relation()
                     # XXX Is there a better way to do this?
                     r.decode(node, [])
