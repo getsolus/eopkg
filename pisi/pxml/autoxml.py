@@ -185,7 +185,7 @@ class Writer(formatter.DumbWriter):
         formatter.DumbWriter.__init__(self, file, maxcol)
 
     def send_literal_data(self, data):
-        self.file.write(data.encode())
+        self.file.write(data)
         i = data.rfind("\n")
         if i >= 0:
             self.col = 0
