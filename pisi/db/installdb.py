@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2005-2011, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -15,17 +13,15 @@
 
 import os
 import re
-from pisi import translate as _
+import xml.etree.ElementTree as xml
 
-import piksemel
-
-# eopkg
 import pisi
-import pisi.context as ctx
 import pisi.dependency
 import pisi.files
 import pisi.util
-import pisi.db.lazydb as lazydb
+from pisi import context as ctx
+from pisi import translate as _
+from pisi.db import lazydb
 
 
 class InstallDBError(pisi.Error):
@@ -89,11 +85,11 @@ class InstallDB(lazydb.LazyDB):
             return open(info_path, "r").read().split()
         return []
 
-    def __add_to_revdeps(self, package, revdeps):
+    def __add_to_revdeps(self, package: str, revdeps: dict[str, dict[str, bytes]]):
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
         try:
-            meta_doc = piksemel.parse(metadata_xml)
-            pkg = meta_doc.getTag("Package")
+            meta_doc = xml.parse(metadata_xml)
+            pkg = meta_doc.find("Package")
         except:
             pkg = None
 
@@ -109,15 +105,19 @@ class InstallDB(lazydb.LazyDB):
             del self.installed_db[package]
             return
 
-        deps = pkg.getTag("RuntimeDependencies")
+        deps = pkg.find("RuntimeDependencies")
         if deps:
-            for dep in deps.tags("Dependency"):
-                revdep = revdeps.setdefault(dep.firstChild().data(), {})
-                revdep[package] = dep.toString()
-            for anydep in deps.tags("AnyDependency"):
-                for dep in anydep.tags("Dependency"):
-                    revdep = revdeps.setdefault(dep.firstChild().data(), {})
-                    revdep[package] = anydep.toString()
+            for dep in deps.iterfind("Dependency"):
+                if not dep.text:
+                    continue
+                revdep = revdeps.setdefault(dep.text, {})
+                revdep[package] = xml.tostring(dep)
+            for anydep in deps.iterfind("AnyDependency"):
+                for dep in anydep.iterfind("Dependency"):
+                    if not dep.text:
+                        continue
+                    revdep = revdeps.setdefault(dep.text, {})
+                    revdep[package] = xml.tostring(dep)
 
     def __generate_revdeps(self):
         revdeps = {}
@@ -165,12 +165,12 @@ class InstallDB(lazydb.LazyDB):
 
     def get_version_and_distro_release(self, package):
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
-        meta_doc = piksemel.parse(metadata_xml)
+        meta_doc = xml.parse(metadata_xml)
         return self.__get_version(meta_doc) + self.__get_distro_release(meta_doc)
 
     def get_version(self, package):
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
-        meta_doc = piksemel.parse(metadata_xml)
+        meta_doc = xml.parse(metadata_xml)
         return self.__get_version(meta_doc)
 
     def get_files(self, package):
@@ -242,21 +242,21 @@ class InstallDB(lazydb.LazyDB):
         info = InstallInfo(state, pkg.version, pkg.release, pkg.distribution, ctime)
         return info
 
-    def __make_dependency(self, depStr):
-        node = piksemel.parseString(depStr)
+    def __make_dependency(self, depStr: str):
+        node = xml.fromstring(depStr)
         dependency = pisi.dependency.Dependency()
-        dependency.package = node.firstChild().data()
-        if node.attributes():
-            attr = node.attributes()[0]
-            dependency.__dict__[attr] = node.getAttribute(attr)
+        dependency.package = node.text
+        attr = next(iter(node.attrib.items()), None)
+        if attr:
+            dependency.__dict__[attr[0]] = attr[1]
         return dependency
 
-    def __create_dependency(self, depStr):
+    def __create_dependency(self, depStr: str):
         if "<AnyDependency>" in depStr:
-            anydependency = pisi.specfile.AnyDependency()
+            anydep = pisi.specfile.AnyDependency()
             for dep in re.compile("(<Dependency .*?>.*?</Dependency>)").findall(depStr):
-                anydependency.dependencies.append(self.__make_dependency(dep))
-            return anydependency
+                anydep.dependencies.append(self.__make_dependency(dep))
+            return anydep
         else:
             return self.__make_dependency(depStr)
 
@@ -265,7 +265,7 @@ class InstallDB(lazydb.LazyDB):
 
         package_revdeps = self.rev_deps_db.get(name)
         if package_revdeps:
-            for pkg, dep in list(package_revdeps.items()):
+            for pkg, dep in package_revdeps.items():
                 dependency = self.__create_dependency(dep)
                 rev_deps.append((pkg, dependency))
 
