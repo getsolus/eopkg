@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2005 - 2007, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -11,13 +9,12 @@
 #
 
 import re
-from pisi import translate as _
+import xml.etree.ElementTree as xml
 
 import pisi
-import pisi.db.repodb
-import pisi.db.itembyrepo
 import pisi.component
-import pisi.db.lazydb as lazydb
+from pisi import translate as _
+from pisi.db import itembyrepo, lazydb, repodb
 
 
 class ComponentDB(lazydb.LazyDB):
@@ -29,41 +26,52 @@ class ComponentDB(lazydb.LazyDB):
         component_packages = {}
         component_sources = {}
 
-        repodb = pisi.db.repodb.RepoDB()
-
-        for repo in repodb.list_repos():
-            doc = repodb.get_repo_doc(repo)
+        db = repodb.RepoDB()
+        for repo in db.list_repos():
+            doc = db.get_repo_doc(repo)
             component_nodes[repo] = self.__generate_components(doc)
             component_packages[repo] = self.__generate_packages(doc)
             component_sources[repo] = self.__generate_sources(doc)
 
-        self.cdb = pisi.db.itembyrepo.ItemByRepo(component_nodes)
-        self.cpdb = pisi.db.itembyrepo.ItemByRepo(component_packages)
-        self.csdb = pisi.db.itembyrepo.ItemByRepo(component_sources)
+        self.cdb = itembyrepo.ItemByRepo(component_nodes)
+        self.cpdb = itembyrepo.ItemByRepo(component_packages)
+        self.csdb = itembyrepo.ItemByRepo(component_sources)
 
-    def __generate_packages(self, doc):
-        components = {}
-        for pkg in doc.tags("Package"):
-            components.setdefault(pkg.getTagData("PartOf"), []).append(
-                pkg.getTagData("Name")
-            )
+    def __generate_packages(self, doc: xml.ElementTree) -> dict[str, list[str]]:
+        components: dict[str, list[str]] = {}
+        for pkg in doc.iterfind("Package"):
+            partof = pkg.findtext("PartOf")
+            if not partof:
+                continue
+            name = pkg.findtext("Name")
+            if not name:
+                continue
+            components.setdefault(partof, []).append(name)
         return components
 
-    def __generate_sources(self, doc):
-        components = {}
-        for spec in doc.tags("SpecFile"):
-            src = spec.getTag("Source")
-            components.setdefault(src.getTagData("PartOf"), []).append(
-                src.getTagData("Name")
-            )
+    def __generate_sources(self, doc: xml.ElementTree) -> dict[str, list[str]]:
+        components: dict[str, list[str]] = {}
+        for src in doc.iterfind("SpecFile/Source"):
+            partof = src.findtext("PartOf")
+            if not partof:
+                continue
+            name = src.findtext("Name")
+            if not name:
+                continue
+            components.setdefault(partof, []).append(name)
         return components
 
-    def __generate_components(self, doc):
-        return dict(
-            [(x.getTagData("Name"), x.toString()) for x in doc.tags("Component")]
-        )
+    def __generate_components(self, doc: xml.ElementTree) -> dict[str, bytes]:
+        def source():
+            for comp in doc.iterfind("Component"):
+                name = comp.findtext("Name")
+                if not name:
+                    continue
+                yield (name, xml.tostring(comp))
 
-    def has_component(self, name, repo=None):
+        return dict(source())
+
+    def has_component(self, name: str, repo=None):
         return self.cdb.has_item(name, repo)
 
     def list_components(self, repo=None):
@@ -113,11 +121,11 @@ class ComponentDB(lazydb.LazyDB):
         return component
 
     # Returns the component with combined packages and sources from all repos that contain this component
-    def get_union_component(self, component_name):
+    def get_union_component(self, component_name: str):
         component = pisi.component.Component()
         component.parse(self.cdb.get_item(component_name))
 
-        for repo in pisi.db.repodb.RepoDB().list_repos():
+        for repo in repodb.RepoDB().list_repos():
             try:
                 component.packages.extend(self.cpdb.get_item(component_name, repo))
             except (
@@ -221,9 +229,7 @@ class ComponentDB(lazydb.LazyDB):
         for sub in sub_components:
             try:
                 sources.extend(self.get_union_component(sub).sources)
-            except (
-                Exception
-            ):  # FIXME: what exception could we catch here, replace with that.
+            except Exception:
+                # FIXME: what exception could we catch here, replace with that.
                 pass
-
         return sources
