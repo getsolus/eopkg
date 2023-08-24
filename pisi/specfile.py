@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2005-2011, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -16,23 +14,20 @@
  provides read and write routines for PSPEC files.
 """
 
-from pisi import translate as _
-
-# standard python modules
 import os.path
-import piksemel
+import xml.etree.ElementTree as xml
 
-# pisi modules
-import pisi.pxml.xmlfile as xmlfile
-import pisi.pxml.autoxml as autoxml
+import pisi.component as component
+import pisi.conflict
 import pisi.context as ctx
+import pisi.db
 import pisi.dependency
 import pisi.replace
-import pisi.conflict
-import pisi.component as component
-import pisi.group as group
-import pisi.util as util
-import pisi.db
+from pisi import group
+from pisi import translate as _
+from pisi import util
+from pisi.db import installdb
+from pisi.pxml import autoxml, xmlfile
 
 
 class Error(pisi.Error):
@@ -382,11 +377,11 @@ class Package(metaclass=autoxml.autoxml):
         """
 
         if old_release is None:
-            installdb = pisi.db.installdb.InstallDB()
-            if not installdb.has_package(self.name):
+            db = installdb.InstallDB()
+            if not db.has_package(self.name):
                 return {}
 
-            version, old_release, build = installdb.get_version(self.name)
+            version, old_release, build = db.get_version(self.name)
 
         actions = {}
 
@@ -481,16 +476,12 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     def getSourceRelease(self):
         return self.history[0].release
 
-    def _set_i18n(self, tag, inst):
+    def _set_i18n(self, tag: xml.Element, inst):
         try:
-            for summary in tag.tags("Summary"):
-                inst.summary[
-                    summary.getAttribute("xml:lang")
-                ] = summary.firstChild().data()
-            for desc in tag.tags("Description"):
-                inst.description[
-                    desc.getAttribute("xml:lang")
-                ] = desc.firstChild().data()
+            for summary in tag.iterfind("Summary"):
+                inst.summary[summary.attrib["xml:lang"]] = summary.text
+            for desc in tag.iterfind("Description"):
+                inst.description[desc.attrib["xml:lang"]] = desc.text
         except AttributeError:
             raise Error(_("translations.xml file is badly formed."))
 
@@ -498,17 +489,17 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         if not os.path.exists(path):
             return
         try:
-            doc = piksemel.parse(path)
+            doc = xml.parse(path)
         except Exception as e:
             raise Error(_("File '%s' has invalid XML") % (path))
 
-        if doc.getTag("Source").getTagData("Name") == self.source.name:
+        if doc.findtext("Source/Name") == self.source.name:
             # Set source package translations
-            self._set_i18n(doc.getTag("Source"), self.source)
+            self._set_i18n(doc.find("Source"), self.source)
 
-        for pak in doc.tags("Package"):
+        for pak in doc.iterfind("Package"):
             for inst in self.packages:
-                if inst.name == pak.getTagData("Name"):
+                if inst.name == pak.findtext("Name"):
                     self._set_i18n(pak, inst)
                     break
 
