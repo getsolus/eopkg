@@ -62,6 +62,8 @@ def getTagByName(parent: xml.Element, childName: str) -> Iterator[xml.Element]:
 
 def getNodeText(node: xml.Element, tagpath: str) -> str | None:
     """get the first child and expect it to be text!"""
+    if node.tag == tagpath:
+        return node.text
     child = getNode(node, tagpath)
     if child is None:
         return None

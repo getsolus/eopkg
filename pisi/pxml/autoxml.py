@@ -616,7 +616,8 @@ class autoxml(oo.autosuper, oo.autoprop):
     def gen_named_comp(cls, token, spec, anonfuns):
         """generate a named component tag/attr. a decoration of
         anonymous functions that do not bind to variable names"""
-        name = cls.mixed_case(token)
+        # name = cls.mixed_case(token)
+        name = token
         req = spec[1]
         (init_a, decode_a, encode_a, errors_a, format_a) = anonfuns
 
@@ -626,7 +627,7 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         def decode(self, node, errs, where):
             """decode component from DOM node"""
-            setattr(self, name, decode_a(node, errs, where + "." + str(name)))
+            setattr(self, name.lower(), decode_a(node, errs, name))
 
         def encode(self, node: xml.Element, errs):
             """encode self inside, possibly new, DOM node using xml"""
@@ -787,22 +788,19 @@ class autoxml(oo.autosuper, oo.autoprop):
         def init():
             return make_object()
 
-        def decode(node, errs, where):
-            node = xmlext.getNode(node, tag)
-            if node:
-                try:
-                    obj = make_object()
-                    obj.decode(node, errs, where)
-                    # obj.decode(node, errs)
-                    return obj
-                except Error:
-                    errs.append(
-                        where + ": " + _("Type mismatch: DOM cannot be decoded.")
-                    )
-            else:
+        def decode(node: xml.Element, errs, where):
+            obj = make_object()
+            child = node.find(obj.tag)
+            if child is None:
                 if req == MANDATORY:
                     errs.append(where + ": " + _("Mandatory argument not available."))
-            return None
+                return None
+            try:
+                obj.decode(child, errs, obj.tag)
+                return obj
+            except Error:
+                errs.append(where + ": " + _("Type mismatch: DOM cannot be decoded."))
+                return None
 
         def encode(node: xml.Element, obj, errs):
             try:
@@ -848,24 +846,21 @@ class autoxml(oo.autosuper, oo.autoprop):
         def init():
             return []
 
-        def decode(node, errs, where):
+        def decode(node: xml.Element, errs, where):
             l = []
-            nodes = xmlext.getAllNodes(node, path)
-            # print node, tag + '/' + comp_tag, nodes
-            if len(nodes) == 0 and req == MANDATORY:
+            nodes = node.iterfind(where)
+            ix = 1
+            for node in nodes:
+                l.append(decode_item(node, errs, where))
+                ix += 1
+            if ix == 1 and req == MANDATORY:
                 errs.append(
                     where
                     + ": "
                     + _('Mandatory list "{0}" under "{1}" node is empty.').format(
-                        path, node.name()
+                        path, node.tag
                     )
                 )
-            ix = 1
-            for node in nodes:
-                dummy = xmlext.newNode(node, "Dummy")
-                xmlext.addNode(dummy, "", node)
-                l.append(decode_item(dummy, errs, where + str("[{}]".format(ix))))
-                ix += 1
             return l
 
         def encode(node, l, errs):
