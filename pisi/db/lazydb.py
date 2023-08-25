@@ -89,7 +89,7 @@ class LazyDB(Singleton):
         if os.path.exists(self.__cache_file()) and self.cache_valid():
             try:
                 self._instance().__dict__ = pickle.load(
-                    open(self.__cache_file(), "rb"), encoding="utf8", errors="ignore"
+                    open(self.__cache_file(), "rb"), encoding="utf8"
                 )
                 return True
             except (pickle.UnpicklingError, EOFError):
