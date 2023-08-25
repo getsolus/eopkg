@@ -12,6 +12,7 @@ import os
 import pickle
 import time
 
+import pisi
 from pisi import context as ctx
 from pisi import util
 
@@ -38,7 +39,7 @@ class Singleton(object):
 
 
 class LazyDB(Singleton):
-    cache_version = "2.4"
+    cache_version = pisi.__version__
 
     def __init__(self, cacheable=False, cachedir=None):
         if "initialized" not in self.__dict__:
