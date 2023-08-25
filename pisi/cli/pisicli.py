@@ -10,32 +10,33 @@
 # Please read the COPYING file.
 #
 
-import sys
 import optparse
-
-from pisi import translate as _
+import sys
 
 import pisi
 import pisi.cli
-import pisi.cli.command as command
 import pisi.cli.addrepo
 import pisi.cli.autoremove
 import pisi.cli.blame
 import pisi.cli.build
 import pisi.cli.check
 import pisi.cli.clean
+import pisi.cli.command as command
 import pisi.cli.configurepending
 import pisi.cli.deletecache
 import pisi.cli.delta
+import pisi.cli.disablerepo
+import pisi.cli.enablerepo
 import pisi.cli.fetch
+import pisi.cli.help
+import pisi.cli.history
 import pisi.cli.index
 import pisi.cli.info
 import pisi.cli.install
-import pisi.cli.history
-import pisi.cli.listnewest
 import pisi.cli.listavailable
 import pisi.cli.listcomponents
 import pisi.cli.listinstalled
+import pisi.cli.listnewest
 import pisi.cli.listpending
 import pisi.cli.listrepo
 import pisi.cli.listupgrades
@@ -43,15 +44,12 @@ import pisi.cli.rebuilddb
 import pisi.cli.remove
 import pisi.cli.removeorphans
 import pisi.cli.removerepo
-import pisi.cli.enablerepo
-import pisi.cli.disablerepo
-import pisi.cli.searchfile
 import pisi.cli.search
+import pisi.cli.searchfile
 import pisi.cli.updaterepo
 import pisi.cli.upgrade
-
-# FIXME: why does this has to be imported last
-import pisi.cli.help
+from pisi import db
+from pisi import translate as _
 
 
 class ParserError(pisi.Exception):
@@ -140,4 +138,5 @@ class PisiCLI(object):
         sys.exit(1)
 
     def run_command(self):
+        db.flush_caches(only_invalid=True)
         self.command.run()
