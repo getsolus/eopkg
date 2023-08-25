@@ -600,12 +600,8 @@ class autoxml(oo.autosuper, oo.autoprop):
         tag_type = spec[0]
         assert isinstance(tag_type, type(type))
 
-        def readtext(node, blah):
-            try:
-                node.normalize()  # iksemel doesn't have this
-            except BaseException:
-                pass
-            return xmlext.getNodeText(node)
+        def readtext(node: xml.Element, blah):
+            return node.text
 
         def writetext(node, blah, text):
             xmlext.addText(node, "", text)
