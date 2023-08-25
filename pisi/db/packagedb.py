@@ -14,6 +14,7 @@ import time
 import xml.etree.ElementTree as xml
 import zlib
 from typing import Iterator
+from pisi import db
 
 import pisi.db
 import pisi.dependency
@@ -191,26 +192,6 @@ class PackageDB(lazydb.LazyDB):
                 found.append(name)
         return found
 
-    def __get_version(self, meta_doc: xml.ElementTree) -> tuple[str, str, None] | None:
-        history = meta_doc.find("History")
-        if history is None:
-            return None
-        update = history.find("Update")
-        if update is None:
-            return None
-        return (
-            update.findtext("Version") or "",
-            update.attrib.get("release") or "",
-            None,  # TODO Remove None
-        )
-
-    def __get_distro_release(self, meta_doc: xml.ElementTree) -> tuple[str, str] | None:
-        distro = meta_doc.findtext("Distribution")
-        release = meta_doc.findtext("DistributionRelease")
-        if not distro or not release:
-            return None
-        return distro, release
-
     def get_version_and_distro_release(
         self, name: str, repo
     ) -> tuple[str, str, None, str, str] | None:
@@ -218,8 +199,8 @@ class PackageDB(lazydb.LazyDB):
             raise Exception(_("Package %s not found.") % name)
 
         pkg_doc = xml.ElementTree(xml.fromstring(self.pdb.get_item(name, repo)))
-        version = self.__get_version(pkg_doc)
-        release = self.__get_distro_release(pkg_doc)
+        version = db._get_version(pkg_doc)
+        release = db._get_distro_release(pkg_doc)
         if not version or not release:
             return None
         return version + release
@@ -229,7 +210,7 @@ class PackageDB(lazydb.LazyDB):
             raise Exception(_("Package %s not found.") % name)
 
         pkg_doc = xml.ElementTree(xml.fromstring(self.pdb.get_item(name, repo)))
-        return self.__get_version(pkg_doc)
+        return db._get_version(pkg_doc)
 
     def get_package_repo(self, name, repo=None):
         pkg, repo = self.pdb.get_item_repo(name, repo)

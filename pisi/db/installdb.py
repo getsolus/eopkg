@@ -16,6 +16,7 @@ import re
 import xml.etree.ElementTree as xml
 
 import pisi
+from pisi import db
 import pisi.dependency
 import pisi.files
 import pisi.util
@@ -149,35 +150,15 @@ class InstallDB(lazydb.LazyDB):
 
         return found
 
-    def __get_version(self, meta_doc: xml.ElementTree) -> tuple[str, str, None] | None:
-        history = meta_doc.find("History")
-        if history is None:
-            return None
-        update = history.find("Update")
-        if update is None:
-            return None
-        return (
-            update.findtext("Version") or "",
-            update.attrib.get("release") or "",
-            None,  # TODO Remove None
-        )
-
-    def __get_distro_release(self, meta_doc: xml.ElementTree) -> tuple[str, str] | None:
-        distro = meta_doc.findtext("Distribution")
-        release = meta_doc.findtext("DistributionRelease")
-        if not distro or not release:
-            return None
-        return distro, release
-
     def get_version_and_distro_release(self, package):
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
         meta_doc = xml.parse(metadata_xml)
-        return self.__get_version(meta_doc) + self.__get_distro_release(meta_doc)
+        return db._get_version(meta_doc) + db._get_distro_release(meta_doc)
 
     def get_version(self, package):
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
         meta_doc = xml.parse(metadata_xml)
-        return self.__get_version(meta_doc)
+        return db._get_version(meta_doc)
 
     def get_files(self, package):
         files = pisi.files.Files()
