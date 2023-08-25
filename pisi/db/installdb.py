@@ -149,18 +149,24 @@ class InstallDB(lazydb.LazyDB):
 
         return found
 
-    def __get_version(self, meta_doc):
-        history = meta_doc.getTag("Package").getTag("History")
-        version = history.getTag("Update").getTagData("Version")
-        release = history.getTag("Update").getAttribute("release")
+    def __get_version(self, meta_doc: xml.ElementTree) -> tuple[str, str, None] | None:
+        history = meta_doc.find("History")
+        if history is None:
+            return None
+        update = history.find("Update")
+        if update is None:
+            return None
+        return (
+            update.findtext("Version") or "",
+            update.attrib.get("release") or "",
+            None,  # TODO Remove None
+        )
 
-        # TODO Remove None
-        return version, release, None
-
-    def __get_distro_release(self, meta_doc):
-        distro = meta_doc.getTag("Package").getTagData("Distribution")
-        release = meta_doc.getTag("Package").getTagData("DistributionRelease")
-
+    def __get_distro_release(self, meta_doc: xml.ElementTree) -> tuple[str, str] | None:
+        distro = meta_doc.findtext("Distribution")
+        release = meta_doc.findtext("DistributionRelease")
+        if not distro or not release:
+            return None
         return distro, release
 
     def get_version_and_distro_release(self, package):
