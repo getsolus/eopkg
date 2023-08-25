@@ -31,7 +31,7 @@ def flush_caches(only_invalid=False):
     Invalidates and flush caches to re-generate them when needed.
     Set only_invalid to True to only flush invalid caches.
     """
-    for db in [packagedb.PackageDB(), componentdb.ComponentDB(), groupdb.GroupDB()]:
+    for db in [packagedb.PackageDB(), installdb.InstallDB(), componentdb.ComponentDB(), groupdb.GroupDB()]:
         if only_invalid:
             if db.cache_valid():
                 continue
