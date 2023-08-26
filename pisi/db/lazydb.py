@@ -30,6 +30,7 @@ class Singleton(object):
             Singleton._the_instances[type.__name__] = object.__new__(type)
         return Singleton._the_instances[type.__name__]
 
+    @property
     def _instance(self):
         return self._the_instances[type(self).__name__]
 
@@ -71,7 +72,7 @@ class LazyDB(Singleton):
                 f.write(LazyDB.cache_version)
                 f.flush()
                 os.fsync(f.fileno())
-            pickle.dump(self._instance().__dict__, open(self.__cache_file(), "wb"), 1)
+            pickle.dump(self._instance, open(self.__cache_file(), "wb"))
 
     def cache_valid(self):
         if not self.cachedir:
@@ -88,7 +89,7 @@ class LazyDB(Singleton):
     def cache_load(self):
         if os.path.exists(self.__cache_file()) and self.cache_valid():
             try:
-                self._instance().__dict__ = pickle.load(
+                self._instance = pickle.load(
                     open(self.__cache_file(), "rb"), encoding="utf8"
                 )
                 return True
