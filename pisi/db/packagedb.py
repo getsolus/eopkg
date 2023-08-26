@@ -39,8 +39,8 @@ class PackageDB(lazydb.LazyDB):
             doc = repodb.get_repo_doc(repo)
             self.__package_nodes[repo] = self.__generate_packages(doc)
             self.__revdeps[repo] = self.__generate_revdeps(doc)
-            self.__obsoletes[repo] = self.__generate_obsoletes(doc)
-            self.__replaces[repo] = self.__generate_replaces(doc)
+            self.__obsoletes[repo] = list(self.__generate_obsoletes(doc))
+            self.__replaces[repo] = list(self.__generate_replaces(doc))
 
         self.pdb = itembyrepo.ItemByRepo(self.__package_nodes, compressed=True)
         self.rvdb = itembyrepo.ItemByRepo(self.__revdeps)
