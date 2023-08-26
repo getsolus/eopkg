@@ -105,7 +105,7 @@ class XmlFile(object):
                 sign=sign,
             )
             xml.indent(self.doc)
-            f.write()
+            f.write(xml.tostring(self.doc.getroot()))
         finally:
             f.close()
 
