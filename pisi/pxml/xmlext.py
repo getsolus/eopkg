@@ -131,9 +131,9 @@ def addNode(
         return addTagPath(node, tags, newnode)
 
 
-def addText(node, tagpath, text):
+def addText(node: xml.Element, tagpath: str, text: str):
     node = addNode(node, tagpath)
-    node.insertData(text)
+    node.text = text
 
 
 def newNode(tag: str) -> xml.Element:
