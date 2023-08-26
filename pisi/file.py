@@ -212,9 +212,9 @@ class File:
                 localfile = File.decompress(localfile, self.compress)
 
         if self.mode == File.MODE_READ:
-            access = "r"
+            access = "rb"
         else:
-            access = "w"
+            access = "wb"
         self.__file__ = open(localfile, access)
         self.localfile = localfile
 
