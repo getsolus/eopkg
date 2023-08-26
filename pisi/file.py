@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2005-2010, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -17,16 +15,17 @@ we are just encapsulating a common pattern in our program, nothing big.
 like all pisi classes, it has been programmed in a non-restrictive way
 """
 
+import bz2
+import lzma
 import os
 import shutil
 
-from pisi import translate as _
-
 import pisi
+import pisi.fetcher
 import pisi.uri
 import pisi.util
-import pisi.fetcher
-import pisi.context as ctx
+from pisi import context as ctx
+from pisi import translate as _
 
 
 class AlreadyHaveException(pisi.Exception):
@@ -96,13 +95,9 @@ class File:
     def decompress(localfile, compress):
         compress = File.choose_method(localfile, compress)
         if compress == File.COMPRESSION_TYPE_XZ:
-            import lzma
-
             open(localfile[:-3], "wb").write(lzma.LZMAFile(localfile).read())
             localfile = localfile[:-3]
         elif compress == File.COMPRESSION_TYPE_BZ2:
-            import bz2
-
             open(localfile[:-4], "w").write(bz2.BZ2File(localfile).read())
             localfile = localfile[:-4]
         return localfile
@@ -234,8 +229,6 @@ class File:
             compressed_files = []
             ctypes = self.compress or 0
             if ctypes & File.COMPRESSION_TYPE_XZ:
-                import lzma
-
                 compressed_file = self.localfile + ".xz"
                 compressed_files.append(compressed_file)
                 options = {"level": 9}
@@ -244,8 +237,6 @@ class File:
                 lzma_file.close()
 
             if ctypes & File.COMPRESSION_TYPE_BZ2:
-                import bz2
-
                 compressed_file = self.localfile + ".bz2"
                 compressed_files.append(compressed_file)
                 bz2.BZ2File(compressed_file, "w").write(
@@ -254,14 +245,12 @@ class File:
 
             if self.sha1sum:
                 sha1 = pisi.util.sha1_file(self.localfile)
-                cs = file(self.localfile + ".sha1sum", "w")
-                cs.write(sha1)
-                cs.close()
+                with open(self.localfile + ".sha1sum", "w") as cs:
+                    cs.write(sha1)
                 for compressed_file in compressed_files:
                     sha1 = pisi.util.sha1_file(compressed_file)
-                    cs = file(compressed_file + ".sha1sum", "w")
-                    cs.write(sha1)
-                    cs.close()
+                    with open(compressed_file + ".sha1sum", "w") as cs:
+                        cs.write(sha1)
 
             if self.sign == File.detached:
                 if pisi.util.run_batch("gpg --detach-sig " + self.localfile)[0]:
