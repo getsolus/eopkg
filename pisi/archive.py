@@ -55,7 +55,7 @@ class _LZMAProxy(object):
             # Seeking here can cause problems with Python 2.7
             # if hasattr(self.fileobj, "seek"):
             #     self.fileobj.seek(0)
-            self.buf = ""
+            self.buf = b""
         else:
             self.lzmaobj = lzma.LZMACompressor()
 
@@ -72,7 +72,7 @@ class _LZMAProxy(object):
                 break
             b.append(data)
             x += len(data)
-        self.buf = "".join(b)
+        self.buf = b"".join(b)
 
         buf = self.buf[:size]
         self.buf = self.buf[size:]
