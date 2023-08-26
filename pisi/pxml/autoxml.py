@@ -612,8 +612,7 @@ class autoxml(oo.autosuper, oo.autoprop):
     def gen_named_comp(cls, token: str, spec, anonfuns):
         """generate a named component tag/attr. a decoration of
         anonymous functions that do not bind to variable names"""
-        # name = cls.mixed_case(token)
-        name = token
+        name = token[0].lower() + token[1:]
         req = spec[1]
         (init_a, decode_a, encode_a, errors_a, format_a) = anonfuns
 
@@ -623,13 +622,7 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         def decode(self, node: xml.Element, errs, where: str):
             """decode component from DOM node"""
-            try:
-                n = name
-                if name[0].isupper():
-                    n = name[0].lower() + name[1:]
-            except UnboundLocalError:
-                n = ""
-            setattr(self, n, decode_a(node, errs, name))
+            setattr(self, name, decode_a(node, errs, name))
 
         def encode(self, node: xml.Element, errs):
             """encode self inside, possibly new, DOM node using xml"""
