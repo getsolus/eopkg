@@ -31,7 +31,12 @@ def flush_caches(only_invalid=False):
     Invalidates and flush caches to re-generate them when needed.
     Set only_invalid to True to only flush invalid caches.
     """
-    for db in [packagedb.PackageDB(), installdb.InstallDB(), componentdb.ComponentDB(), groupdb.GroupDB()]:
+    for db in [
+        packagedb.PackageDB(),
+        installdb.InstallDB(),
+        componentdb.ComponentDB(),
+        groupdb.GroupDB(),
+    ]:
         if only_invalid:
             if db.cache_valid():
                 continue
@@ -59,7 +64,7 @@ def regenerate_caches():
 
 
 def _get_version(meta_doc: xml.ElementTree) -> tuple[str, str, None] | None:
-    history = meta_doc.find("History")
+    history = meta_doc.find("Package/History")
     if history is None:
         return None
     update = history.find("Update")
@@ -73,8 +78,8 @@ def _get_version(meta_doc: xml.ElementTree) -> tuple[str, str, None] | None:
 
 
 def _get_distro_release(meta_doc: xml.ElementTree) -> tuple[str, str] | None:
-    distro = meta_doc.findtext("Distribution")
-    release = meta_doc.findtext("DistributionRelease")
+    distro = meta_doc.findtext("Package/Distribution")
+    release = meta_doc.findtext("Package/DistributionRelease")
     if not distro or not release:
         return None
     return distro, release
