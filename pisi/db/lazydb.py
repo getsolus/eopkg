@@ -34,6 +34,10 @@ class Singleton(object):
     def _instance(self):
         return self._the_instances[type(self).__name__]
 
+    @_instance.setter
+    def _instance(self, value):
+        self._the_instances[type(self).__name__] = value
+
     def _delete(self):
         # FIXME: After invalidate, previously initialized db object becomes stale
         del self._the_instances[type(self).__name__]
