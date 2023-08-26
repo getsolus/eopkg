@@ -633,17 +633,13 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         def encode(self, node: xml.Element, errs):
             """encode self inside, possibly new, DOM node using xml"""
-            if hasattr(self, name):
-                value = getattr(self, name)
-            else:
-                value = None
-            encode_a(node, value, errs)
+            encode_a(node, getattr(self, name, None), errs)
 
         def errors(self, where):
             """return errors in the object"""
             errs = []
-            if hasattr(self, name) and getattr(self, name):
-                value = getattr(self, name)
+            value = getattr(self, name, None)
+            if value is not None:
                 errs.extend(errors_a(value, where + "." + name))
             else:
                 if req == MANDATORY:
@@ -655,8 +651,8 @@ class autoxml(oo.autosuper, oo.autoprop):
             return errs
 
         def format(self, f, errs):
-            if hasattr(self, name):
-                value = getattr(self, name)
+            value = getattr(self, name, None)
+            if value is not None:
                 f.add_literal_data(token + ": ")
                 format_a(value, f, errs)
                 f.add_line_break()
