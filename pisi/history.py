@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2008-2010, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -12,11 +10,11 @@
 
 import os
 import time
-from pisi import translate as _
+from functools import cmp_to_key
 
-import pisi.pxml.autoxml as autoxml
-import pisi.pxml.xmlfile as xmlfile
-import pisi.context as ctx
+from pisi import context as ctx
+from pisi import translate as _
+from pisi.pxml import autoxml, xmlfile
 
 
 class PackageInfo(metaclass=autoxml.autoxml):
@@ -173,6 +171,8 @@ class History(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         if not files:
             return "001"
 
-        files.sort(lambda x, y: int(x.split("_")[0]) - int(y.split("_")[0]))
+        files.sort(
+            key=cmp_to_key(lambda x, y: int(x.split("_")[0]) - int(y.split("_")[0]))
+        )
         no, opxml = files[-1].split("_")
         return "%03d" % (int(no) + 1)
