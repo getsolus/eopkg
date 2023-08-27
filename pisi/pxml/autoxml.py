@@ -798,6 +798,9 @@ class autoxml(oo.autosuper, oo.autoprop):
                     if req == MANDATORY:
                         # note: we can receive an error if obj has no content
                         errs.append(_("Object cannot be encoded."))
+            else:
+                if req == MANDATORY:
+                    errs.append(_('Mandatory argument not available.'))
 
         def errors(obj, where):
             return obj.errors(where)
