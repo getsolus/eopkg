@@ -33,7 +33,6 @@ def flush_caches(only_invalid=False):
     """
     for db in [
         packagedb.PackageDB(),
-        installdb.InstallDB(),
         componentdb.ComponentDB(),
         groupdb.GroupDB(),
     ]:
