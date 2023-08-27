@@ -788,15 +788,16 @@ class autoxml(oo.autosuper, oo.autoprop):
                 return None
 
         def encode(node: xml.Element, obj, errs):
-            try:
-                # FIXME: this doesn't look pretty
-                classnode = xmlext.newNode(tag)
-                obj.encode(classnode, errs)
-                xmlext.addNode(node, "", classnode)
-            except Error:
-                if req == MANDATORY:
-                    # note: we can receive an error if obj has no content
-                    errs.append(_("Object cannot be encoded."))
+            if node and obj:
+                try:
+                    # FIXME: this doesn't look pretty
+                    classnode = xmlext.newNode(node, tag)
+                    obj.encode(classnode, errs)
+                    xmlext.addNode(node, "", classnode)
+                except Error:
+                    if req == MANDATORY:
+                        # note: we can receive an error if obj has no content
+                        errs.append(_("Object cannot be encoded."))
 
         def errors(obj, where):
             return obj.errors(where)
