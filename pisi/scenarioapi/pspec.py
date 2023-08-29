@@ -52,7 +52,7 @@ class Pspec:
             p.name = pkg.name
             p.files = pkg.files
             p.conflicts = pkg.conflicts
-            p.packageDependencies = pkg.packageDependencies
+            p.runtimeDependencies = pkg.runtimeDependencies
             tmp.pspec.packages.append(p)
 
         tmp.pspec.history = spec.history
@@ -66,19 +66,19 @@ class Pspec:
             dep = Dependency()
             (kw, dep.package) = dependencies
             dep.__dict__[list(kw.keys())[0]] = list(kw.values())[0]
-            self.package.packageDependencies.append(dep)
+            self.package.runtimeDependencies.append(dep)
             return
 
         for depname in dependencies:
             dep = Dependency()
             dep.package = depname
-            self.package.packageDependencies.append(dep)
+            self.package.runtimeDependencies.append(dep)
 
     def remove_dependencies(self, dependencies):
         for depname in dependencies:
-            for dep in self.package.packageDependencies:
+            for dep in self.package.runtimeDependencies:
                 if dep.package == depname:
-                    self.package.packageDependencies.remove(dep)
+                    self.package.runtimeDependencies.remove(dep)
 
     def add_conflicts(self, conflicts):
         # special case of given one conflict package
@@ -154,7 +154,7 @@ class Pspec:
             for depname in dependencies:
                 dep = Dependency()
                 dep.package = depname
-                self.package.packageDependencies.append(dep)
+                self.package.runtimeDependencies.append(dep)
 
         if conflicts:
             for package in conflicts:
