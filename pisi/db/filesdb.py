@@ -78,7 +78,7 @@ class FilesDB(lazydb.LazyDB):
         self.__check_filesdb()
 
         for f in files.list:
-            self.filesdb[hashlib.md5(f.path).digest()] = pkg
+            self.filesdb[hashlib.md5(f.path.encode()).hexdigest()] = pkg
 
     def remove_files(self, files):
         for f in files:
