@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright (C) 2005-2010, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -10,14 +8,16 @@
 # Please read the COPYING file.
 #
 
-import sys
 import locale
+import re
+import sys
+import tty
 
 import pisi
-from pisi import translate as _
-import pisi.context as ctx
 import pisi.ui
 import pisi.util
+from pisi import context as ctx
+from pisi import translate as _
 
 
 class Error(pisi.Error):
@@ -161,12 +161,9 @@ class CLI(pisi.ui.UI):
                 if opt.startswith(str(s)):
                     return opt
 
-    def confirm(self, msg):
-        msg = str(msg)
+    def confirm(self, msg: str):
         if ctx.config.options and ctx.config.options.yes_all:
             return True
-
-        import re, tty
 
         yes_expr = re.compile(locale.nl_langinfo(locale.YESEXPR))
         no_expr = re.compile(locale.nl_langinfo(locale.NOEXPR))
@@ -174,7 +171,7 @@ class CLI(pisi.ui.UI):
         while True:
             tty.tcflush(sys.stdin.fileno(), 0)
             prompt = msg + pisi.util.colorize(_(" (yes/no)"), "red")
-            s = input(prompt.encode("utf-8"))
+            s = input(prompt)
 
             if yes_expr.search(s):
                 return True
