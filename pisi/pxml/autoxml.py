@@ -800,7 +800,7 @@ class autoxml(oo.autosuper, oo.autoprop):
                         errs.append(_("Object cannot be encoded."))
             else:
                 if req == MANDATORY:
-                    errs.append(_('Mandatory argument not available.'))
+                    errs.append(_("Mandatory argument not available."))
 
         def errors(obj, where):
             return obj.errors(where)
@@ -837,10 +837,12 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         def decode(node: xml.Element, errs, where):
             l = []
-            nodes = node.iterfind(tag)
+            nodes = node.iterfind(path)
             ix = 1
             for node in nodes:
-                l.append(decode_item(node, errs, where))
+                dummy = xml.Element("Dummy")
+                dummy.append(node)
+                l.append(decode_item(dummy, errs, where))
                 ix += 1
             if ix == 1 and req == MANDATORY:
                 errs.append(
