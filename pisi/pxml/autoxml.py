@@ -290,7 +290,7 @@ class autoxml(oo.autosuper, oo.autoprop):
         # read declaration order from source
         # code contributed by bahadir kandemir
         try:
-            fn = re.compile(r"\s*([tas]_[a-zA-Z]+).*").findall
+            fn = re.compile(r"^\s*[ast]_\w+").findall
 
             inspect.linecache.clearcache()
             lines = list(filter(fn, inspect.getsourcelines(cls)[0]))
