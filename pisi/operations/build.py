@@ -992,7 +992,7 @@ class Builder:
 
         # append all generated packages to dependencies
         for p in self.spec.packages:
-            static_package_obj.runtimeDependencies.append(
+            static_package_obj.packageDependencies.append(
                 pisi.dependency.Dependency(package=p.name)
             )
 
@@ -1012,7 +1012,7 @@ class Builder:
         dependency = pisi.dependency.Dependency()
         dependency.package = package.name
         dependency.release = self.spec.history[0].release
-        debug_package_obj.runtimeDependencies.append(dependency)
+        debug_package_obj.packageDependencies.append(dependency)
 
         pops = list()
         for path_info in package.files:
@@ -1182,19 +1182,19 @@ class Builder:
                     bindeps = self.get_binary_deps(fullpath, filemagic)
                     for dep in bindeps:
                         found = False
-                        for depen in metadata.package.runtimeDependencies:
+                        for depen in metadata.package.packageDependencies:
                             if depen.package == dep:
                                 found = True
                                 break
                         if (
                             not found
-                            and dep not in metadata.package.runtimeDependencies
+                            and dep not in metadata.package.packageDependencies
                         ):
                             newDep = pisi.dependency.Dependency()
                             newDep.package = dep
                             pkg = self.installdb.get_package(dep)
                             newDep.releaseFrom = pkg.release
-                            metadata.package.runtimeDependencies.append(newDep)
+                            metadata.package.packageDependencies.append(newDep)
                             ctx.ui.debug(
                                 "%s depends on %s (>= release %s)"
                                 % (metadata.package.name, dep, pkg.release)
@@ -1305,15 +1305,15 @@ class Builder:
 
                     # Check its not already an explicit dependency
                     found = False
-                    for depen in metadata.package.runtimeDependencies:
+                    for depen in metadata.package.packageDependencies:
                         if depen.package == pkg.name:
                             found = True
                             break
-                    if not found and pkg not in metadata.package.runtimeDependencies:
+                    if not found and pkg not in metadata.package.packageDependencies:
                         newDep = pisi.dependency.Dependency()
                         newDep.package = pkg.name
                         newDep.releaseFrom = pkg.release
-                        metadata.package.runtimeDependencies.append(newDep)
+                        metadata.package.packageDependencies.append(newDep)
                         output = "%s also depends on %s (>= release %s)" % (
                             metadata.package.name,
                             pkg.name,

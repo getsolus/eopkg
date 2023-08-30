@@ -249,7 +249,7 @@ class Package(metaclass=autoxml.autoxml):
     t_BuildFlags = [[autoxml.String], autoxml.OPTIONAL, "BuildFlags/Flag"]
     t_BuildType = [autoxml.String, autoxml.OPTIONAL]
     t_BuildDependencies = [[pisi.dependency.Dependency], autoxml.OPTIONAL]
-    t_RuntimeDependencies = [
+    t_PackageDependencies = [
         [pisi.dependency.Dependency],
         autoxml.OPTIONAL,
         "RuntimeDependencies/Dependency",
@@ -283,7 +283,7 @@ class Package(metaclass=autoxml.autoxml):
 
     def runtimeDependencies(self):
         componentdb = pisi.db.componentdb.ComponentDB()
-        deps = self.runtimeDependencies + self.packageAnyDependencies
+        deps = self.packageDependencies + self.packageAnyDependencies
 
         # Create Dependency objects for each package coming from
         # a component dependency.
@@ -429,7 +429,7 @@ class Package(metaclass=autoxml.autoxml):
         s += _("Dependencies: ")
         for x in self.componentDependencies:
             s += x + " "
-        for x in self.runtimeDependencies:
+        for x in self.packageDependencies:
             s += x.name() + " "
         for x in self.packageAnyDependencies:
             s += x.name() + " "
@@ -450,7 +450,7 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         current_release = self.history[0].release
 
         for package in self.packages:
-            deps = package.runtimeDependencies[:]
+            deps = package.packageDependencies[:]
             deps += sum([x.dependencies for x in package.packageAnyDependencies], [])
             for dep in deps:
                 for attr_name, attr_value in list(dep.__dict__.items()):
