@@ -23,6 +23,7 @@ import locale
 import re
 import sys
 import xml.etree.ElementTree as xml
+from typing import Any
 
 import pisi
 from pisi import context as ctx
@@ -787,7 +788,11 @@ class autoxml(oo.autosuper, oo.autoprop):
                 errs.append(where + ": " + _("Type mismatch: DOM cannot be decoded."))
                 return None
 
-        def encode(node: xml.Element, obj, errs):
+        def encode(node: xml.Element, obj: Any | None, errs):
+            if obj is None:
+                if req == MANDATORY:
+                    errs.append(_("Mandatory argument not available."))
+                return
             try:
                 # FIXME: this doesn't look pretty
                 classnode = xmlext.newNode(tag)
@@ -914,7 +919,11 @@ class autoxml(oo.autosuper, oo.autoprop):
                     errs.append(where + ": " + _("Mandatory argument not available."))
             return None
 
-        def encode(node, obj, errs):
+        def encode(node: xml.Element, obj: Any | None, errs):
+            if obj is None:
+                if req == MANDATORY:
+                    errs.append(_("Mandatory argument not available."))
+                return
             try:
                 # FIXME: this doesn't look pretty
                 obj.encode(node, errs)
