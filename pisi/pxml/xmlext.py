@@ -97,38 +97,26 @@ def addTagPath(
 
 
 def addNode(
-    node: xml.Element, tagpath: str, newnode: xml.Element | None = None, branch=True
+    node: xml.Element, tagpath: str, newnode: xml.Element | None = None
 ) -> xml.Element:
     """add a new node at the end of the tree and returns it
     if newnode is given adds that node, too."""
 
-    tags = []
-    if tagpath != "":
-        tags = tagpath.split("/")  # tag chain
-    else:
-        addTagPath(node, [], newnode)
-        return node  # FIXME: is this correct!?!?
-
-    assert len(tags) > 0  # we want a chain
-
-    # iterative code to search for the path
-
-    if branch:
-        rem = 1
-    else:
-        rem = 0
-
-    while len(tags) > rem:
-        tag = tags.pop(0)
-        nodeList = list(getTagByName(node, tag))
-        if len(nodeList) == 0:  # couldn't find
-            tags.insert(0, tag)  # put it back in
-            return addTagPath(node, tags, newnode)
-        else:
-            node = nodeList[len(nodeList) - 1]  # discard other matches
-    else:
-        # had only one tag..
-        return addTagPath(node, tags, newnode)
+    if tagpath == "":
+        if newnode is not None:
+            node.append(newnode)
+            node = newnode
+        return node
+    for tag in tagpath.split("/"):
+        child = node.find(tag)
+        if child is None:
+            child = xml.Element(tag)
+            node.append(child)
+        node = child
+    if newnode is not None:
+        node.append(newnode)
+        node = newnode
+    return node
 
 
 def addText(node: xml.Element, tagpath: str, text: str):
