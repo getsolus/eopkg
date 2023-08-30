@@ -788,19 +788,15 @@ class autoxml(oo.autosuper, oo.autoprop):
                 return None
 
         def encode(node: xml.Element, obj, errs):
-            if node and obj:
-                try:
-                    # FIXME: this doesn't look pretty
-                    classnode = xmlext.newNode(node, tag)
-                    obj.encode(classnode, errs)
-                    xmlext.addNode(node, "", classnode)
-                except Error:
-                    if req == MANDATORY:
-                        # note: we can receive an error if obj has no content
-                        errs.append(_("Object cannot be encoded."))
-            else:
+            try:
+                # FIXME: this doesn't look pretty
+                classnode = xmlext.newNode(tag)
+                obj.encode(classnode, errs)
+                xmlext.addNode(node, "", classnode)
+            except Error:
                 if req == MANDATORY:
-                    errs.append(_("Mandatory argument not available."))
+                    # note: we can receive an error if obj has no content
+                    errs.append(_("Object cannot be encoded."))
 
         def errors(obj, where):
             return obj.errors(where)
@@ -919,17 +915,13 @@ class autoxml(oo.autosuper, oo.autoprop):
             return None
 
         def encode(node, obj, errs):
-            if node and obj:
-                try:
-                    # FIXME: this doesn't look pretty
-                    obj.encode(node, errs)
-                except Error:
-                    if req == MANDATORY:
-                        # note: we can receive an error if obj has no content
-                        errs.append(_("Object cannot be encoded."))
-            else:
+            try:
+                # FIXME: this doesn't look pretty
+                obj.encode(node, errs)
+            except Error:
                 if req == MANDATORY:
-                    errs.append(_("Mandatory argument not available."))
+                    # note: we can receive an error if obj has no content
+                    errs.append(_("Object cannot be encoded."))
 
         def errors(obj, where):
             return obj.errors(where)
