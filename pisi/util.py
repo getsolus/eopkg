@@ -549,10 +549,10 @@ def sha1_file(filename):
             raise FileError(_("Cannot calculate SHA1 hash of %s") % filename)
 
 
-def sha1_data(data):
-    """Calculate sha1 hash of given data."""
+def sha1_data(data: str) -> str:
+    """Calculate sha1 hash of the given string and return its hex representation."""
     m = hashlib.sha1()
-    m.update(data)
+    m.update(data.encode())
     return m.hexdigest()
 
 
