@@ -15,6 +15,7 @@ import shelve
 
 import pisi
 from pisi import context as ctx
+from pisi import util
 from pisi.db import lazydb
 
 # FIXME:
@@ -107,4 +108,6 @@ class FilesDB(lazydb.LazyDB):
         else:
             flag = "r"
 
-        self.filesdb = shelve.open("/var/lib/eopkg/info/files.db", flag)
+        self.filesdb = shelve.open(
+            util.join_path(ctx.config.info_dir(), ctx.const.files_db), flag
+        )
