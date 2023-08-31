@@ -64,12 +64,6 @@ class LazyDB(Singleton):
     def __cache_version_file(self):
         return "%s.version" % self.__cache_file()
 
-    def __cache_file_version(self):
-        try:
-            return open(self.__cache_version_file()).read().strip()
-        except IOError:
-            return "2.2"
-
     def cache_save(self):
         if os.access(ctx.config.cache_root_dir(), os.W_OK) and self.cacheable:
             with open(self.__cache_version_file(), "w") as f:
@@ -79,16 +73,12 @@ class LazyDB(Singleton):
             pickle.dump(self._instance, open(self.__cache_file(), "wb"))
 
     def cache_valid(self):
-        if not self.cachedir:
-            return True
-        if not os.path.exists(self.cachedir):
+        try:
+            f = self.__cache_version_file()
+            ver = open(f).read().strip()
+        except IOError:
             return False
-        if self.__cache_file_version() != LazyDB.cache_version:
-            return False
-
-        cache_modified = os.stat(self.__cache_file()).st_mtime
-        cache_dir_modified = os.stat(self.cachedir).st_mtime
-        return cache_modified > cache_dir_modified
+        return ver == LazyDB.cache_version
 
     def cache_load(self):
         if os.path.exists(self.__cache_file()) and self.cache_valid():
@@ -104,8 +94,11 @@ class LazyDB(Singleton):
         return False
 
     def cache_flush(self):
-        if os.path.exists(self.__cache_file()):
-            os.unlink(self.__cache_file())
+        for path in [self.__cache_file(), self.__cache_version_file()]:
+            try:
+                os.remove(path)
+            except FileNotFoundError:
+                pass
 
     def invalidate(self):
         self._delete()
