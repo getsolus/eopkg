@@ -14,7 +14,6 @@ import sys
 
 import pisi.api
 from pisi import context as ctx
-from pisi import db
 from pisi import translate as _
 
 
@@ -216,8 +215,6 @@ class Command(object):
             pisi.api.set_can_configure(False)
         else:
             pisi.api.set_can_configure(not ctx.get_option("ignore_comar"))
-
-        db.flush_caches(only_invalid=True)
 
     def get_name(self):
         return self.__class__.name
