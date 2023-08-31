@@ -48,7 +48,6 @@ import pisi.cli.search
 import pisi.cli.searchfile
 import pisi.cli.updaterepo
 import pisi.cli.upgrade
-from pisi import db
 from pisi import translate as _
 
 
@@ -138,5 +137,4 @@ class PisiCLI(object):
         sys.exit(1)
 
     def run_command(self):
-        db.flush_caches(only_invalid=True)
         self.command.run()

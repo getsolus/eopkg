@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2005 - 2007, TUBITAK/UEKAE
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -10,14 +8,14 @@
 # Please read the COPYING file.
 #
 
+import optparse
 import os
 import sys
-import optparse
-
-from pisi import translate as _
 
 import pisi.api
-import pisi.context as ctx
+from pisi import context as ctx
+from pisi import db
+from pisi import translate as _
 
 
 class autocommand(type):
@@ -218,6 +216,8 @@ class Command(object):
             pisi.api.set_can_configure(False)
         else:
             pisi.api.set_can_configure(not ctx.get_option("ignore_comar"))
+
+        db.flush_caches(only_invalid=True)
 
     def get_name(self):
         return self.__class__.name
