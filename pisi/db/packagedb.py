@@ -50,7 +50,10 @@ class PackageDB(lazydb.LazyDB):
 
     def __generate_obsoletes(self, doc: xml._ElementTree) -> Iterator[str]:
         distribution = doc.find("Distribution")
-        obsoletes = distribution is not None and distribution.find("Obsoletes")
+        if distribution is not None:
+            obsoletes = distribution.find("Obsoletes")
+        else:
+            obsoletes = distribution
         src_repo = doc.find("SpecFile") is not None
 
         if obsoletes is None or src_repo:
