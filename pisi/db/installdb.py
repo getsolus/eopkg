@@ -100,7 +100,7 @@ class InstallDB(lazydb.LazyDB):
             return
 
         deps = pkg.find("RuntimeDependencies")
-        if deps:
+        if deps is not None:
             for dep in deps.iterfind("Dependency"):
                 if not dep.text:
                     continue
