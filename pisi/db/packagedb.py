@@ -4,7 +4,7 @@
 import datetime
 import re
 import time
-import xml.etree.ElementTree as xml
+from lxml import etree as xml
 import zlib
 from typing import Iterator
 from pisi import db
@@ -40,7 +40,7 @@ class PackageDB(lazydb.LazyDB):
         self.odb = itembyrepo.ItemByRepo(self.__obsoletes)
         self.rpdb = itembyrepo.ItemByRepo(self.__replaces)
 
-    def __generate_replaces(self, doc: xml.ElementTree) -> Iterator[str]:
+    def __generate_replaces(self, doc: xml._ElementTree) -> Iterator[str]:
         for pkg in doc.iterfind("Package"):
             if not pkg.findtext("Replaces"):
                 continue
@@ -48,7 +48,7 @@ class PackageDB(lazydb.LazyDB):
             if name is not None:
                 yield name
 
-    def __generate_obsoletes(self, doc: xml.ElementTree) -> Iterator[str]:
+    def __generate_obsoletes(self, doc: xml._ElementTree) -> Iterator[str]:
         distribution = doc.find("Distribution")
         obsoletes = distribution and distribution.find("Obsoletes")
         src_repo = doc.find("SpecFile") is not None
@@ -57,7 +57,7 @@ class PackageDB(lazydb.LazyDB):
             return iter(())
         return (x.text for x in obsoletes.iterfind("Package") if x.text is not None)
 
-    def __generate_packages(self, doc: xml.ElementTree) -> dict[str, bytes]:
+    def __generate_packages(self, doc: xml._ElementTree) -> dict[str, bytes]:
         def source():
             for pkg in doc.iterfind("Package"):
                 name = pkg.findtext("Name")
@@ -69,7 +69,7 @@ class PackageDB(lazydb.LazyDB):
         return dict(source())
 
     def __generate_revdeps(
-        self, doc: xml.ElementTree
+        self, doc: xml._ElementTree
     ) -> dict[str, set[tuple[str, bytes]]]:
         revdeps: dict[str, set[tuple[str, bytes]]] = {}
         for pkg in doc.iterfind("Package"):
@@ -261,7 +261,7 @@ class PackageDB(lazydb.LazyDB):
             xml_content = self.pdb.get_item(pkg_name, repo)
             package = xml.ElementTree(xml.fromstring(xml_content))
             replaces_tag = package.find("Replaces")
-            if replaces_tag:
+            if replaces_tag is not None:
                 for node in replaces_tag.iterfind("Package"):
                     r = pisi.relation.Relation()
                     # XXX Is there a better way to do this?

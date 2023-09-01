@@ -6,7 +6,7 @@
 
 import os
 import re
-import xml.etree.ElementTree as xml
+from lxml import etree as xml
 
 import pisi
 from pisi import db

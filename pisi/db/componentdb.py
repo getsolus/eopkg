@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import re
-import xml.etree.ElementTree as xml
+from lxml import etree as xml
 
 import pisi
 from pisi import translate as _
@@ -30,7 +30,7 @@ class ComponentDB(lazydb.LazyDB):
         self.cpdb = itembyrepo.ItemByRepo(component_packages)
         self.csdb = itembyrepo.ItemByRepo(component_sources)
 
-    def __generate_packages(self, doc: xml.ElementTree) -> dict[str, list[str]]:
+    def __generate_packages(self, doc: xml._ElementTree) -> dict[str, list[str]]:
         components: dict[str, list[str]] = {}
         for pkg in doc.iterfind("Package"):
             partof = pkg.findtext("PartOf")
@@ -42,7 +42,7 @@ class ComponentDB(lazydb.LazyDB):
             components.setdefault(partof, []).append(name)
         return components
 
-    def __generate_sources(self, doc: xml.ElementTree) -> dict[str, list[str]]:
+    def __generate_sources(self, doc: xml._ElementTree) -> dict[str, list[str]]:
         components: dict[str, list[str]] = {}
         for src in doc.iterfind("SpecFile/Source"):
             partof = src.findtext("PartOf")
@@ -54,7 +54,7 @@ class ComponentDB(lazydb.LazyDB):
             components.setdefault(partof, []).append(name)
         return components
 
-    def __generate_components(self, doc: xml.ElementTree) -> dict[str, bytes]:
+    def __generate_components(self, doc: xml._ElementTree) -> dict[str, bytes]:
         def source():
             for comp in doc.iterfind("Component"):
                 name = comp.findtext("Name")

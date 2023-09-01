@@ -8,7 +8,7 @@
 """
 
 import os.path
-import xml.etree.ElementTree as xml
+from lxml import etree as xml
 
 import pisi.component as component
 import pisi.conflict
@@ -469,7 +469,7 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     def getSourceRelease(self):
         return self.history[0].release
 
-    def _set_i18n(self, tag: xml.Element, inst):
+    def _set_i18n(self, tag: xml._Element, inst):
         try:
             for summary in tag.iterfind("Summary"):
                 inst.summary[summary.attrib["xml:lang"]] = summary.text

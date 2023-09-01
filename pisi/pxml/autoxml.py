@@ -15,7 +15,7 @@ import io
 import locale
 import re
 import sys
-import xml.etree.ElementTree as xml
+from lxml import etree as xml
 from typing import Any
 
 import pisi
@@ -58,7 +58,7 @@ class LocalText(dict):
         self.req = req
         dict.__init__(self)
 
-    def decode(self, node: xml.Element, errs, where=""):
+    def decode(self, node: xml._Element, errs, where=""):
         lang: str | None = None
         for child in node.iterfind(self.tag):
             lang = child.attrib.get("{http://www.w3.org/XML/1998/namespace}lang")
@@ -358,7 +358,7 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         cls.encoders = encoders
 
-        def encode(self, node: xml.Element, errs):
+        def encode(self, node: xml._Element, errs):
             for base in cls.autoxml_bases:
                 base.encode(self, node, errs)
             for encode_member in encoders:  # self.__class__.encoders:
@@ -594,7 +594,7 @@ class autoxml(oo.autosuper, oo.autoprop):
         tag_type = spec[0]
         assert isinstance(tag_type, type(type))
 
-        def readtext(node: xml.Element, blah):
+        def readtext(node: xml._Element, blah):
             return node.text
 
         def writetext(node, blah, text):
@@ -615,11 +615,11 @@ class autoxml(oo.autosuper, oo.autoprop):
             """initialize component"""
             setattr(self, name, init_a())
 
-        def decode(self, node: xml.Element, errs, where: str):
+        def decode(self, node: xml._Element, errs, where: str):
             """decode component from DOM node"""
             setattr(self, name, decode_a(node, errs, name))
 
-        def encode(self, node: xml.Element, errs):
+        def encode(self, node: xml._Element, errs):
             """encode self inside, possibly new, DOM node using xml"""
             encode_a(node, getattr(self, name, None), errs)
 
@@ -767,7 +767,7 @@ class autoxml(oo.autosuper, oo.autoprop):
         def init():
             return make_object()
 
-        def decode(node: xml.Element, errs, where):
+        def decode(node: xml._Element, errs, where):
             obj = make_object()
             child = node.find(obj.tag)
             if child is None:
@@ -781,7 +781,7 @@ class autoxml(oo.autosuper, oo.autoprop):
                 errs.append(where + ": " + _("Type mismatch: DOM cannot be decoded."))
                 return None
 
-        def encode(node: xml.Element, obj: Any | None, errs):
+        def encode(node: xml._Element, obj: Any | None, errs):
             if obj is None:
                 if req == MANDATORY:
                     errs.append(_("Mandatory argument not available."))
@@ -829,7 +829,7 @@ class autoxml(oo.autosuper, oo.autoprop):
         def init():
             return []
 
-        def decode(node: xml.Element, errs, where):
+        def decode(node: xml._Element, errs, where):
             l = []
             nodes = node.iterfind(path)
             ix = 1
@@ -898,21 +898,15 @@ class autoxml(oo.autosuper, oo.autoprop):
             return make_object()
 
         def decode(node, errs, where):
-            if node:
-                try:
-                    obj = make_object()
-                    obj.decode(node, errs, where)
-                    return obj
-                except Error:
-                    errs.append(
-                        where + ": " + _("Type mismatch: DOM cannot be decoded.")
-                    )
-            else:
-                if req == MANDATORY:
-                    errs.append(where + ": " + _("Mandatory argument not available."))
-            return None
+            try:
+                obj = make_object()
+                obj.decode(node, errs, where)
+                return obj
+            except Error:
+                errs.append(where + ": " + _("Type mismatch: DOM cannot be decoded."))
+                return None
 
-        def encode(node: xml.Element, obj: Any | None, errs):
+        def encode(node: xml._Element, obj: Any | None, errs):
             if obj is None:
                 if req == MANDATORY:
                     errs.append(_("Mandatory argument not available."))

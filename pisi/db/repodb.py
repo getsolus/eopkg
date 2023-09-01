@@ -3,7 +3,7 @@
 
 
 import os
-import xml.etree.ElementTree as xml
+from lxml import etree as xml
 
 import pisi
 import pisi.context as ctx
@@ -119,13 +119,13 @@ class RepoOrder:
                 order.extend(self.repos[m])
         return order
 
-    def _update(self, doc: xml.ElementTree):
+    def _update(self, doc: xml._ElementTree):
         repos_file = os.path.join(ctx.config.info_dir(), ctx.const.repos)
         xml.indent(doc)
         doc.write(repos_file)
         self.repos = self._get_repos()
 
-    def _get_doc(self) -> xml.ElementTree:
+    def _get_doc(self) -> xml._ElementTree:
         repos_file = os.path.join(ctx.config.info_dir(), ctx.const.repos)
         if os.path.exists(repos_file):
             doc = xml.parse(repos_file)
@@ -170,7 +170,7 @@ class RepoDB(lazydb.LazyDB):
     def has_repo_url(self, url: str, only_active=True):
         return url in self.list_repo_urls(only_active)
 
-    def get_repo_doc(self, repo_name: str) -> xml.ElementTree:
+    def get_repo_doc(self, repo_name: str) -> xml._ElementTree:
         repo = self.get_repo(repo_name)
 
         index_path = repo.indexuri.get_uri()

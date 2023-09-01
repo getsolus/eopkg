@@ -12,7 +12,7 @@
  this implementation uses piksemel
 """
 
-import xml.etree.ElementTree as xml
+from lxml import etree as xml
 
 import pisi
 import pisi.file
@@ -37,7 +37,7 @@ class XmlFile(object):
         """deallocate DOM structure"""
         del self.doc
 
-    def rootNode(self) -> xml.Element:
+    def rootNode(self) -> xml._Element:
         """returns root document element"""
         return self.doc.getroot()
 
