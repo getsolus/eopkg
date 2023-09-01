@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2005 - 2007, TUBITAK/UEKAE
@@ -20,6 +20,7 @@ import tempfile
 from distutils.core import setup
 from distutils.command.build import build
 from distutils.command.install import install
+from Cython.Build import cythonize
 
 sys.path.insert(0, ".")
 import pisi
@@ -89,7 +90,7 @@ class BuildPo(build):
 
         # Update PO files
         for item in glob.glob1("po", "*.po"):
-            print("Updating .. ", item)
+            print(("Updating .. ", item))
             os.system(
                 "msgmerge --update --no-wrap --sort-by-file po/%s po/%s.pot"
                 % (item, PROJECT)
@@ -118,7 +119,7 @@ class Install(install):
             if not name.endswith(".po"):
                 continue
             lang = name[:-3]
-            print("Installing '%s' translations..." % lang)
+            print(("Installing '%s' translations..." % lang))
             os.popen("msgfmt po/%s.po -o po/%s.mo" % (lang, lang))
             if not self.root:
                 self.root = "/"
@@ -133,7 +134,7 @@ class Install(install):
             os.makedirs(destpath)
         os.chdir("doc")
         for pdf in glob.glob("*.pdf"):
-            print("Installing", pdf)
+            print(("Installing", pdf))
             # shutil.copy(pdf, os.path.join(destpath, pdf))
         os.chdir("..")
 
@@ -180,6 +181,7 @@ setup(
     author="Solus (Previously Pardus Developers)",
     author_email="copyright@getsol.us",
     url="https://getsol.us",
+    ext_modules=cythonize(["pisi/*.py", "pisi/**/*.py"], include_path=["."], language_level=3),
     package_dir={"": ""},
     packages=[
         "pisi",

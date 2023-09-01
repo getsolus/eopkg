@@ -21,6 +21,11 @@ __keywords = (
 )
 
 
+# For Python2 compatibility
+def cmp(a, b):
+    return (a > b) - (a < b)
+
+
 class InvalidVersionError(pisi.Error):
     pass
 
@@ -46,7 +51,7 @@ def make_version(version):
                             list(
                                 map(
                                     __make_version_item,
-                                    suffix[len(keyword) :].split("."),
+                                    suffix[len(keyword):].split("."),
                                 )
                             ),
                         )

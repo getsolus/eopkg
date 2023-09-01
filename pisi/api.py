@@ -416,7 +416,7 @@ def fetch(packages=[], path=os.path.curdir):
             ctx.ui.warning(_("%s package already fetched") % uri.path())
             continue
         if uri.is_absolute_path():
-            url = str(pkg_uri)
+            url = str(uri)
         else:
             url = os.path.join(
                 os.path.dirname(repodb.get_repo_url(repo)), str(uri.path())
@@ -733,7 +733,6 @@ def configure_pending(packages=None):
         ctx.exec_usysconf()
     except Exception as e:
         raise e
-        return
 
     # Clear legacy "needs configuration" flag
     order = generate_pending_order(packages)
@@ -965,7 +964,7 @@ def clearCache(all=False):
         latest = {}
         for f in pkgList:
             try:
-                name, full_version = util.parse_package_name(f)
+                name, full_version = pisi.util.parse_package_name(f)
                 version, release, build = pisi.util.split_version(full_version)
 
                 release = int(release)
@@ -1005,7 +1004,7 @@ def clearCache(all=False):
             if totalSize >= limit:
                 try:
                     os.remove(os.path.join(cacheDir, pkg) + ctx.const.package_suffix)
-                except exceptions.OSError:
+                except OSError:
                     pass
 
     def removeAll(cacheDir):
@@ -1013,7 +1012,7 @@ def clearCache(all=False):
         for pkg in cached:
             try:
                 os.remove(pkg)
-            except exceptions.OSError:
+            except OSError:
                 pass
 
     cacheDir = ctx.config.cached_packages_dir()
