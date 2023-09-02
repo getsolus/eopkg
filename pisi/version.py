@@ -51,7 +51,7 @@ def make_version(version):
                             list(
                                 map(
                                     __make_version_item,
-                                    suffix[len(keyword):].split("."),
+                                    suffix[len(keyword) :].split("."),
                                 )
                             ),
                         )

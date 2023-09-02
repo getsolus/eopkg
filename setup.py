@@ -181,7 +181,9 @@ setup(
     author="Solus (Previously Pardus Developers)",
     author_email="copyright@getsol.us",
     url="https://getsol.us",
-    ext_modules=cythonize(["pisi/*.py", "pisi/**/*.py"], include_path=["."], language_level=3),
+    ext_modules=cythonize(
+        ["pisi/*.py", "pisi/**/*.py"], include_path=["."], language_level=3
+    ),
     package_dir={"": ""},
     packages=[
         "pisi",
