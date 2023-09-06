@@ -1,22 +1,34 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, 2017-Present Solus Developers
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-# eopkg version
 
-import os
-import sys
 import atexit
+import gettext
+import importlib
+import locale
 import logging
 import logging.handlers
-import importlib
+import os
+import sys
+from importlib.resources import files
 
-import locale
-import gettext
+import pisi.api
+import pisi.config
+from pisi import context as ctx
 
 locale.setlocale(locale.LC_ALL, "")
-# You usually want to import this function with the "_" alias.
+
 try:
-    translate = gettext.translation("pisi", languages=[locale.getlocale()[0]]).gettext
+    _localeres = files("pisi.data").joinpath("locale")
+    if _localeres.is_dir():
+        _localedir: str | None = str(_localeres)
+    else:
+        _localedir = None  # Use the system one.
+
+    # You usually want to import this function with the "_" alias.
+    translate = gettext.translation(
+        "pisi", localedir=_localedir, languages=[locale.getlocale()[0]]
+    ).gettext
 except:
     # No .mo files found. Just return plain English.
     def translate(msg):
@@ -45,11 +57,6 @@ class Error(Exception):
     """Class of exceptions that lead to program termination"""
 
     pass
-
-
-import pisi.api
-import pisi.config
-import pisi.context as ctx
 
 
 def init_logging():

@@ -1,0 +1,38 @@
+[project]
+name = "eopkg"
+license = { text = "GPL-2.0-or-later" }
+description = "eopkg is the package management system of Solus Operating System, originally written for Pardus Linux by the Pardus Developers."
+readme = "README.md"
+authors = [{ name = "Solus Developers", email = "releng@getsol.us" }]
+keywords = ["package", "manager", "mangement", "solus"]
+classifiers = ["Programming Language :: Python :: 3 :: Only"]
+requires-python = ">=3.8.0"
+dependencies = ["lxml>=4.9.1", "python-magic>=0.4.27"]
+dynamic = ["version"]
+
+[project.urls]
+"Source Code" = "https://github.com/getsolus/package-management"
+"homepage" = "https://github.com/getsolus/package-management"
+
+[project.scripts]
+eopkg = "pisi.scripts.eopkg:main"
+lseopkg = "pisi.scripts.lseopkg:main"
+uneopkg = "pisi.scripts.uneopkg:main"
+
+# Builder-specific keys below. We use setuptools.
+
+[build-system]
+requires = ["setuptools>=58.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = { attr = "pisi.__version__" }
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.setuptools.package-data]
+"pisi.data" = ["*", "locale/**"]
+
+[tool.setuptools.cmdclass]
+build = "build.Build"

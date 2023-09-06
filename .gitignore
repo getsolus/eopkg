@@ -1,8 +1,10 @@
-*.mo
-*.bak
-.idea
-*.pyc
-*.bak
+.idea/
 .vscode/
 build/
 env/
+
+*.bak
+*.bak
+*.mo
+*.pyc
+*.whl

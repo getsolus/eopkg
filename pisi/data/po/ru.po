@@ -1,0 +1,3572 @@
+# Copyright (C) YEAR ORGANIZATION
+#
+# Alexey Ivanov <alexey.ivanes@gmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"PO-Revision-Date: 2011-07-04 23:03+0400\n"
+"Last-Translator: Alexey Ivanov <alexey.ivanes@gmail.com>\n"
+"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: pisi/actionsapi/autotools.py:33 pisi/actionsapi/cmaketools.py:28
+#, python-format
+msgid ""
+"Please attach the config.log to your bug report:\n"
+"%s/config.log"
+msgstr ""
+"Пожалуйста прикрепите config.log в ваш отчет об ошибке:\n"
+"%s/config.log"
+
+#: pisi/actionsapi/autotools.py:102 pisi/actionsapi/autotools.py:118
+#: pisi/actionsapi/cmaketools.py:76 pisi/actionsapi/kde.py:67
+#: pisi/actionsapi/perlmodules.py:49 pisi/actionsapi/perlmodules.py:55
+#: pisi/actionsapi/waftools.py:65
+msgid "Configure failed."
+msgstr "Настройка не удалась."
+
+#: pisi/actionsapi/autotools.py:104 pisi/actionsapi/autotools.py:120
+#: pisi/actionsapi/kde.py:69 pisi/actionsapi/waftools.py:67
+msgid "No configure script found."
+msgstr "Файл конфигурации не найден."
+
+#: pisi/actionsapi/autotools.py:135 pisi/actionsapi/cmaketools.py:89
+#: pisi/actionsapi/kde.py:75 pisi/actionsapi/perlmodules.py:62
+#: pisi/actionsapi/perlmodules.py:72 pisi/actionsapi/pythonmodules.py:57
+#: pisi/actionsapi/scons.py:32 pisi/actionsapi/waftools.py:74
+msgid "Make failed."
+msgstr "Ошибка сборки."
+
+#: pisi/actionsapi/autotools.py:182 pisi/actionsapi/autotools.py:200
+#: pisi/actionsapi/cmaketools.py:114 pisi/actionsapi/cmaketools.py:127
+#: pisi/actionsapi/kde.py:87 pisi/actionsapi/pythonmodules.py:66
+#: pisi/actionsapi/rubymodules.py:112 pisi/actionsapi/rubymodules.py:123
+#: pisi/actionsapi/scons.py:37 pisi/actionsapi/waftools.py:83
+msgid "Install failed."
+msgstr "Ошибка установки."
+
+#: pisi/actionsapi/autotools.py:213
+msgid "Running aclocal failed."
+msgstr "Запуск aclocal не удался."
+
+#: pisi/actionsapi/autotools.py:219
+msgid "Running autoconf failed."
+msgstr "Запуск autoconf не удался."
+
+#: pisi/actionsapi/autotools.py:225
+msgid "Running autoreconf failed."
+msgstr "Запуск autoreconf не удался."
+
+#: pisi/actionsapi/autotools.py:231
+msgid "Running automake failed."
+msgstr "Запуск automake не удался."
+
+#: pisi/actionsapi/autotools.py:237
+msgid "Running autoheader failed."
+msgstr "Запуск autoheader не удался."
+
+#: pisi/actionsapi/cmaketools.py:78
+msgid "No configure script found for cmake."
+msgstr "Не найден скрипт конфигурации для cmake. "
+
+#: pisi/actionsapi/cmaketools.py:131 pisi/actionsapi/kde.py:89
+msgid "No Makefile found."
+msgstr "Makefile не найден."
+
+#: pisi/actionsapi/get.py:234
+#, python-format
+msgid "Util %s cannot be found"
+msgstr "Утилита %s не найдена"
+
+#: pisi/actionsapi/get.py:237
+#, python-format
+msgid "Warning: %s does not exist, using plain name %s"
+msgstr "Предупреждение: %s не существует, используя %s"
+
+#: pisi/actionsapi/kde.py:27
+#, python-format
+msgid ""
+"\n"
+"!!! Please attach the config.log to your bug report:\n"
+"%s/config.log"
+msgstr ""
+"\n"
+"!!! Пожалуйста прикрепите config.log в ваш ответ об ошибке:\n"
+"%s/config.log"
+
+#: pisi/actionsapi/kerneltools.py:118
+#, python-format
+msgid "Can't find kernel version information file %s."
+msgstr "Не найден файл информации о ядре %s."
+
+#: pisi/actionsapi/libtools.py:30
+msgid "Running ldconfig failed."
+msgstr "Запуск ldconfig не удался."
+
+#: pisi/actionsapi/libtools.py:42
+msgid "GNU Config Update Finished."
+msgstr "GNU Config Update завершено."
+
+#: pisi/actionsapi/libtools.py:47
+msgid "Running libtoolize failed."
+msgstr "Ошибка выполнения libtoolize."
+
+#: pisi/actionsapi/perlmodules.py:65
+msgid "perl build failed."
+msgstr "ошибка выполнения perl."
+
+#: pisi/actionsapi/perlmodules.py:75
+msgid "perl install failed."
+msgstr "ошибка установки perl."
+
+#: pisi/actionsapi/pisitools.py:70 pisi/actionsapi/pisitools.py:146
+#, python-format
+msgid "No file matched pattern \"%s\""
+msgstr "Нет файла, соответствующего запросу \"%s\""
+
+#: pisi/actionsapi/pisitools.py:158
+#, python-format
+msgid "ActionsAPI [doman]: Wrong man page file: %s"
+msgstr "ActionsAPI [doman]: Неверная страница man: %s"
+
+#: pisi/actionsapi/pisitools.py:192
+#, python-format
+msgid "No file matched pattern \"%s\". 'domove' operation failed."
+msgstr "Нет файла, соответствующего шаблону \"%s\". 'domove' операция отменена."
+
+#: pisi/actionsapi/pisitools.py:224
+#, python-format
+msgid "ActionsAPI [rename]: %s: %s"
+msgstr "ActionsAPI [rename]: %s: %s"
+
+#: pisi/actionsapi/pisitools.py:241
+#, python-format
+msgid "No such file matching pattern: \"%s\". 'dosed' operation failed."
+msgstr "Нет файла, соответствующего запросу: \"%s\". 'dosed' операция отменена."
+
+#: pisi/actionsapi/pisitools.py:257
+#, python-format
+msgid "dosed method has not changed file '%s'."
+msgstr "dosed метод не поменял файл '%s'."
+
+#: pisi/actionsapi/pisitools.py:262
+#, python-format
+msgid "File does not exist or permission denied: %s"
+msgstr "Файл не существует или доступ запрещен: %s"
+
+#: pisi/actionsapi/pisitools.py:282
+#, python-format
+msgid "ActionsAPI [dosym]: File already exists: %s"
+msgstr "ActionsAPI [dosym]: Файл уже существует: %s"
+
+#: pisi/actionsapi/pisitools.py:292 pisi/actionsapi/pisitoolsfunctions.py:67
+#, python-format
+msgid "No file matched pattern \"%s\"."
+msgstr "Нет файла, соответствующего шаблону \"%s\"."
+
+#: pisi/actionsapi/pisitools.py:341 pisi/actionsapi/shelltools.py:102
+#, python-format
+msgid "No file matched pattern \"%s\". Remove operation failed."
+msgstr "Нет файла, соответствующего шаблону \"%s\". Операция удаления отменена."
+
+#: pisi/actionsapi/pisitools.py:353
+#, python-format
+msgid "No directory matched pattern \"%s\". Remove directory operation failed."
+msgstr "Нет директории, соответствующего шаблону \"%s\". Операция удаления директории отменена."
+
+#: pisi/actionsapi/pisitoolsfunctions.py:38
+#: pisi/actionsapi/pisitoolsfunctions.py:59
+#: pisi/actionsapi/pisitoolsfunctions.py:77
+msgid "Insufficient arguments."
+msgstr "Недостаточно аргументов."
+
+#: pisi/actionsapi/pisitoolsfunctions.py:46
+#, python-format
+msgid "No executable file matched pattern \"%s\"."
+msgstr "Нет запускаемого файла, соответствующего шаблону \"%s\"."
+
+#: pisi/actionsapi/pythonmodules.py:51
+msgid "Configuration failed."
+msgstr "Конфигурация не удалась."
+
+#: pisi/actionsapi/pythonmodules.py:92
+#, python-format
+msgid "Running %s failed."
+msgstr "Запуск %s не удался."
+
+#: pisi/actionsapi/qt4.py:44
+#, python-format
+msgid "Project file '%s' not found."
+msgstr "Файл проекта '%s' не найден."
+
+#: pisi/actionsapi/qt4.py:50
+#, python-format
+msgid "It seems there are more than one .pro file, you must specify one. (Possible .pro files: %s)"
+msgstr "Похоже, что .pro файлов несколько, Вы должны выбрать один. (Возможные .pro файлы: %s)"
+
+#: pisi/actionsapi/rubymodules.py:133
+#, python-format
+msgid "Running 'ruby %s' failed."
+msgstr "Ошибка запуска 'ruby %s'."
+
+#: pisi/actionsapi/shelltools.py:42
+#, python-format
+msgid "Cannot create directory %s"
+msgstr "Невозможно создать директорию %s"
+
+#: pisi/actionsapi/shelltools.py:51
+#, python-format
+msgid "ActionsAPI [echo]: Can't append to file %s."
+msgstr "ActionsAPI [echo]: Невозможно добавить в файл %s."
+
+#: pisi/actionsapi/shelltools.py:58
+#, python-format
+msgid "ActionsAPI [chmod]: No file matched pattern \"%s\"."
+msgstr "ActionsAPI [chmod]: Нет файла, соответствующего шаблону \"%s\"."
+
+#: pisi/actionsapi/shelltools.py:66
+#, python-format
+msgid "ActionsAPI [chmod]: Operation not permitted: %s (mode: 0%o)"
+msgstr "ActionsAPI [chmod]: Операция не разрешается: %s (режим: 0%o)"
+
+#: pisi/actionsapi/shelltools.py:70
+#, python-format
+msgid "ActionsAPI [chmod]: File %s doesn't exists."
+msgstr "ActionsAPI [chmod]: Файл %s не существует."
+
+#: pisi/actionsapi/shelltools.py:80
+#, python-format
+msgid "ActionsAPI [chown]: Operation not permitted: %s (uid: %s, gid: %s)"
+msgstr "ActionsAPI [chown]: Операция не разрешает: %s (uid: %s, gid: %s)"
+
+#: pisi/actionsapi/shelltools.py:84
+#, python-format
+msgid "ActionsAPI [chown]: File %s doesn't exists."
+msgstr "ActionsAPI [chown]: Файл %s не существует."
+
+#: pisi/actionsapi/shelltools.py:93
+#, python-format
+msgid "ActionsAPI [sym]: Permission denied: %s to %s"
+msgstr "ActionsAPI [sym]: Доступ запрещен: %s to %s"
+
+#: pisi/actionsapi/shelltools.py:112
+#, python-format
+msgid "ActionsAPI [unlink]: Permission denied: %s."
+msgstr "ActionsAPI [unlink]: Доступ запрещен: %s."
+
+#: pisi/actionsapi/shelltools.py:117
+#, python-format
+msgid "ActionsAPI [unlink]: File %s doesn't exists."
+msgstr "ActionsAPI [unlink]: Файл %s не существует."
+
+#: pisi/actionsapi/shelltools.py:127
+#, python-format
+msgid "ActionsAPI [unlinkDir]: Operation not permitted: %s"
+msgstr "ActionsAPI [unlinkDir]: Операция не разрешается: %s"
+
+#: pisi/actionsapi/shelltools.py:134
+#, python-format
+msgid "ActionsAPI [unlinkDir]: Directory %s doesn't exists."
+msgstr "ActionsAPI [unlinkDir]: Директория %s не существует."
+
+#: pisi/actionsapi/shelltools.py:143
+#, python-format
+msgid "ActionsAPI [move]: No file matched pattern \"%s\"."
+msgstr "ActionsAPI [move]: Нет файла, соответствующего шаблону \"%s\"."
+
+#: pisi/actionsapi/shelltools.py:151
+#, python-format
+msgid "ActionsAPI [move]: Permission denied: %s to %s"
+msgstr "ActionsAPI [move]: Доступ запрещен: %s to %s"
+
+#: pisi/actionsapi/shelltools.py:155
+#, python-format
+msgid "ActionsAPI [move]: File %s doesn't exists."
+msgstr "ActionsAPI [move]: Файл %s не существует."
+
+#: pisi/actionsapi/shelltools.py:163
+#, python-format
+msgid "ActionsAPI [copy]: No file matched pattern \"%s\"."
+msgstr "ActionsAPI [copy]: Нет файла, соответствующего шаблону \"%s\"."
+
+#: pisi/actionsapi/shelltools.py:171
+#, python-format
+msgid "ActionsAPI [copy]: Permission denied: %s to %s"
+msgstr "ActionsAPI [copy]: Доступ запрещен: %s to %s"
+
+#: pisi/actionsapi/shelltools.py:192
+#, python-format
+msgid "ActionsAPI [copy]: File %s does not exist."
+msgstr "ActionsAPI [copy]: Файл %s не существует."
+
+#: pisi/actionsapi/shelltools.py:210
+#, python-format
+msgid "ActionsAPI [copytree] %s to %s: %s"
+msgstr "ActionsAPI [copytree] %s to %s: %s"
+
+#: pisi/actionsapi/shelltools.py:212
+#, python-format
+msgid "ActionsAPI [copytree]: Directory %s doesn't exists."
+msgstr "ActionsAPI [copytree]: Директория %s не существует."
+
+#: pisi/actionsapi/shelltools.py:221
+#, python-format
+msgid "ActionsAPI [touch]: No file matched pattern \"%s\"."
+msgstr "ActionsAPI [touch]: Нет файла, соответствующего шаблону \"%s\"."
+
+#: pisi/actionsapi/shelltools.py:230
+#, python-format
+msgid "ActionsAPI [touch]: Permission denied: %s"
+msgstr "ActionsAPI [touch]: Доступ запрещен: %s"
+
+#: pisi/actionsapi/shelltools.py:296
+#, python-format
+msgid "Command \"%s\" failed, return value was %d."
+msgstr "Команда \"%s\" завершилась с ошибкой, возвращенное значение было %d."
+
+#: pisi/actionsapi/texlivemodules.py:50
+msgid "Moving source files failed"
+msgstr "Перемещение файлов исходного кода завершилось с ошибкой"
+
+#: pisi/actionsapi/texlivemodules.py:53
+msgid "Generate config files failed"
+msgstr "Создание конфигурационных файлов завершилось с ошибкой"
+
+#: pisi/actionsapi/texlivemodules.py:56
+msgid "Building format files failed"
+msgstr "Ошибка выполнения файла"
+
+#: pisi/actionsapi/texlivemodules.py:64
+msgid "Creating symlinks from format to engines failed"
+msgstr "Создание ссылок данного формата на устройства не удалось."
+
+#: pisi/actionsapi/texlivemodules.py:68
+msgid "Installing docs failed"
+msgstr "Установка документации не удалась"
+
+#: pisi/actionsapi/texlivemodules.py:72
+msgid "Installing texmf files failed"
+msgstr "Установка файлов texmf не удалась"
+
+#: pisi/actionsapi/texlivemodules.py:76
+msgid "Installing config files failed"
+msgstr "Установка конфигурационных файлов не удалась"
+
+#: pisi/actionsapi/texlivemodules.py:80
+msgid "Handle config files failed"
+msgstr "Установка конфигурационных файлов устройств не удалось"
+
+#: pisi/actionsapi/texlivemodules.py:95
+#, python-format
+msgid "Symlink %s skipped (special case)"
+msgstr "Символическая ссылка %s пропущена (особый случай)"
+
+#: pisi/actionsapi/texlivemodules.py:98
+#, python-format
+msgid "Symlink %s -> %s skipped (texlive-core takes care of it."
+msgstr "Символическая ссылка %s -> %s пропущена (texlive-core заботится об этом."
+
+#: pisi/actionsapi/texlivemodules.py:104
+#, python-format
+msgid "Symlink %s -> %s skipped."
+msgstr "Символическая ссылка %s -> %s пропущена."
+
+#: pisi/actionsapi/texlivemodules.py:109
+#, python-format
+msgid "Symlink %s skipped (file exists.)"
+msgstr "Символическая ссылка %s пропущена (файл существует.)"
+
+#: pisi/actionsapi/texlivemodules.py:112
+#, python-format
+msgid "Making symlink from %s to %s"
+msgstr "Создание символической ссылки %s to %s"
+
+#: pisi/actionsapi/texlivemodules.py:178
+#, python-format
+msgid "Creating /etc/texmf/%s.d"
+msgstr "Создание /etc/texmf/%s.d"
+
+#: pisi/actionsapi/texlivemodules.py:182
+#, python-format
+msgid "Moving (and symlinking) /usr/share/texmf/%s to /etc/texmf/%s.d"
+msgstr "Перемещение (и создание символических ссылок) /usr/share/texmf/%s to /etc/texmf/%s.d"
+
+#: pisi/actionsapi/texlivemodules.py:263
+#, python-format
+msgid "Building format file %s"
+msgstr "Формат исполняемого файла %s"
+
+#: pisi/actionsapi/texlivemodules.py:354
+#, python-format
+msgid "Map %s is added to %s/%s.cfg"
+msgstr "Map %s is added to %s/%s.cfg"
+
+#: pisi/actionsapi/texlivemodules.py:363
+#, python-format
+msgid "MixedMap %s is added to %s/%s.cfg"
+msgstr "MixedMap %s добавлен в %s/%s.cfg"
+
+#: pisi/actionsapi/texlivemodules.py:372
+#, python-format
+msgid "p +%s is added to %s/%s-config.ps"
+msgstr "p +%s добавлено в %s/%s-config.ps"
+
+#: pisi/actionsapi/texlivemodules.py:381
+#, python-format
+msgid "f %s is added to %s/%s-config"
+msgstr "f %s добавлено в %s/%s-config"
+
+#: pisi/actionsapi/texlivemodules.py:390
+#, python-format
+msgid "Language file  %s  already generated."
+msgstr "Языковой файл %s уже сформирован."
+
+#: pisi/actionsapi/texlivemodules.py:393
+#, python-format
+msgid "No rule to proccess %s. Please file a bug."
+msgstr "Нет правила для обработки %s. Пожалуйста, сообщите об ошибке."
+
+#: pisi/api.py:51 pisi/cli/command.py:201
+msgid "You have to be root for this operation."
+msgstr "Вы должны иметь привилегии суперпользователя для этой операции."
+
+#: pisi/api.py:61
+msgid "Another instance of eopkg is running. Only one instance is allowed."
+msgstr "Работает другой экземпляр eopkg. Допускается работа только одного экземпляра программы."
+
+#: pisi/api.py:410
+#, python-format
+msgid "%s package found in %s repository"
+msgstr "%s пакет найден в %s репозитории."
+
+#: pisi/api.py:416
+#, python-format
+msgid "%s package already fetched"
+msgstr "%s пакет уже получен"
+
+#: pisi/api.py:549
+#, python-format
+msgid "Cleaning package cache %s..."
+msgstr "Очистка кэша пакетов %s..."
+
+#: pisi/api.py:551
+#, python-format
+msgid "Cleaning source archive cache %s..."
+msgstr "Очистка кеша архивов исходных файлов %s..."
+
+#: pisi/api.py:553
+#, python-format
+msgid "Cleaning temporary directory %s..."
+msgstr "Очистка временного каталога %s..."
+
+#: pisi/api.py:559
+#, fuzzy, python-format
+msgid "Removing cache file %s..."
+msgstr "Удаление файла кэша %s."
+
+#: pisi/api.py:592
+msgid "Taking snapshot of the system"
+msgstr "Снятие снимка с системы"
+
+#: pisi/api.py:764
+#, python-format
+msgid "File %s not found"
+msgstr "Файл %s не найден"
+
+#: pisi/api.py:805
+#, python-format
+msgid "Building index of eopkg files under %s"
+msgstr "Создание индексов файлов eopkg для %s"
+
+#: pisi/api.py:810
+msgid "Index file written"
+msgstr "Файл индекса записан"
+
+#: pisi/api.py:816
+msgid "Not a valid repo name."
+msgstr "Неверное имя репозитория"
+
+#: pisi/api.py:824
+#, fuzzy, python-format
+msgid "Repo already present with name %s and same URL. Removing first."
+msgstr "Репозиторий уже существует с именем %s."
+
+#: pisi/api.py:837
+#, python-format
+msgid "Repo %s added to system."
+msgstr "Репозиторий %s добавлен в систему."
+
+#: pisi/api.py:846
+#, python-format
+msgid "Repo %s removed from system."
+msgstr "Репозиторий %s удален из системы."
+
+#: pisi/api.py:848
+#, python-format
+msgid "Repository %s does not exist. Cannot remove."
+msgstr "Репозиторий %s не существует и не может быть удален."
+
+#: pisi/api.py:872
+#, python-format
+msgid "Updating repository: %s"
+msgstr "Обновление репозитория: %s"
+
+#: pisi/api.py:881
+#, python-format
+msgid "%s repository information is up-to-date."
+msgstr "%s информация о репозитории обновлена"
+
+#: pisi/api.py:883
+msgid "Updating database at any rate as requested"
+msgstr "Обновление базы данных в любом случае как запрос"
+
+#: pisi/api.py:890
+msgid "Package database updated."
+msgstr "База данных пакетов обновлена."
+
+#: pisi/api.py:892
+#, python-format
+msgid "No repository named %s found."
+msgstr "Не найден репозиторий с именем %s ."
+
+#: pisi/api.py:905
+#, python-format
+msgid "Adding '%s' to db... "
+msgstr "Добавление '%s' в базу данных... "
+
+#: pisi/api.py:908
+msgid "OK."
+msgstr "ОК."
+
+#: pisi/archive.py:508
+#, python-format
+msgid "Problem occured while uncompressing %s.Z file"
+msgstr "Обнаружена ошибка во время распаковки %s.Z файла"
+
+#: pisi/atomicoperations.py:75 pisi/operations/history.py:72
+#, python-format
+msgid "Package %s found in repository %s"
+msgstr "Пакет %s найден в репозитории %s"
+
+#: pisi/atomicoperations.py:112
+#, python-format
+msgid "Package URI: %s"
+msgstr "URI пакета: %s"
+
+#: pisi/atomicoperations.py:128
+msgid "Download Error: Package does not match the repository package."
+msgstr "Ошибка загрузки: Пакет не соответствует пакету из репозитория."
+
+#: pisi/atomicoperations.py:134
+#, python-format
+msgid "Package %s not found in any active repository."
+msgstr "Пакет %s не найден в активном репозитории."
+
+#: pisi/atomicoperations.py:161
+#, python-format
+msgid "Installing %s, version %s, release %s"
+msgstr "Установка %s, версия %s, релиз %s"
+
+#: pisi/atomicoperations.py:197 pisi/operations/build.py:835
+#, python-format
+msgid "%s-%s is not a valid eopkg version format"
+msgstr "%s-%s не правильная версия eopkg"
+
+#: pisi/atomicoperations.py:206
+#, python-format
+msgid "%s package cannot be installed unless the dependencies are satisfied"
+msgstr "Пакет %s не может быть установлен, пока все зависимости не будут удовлетворены"
+
+#: pisi/atomicoperations.py:244
+#, fuzzy, python-format
+msgid "/%s from %s gets replaced by %s package\n"
+msgstr "/%s для %s пакет\n"
+
+#: pisi/atomicoperations.py:248 pisi/atomicoperations.py:253
+#, python-format
+msgid "/%s from %s package\n"
+msgstr "/%s для %s пакет\n"
+
+#: pisi/atomicoperations.py:257
+#, python-format
+msgid ""
+"File conflicts:\n"
+"%s"
+msgstr ""
+"Конфликтные файлы:\n"
+"%s"
+
+#: pisi/atomicoperations.py:274
+msgid "Re-install same version package?"
+msgstr "Переустановить версию пакета?"
+
+#: pisi/atomicoperations.py:275
+msgid "Package re-install declined"
+msgstr "Переустановка пакета отменена"
+
+#: pisi/atomicoperations.py:287
+msgid "Upgrading to new upstream version"
+msgstr "Обновление до новой версии"
+
+#: pisi/atomicoperations.py:290
+msgid "Upgrading to new distribution release"
+msgstr "Обновление до нового релиза пакета"
+
+#: pisi/atomicoperations.py:299
+msgid "Downgrade to old distribution release?"
+msgstr "Обновить до более старой версии дистрибутива?"
+
+#: pisi/atomicoperations.py:303
+msgid "Package downgrade declined"
+msgstr "Обновление до более старой версии отменено."
+
+#: pisi/atomicoperations.py:409
+msgid "Unable to relocate following files. Reinstallation of this package is strongly recommended."
+msgstr "Невозможно разрешить попытку перемещения данных файлов. Настоятельно рекомендуется повторная установка ."
+
+#: pisi/atomicoperations.py:500 pisi/atomicoperations.py:503
+#: pisi/atomicoperations.py:510
+#, python-format
+msgid "Storing %s"
+msgstr "Хранение %s"
+
+#: pisi/atomicoperations.py:590
+#, python-format
+msgid "File list could not be read for package %s, continuing removal."
+msgstr "Список файлов не может быть прочитан для пакета %s, продолжение удаления."
+
+#: pisi/atomicoperations.py:598
+#, python-format
+msgid "Removing package %s"
+msgstr "Удаление пакета %s"
+
+#: pisi/atomicoperations.py:602
+msgid "Trying to remove nonexistent package "
+msgstr "Попытка удаления несуществующего пакета"
+
+#: pisi/atomicoperations.py:639
+#, python-format
+msgid "Not removing conflicted file : %s"
+msgstr "Не удаляется конфликтующий файл: %s"
+
+#: pisi/atomicoperations.py:669
+#, python-format
+msgid "Installed file %s does not exist on system [Probably you manually deleted]"
+msgstr "Установленный файл %s не существует в системе. [Возможно, он был удален вручную]"
+
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Предупреждение:"
+
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Ошибка:"
+
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr "(да/нет)"
+
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr "[завершено]\n"
+
+#: pisi/cli/__init__.py:188
+#, python-format
+msgid "Installed %s"
+msgstr "%s установлен"
+
+#: pisi/cli/__init__.py:190
+#, python-format
+msgid "Removed %s"
+msgstr "%s удален"
+
+#: pisi/cli/__init__.py:192
+#, python-format
+msgid "Upgraded %s"
+msgstr "%s обновлен"
+
+#: pisi/cli/__init__.py:194
+#, python-format
+msgid "Configured %s"
+msgstr "%s настроен"
+
+#: pisi/cli/__init__.py:196
+#, python-format
+msgid "Extracting the files of %s"
+msgstr "Распаковка файлов пакета %s"
+
+#: pisi/cli/addrepo.py:15
+msgid ""
+"Add a repository\n"
+"\n"
+"Usage: add-repo <repo> <indexuri>\n"
+"\n"
+"<repo>: name of repository to add\n"
+"<indexuri>: URI of index file\n"
+"\n"
+"NB: We support only local files (e.g., /a/b/c) and http:// URIs at the moment\n"
+msgstr ""
+"Добавление репозитория\n"
+"\n"
+"Использование: add-repo <repo> <indexuri>\n"
+"\n"
+"<repo>: имя добавляемого репозитория\n"
+"<indexuri>: URL-ссылка на индексный файл\n"
+"\n"
+"Если репозиторий для добавления не задан, будет добавлен репозиторий pardus-devel\n"
+"\n"
+"NB: На данный момент, реализована поддержка только локальных файлов (e.g., /a/b/c) и http:// URI-ссылок\n"
+
+#: pisi/cli/addrepo.py:33
+msgid "add-repo options"
+msgstr "опции add-repo"
+
+#: pisi/cli/addrepo.py:38
+msgid "Ignore repository distribution check"
+msgstr "Игнорировать проверку репозитория"
+
+#: pisi/cli/addrepo.py:45
+msgid "Does not fetch repository index and does not check distribution match"
+msgstr "Не получает индекса в репозитории и не проверять соответствие цели"
+
+#: pisi/cli/addrepo.py:53
+msgid "Add repository at given position (0 is first)"
+msgstr "Добавить репозиторий в данной позиции (0 - первый)"
+
+#: pisi/cli/addrepo.py:69
+#, python-format
+msgid ""
+"Add %s repository without updating the database?\n"
+"By confirming this you are also adding the repository to your system without checking the distribution of the repository.\n"
+"Do you want to continue?"
+msgstr ""
+"Добавить репозиторий %s без обновления базы данных?\n"
+"Соглашаясь с этим, вы добавите репозиторий без проверки целостности дистрибутива.\n"
+"Вы хотите продолжить?"
+
+#: pisi/cli/addrepo.py:85
+#, python-format
+msgid "%s repository could not be reached. Removing %s from system."
+msgstr "%s репозиторий не найден. Удаление %s из системы."
+
+#: pisi/cli/autoremove.py:16
+#, fuzzy
+msgid ""
+"Remove eopkg packages\n"
+"\n"
+"Usage: autoremove <package1> <package2> ... <packagen>\n"
+"\n"
+"Remove package(s) from your system. Just give the package names to remove.\n"
+"\n"
+"You can also specify components instead of package names, which will be\n"
+"expanded to package names.\n"
+"\n"
+"Any additional packages that were automatically installed as a result of\n"
+"installing the packages being removed, will also be removed if it is\n"
+"safe to do so.\n"
+msgstr ""
+"Удалить eopkg пакеты\n"
+"\n"
+"Использование: remove <пакет1>  <пакет2> ... <пакетn>\n"
+"\n"
+"Удалит пакет(ы) из Вашей системы. Просто укажите имена пакетов для удаления.\n"
+"\n"
+"Вы также можете указать компоненты вместо имен пакетов, которые будут\n"
+"раскрыты в имена пакетов.\n"
+
+#: pisi/cli/autoremove.py:38
+#, fuzzy
+msgid "autoremove options"
+msgstr "remove опции"
+
+#: pisi/cli/autoremove.py:44 pisi/cli/remove.py:40 pisi/cli/removeorphans.py:40
+msgid "Removes everything including changed config files of the package"
+msgstr "Удалить все, включая измененные конфигурационные файлы пакета"
+
+#: pisi/cli/blame.py:15
+msgid ""
+"Information about the package owner and release\n"
+"\n"
+"Usage: blame <package> ... <package>\n"
+"\n"
+msgstr ""
+"Информация об авторе пакта, его версии и релизе\n"
+"\n"
+"Использование: blame <package> ... <package>\n"
+"\n"
+
+#: pisi/cli/blame.py:29
+msgid "blame options"
+msgstr "blame опции"
+
+#: pisi/cli/blame.py:35
+msgid "Blame for the given release"
+msgstr "Blame для текущего релиза"
+
+#: pisi/cli/blame.py:42
+msgid "Blame for all of the releases"
+msgstr "Blame для всех релизов"
+
+#: pisi/cli/blame.py:69 pisi/specfile.py:395 pisi/specfile.py:500
+#, python-format
+msgid "Name: %s, version: %s, release: %s\n"
+msgstr "Имя: %s, версия: %s, релиз: %s\n"
+
+#: pisi/cli/blame.py:74
+#, python-format
+msgid "Package Maintainer: %s <%s>\n"
+msgstr "Майнтейнер пакета: %s <%s>\n"
+
+#: pisi/cli/blame.py:78
+#, python-format
+msgid "Release Updater: %s <%s>\n"
+msgstr "Автор обновления: %s <%s>\n"
+
+#: pisi/cli/blame.py:82
+#, python-format
+msgid "Update Date: %s\n"
+msgstr "Дата обновления: %s\n"
+
+#: pisi/cli/build.py:15
+msgid ""
+"Build eopkg packages\n"
+"\n"
+"Usage: build [<pspec.xml> | <sourcename>] ...\n"
+"\n"
+"You can give a URI of the pspec.xml file. eopkg will\n"
+"fetch all necessary files and build the package for you.\n"
+"\n"
+"Alternatively, you can give the name of a source package\n"
+"to be downloaded from a repository containing sources.\n"
+msgstr ""
+"Создание пакетов eopkg\n"
+"\n"
+"Использование: build [<pspec.xml> | <sourcename>] ...\n"
+"\n"
+"Вы можете предложить URI pspec.xml файла. eopkg\n"
+"проверит все необходимые файлы и создаст пакет для вас.\n"
+"\n"
+"Как другой вариант, вы можете предложить имя пакета с исходными файлами,\n"
+"который будет скачан с репозитория, содержащего исходные файлы\n"
+
+#: pisi/cli/build.py:38
+msgid "build options"
+msgstr "build опции"
+
+#: pisi/cli/build.py:49
+msgid "Run pisi build operation without printing extra debug information"
+msgstr "Запустить pisi build без вывода дополнительной отладочной информации"
+
+#: pisi/cli/build.py:57 pisi/cli/command.py:245
+msgid "Do not take dependency information into account"
+msgstr "Не вкладывать информацию о зависимостях в аккаунт"
+
+#: pisi/cli/build.py:65
+msgid "Output directory for produced packages"
+msgstr "Директория для вновь созданных пакетов"
+
+#: pisi/cli/build.py:72
+msgid "Bypass errors from ActionsAPI"
+msgstr "Bypass ошибка ActionsAPI"
+
+#: pisi/cli/build.py:79 pisi/cli/command.py:257
+msgid "Bypass safety switch"
+msgstr "Пропустить проверку безопасности"
+
+#: pisi/cli/build.py:86
+msgid "Bypass testing step"
+msgstr "Пропустить тестирование"
+
+#: pisi/cli/build.py:93
+msgid "Create a static package with ar files"
+msgstr "Создание пакета eopkg"
+
+#: pisi/cli/build.py:101 pisi/cli/delta.py:64
+msgid "Create the binary package using the given format. Use '-F help' to see a list of supported formats."
+msgstr "Поддерживаемые форматы пакетов:"
+
+#: pisi/cli/build.py:111
+msgid "Use quilt patch management system instead of GNU patch"
+msgstr "%s (по-умолчанию)"
+
+#: pisi/cli/build.py:118
+msgid "Do not constrain build process inside the build folder"
+msgstr "Целевая директория: %s"
+
+#: pisi/cli/build.py:122
+msgid "build steps"
+msgstr "build шаги"
+
+#: pisi/cli/build.py:129
+msgid "Break build after fetching the source archive"
+msgstr "Прервать сборку после получения архива с исходными кодами"
+
+#: pisi/cli/build.py:138
+msgid "Break build after unpacking the source archive, checking sha1sum and applying patches"
+msgstr "опции check"
+
+#: pisi/cli/build.py:149
+msgid "Break build after running configure step"
+msgstr "Прервать сборку после запуска этапа настройки"
+
+#: pisi/cli/build.py:157
+msgid "Break build after running compile step"
+msgstr "Прервать сборку после запуска этапа компиляции"
+
+#: pisi/cli/build.py:165
+msgid "Break build after running check step"
+msgstr "Прервать сборку после запуска этапа проверки"
+
+#: pisi/cli/build.py:173
+msgid "Break build after running install step"
+msgstr "Прервать сборку после запуска этапа установки"
+
+#: pisi/cli/build.py:181
+msgid "Create eopkg package"
+msgstr "Создать eopkg пакет"
+
+#: pisi/cli/build.py:192 pisi/cli/delta.py:74
+msgid "Supported package formats:"
+msgstr "Поддерживаемые форматы пакетов:"
+
+#: pisi/cli/build.py:195 pisi/cli/delta.py:77
+#, python-format
+msgid "  %s (default)"
+msgstr "  %s (default)"
+
+#: pisi/cli/check.py:16
+msgid ""
+"Verify installation\n"
+"\n"
+"Usage: check [<package1> <package2> ... <packagen>]\n"
+"       check -c <component>\n"
+"\n"
+"<packagei>: package name\n"
+"\n"
+"A cryptographic checksum is stored for each installed\n"
+"file. Check command uses the checksums to verify a package.\n"
+"Just give the names of packages.\n"
+"\n"
+"If no packages are given, checks all installed packages.\n"
+msgstr ""
+"Проверка установки\n"
+"\n"
+"Использование: check [<пакет1> <пакет2> ... <пакетn>]\n"
+"\n"
+"<пакетi>: имя пакета\n"
+"\n"
+"Зашифрованная контрольная сумма хранится в каждом установленном файле\n"
+". Эта команда использует контрольные суммы для проверки пакета.\n"
+"Просто задайте имена пакетов.\n"
+"\n"
+"Если не будет задано имен пакетов, будут проверены все установленные пакеты.\n"
+
+#: pisi/cli/check.py:43
+msgid "check options"
+msgstr "Проверка опций"
+
+#: pisi/cli/check.py:50
+msgid "Check installed packages under given component"
+msgstr "Проверка установленных пакетов по данному компоненту"
+
+#: pisi/cli/check.py:57
+msgid "Checks only changed config files of the packages"
+msgstr "Проверка измения конфигурационных файлов пакетов"
+
+#: pisi/cli/check.py:73
+msgid "Checking all installed packages"
+msgstr "Проверка всех установленных пакетов"
+
+#: pisi/cli/check.py:82
+#, python-format
+msgid "Checking integrity of %s"
+msgstr "Проверка целостности %s"
+
+#: pisi/cli/check.py:100
+msgid "Broken"
+msgstr "Сломано"
+
+#: pisi/cli/check.py:105
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: pisi/cli/check.py:107
+msgid "OK"
+msgstr "ОК"
+
+#: pisi/cli/check.py:113
+#, python-format
+msgid "Missing file: /%s"
+msgstr "Отсутствующий файл: /%s"
+
+#: pisi/cli/check.py:118
+#, python-format
+msgid "Access denied: /%s"
+msgstr "Доступ запрещен: /%s"
+
+#: pisi/cli/check.py:123
+#, python-format
+msgid "Corrupted file: /%s"
+msgstr "Поврежденный файл: /%s"
+
+#: pisi/cli/check.py:129
+#, python-format
+msgid "Modified configuration file: /%s"
+msgstr "Измененный файл конфигурации: /%s"
+
+#: pisi/cli/check.py:136
+#, python-format
+msgid "Package %s not installed"
+msgstr "Пакет %s не установлен"
+
+#: pisi/cli/check.py:142
+msgid ""
+"Pisi was unable to check the integrity of packages which contain files that you don't have read access.\n"
+"Running the check under a privileged user may help fixing this problem."
+msgstr ""
+"Pisi не смог проверить целостность пакетов, которые содержат файлы, к которым у вас нет доступа на чтение.\n"
+"Запуск с правами привелерованного пользователя может помочь решить эту проблему."
+
+#: pisi/cli/clean.py:11
+msgid ""
+"Clean stale locks\n"
+"\n"
+"Usage: clean\n"
+"\n"
+"eopkg uses filesystem locks for managing database access.\n"
+"This command deletes unused locks from the database directory."
+msgstr ""
+"Очистить файлы блокировки\n"
+"\n"
+"Использование: clean\n"
+"\n"
+"eopkg использует файлы блокировки состояния для управления доступом в базу данных.\n"
+"Эта команда удалит неиспользуемые файлы блокировки из директории базы данных."
+
+#: pisi/cli/command.py:19
+msgid "Command lacks name"
+msgstr "У команды отсутствует имя"
+
+#: pisi/cli/command.py:24
+#, python-format
+msgid "Duplicate command %s"
+msgstr "Дублирование команды %s"
+
+#: pisi/cli/command.py:61 pisi/cli/pisicli.py:124
+#, python-format
+msgid "Unrecognized command: %s"
+msgstr "Неизвестная комманда: %s"
+
+#: pisi/cli/command.py:88
+msgid "general options"
+msgstr "общие параметры"
+
+#: pisi/cli/command.py:95
+msgid "Change the system root for eopkg commands"
+msgstr "Изменение корневой системы для команд eopkg"
+
+#: pisi/cli/command.py:102
+msgid "Assume yes in all yes/no queries"
+msgstr "Отвечать ДА на все запросы ДА/НЕТ"
+
+#: pisi/cli/command.py:111
+msgid "Keep bandwidth usage under specified KB's"
+msgstr "Ограничить пропускную способность в КБ"
+
+#: pisi/cli/command.py:119
+msgid "Set the max number of retry attempts in case of connection timeouts"
+msgstr ""
+
+#: pisi/cli/command.py:128
+msgid "Detailed output"
+msgstr "Подробный вывод"
+
+#: pisi/cli/command.py:135
+msgid "Show debugging information"
+msgstr "Показать информацию об отладке"
+
+#: pisi/cli/command.py:142
+msgid "Suppresses all coloring of eopkg's output"
+msgstr "Убирает цветной вывод eopkg"
+
+#: pisi/cli/command.py:162
+#, python-format
+msgid "Destination directory %s does not exist. Creating directory.\n"
+msgstr "Целевая директория %s не найдена. Создание директории.\n"
+
+#: pisi/cli/command.py:187
+msgid "Password: "
+msgstr "Пароль:"
+
+#: pisi/cli/command.py:230
+msgid "Command terminated abnormally."
+msgstr "Аварийное завершение команды."
+
+#: pisi/cli/command.py:251
+msgid "Bypass comar configuration agent"
+msgstr "Пропустить утилиту конфигурирования comar"
+
+#: pisi/cli/command.py:264
+msgid "Do not perform any action, just show what would be done"
+msgstr "Не выполнять никаких действи, просто смотреть, что могло бы произойти"
+
+#: pisi/cli/command.py:283
+#, python-format
+msgid "usage: %s\n"
+msgstr "использование: %s\n"
+
+#: pisi/cli/configurepending.py:14
+msgid ""
+"Configure pending packages\n"
+"\n"
+"If COMAR configuration of some packages were not\n"
+"done at installation time, they are added to a list\n"
+"of packages waiting to be configured. This command\n"
+"configures those packages.\n"
+msgstr ""
+"Конфигурировать задерженные пакеты\n"
+"\n"
+"lf COMAR конфигурация не будет сделана\n"
+"во время установки, они будут добавлены в список пакетов, ожидающих конфигурирования. Эта команда\n"
+"сконфигурирует такие пакеты.\n"
+
+#: pisi/cli/configurepending.py:29
+msgid "configure-pending options"
+msgstr "Опции задержки конфигурирования"
+
+#: pisi/cli/deletecache.py:13
+msgid ""
+"Delete cache files\n"
+"\n"
+"Usage: delete-cache\n"
+"\n"
+"Sources, packages and temporary files are stored\n"
+"under /var directory. Since these accumulate they can\n"
+"consume a lot of disk space."
+msgstr ""
+"Удалить файлы кэша\n"
+"\n"
+"Использование: delete-cache\n"
+"\n"
+"Пакеты с исходниками, бинарные пакеты и временные файоы хранятся в\n"
+" директории /var. После удаления этих файлов может\n"
+"освободиться много дискового пространства."
+
+#: pisi/cli/delta.py:14
+msgid ""
+"Creates delta packages\n"
+"\n"
+"Usages: delta oldpackage1 oldpackage2 ...  newpackage\n"
+"        delta -t newpackage oldpackage1 oldpackage2 ...\n"
+"\n"
+"Delta command finds the changed files between the given\n"
+"packages by comparing the sha1sum of files and creates\n"
+"a delta package with the changed files.\n"
+msgstr ""
+"Создание дельта-пакетов\n"
+"\n"
+"Искользование: delta oldpackage1 oldpackage2 ... newpackage\n"
+" delta -t newpackage oldpackage1 oldpackage2 ...\n"
+"\n"
+"Команда Delta ищет измененные файлы в данных\n"
+" пакетах, сравнивая sha1-суммы файлов и создает\n"
+" дельта-пакет с измененными файлами.\n"
+
+#: pisi/cli/delta.py:35
+msgid "delta options"
+msgstr "delta опции"
+
+#: pisi/cli/delta.py:46
+msgid "Use arg as the new package and treat other arguments as old packages."
+msgstr "Использовать аргумент как новый пакет и трактовать другие аргументы как старые пакеты."
+
+#: pisi/cli/delta.py:56
+msgid "Output directory for produced packages."
+msgstr "Выводная директория для создаваемых пакетов."
+
+#: pisi/cli/disablerepo.py:12
+msgid ""
+"Disable repository\n"
+"\n"
+"Usage: disable-repo [<repo1> <repo2> ... <repon>]\n"
+"\n"
+"<repoi>: repository name\n"
+"\n"
+"Disabled repositories are not taken into account in operations\n"
+msgstr ""
+"Отключить репозиторий\n"
+"\n"
+"Использование: disable-repo [<repo1> <repo2> ... <repon>]\n"
+"\n"
+"<repoi>: имя репозитория\n"
+"\n"
+"Отключенные репозитории не используются при операциях над пакетами\n"
+
+#: pisi/cli/enablerepo.py:12
+msgid ""
+"Enable repository\n"
+"\n"
+"Usage: enable-repo [<repo1> <repo2> ... <repon>]\n"
+"\n"
+"<repoi>: repository name\n"
+"\n"
+"Disabled repositories are not taken into account in operations\n"
+msgstr ""
+"Включить репозиторий\n"
+"\n"
+"Использование: enable-repo [<repo1> <repo2> ... <repon>]\n"
+"\n"
+"<repoi>: имя репозитория\n"
+"\n"
+"Отключенные репозитории не используются при операциях над пакетами\n"
+
+#: pisi/cli/fetch.py:16
+msgid ""
+"Fetch a package\n"
+"\n"
+"Usage: fetch [<package1> <package2> ... <packagen>]\n"
+"\n"
+"<packagei>: package name\n"
+"\n"
+"Downloads the given pisi packages to working directory\n"
+msgstr ""
+"Скачать пакет\n"
+"\n"
+"Использование: fetch [<пакет1> <пакет2> ... <пакетn>]\n"
+"\n"
+"<пакетi>: имя пакета\n"
+"\n"
+"Скачивает заданные пакеты pisi в рабочую директорию\n"
+
+#: pisi/cli/fetch.py:32
+msgid "fetch options"
+msgstr "fetch опции"
+
+#: pisi/cli/fetch.py:42
+msgid "Output directory for the fetched packages"
+msgstr "Директория для скачанных пакетов"
+
+#: pisi/cli/help.py:13
+msgid ""
+"Prints help for given commands\n"
+"\n"
+"Usage: help [ <command1> <command2> ... <commandn> ]\n"
+"\n"
+"If run without parameters, it prints the general help."
+msgstr ""
+"Выводит помощь для заданных команд\n"
+"\n"
+"Использование: help [ <команда1> <команда2> ... <командаn> ]\n"
+"\n"
+"Если запущено без параметров, выводит общую помощь."
+
+#: pisi/cli/help.py:40
+msgid ""
+"%prog [options] <command> [arguments]\n"
+"\n"
+"where <command> is one of:\n"
+"\n"
+msgstr ""
+"%prog [options] <command> [arguments]\n"
+"\n"
+"где <command> это одна из:\n"
+"\n"
+
+#: pisi/cli/help.py:48
+msgid ""
+"\n"
+"Use \"%prog help <command>\" for help on a specific command.\n"
+msgstr ""
+"\n"
+"Используйте \"%prog help <команда>\" для проверки особой команды.\n"
+
+#: pisi/cli/history.py:18
+msgid "upgrade"
+msgstr "обновить"
+
+#: pisi/cli/history.py:19
+msgid "remove"
+msgstr "удалить"
+
+#: pisi/cli/history.py:20
+msgid "emerge"
+msgstr "emerge"
+
+#: pisi/cli/history.py:21
+msgid "install"
+msgstr "установить"
+
+#: pisi/cli/history.py:22
+msgid "snapshot"
+msgstr "snapshot"
+
+#: pisi/cli/history.py:23
+msgid "takeback"
+msgstr "возврат"
+
+#: pisi/cli/history.py:24
+msgid "repository update"
+msgstr "обновление репозитория"
+
+#: pisi/cli/history.py:30
+msgid ""
+"History of pisi operations\n"
+"\n"
+"Usage: history\n"
+"\n"
+"Lists previous operations."
+msgstr ""
+"История операций pisi\n"
+"\n"
+"Использование: history\n"
+"\n"
+"Список предыдущих операций."
+
+#: pisi/cli/history.py:44
+msgid "history options"
+msgstr "history опции"
+
+#: pisi/cli/history.py:55
+msgid "Output only the last n operations"
+msgstr "Вывод только последней операции"
+
+#: pisi/cli/history.py:62
+msgid "Take snapshot of the current system"
+msgstr "Создать образ текущей системы"
+
+#: pisi/cli/history.py:70
+msgid "Takeback to the state after the given operation finished"
+msgstr "Вернуться к состоянию, после того, как операция будет выполнена"
+
+#: pisi/cli/history.py:81
+#, python-format
+msgid "Operation #%d: %s"
+msgstr "Операция #%d: %s"
+
+#: pisi/cli/history.py:82
+#, python-format
+msgid "Date: %s %s"
+msgstr "Дата: %s %s"
+
+#: pisi/cli/history.py:87
+#, python-format
+msgid "    * There are %d packages in this snapshot."
+msgstr "    * %d пакетов в этом образе."
+
+#: pisi/cli/index.py:13
+msgid ""
+"Index eopkg files in a given directory\n"
+"\n"
+"Usage: index <directory> ...\n"
+"\n"
+"This command searches for all eopkg files in a directory, collects eopkg\n"
+"tags from them and accumulates the information in an output XML file,\n"
+"named by default 'eopkg-index.xml'. In particular, it indexes both\n"
+"source and binary packages.\n"
+"\n"
+"If you give multiple directories, the command still works, but puts\n"
+"everything in a single index file.\n"
+msgstr ""
+"Индексировать файлы eopkg в заданной дитектории\n"
+"\n"
+"Использование: index <directory> ...\n"
+"\n"
+"Эта команда ищет все файлы eopkg в директории, собирает\n"
+"тэги из них и суммирует всю информацию в одном выходном файле XML, \n"
+"который по умолчанию называется 'eopkg-index.xml'. В частности он индексирует и файлы\n"
+" исходников и бинарные пакеты.\n"
+"\n"
+"Если вы зададите несколько директорий, команда сработает, но все будет\n"
+"собрано в одном индексном файле.\n"
+
+#: pisi/cli/index.py:37
+msgid "index options"
+msgstr "index опции"
+
+#: pisi/cli/index.py:44
+msgid "Store absolute links for indexed files."
+msgstr "Хранить жесткие ссылки на индексированные файлы."
+
+#: pisi/cli/index.py:52
+msgid "Index output file"
+msgstr "Файл для индексирования"
+
+#: pisi/cli/index.py:59
+msgid "Comma-separated compression types for index file"
+msgstr "Разделенные запятыми типы сжатия для индексного файла"
+
+#: pisi/cli/index.py:66
+msgid "Do not sign index."
+msgstr "Не отмечать индекс."
+
+#: pisi/cli/info.py:17
+#, fuzzy
+msgid ""
+"Display package information\n"
+"\n"
+"Usage: info <package1> <package2> ... <packagen>\n"
+"\n"
+"<packagei> is either a package name or a .pisi file,\n"
+msgstr ""
+"Просмотр информации о пакете\n"
+"\n"
+"Использование: info <package1> <package2> ... <packagen>\n"
+"\n"
+"<packagei> is either a package name or a .eopkg file,\n"
+
+#: pisi/cli/info.py:34
+msgid "info options"
+msgstr "info опции"
+
+#: pisi/cli/info.py:44
+msgid "Show a list of package files."
+msgstr "Показать список пакетов."
+
+#: pisi/cli/info.py:51
+msgid "Info about the given component"
+msgstr "Информировать о заданном компоненте"
+
+#: pisi/cli/info.py:58
+msgid "Show only paths."
+msgstr "Показать только пути."
+
+#: pisi/cli/info.py:65
+msgid "Do not show details"
+msgstr "Не показывать подробности"
+
+#: pisi/cli/info.py:68
+msgid "Output in xml format"
+msgstr "Вывод в формате xml"
+
+#: pisi/cli/info.py:138
+msgid "Reverse Dependencies:"
+msgstr "Необходим для:"
+
+#: pisi/cli/info.py:151
+#, python-format
+msgid "Package file: %s"
+msgstr "Файл пакета: %s"
+
+#: pisi/cli/info.py:166
+msgid "[inst] "
+msgstr "[inst] "
+
+#: pisi/cli/info.py:168
+msgid "Installed package:"
+msgstr "Установка пакета:"
+
+#: pisi/cli/info.py:172
+#, python-format
+msgid "%s package is not installed"
+msgstr "%s пакет не установлен"
+
+#: pisi/cli/info.py:178
+msgid "[binary] "
+msgstr "[binary] "
+
+#: pisi/cli/info.py:180
+#, python-format
+msgid "Package found in %s repository:"
+msgstr "пакет найден в репозитории %s:"
+
+#: pisi/cli/info.py:183
+#, python-format
+msgid "%s package is not found in binary repositories"
+msgstr "%s пакет не найден в репозитории с бинарными пакетами"
+
+#: pisi/cli/install.py:16
+msgid ""
+"Install eopkg packages\n"
+"\n"
+"Usage: install <package1> <package2> ... <packagen>\n"
+"\n"
+"You may use filenames, URI's or package names for packages. If you have\n"
+"specified a package name, it should exist in a specified repository.\n"
+"\n"
+"You can also specify components instead of package names, which will be\n"
+"expanded to package names.\n"
+msgstr ""
+"Установить пакеты eopkg\n"
+"\n"
+"Использование: install <пакет1> <пакет2> ... <пакетn>\n"
+"\n"
+"Вы можете использовать имена файлов, ссылки или имена пакетов для установки. Если у вас\n"
+"определено имя пакета, он должен существовать в заданном репозитории.\n"
+"\n"
+"Вы можете также задать компоненты вместо названий пакетов, тогда\n"
+"они будут выбраны как наборы пакетов.\n"
+
+#: pisi/cli/install.py:35
+msgid "install options"
+msgstr "install оции"
+
+#: pisi/cli/install.py:43
+msgid "Reinstall already installed packages"
+msgstr "Переустановить  уже установленные пакеты"
+
+#: pisi/cli/install.py:49
+msgid "Skip distribution release and architecture check"
+msgstr "Пропустить выпуск распределения и проверку архитектуры"
+
+#: pisi/cli/install.py:55 pisi/cli/upgrade.py:61
+msgid "Ignore file conflicts"
+msgstr "игнорировать конфликтные файлы"
+
+#: pisi/cli/install.py:61 pisi/cli/upgrade.py:67
+msgid "Ignore package conflicts"
+msgstr "игнорировать конфликтные пакеты"
+
+#: pisi/cli/install.py:68
+msgid "Don't check for updates in reverse dependencies of runtime dependencies when updates are available"
+msgstr ""
+
+#: pisi/cli/install.py:76
+msgid "Install component's and recursive components' packages"
+msgstr "Установить пакеты компонентов и рекурскивные пакеты компонентов"
+
+#: pisi/cli/install.py:84
+msgid "Name of the component's repository"
+msgstr "Название репозитория компонентов"
+
+#: pisi/cli/install.py:91 pisi/cli/upgrade.py:89
+msgid "Fetch upgrades but do not install."
+msgstr "Выполнить обновление, но не устанавливать."
+
+#: pisi/cli/install.py:99
+msgid "When installing packages, ignore packages and components whose basenames match pattern."
+msgstr "В процессе установки пакетов игнорировать пакеты и компоненты, чьи названия соответствуют шаблону."
+
+#: pisi/cli/install.py:107
+msgid "When installing packages, ignore packages and components whose basenames match any pattern contained in file."
+msgstr "В процессе установки пакетов игнорировать пакеты и компоненты, чьи названия соответствуют шаблону, находящемуся в файле."
+
+#: pisi/cli/install.py:141
+#, python-format
+msgid "There is no component named %s"
+msgstr "Нет компонента с названием %s"
+
+#: pisi/cli/install.py:159
+msgid "Updates available, checking reverse dependencies of runtime dependencies for safety."
+msgstr ""
+
+#: pisi/cli/listavailable.py:17
+msgid ""
+"List available packages in the repositories\n"
+"\n"
+"Usage: list-available [ <repo1> <repo2> ... repon ]\n"
+"\n"
+"Gives a brief list of eopkg packages published in the specified\n"
+"repositories. If no repository is specified, we list packages in\n"
+"all repositories.\n"
+msgstr ""
+"Показать доступные пакеты в репозиториях\n"
+"\n"
+"Использование: list-available [<repo1> <repo2> ... <repon>]\n"
+"\n"
+"Показывает список пакетов eopkg, содержащихся в заданных\n"
+"репозиториях. Если не задан ни один репозиторий, будут показаны пакеты из\n"
+"всех репозиториев.\n"
+
+#: pisi/cli/listavailable.py:35
+msgid "list-available options"
+msgstr "list-available опции"
+
+#: pisi/cli/listavailable.py:41 pisi/cli/listcomponents.py:37
+#: pisi/cli/listinstalled.py:51 pisi/cli/listupgrades.py:39
+#: pisi/cli/searchfile.py:35
+msgid "Show in long format"
+msgstr "Показать в расширенном формате"
+
+#: pisi/cli/listavailable.py:48
+msgid "List available packages under given component"
+msgstr "Показать доступные пакеты в данном компоненте"
+
+#: pisi/cli/listavailable.py:55
+msgid "Show uninstalled packages only"
+msgstr "Показать только не установленные пакеты"
+
+#: pisi/cli/listavailable.py:64
+msgid "Installed packages are shown in this color"
+msgstr "установленные пакеты показываются данным цветом"
+
+#: pisi/cli/listavailable.py:73
+#, python-format
+msgid "Repository : %s\n"
+msgstr "Репозиторий : %s\n"
+
+#: pisi/cli/listcomponents.py:15
+msgid ""
+"List available components\n"
+"\n"
+"Usage: list-components\n"
+"\n"
+"Gives a brief list of eopkg components published in the\n"
+"repositories.\n"
+msgstr ""
+"Показать доступные компоненты\n"
+"\n"
+"Использование: list-components\n"
+"\n"
+"Дает краткий перечень eopkg компонентов, опубликованных в\n"
+"репозиториях.\n"
+
+#: pisi/cli/listcomponents.py:31
+msgid "list-components options"
+msgstr "опции list-component"
+
+#: pisi/cli/listcomponents.py:45 pisi/cli/search.py:49
+msgid "Name of the source or package repository"
+msgstr "Имя исходного или пакетного репозитория"
+
+#: pisi/cli/listinstalled.py:17
+msgid ""
+"Print the list of all installed packages\n"
+"\n"
+"Usage: list-installed\n"
+msgstr ""
+"Печать списка всех установленных пакетов\n"
+"\n"
+"Использование: list-installed\n"
+
+#: pisi/cli/listinstalled.py:31
+msgid "list-installed options"
+msgstr "опции list-installed"
+
+#: pisi/cli/listinstalled.py:37
+#, fuzzy
+msgid "Show automatically installed packages and the parent dependency"
+msgstr "Проверка установленных пакетов по данному компоненту"
+
+#: pisi/cli/listinstalled.py:44
+msgid "Only list the installed packages built by the given host"
+msgstr "Показать только список установленных пакетов, собранных указанным хостом"
+
+#: pisi/cli/listinstalled.py:58
+msgid "List installed packages under given component"
+msgstr "Список доступных пакетов по данному компоненту"
+
+#: pisi/cli/listinstalled.py:65 pisi/cli/listupgrades.py:53
+msgid "Show detailed install info"
+msgstr "Показать детальную информацию об установке"
+
+#: pisi/cli/listinstalled.py:97 pisi/cli/listupgrades.py:83
+msgid "Package Name          |St|        Version|  Rel.|  Distro|             Date"
+msgstr "Имя пакета |Ст| Версия| Рел.| Дистр.| Дата"
+
+#: pisi/cli/listinstalled.py:134
+#, fuzzy
+msgid "Orphaned package"
+msgstr "График установленных пакетов"
+
+#: pisi/cli/listnewest.py:16
+msgid ""
+"List newest packages in the repositories\n"
+"\n"
+"Usage: list-newest [ <repo1> <repo2> ... repon ]\n"
+"\n"
+"Gives a list of eopkg newly published packages in the specified\n"
+"repositories. If no repository is specified, we list the new\n"
+"packages from all repositories.\n"
+msgstr ""
+"Список новых пакетов в репозиториях\n"
+"\n"
+"Использование: list-newest [ <repo1> <repo2> ... repon ]\n"
+"\n"
+"Выдает список новых eopkg-пакетов, опубликованных в заданных\n"
+"репозиториях. Если репозиторий не задан, мы получим список новых\n"
+"пакетов из всех репозиториев.\n"
+
+#: pisi/cli/listnewest.py:34
+msgid "list-newest options"
+msgstr "опции list-newes"
+
+#: pisi/cli/listnewest.py:41
+msgid "List new packages added to repository after this given date formatted as yyyy-mm-dd"
+msgstr "Показать новые пакеты, добавленные в репозиторий после указанной даты в формате yyyy-mm-dd"
+
+#: pisi/cli/listnewest.py:50
+msgid "List new packages added to repository after last nth previous repository update"
+msgstr "Показать список новых пакетов, добавленных к репозиторию после последнего обновления репозитория."
+
+#: pisi/cli/listnewest.py:81
+#, python-format
+msgid "Packages added to %s since %s:\n"
+msgstr "Пакеты добавлены в %s с %s:\n"
+
+#: pisi/cli/listnewest.py:83
+#, python-format
+msgid "Packages added to %s:"
+msgstr "Пакеты добавлены в %s:"
+
+#: pisi/cli/listpending.py:13
+msgid ""
+"List pending packages\n"
+"\n"
+"Lists packages waiting to be configured.\n"
+msgstr ""
+"Показать ожидающие пакеты\n"
+"\n"
+"Показать пакеты, ожидающие настройки.\n"
+
+#: pisi/cli/listpending.py:32
+msgid "There are no packages waiting to be configured"
+msgstr "Нет пакетов, ожидающих конфигурирования"
+
+#: pisi/cli/listrepo.py:14
+msgid ""
+"List repositories\n"
+"\n"
+"Usage: list-repo\n"
+"\n"
+"Lists currently tracked repositories.\n"
+msgstr ""
+"Список репозиториев\n"
+"\n"
+"Использование: list-repo\n"
+"\n"
+"Показать текущие используемые репозитории.\n"
+
+#: pisi/cli/listrepo.py:31 pisi/cli/listrepo.py:32
+msgid "active"
+msgstr "активен"
+
+#: pisi/cli/listrepo.py:31
+msgid "inactive"
+msgstr "не активен"
+
+#: pisi/cli/listrepo.py:33 pisi/cli/listrepo.py:35
+#, python-format
+msgid "%s [%s]"
+msgstr "%s [%s]"
+
+#: pisi/cli/listupgrades.py:17
+msgid ""
+"List packages to be upgraded\n"
+"\n"
+"Usage: list-upgrades\n"
+"\n"
+"Lists the packages that will be upgraded.\n"
+msgstr ""
+"Показать список пакетов для обновления\n"
+"\n"
+"Использование: list-upgrades\n"
+"\n"
+"Показывает пакеты, которые будут обновлены.\n"
+
+#: pisi/cli/listupgrades.py:33
+msgid "list-upgrades options"
+msgstr "опции list-upgrades"
+
+#: pisi/cli/listupgrades.py:46
+msgid "List upgradable packages under given component"
+msgstr "Показать обновляемые пакеты по указанному компоненту"
+
+#: pisi/cli/listupgrades.py:72 pisi/operations/upgrade.py:144
+msgid "No packages to upgrade."
+msgstr "Нет пакетов для обновления."
+
+#: pisi/cli/pisicli.py:76
+msgid "Options must precede non-option arguments"
+msgstr "Функции должны предшествовать аргументам без опций"
+
+#: pisi/cli/pisicli.py:117
+msgid "No command given"
+msgstr "Не задана команда"
+
+#: pisi/cli/pisicli.py:120
+msgid "Command line parsing error"
+msgstr "Ошибка разбора командной строки"
+
+#: pisi/cli/rebuilddb.py:15
+msgid ""
+"Rebuild Databases\n"
+"\n"
+"Usage: rebuilddb [ <package1> <package2> ... <packagen> ]\n"
+"\n"
+"Rebuilds the eopkg databases\n"
+"\n"
+"If package specs are given, they should be the names of package\n"
+"dirs under /var/lib/eopkg\n"
+msgstr ""
+"Обновить базу данных\n"
+"\n"
+"Использование: rebuilddb [ <пакет1> <пакет2> ... <пакетn> ]\n"
+"\n"
+"Обновит базу данных eopkg\n"
+"\n"
+"Если даны спецификации пакета,они должны быть именами пакетов\n"
+"каталоги под /var/lib/eopkg\n"
+
+#: pisi/cli/rebuilddb.py:32
+msgid "rebuild-db options"
+msgstr "опции rebuild-db"
+
+#: pisi/cli/rebuilddb.py:39
+msgid "Rebuild files database"
+msgstr "Обновление базы данных файлов"
+
+#: pisi/cli/rebuilddb.py:46
+msgid "Rebuild eopkg databases?"
+msgstr "Обновить базу данных eopkg?"
+
+#: pisi/cli/remove.py:16
+msgid ""
+"Remove eopkg packages\n"
+"\n"
+"Usage: remove <package1> <package2> ... <packagen>\n"
+"\n"
+"Remove package(s) from your system. Just give the package names to remove.\n"
+"\n"
+"You can also specify components instead of package names, which will be\n"
+"expanded to package names.\n"
+msgstr ""
+"Удалить eopkg пакеты\n"
+"\n"
+"Использование: remove <пакет1>  <пакет2> ... <пакетn>\n"
+"\n"
+"Удалит пакет(ы) из Вашей системы. Просто укажите имена пакетов для удаления.\n"
+"\n"
+"Вы также можете указать компоненты вместо имен пакетов, которые будут\n"
+"раскрыты в имена пакетов.\n"
+
+#: pisi/cli/remove.py:34
+msgid "remove options"
+msgstr "remove опции"
+
+#: pisi/cli/remove.py:47
+msgid "Remove component's and recursive components' packages"
+msgstr "Удалить компоненты и рекурсивные пакеты компонентов"
+
+#: pisi/cli/removeorphans.py:16
+msgid ""
+"Remove orphaned packages\n"
+"\n"
+"Usage: remove-orphans\n"
+"\n"
+"Remove any unused orphan packages from the system that were automatically\n"
+"installed as a dependency of another package.\n"
+"\n"
+"Only packages that have no reverse dependencies outside of the automatically\n"
+"installed list will be removed.\n"
+msgstr ""
+
+#: pisi/cli/removeorphans.py:34
+#, fuzzy
+msgid "remove-orphans options"
+msgstr "remove опции"
+
+#: pisi/cli/removerepo.py:12
+msgid ""
+"Remove repositories\n"
+"\n"
+"Usage: remove-repo <repo1> <repo2> ... <repon>\n"
+"\n"
+"Remove all repository information from the system.\n"
+msgstr ""
+"Удалить репозитории\n"
+"\n"
+"Использование: remove-repo <репозиторий1> <репозиторий2> ... <репозиторийn>\n"
+"\n"
+"Удалит всю информацию о репозитории из системы.\n"
+
+#: pisi/cli/search.py:16
+msgid ""
+"Search packages\n"
+"\n"
+"Usage: search <term1> <term2> ... <termn>\n"
+"\n"
+"Finds a package containing specified search terms\n"
+"in summary, description, and package name fields.\n"
+"Default search is done in package database. Use\n"
+"options to search in install database or source\n"
+"database.\n"
+msgstr ""
+"Искать пакеты\n"
+"\n"
+"Использование: search <термин1> <термин2> ... <терминn>\n"
+"\n"
+"Ищет пакет, содержащий указанные поисковые термины\n"
+"таким образом, поля описание и имя пакета.\n"
+"По умолчанию поиск осуществляется в базе данных пакетов. Используемые\n"
+"опции для поиска в базе данных установленных или исходных\n"
+"базы данных.\n"
+
+#: pisi/cli/search.py:34
+msgid "search options"
+msgstr "search опции"
+
+#: pisi/cli/search.py:41
+msgid "Summary and description language"
+msgstr "Резюме и описание языка"
+
+#: pisi/cli/search.py:56
+msgid "Search in installdb"
+msgstr "Искать в installdb"
+
+#: pisi/cli/search.py:62
+msgid "Search in the package name"
+msgstr "Поиска в именах пакетов"
+
+#: pisi/cli/search.py:68
+msgid "Search in the package summary"
+msgstr "Искать в резюме пакета"
+
+#: pisi/cli/search.py:74
+msgid "Search in the package description"
+msgstr "Поиск в описании пакетов"
+
+#: pisi/cli/searchfile.py:15
+msgid ""
+"Search for a file\n"
+"\n"
+"Usage: search-file <path1> <path2> ... <pathn>\n"
+"\n"
+"Finds the installed package which contains the specified file.\n"
+msgstr ""
+"Искать файл\n"
+"\n"
+"Использование: search-file <путь1> <путь2> ... <путьn>\n"
+"\n"
+"Ищет установленный пакет, который содержит указанный файл.\n"
+
+#: pisi/cli/searchfile.py:29
+msgid "search-file options"
+msgstr "search-file опции"
+
+#: pisi/cli/searchfile.py:42
+msgid "Show only package name"
+msgstr "Показать только имя пакета"
+
+#: pisi/cli/searchfile.py:50
+#, python-format
+msgid "Package %s has file /%s"
+msgstr "Пакет %s содержит файл /%s"
+
+#: pisi/cli/searchfile.py:53
+#, python-format
+msgid "Path '%s' does not belong to an installed package"
+msgstr "Путь '%s' не принадлежит установленному пакету"
+
+#: pisi/cli/searchfile.py:65
+#, python-format
+msgid "Searching for %s"
+msgstr "Поиск для %s"
+
+#: pisi/cli/updaterepo.py:15
+msgid ""
+"Update repository databases\n"
+"\n"
+"Usage: update-repo [<repo1> <repo2> ... <repon>]\n"
+"\n"
+"<repoi>: repository name\n"
+"\n"
+"Synchronizes the eopkg databases with the current repository.\n"
+"If no repository is given, all repositories are updated.\n"
+msgstr ""
+"Обновить базы данных репозиториев\n"
+"\n"
+"Использование: update-repo [<repo1> <repo2> ... <repon>]\n"
+"\n"
+"<repoi>: имя репозитория\n"
+"\n"
+"Синхронизирует базы данных eopkg с текущим репозиторием.\n"
+"Если не задано репозиториев, все репозитории обновляются.\n"
+
+#: pisi/cli/updaterepo.py:32
+msgid "update-repo options"
+msgstr "update-repo опции"
+
+#: pisi/cli/updaterepo.py:39
+msgid "Update database in any case"
+msgstr "Обновление базы данных в любом случае"
+
+#: pisi/cli/upgrade.py:16
+msgid ""
+"Upgrade eopkg packages\n"
+"\n"
+"Usage: Upgrade [<package1> <package2> ... <packagen>]\n"
+"\n"
+"<packagei>: package name\n"
+"\n"
+"Upgrades the entire system if no package names are given\n"
+"\n"
+"You may use only package names to specify packages because\n"
+"the package upgrade operation is defined only with respect\n"
+"to repositories. If you have specified a package name, it\n"
+"should exist in the package repositories. If you just want to\n"
+"reinstall a package from a eopkg file, use the install command.\n"
+"\n"
+"You can also specify components instead of package names, which will be\n"
+"expanded to package names.\n"
+msgstr ""
+"Обновить пакеты eopkg\n"
+"\n"
+"Использоваие: Upgrade [<package1> <package2> ... <packagen>]\n"
+"\n"
+"<packagei>: имя пакета\n"
+"\n"
+"Обновляет всю систему, если не заданы имена пакетов.\n"
+"\n"
+"Вы можете использовать только имена пакетов, потому что\n"
+"операция обновления пакета определена только в соответствии\n"
+"с репозиториями. Если вы задали имя пакета, он\n"
+"должен существовать в репозиториях. Если вы просто хотите\n"
+"перестановить пакет из eopkg-файла, используйте команду установки.\n"
+"\n"
+"Вы также можете задать компоненты вместо имен пакетов, которые потом\n"
+"будут преобразованы в имена пакетов.\n"
+
+#: pisi/cli/upgrade.py:41
+msgid "upgrade options"
+msgstr "upgrade опции"
+
+#: pisi/cli/upgrade.py:48
+msgid "Security related package upgrades only"
+msgstr "Обновления только по вопросам безопасности"
+
+#: pisi/cli/upgrade.py:55
+msgid "Do not update repositories"
+msgstr "Не обновлять репозитории"
+
+#: pisi/cli/upgrade.py:74
+msgid "Upgrade component's and recursive components' packages"
+msgstr "Обновление компонентов и рекурсивных компонентов пакетов"
+
+#: pisi/cli/upgrade.py:82
+msgid "Name of the to be upgraded packages' repository"
+msgstr "Название для обновления пакетов репозитория"
+
+#: pisi/cli/upgrade.py:97
+msgid "When upgrading system, ignore packages and components whose basenames match pattern."
+msgstr "При обновлении системы, игнорировать пакеты и компоненты, чьи базовые названия соответсвуют шаблону."
+
+#: pisi/cli/upgrade.py:105
+msgid "When upgrading system, ignore packages and components whose basenames match any pattern contained in file."
+msgstr "При обновлении системы игнорировать пакеты и компоненты, чьи базовые названия соответствуют любому шаблону, содержащемуся в файле"
+
+#: pisi/cli/upgrade.py:120
+msgid "Updating repositories"
+msgstr "Обновление репозиториев"
+
+#: pisi/cli/upgrade.py:124
+msgid "Will not update repositories"
+msgstr "Не обновлять репозитории"
+
+#: pisi/comariface.py:22
+msgid "comar-api package is not fully installed"
+msgstr "Пакет comar-api установлен не полностью."
+
+#: pisi/comariface.py:85
+#, python-format
+msgid ""
+"Cannot connect to COMAR: \n"
+"  %s\n"
+msgstr ""
+"Невозможно соединиться с COMAR: \n"
+" %s\n"
+
+#: pisi/comariface.py:101
+#, python-format
+msgid "Configuring %s package"
+msgstr "Настройка %s пакета"
+
+#: pisi/comariface.py:108
+msgid "COMAR package updated. From now on, using new COMAR daemon."
+msgstr "Пакет COMAR обнавлен. С текущего момента используется новый демон COMAR."
+
+#: pisi/comariface.py:115
+#, python-format
+msgid "Registering %s comar script"
+msgstr "Регистрация comar-скрипта %s "
+
+#: pisi/comariface.py:124 pisi/comariface.py:129 pisi/comariface.py:141
+#: pisi/comariface.py:157 pisi/comariface.py:175 pisi/comariface.py:187
+#: pisi/comariface.py:207 pisi/comariface.py:219 pisi/comariface.py:226
+#, python-format
+msgid "Script error: %s"
+msgstr "Ошибка скрипта: %s"
+
+#: pisi/comariface.py:131
+msgid "Calling post install handlers"
+msgstr "Вызов послеустановочных обработчиков"
+
+#: pisi/comariface.py:149
+msgid "Running package's post install script"
+msgstr "Запуск послеустановочного скрипта"
+
+#: pisi/comariface.py:163
+#, python-format
+msgid "Running pre removal operations for %s"
+msgstr "Запуск операций перед удалением %s"
+
+#: pisi/comariface.py:169
+msgid "Running package's pre remove script"
+msgstr "Запустить сценарий, используемый перед удалением, пакета"
+
+#: pisi/comariface.py:177
+msgid "Calling pre remove handlers"
+msgstr "Вызов предустановочных обработчиков"
+
+#: pisi/comariface.py:193
+#, python-format
+msgid "Running post removal operations for %s"
+msgstr "Запуск операций после удаления для %s"
+
+#: pisi/comariface.py:201
+msgid "Running package's postremove script"
+msgstr "Запустить сценарий, используемый после удаления, пакета"
+
+#: pisi/comariface.py:209
+msgid "Calling post remove handlers"
+msgstr "Вызов послеудаляционных обработчиков"
+
+#: pisi/comariface.py:221
+msgid "Unregistering comar scripts"
+msgstr "Отмена регистрации сценариев comar"
+
+#: pisi/config.py:82
+#, python-format
+msgid "Destination directory %s does not exist. Creating it."
+msgstr "Конечный каталог %s не существует. Каталог создаётся."
+
+#: pisi/configfile.py:125
+#, python-format
+msgid "No section by name '%s'"
+msgstr "Нет секции с именем '%s'"
+
+#: pisi/conflict.py:17 pisi/dependency.py:19 pisi/replace.py:15
+msgid " version >= "
+msgstr "версия >="
+
+#: pisi/conflict.py:19 pisi/dependency.py:21 pisi/replace.py:17
+msgid " version <= "
+msgstr "версия <="
+
+#: pisi/conflict.py:21 pisi/dependency.py:23 pisi/replace.py:19
+msgid " version "
+msgstr "версия "
+
+#: pisi/conflict.py:23 pisi/dependency.py:25 pisi/replace.py:21
+msgid " release >= "
+msgstr "релиз >="
+
+#: pisi/conflict.py:25 pisi/dependency.py:27 pisi/replace.py:23
+msgid " release <= "
+msgstr "релиз <="
+
+#: pisi/conflict.py:27 pisi/dependency.py:29 pisi/replace.py:25
+msgid " release "
+msgstr "релиз"
+
+#: pisi/constants.py:21
+#, python-format
+msgid "Can't rebind constant: %s"
+msgstr "Не удаётся привязать константе: %s"
+
+#: pisi/constants.py:27
+#, python-format
+msgid "Can't unbind constant: %s"
+msgstr "Не удаётся отвязать от константы: %s"
+
+#: pisi/context.py:78
+msgid "usysconf not installed. Please upgrade!"
+msgstr ""
+
+#: pisi/context.py:91
+#, fuzzy
+msgid "Failed to configure system"
+msgstr "Прервать сборку после запуска этапа настройки"
+
+#: pisi/db/componentdb.py:95
+#, python-format
+msgid "Component %s not found"
+msgstr "Компонент %s не найден."
+
+#: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
+#, python-format
+msgid "Group %s not found"
+msgstr "Группа %s не найдена."
+
+#: pisi/db/installdb.py:26
+msgid "installed"
+msgstr "установлен"
+
+#: pisi/db/installdb.py:26
+msgid "installed-pending"
+msgstr "установлен-ожидаемый"
+
+#: pisi/db/installdb.py:49
+#, python-format
+msgid ""
+"State: %s\n"
+"Version: %s, Release: %s\n"
+msgstr ""
+"Состояние: %s\n"
+"Версия: %s, Релиз: %s\n"
+
+#: pisi/db/installdb.py:57
+#, python-format
+msgid "Distribution: %s, Install Time: %s\n"
+msgstr "Дистрибутив: %s, Время установки: %s\n"
+
+#: pisi/db/installdb.py:94
+#, python-format
+msgid "Installation info for package '%s' is broken. Reinstall it to fix this problem."
+msgstr "Информация для установки пакета '%s' повреждена. Переустановите для исправления этой ошибки."
+
+#: pisi/db/installdb.py:366
+#, python-format
+msgid "Package %s is not installed"
+msgstr "Пакет %s не установлен"
+
+#: pisi/db/itembyrepo.py:30
+#, python-format
+msgid "%s not found in any repository."
+msgstr "%s не обнаружен ни в одном репозитории."
+
+#: pisi/db/itembyrepo.py:40
+#, python-format
+msgid "Repo item %s not found"
+msgstr "Элемент %s репозитория не обнаружен"
+
+#: pisi/db/itembyrepo.py:50 pisi/db/itembyrepo.py:61 pisi/db/itembyrepo.py:71
+#, python-format
+msgid "Repository %s does not exist."
+msgstr "Репозиторий %s не существует."
+
+#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#, python-format
+msgid "Package %s not found."
+msgstr "Пакет %s не найден."
+
+#: pisi/db/repodb.py:187
+#, python-format
+msgid "%s repository needs to be updated"
+msgstr "репозиторий %s нуждается в обновлении"
+
+#: pisi/db/repodb.py:195
+msgid "Error parsing repository index information. Index file does not exist or is malformed."
+msgstr "Ошибка разбора информации индекса репозитория. Файл индекса не существует или неправильный."
+
+#: pisi/db/repodb.py:317
+#, fuzzy, python-format
+msgid "Repository '%s' is not compatible with your distribution. Repository is disabled."
+msgstr "Пакет %s не совместим с вашей версией дистрибутива %s %s."
+
+#: pisi/fetcher.py:131
+msgid "Filename error"
+msgstr "Ошибка имени файла"
+
+#: pisi/fetcher.py:135
+#, python-format
+msgid "Access denied to write to destination directory: \"%s\""
+msgstr "Нет прав для записи в целевую директорию: \"%s\""
+
+#: pisi/fetcher.py:143
+#, python-format
+msgid "Access denied to destination file: \"%s\""
+msgstr "Доступ запрещен к целевуму файлу: \"%s\""
+
+#: pisi/fetcher.py:205
+#, python-format
+msgid "Hit max retry count when downloading: \"%s\""
+msgstr ""
+
+#: pisi/fetcher.py:209
+#, python-format
+msgid ""
+"\n"
+"Failed to fetch file, retrying %d out of %d \"%s\": %s"
+msgstr ""
+
+#: pisi/fetcher.py:218
+msgid "A problem occurred. Please check the archive address and/or permissions again."
+msgstr "Возникла проблема. Пожалуйста, проверьте архивный адрес и/или разрешения вновь."
+
+#: pisi/fetcher.py:254
+#, python-format
+msgid "Proxy configuration has been found for '%s' protocol"
+msgstr "Обнаружена конфигурация прокси-сервера для протокола '%s' "
+
+#: pisi/fetcher.py:266
+#, python-format
+msgid "Bandwidth usage is limited to %s KB/s"
+msgstr "Использование полосы пропускания ограничено %s Кб/с"
+
+#: pisi/fetcher.py:292
+msgid "Remote file can not be reached. Previously downloaded part of the file will be removed."
+msgstr "Нет доступа к удаленному файлу. Скачанная предварительно часть файла будет удалена."
+
+#: pisi/fetcher.py:305
+msgid "Server doesn't support partial downloads. Previously downloaded part of the file will be over-written."
+msgstr "Сервер не поддерживает скачивание по частям. Ранее скачанная часть файла будет перезаписана."
+
+#: pisi/file.py:27
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr "URL %s уже загружен как %s"
+
+#: pisi/file.py:35
+#, python-format
+msgid "No signature found for %s"
+msgstr "Подпись не найдена для %s"
+
+#: pisi/file.py:45
+#, python-format
+msgid " invalid for %s"
+msgstr "неверно для %s"
+
+#: pisi/file.py:69
+msgid "uri must have type either URI or string"
+msgstr "uri должен иметь тип URI или строковый"
+
+#: pisi/file.py:138
+#, python-format
+msgid "Fetching %s"
+msgstr "Извлечение %s"
+
+#: pisi/file.py:143
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr "Копирование %s в каталог для передачи"
+
+#: pisi/file.py:149
+#, python-format
+msgid "File '%s' not found."
+msgstr "Файл '%s' не найден."
+
+#: pisi/file.py:172
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr "Целостность файла %s скомпрометирована."
+
+#: pisi/file.py:196
+msgid "File mode must be either File.read or File.write"
+msgstr "Доступ к файлу должен быть для чтения или для записи"
+
+#: pisi/file.py:201
+msgid "Remote write not implemented"
+msgstr "Удаленная запись не реализована"
+
+#: pisi/file.py:250 pisi/file.py:254
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr "ОШИБКА: gpg --detach-sig %s не удалось"
+
+#: pisi/graph.py:17
+#, python-format
+msgid "Encountered cycle %s"
+msgstr "Обнаружен цикл %s"
+
+#: pisi/history.py:35
+#, python-format
+msgid "%s repository is updated."
+msgstr "%s репозиторий обновлен."
+
+#: pisi/history.py:55
+#, python-format
+msgid "%s is upgraded from %s to %s with delta."
+msgstr "%s обновлен с %s до %s при помощи применения разности пакетов (т.н. delta)"
+
+#: pisi/history.py:61
+#, python-format
+msgid "%s is upgraded from %s to %s."
+msgstr "%s обновлен с %s до %s."
+
+#: pisi/history.py:67
+#, python-format
+msgid "%s %s is removed."
+msgstr "%s %s удален."
+
+#: pisi/history.py:69
+#, python-format
+msgid "%s %s is installed."
+msgstr "%s %s установлен."
+
+#: pisi/history.py:71
+#, python-format
+msgid "%s %s is reinstalled."
+msgstr "%s %s переустановлен."
+
+#: pisi/history.py:73
+#, python-format
+msgid "%s is downgraded from %s to %s."
+msgstr "%s обновлен с %s до более ранней версии %s."
+
+#: pisi/history.py:108 pisi/history.py:136
+msgid "Unknown package operation"
+msgstr "Неизвестная операция с пакетом"
+
+#: pisi/index.py:167
+#, python-format
+msgid "Adding package to index: %s"
+msgstr "Добавление пакета в индекс: %s"
+
+#: pisi/index.py:185
+#, python-format
+msgid "Package %s: metadata corrupt, skipping..."
+msgstr "Пакет %s: метаданные повреждены, пропуск..."
+
+#: pisi/index.py:239
+msgid "Adding groups.xml to index"
+msgstr "Добавление groups.xml к индексу"
+
+#: pisi/index.py:246
+msgid "Adding components.xml to index"
+msgstr "Добавление components.xml к индексу"
+
+#: pisi/index.py:257
+msgid "Adding distribution.xml to index"
+msgstr "Добавление distribution.xml к индексу"
+
+#: pisi/index.py:280
+#, python-format
+msgid "Adding %s to source index"
+msgstr "Добавление %s в индекс исходника"
+
+#: pisi/metadata.py:64
+#, python-format
+msgid "Distribution: %s, Dist. Release: %s\n"
+msgstr "Дистрибутив: %s, Релиз дистр.: %s\n"
+
+#: pisi/metadata.py:68
+#, python-format
+msgid "Architecture: %s, Installed Size: %s"
+msgstr "Архитектура: %s, Размер установки: %s"
+
+#: pisi/metadata.py:73
+#, python-format
+msgid ", Package Size: %s"
+msgstr ", Размер пакета: %s"
+
+#: pisi/mirrors.py:38
+#, python-format
+msgid "Mirrors file %s does not exist. Could not resolve mirrors://"
+msgstr "Файл зеркал %s не существует. Невозможно определить mirrors://"
+
+#: pisi/operations/build.py:115
+#, python-format
+msgid "Path %s belongs in multiple packages"
+msgstr "Путь %s содержится в нескольких пакетах"
+
+#: pisi/operations/build.py:362
+#, python-format
+msgid "pspec.xml avoids this package from building for '%s'"
+msgstr "pspec.xml избегает этот пакет для сборки для '%s'"
+
+#: pisi/operations/build.py:365
+#, python-format
+msgid "Building source package: %s"
+msgstr "Сборка пакета с исходным кодом: %s"
+
+#: pisi/operations/build.py:382
+msgid "ccache detected..."
+msgstr "ccache обнаружен..."
+
+#: pisi/operations/build.py:386
+msgid "IceCream detected. Make sure your daemon is up and running..."
+msgstr "Обнаружен IceCream. Убедитесь, что ваш демон запущен."
+
+#: pisi/operations/build.py:421
+#, python-format
+msgid "Rebuilding for %s"
+msgstr "Пересборка %s"
+
+#: pisi/operations/build.py:540
+msgid "Cannot find component.xml in remote directory, Source is now part of unknown component"
+msgstr "Не найден файл component.xml в удаленном каталоге. Пакет сейчас является частью неизвестного компонента"
+
+#: pisi/operations/build.py:552
+msgid "Cannot find component.xml in upper directory, Source is now part of unknown component"
+msgstr "Не найден файл component.xml в верхнем каталоге. Пакет сейчас является частью неизвестного компонента"
+
+#: pisi/operations/build.py:568
+msgid "Unpacking archive(s)..."
+msgstr "Распаковка архива(ов)..."
+
+#: pisi/operations/build.py:576
+#, python-format
+msgid " unpacked (%s)"
+msgstr " распакован (%s)"
+
+#: pisi/operations/build.py:581
+msgid "Setting up source..."
+msgstr "Настройка исходных кодов..."
+
+#: pisi/operations/build.py:586
+msgid "Building source..."
+msgstr "Сборка из исходных кодов..."
+
+#: pisi/operations/build.py:591
+msgid "Testing package..."
+msgstr "Тестирование пакета..."
+
+#: pisi/operations/build.py:595
+msgid "Installing..."
+msgstr "Установка..."
+
+#: pisi/operations/build.py:663
+#, python-format
+msgid "Unable to read Actions Script (%s): %s"
+msgstr "Невозможно прочитать Actions Script (%s): %s"
+
+#: pisi/operations/build.py:665
+#, python-format
+msgid "SyntaxError in Actions Script (%s): %s"
+msgstr "Ошибка синтаксиса в Actions Script (%s): %s"
+
+#: pisi/operations/build.py:694
+#, python-format
+msgid "Unable to read COMAR script (%s): %s"
+msgstr "Невозможно прочитать COMAR script (%s): %s"
+
+#: pisi/operations/build.py:696
+#, python-format
+msgid "SyntaxError in COMAR file (%s): %s"
+msgstr "Ошибка синтаксиса в COMAR script (%s): %s"
+
+#: pisi/operations/build.py:737
+#, python-format
+msgid "Sandbox violation: %s (%s -> %s)"
+msgstr "Нарушение среды сборки: %s (%s -> %s)"
+
+#: pisi/operations/build.py:752 pisi/util.py:577
+#, python-format
+msgid "ERROR: WorkDir (%s) does not exist\n"
+msgstr "ОШИБКА: Рабочая директория (%s) не существует\n"
+
+#: pisi/operations/build.py:764
+msgid "Sandbox enabled build..."
+msgstr "Построение песочницы включено..."
+
+#: pisi/operations/build.py:789
+msgid "Sandbox violation result:"
+msgstr "Результат нарушения песочницы:"
+
+#: pisi/operations/build.py:794
+msgid "Sandbox violations!"
+msgstr "Нарушения песочницы!"
+
+#: pisi/operations/build.py:800
+#, python-format
+msgid "unable to call function from actions: %s"
+msgstr "Не удалось вызвать функцию из действий: %s"
+
+#: pisi/operations/build.py:815
+#, python-format
+msgid "Source package '%s' defines a relative 'Path' element: %s"
+msgstr "Пакет исходников '%s' устанавливает относительный элемент 'Path' : %s"
+
+#: pisi/operations/build.py:823
+#, python-format
+msgid "Source package '%s' defines multiple 'Path' tags for %s"
+msgstr "Пакет исходников '%s' устанавливает множественные теги  'Path' для %s"
+
+#: pisi/operations/build.py:861
+msgid "Safety switch: following extra packages in system.devel will be installed: "
+msgstr "Изменение безопасности: следующие экстра-пакеты из system.devel будут установлены:"
+
+#: pisi/operations/build.py:869
+msgid "Safety switch: the component system.devel cannot be found"
+msgstr "Изменение безопасности: компонент system.devel не найден"
+
+#: pisi/operations/build.py:882
+msgid "Unsatisfied Build Dependencies:"
+msgstr "Неудовлетворенные зависимости сборки:"
+
+#: pisi/operations/build.py:889
+msgid "Cannot build package due to unsatisfied build dependencies"
+msgstr "Не могу собрать пакет из-за неудовлетворенных зависимостей для сборки"
+
+#: pisi/operations/build.py:896
+#, python-format
+msgid "Build dependency %s cannot be satisfied"
+msgstr "Зависимость сборки %s не может быть удовлетворена"
+
+#: pisi/operations/build.py:899
+msgid "Do you want to install the unsatisfied build dependencies"
+msgstr "Вы хотите установить зависимости для сборки"
+
+#: pisi/operations/build.py:901
+msgid "Installing build dependencies."
+msgstr "Установка зависимостей для сборки."
+
+#: pisi/operations/build.py:919
+msgid "Ignoring build dependencies."
+msgstr "Игнорирование зависимостей для сборки."
+
+#: pisi/operations/build.py:928
+#, python-format
+msgid "Patch file is missing: %s\n"
+msgstr "Файл патча не найден или отсутствует: %s\n"
+
+#: pisi/operations/build.py:930
+#, python-format
+msgid "Patch file is empty: %s"
+msgstr "Файл патча отсутствует: %s"
+
+#: pisi/operations/build.py:947
+#, python-format
+msgid "Applying patch: %s"
+msgstr "Применение патча: %s"
+
+#: pisi/operations/build.py:1101
+msgid "pkg-config not found but package provides .pc files - skipping export of pkgconfig information"
+msgstr ""
+
+#: pisi/operations/build.py:1137
+#, python-format
+msgid "Unable to obtain pkgconfig module version for %s"
+msgstr ""
+
+#: pisi/operations/build.py:1145
+#, python-format
+msgid "Adding %s to provided pkgconfig32 list"
+msgstr ""
+
+#: pisi/operations/build.py:1150
+#, python-format
+msgid "Adding %s to provided pkgconfig list"
+msgstr ""
+
+#: pisi/operations/build.py:1375
+#, python-format
+msgid "/%s has suid bit set"
+msgstr "/%s поставлен бит suid"
+
+#: pisi/operations/build.py:1567
+#, python-format
+msgid "No user named '%s' found on the system"
+msgstr "Пользователь по имени '%s' не найден в системе"
+
+#: pisi/operations/build.py:1574
+#, python-format
+msgid "No group named '%s' found on the system"
+msgstr "Группа '%s' не найдена в системе"
+
+#: pisi/operations/build.py:1583
+#, python-format
+msgid "There are abandoned files under the install dir (%s):"
+msgstr "Есть заброшенные файлы в каталоге установки (%s):"
+
+#: pisi/operations/build.py:1629
+#, python-format
+msgid "Ignoring empty package %s"
+msgstr "Игнорирование пустого пакета %s"
+
+#: pisi/operations/build.py:1632
+#, python-format
+msgid "Building package: %s"
+msgstr "Сборка пакета: %s"
+
+#: pisi/operations/build.py:1651 pisi/operations/delta.py:73
+#, python-format
+msgid "Creating %s..."
+msgstr "Создание %s..."
+
+#: pisi/operations/build.py:1698
+msgid "Cleaning build directory..."
+msgstr "Очистка директории сборки..."
+
+#: pisi/operations/build.py:1701
+msgid "Keeping build directory"
+msgstr "Сохранение каталога сборки"
+
+#: pisi/operations/build.py:1784
+msgid "Action script error caught."
+msgstr "Обнаружена ошибка в Action Script"
+
+#: pisi/operations/build.py:1789
+#, python-format
+msgid "*** %d error(s), %d warning(s)"
+msgstr "*** %d ошибка(ок), %d предупреждение(ий)."
+
+#: pisi/operations/build.py:1876
+#, python-format
+msgid "Last state was '%s'"
+msgstr "Последнее состояние было '%s'"
+
+#: pisi/operations/delta.py:43
+#, python-format
+msgid "The file '%s' belongs to a different package other than '%s'. Skipping it..."
+msgstr "Файл '%s принадлежит другому пакету, чем '%s'. Пропуск..."
+
+#: pisi/operations/delta.py:53
+#, python-format
+msgid "Package '%s' has the same release number with the new package. Skipping it..."
+msgstr "Пакет '%s' имеет один и тот же номер релиза, что и новый пакет. Пропускаем..."
+
+#: pisi/operations/delta.py:85
+#, python-format
+msgid "All files in the package '%s' are different from the files in the new package. Skipping it..."
+msgstr "Все файлы в пакете '%s' отличаются от файлов в новом пакете. Пропускаем ..."
+
+#: pisi/operations/delta.py:134
+#, python-format
+msgid "New package '%s' exists in the list of old packages. Skipping it..."
+msgstr "Новый пакет '%s' существует в списке старых пакетов. Пропускаем..."
+
+#: pisi/operations/helper.py:42
+#, python-format
+msgid "Selected packages [%s] are in conflict with each other."
+msgstr "Выбранные пакеты [%s] конфликтуют с другими."
+
+#: pisi/operations/helper.py:49
+#, python-format
+msgid "[%s conflicts with: %s]\n"
+msgstr "[%s конфликтует с: %s]\n"
+
+#: pisi/operations/helper.py:54
+#, python-format
+msgid ""
+"The following packages have conflicts:\n"
+"%s"
+msgstr ""
+"Следующие пакеты имеют конфликты:\n"
+"%s"
+
+#: pisi/operations/helper.py:56
+msgid "Remove the following conflicting packages?"
+msgstr "Удалить следующие конфликтующие пакеты?"
+
+#: pisi/operations/helper.py:57
+msgid "Conflicting packages should be removed to continue"
+msgstr "Конфликтующие пакеты должны быть удалены, чтобы продолжить"
+
+#: pisi/operations/history.py:105 pisi/operations/history.py:123
+#, python-format
+msgid "%s could not be found"
+msgstr "%s не обнаружен"
+
+#: pisi/operations/history.py:127 pisi/package.py:103 pisi/sourcearchive.py:101
+#, python-format
+msgid "%s [cached]"
+msgstr "%s [кэшировано]"
+
+#: pisi/operations/history.py:180
+msgid "Following packages will be installed:\n"
+msgstr "Следующие пакеты будут установлены:\n"
+
+#: pisi/operations/history.py:186
+msgid "Following packages will be removed:\n"
+msgstr "Следующие пакеты будут удалены:\n"
+
+#: pisi/operations/history.py:189 pisi/operations/history.py:213
+#: pisi/operations/install.py:247 pisi/operations/remove.py:106
+#: pisi/operations/upgrade.py:182
+msgid "Do you want to continue?"
+msgstr "Вы хотите продолжить?"
+
+#: pisi/operations/history.py:197 pisi/operations/install.py:100
+#: pisi/operations/upgrade.py:196
+#, python-format
+msgid "Downloading %d / %d"
+msgstr "Загрузка %d / %d"
+
+#: pisi/operations/history.py:209
+msgid ""
+"\n"
+"Following packages could not be found in repositories and are not cached:\n"
+msgstr ""
+"\n"
+"Следующие пакеты не могут быть найдены в репозиториях и в кэше:\n"
+
+#: pisi/operations/install.py:39 pisi/operations/install.py:161
+msgid "The following package(s) are already installed and are not going to be installed again:"
+msgstr "Следующий пакет (ы) уже установлены и не будет установлен еще раз:"
+
+#: pisi/operations/install.py:47 pisi/operations/install.py:260
+msgid "No packages to install."
+msgstr "Нет пакетов для установки."
+
+#: pisi/operations/install.py:66
+msgid "Following packages will be installed:"
+msgstr "Следующие пакеты будут установлены:"
+
+#: pisi/operations/install.py:74 pisi/operations/upgrade.py:168
+#, python-format
+msgid "Total size of package(s): %.2f %s"
+msgstr "Общий размер пакета (ов): %.2f %s"
+
+#: pisi/operations/install.py:83
+msgid "There are extra packages due to dependencies. Do you want to continue?"
+msgstr "Необходимо установить дополнительные пакеты. Вы хотите продолжить?"
+
+#: pisi/operations/install.py:117 pisi/operations/upgrade.py:215
+#, python-format
+msgid "Installing %d / %d"
+msgstr "Установка %d / %d"
+
+#: pisi/operations/install.py:142
+msgid "Mixing file names and package names not supported yet."
+msgstr "Сочетание имен файлов и имен пакетов пока не поддерживается."
+
+#: pisi/operations/install.py:199
+#, python-format
+msgid "Package %s is not compatible with your distribution release %s %s."
+msgstr "Пакет %s не совместим с вашей версией дистрибутива %s %s."
+
+#: pisi/operations/install.py:209
+#, python-format
+msgid "Package %s (%s) is not compatible with your %s architecture."
+msgstr "Пакет %s (%s) не совместим с вашей %s архитектурой."
+
+#: pisi/operations/install.py:235
+#, python-format
+msgid "External dependencies not satisfied: %s"
+msgstr "Внешние зависимости не могут быть удовлетворены: %s"
+
+#: pisi/operations/install.py:242
+msgid "The following packages will be installed in order to satisfy dependencies:"
+msgstr "Следующие пакеты будут установлены в соответствии с зависимостями:"
+
+#: pisi/operations/install.py:248
+msgid "External dependencies not satisfied"
+msgstr "Внешние зависимости не соблюдены"
+
+#: pisi/operations/install.py:291
+msgid "Installation order: "
+msgstr "Порядок установки: "
+
+#: pisi/operations/install.py:343 pisi/specfile.py:298
+#, python-format
+msgid "%s dependency of package %s is not satisfied"
+msgstr "Зависимость %s пакета %s не соблюдена"
+
+#: pisi/operations/remove.py:40 pisi/operations/remove.py:79
+msgid "Safety switch prevents the removal of following packages:\n"
+msgstr "Переключатель безопасности предотвратил удаление следующих пакетов:\n"
+
+#: pisi/operations/remove.py:46 pisi/operations/remove.py:88
+#: pisi/operations/upgrade.py:413
+msgid "Safety switch: The component system.base cannot be found."
+msgstr "Изменение безопасности: компонент system.base не найден."
+
+#: pisi/operations/remove.py:54
+#, python-format
+msgid "Package %s does not exist. Cannot remove."
+msgstr "Пакет %s не существует. Не удален."
+
+#: pisi/operations/remove.py:58
+msgid "No packages to remove."
+msgstr "Нет пакетов для удаления."
+
+#: pisi/operations/remove.py:99
+msgid ""
+"The following list of packages will be removed\n"
+"in the respective order to satisfy dependencies:\n"
+msgstr ""
+"Следующий список пакетов будет удален\n"
+" в соответствии с зависимостями:\n"
+
+#: pisi/operations/remove.py:107
+msgid "Package removal declined"
+msgstr "Удаление пакета отклонено"
+
+#: pisi/operations/remove.py:120
+#, python-format
+msgid "Package %s is not installed. Cannot remove."
+msgstr "Пакет %s не установлен. Удаление невозможно."
+
+#: pisi/operations/remove.py:282
+msgid "Conflicts remain"
+msgstr "Существуют конфликты"
+
+#: pisi/operations/remove.py:291
+msgid "Obsoleted packages remaining"
+msgstr "Остался устаревший пакет"
+
+#: pisi/operations/remove.py:296
+msgid "Replaced package remains"
+msgstr "Остался замененный пакет"
+
+#: pisi/operations/upgrade.py:44
+msgid "You must restart your system for the updates in the following package(s) to take effect:"
+msgstr "Вы должны перезагрузить компьютер для того чтобы обновления следующих пакетов вступили в силу:"
+
+#: pisi/operations/upgrade.py:68
+#, fuzzy
+msgid "Warning: package *name* ends with '.pisi'"
+msgstr "Внимание: *имя пакета* заканчивается расширением '.eopkg'"
+
+#: pisi/operations/upgrade.py:71
+#, python-format
+msgid "Package %s is not installed."
+msgstr "Пакет %s не установлен."
+
+#: pisi/operations/upgrade.py:75
+#, python-format
+msgid "Package %s is not available in repositories."
+msgstr "Пакет %s не доступен в репозиториях."
+
+#: pisi/operations/upgrade.py:100
+#, python-format
+msgid "Package %s is already at the latest release %s."
+msgstr "Пакет %s уже последнего релиза %s."
+
+#: pisi/operations/upgrade.py:161
+msgid "The following packages will be upgraded:"
+msgstr "Следующие пакеты будут обновлены:"
+
+#: pisi/operations/upgrade.py:176
+msgid "There are extra packages due to dependencies."
+msgstr "Есть дополнительные пакеты из-за зависимостей."
+
+#: pisi/operations/upgrade.py:274
+#, python-format
+msgid "Dependency %s of %s cannot be satisfied"
+msgstr "Зависимость %s из %s не соблюдена"
+
+#: pisi/operations/upgrade.py:276
+msgid "Upgrade is not possible."
+msgstr "Обновление не возможно."
+
+#: pisi/operations/upgrade.py:378
+msgid "Safety switch forces the installation of following packages:"
+msgstr "Изменение безопасности требует установки следующих пакетов:"
+
+#: pisi/operations/upgrade.py:405
+msgid "Safety switch forces the upgrade of following packages:"
+msgstr "Изменение безопасности требует обновления следующих пакетов:"
+
+#: pisi/package.py:59
+#, python-format
+msgid "Cannot open package file: %s"
+msgstr "Файл пакета не может быть открыт: %s"
+
+#: pisi/package.py:80
+#, python-format
+msgid "Unsupported package format: %s"
+msgstr "Не поддерживаемый формат пакета: %s"
+
+#: pisi/package.py:96
+#, python-format
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
+msgstr ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
+
+#: pisi/pxml/autoxml.py:73
+#, fuzzy, python-brace-format
+msgid "'{0}' language of tag '{1}' is empty."
+msgstr "Язык '%s' из тега '%s' пуст"
+
+#: pisi/pxml/autoxml.py:82
+#, fuzzy
+msgid "At least one '{}' tag should have local text."
+msgstr "Хотя бы один '%s' тег должен иметь локальный текст"
+
+#: pisi/pxml/autoxml.py:110
+#, fuzzy
+msgid "LocalText: unable to get either current or default locale."
+msgstr "LocalText: не удалось получить текущую локаль, либо локаль по умолчанию"
+
+#: pisi/pxml/autoxml.py:124 pisi/pxml/autoxml.py:143
+#, fuzzy
+msgid "Tag should have at least the current locale, or failing that an English or Turkish version."
+msgstr "Тег должен быть хотя бы в текущей локали или, если это невозможно, на английском или турецком языке"
+
+#: pisi/pxml/autoxml.py:388
+#, fuzzy
+msgid "autoxml.check: '{}' errors."
+msgstr "autoxml.check: '%s' errors"
+
+#: pisi/pxml/autoxml.py:456 pisi/pxml/autoxml.py:466
+#, fuzzy
+msgid "autoxml.parse: String '{}' has errors."
+msgstr "autoxml.parse: Строка '%s' содержит ошибки"
+
+#: pisi/pxml/autoxml.py:495 pisi/pxml/autoxml.py:505
+#, fuzzy
+msgid "autoxml.read: File '{}' has errors."
+msgstr "autoxml.read: Файл '%s' содержит ошибки"
+
+#: pisi/pxml/autoxml.py:520
+#, fuzzy
+msgid "autoxml.write: object validation has failed."
+msgstr "autoxml.write: Проверка объекта не удалась"
+
+#: pisi/pxml/autoxml.py:529
+#, fuzzy
+msgid "autoxml.write: File encoding '{}' has errors."
+msgstr "autoxml.write: Кодировка файла '%s' содержит ошибки"
+
+#: pisi/pxml/autoxml.py:588
+#, fuzzy
+msgid "gen_tag: unrecognized tag type {} in spec."
+msgstr "gen_tag: неизвестный тип тега %s в спектре"
+
+#: pisi/pxml/autoxml.py:637 pisi/pxml/autoxml.py:649
+#, fuzzy
+msgid "Mandatory variable {} not available."
+msgstr "Обязательная переменная %s не доступна"
+
+#: pisi/pxml/autoxml.py:719
+#, fuzzy
+msgid "Type mismatch: read text cannot be decoded."
+msgstr "Несоответствие типов: читаемый текст не может быть распознан"
+
+#: pisi/pxml/autoxml.py:727 pisi/pxml/autoxml.py:737
+#, fuzzy
+msgid "Mandatory token {} not available."
+msgstr "Обязательный маркер %s не доступен"
+
+#: pisi/pxml/autoxml.py:745
+#, fuzzy, python-brace-format
+msgid "Type mismatch. Expected {0}, got {1}"
+msgstr "Несоответствие типов: %s вместо ожидаемого %s"
+
+#: pisi/pxml/autoxml.py:775 pisi/pxml/autoxml.py:787 pisi/pxml/autoxml.py:811
+#: pisi/pxml/autoxml.py:912 pisi/pxml/autoxml.py:934
+#, fuzzy
+msgid "Mandatory argument not available."
+msgstr "Обязательный аргумент не доступен"
+
+#: pisi/pxml/autoxml.py:781 pisi/pxml/autoxml.py:906
+#, fuzzy
+msgid "Type mismatch: DOM cannot be decoded."
+msgstr "Несоответствие типов: DOM не может быть раскодирован"
+
+#: pisi/pxml/autoxml.py:797 pisi/pxml/autoxml.py:920
+#, fuzzy
+msgid "Object cannot be encoded."
+msgstr "Объект не может быть закодирован"
+
+#: pisi/pxml/autoxml.py:808 pisi/pxml/autoxml.py:931
+#, fuzzy
+msgid "Object cannot be formatted."
+msgstr "Объект не может быть отформатирован"
+
+#: pisi/pxml/autoxml.py:824
+#, fuzzy
+msgid "List type must contain only one element."
+msgstr "Списоковый тип должен содержать только один элемент"
+
+#: pisi/pxml/autoxml.py:845 pisi/pxml/autoxml.py:863
+#, fuzzy, python-brace-format
+msgid "Mandatory list \"{0}\" under \"{1}\" node is empty."
+msgstr "Обязательный список \"%s\" под узлом \"%s\" пуст."
+
+#: pisi/pxml/xmlfile.py:50
+#, python-format
+msgid "String '%s' has invalid XML"
+msgstr "Строка '%s' содержит неверный XML"
+
+#: pisi/pxml/xmlfile.py:85
+#, python-format
+msgid "Unable to read file (%s): %s"
+msgstr "Невозможно прочитать файл (%s): %s"
+
+#: pisi/pxml/xmlfile.py:87 pisi/specfile.py:487
+#, python-format
+msgid "File '%s' has invalid XML"
+msgstr "Файл '%s' содержит неправильный XML"
+
+#: pisi/scenarioapi/package.py:71
+#, python-format
+msgid "No pisi package: %s* found."
+msgstr "No pisi package: %s* found."
+
+#: pisi/scenarioapi/repoops.py:17
+#, python-format
+msgid "Repo already has package named %s."
+msgstr "В репозитории уже есть пакет с именем %s."
+
+#: pisi/scenarioapi/repoops.py:44 pisi/scenarioapi/repoops.py:52
+#, python-format
+msgid "Repo does not have package named %s."
+msgstr "В репозитории нет пакета с именем %s."
+
+#: pisi/scripts/eopkg.py:39
+msgid "Keyboard Interrupt: Exiting..."
+msgstr "Прерывание от клавиатуры: Выход ..."
+
+#: pisi/scripts/eopkg.py:42
+msgid "Program terminated."
+msgstr "Программа завершена."
+
+#: pisi/scripts/eopkg.py:47
+msgid ""
+"Unhandled internal exception.\n"
+"Please file a bug report to <https://github.com/getsolus/package-management/>."
+msgstr ""
+"Необработанное внутреннее исключение. \n"
+"Пожалуйста отправьте отчет об ошибке в <https://github.com/getsolus/package-management/> ."
+
+#: pisi/scripts/eopkg.py:58
+msgid "System error. Program terminated."
+msgstr "Системная ошибка. Программа закрыта."
+
+#: pisi/scripts/eopkg.py:67
+msgid "Please use 'eopkg help' for general help."
+msgstr "Используйте 'eopkg help' для получения справки."
+
+#: pisi/scripts/eopkg.py:70
+msgid ""
+"\n"
+"Traceback:"
+msgstr ""
+"\n"
+"Трассировка:"
+
+#: pisi/scripts/eopkg.py:73
+msgid "Use --debug to see a traceback."
+msgstr "Используйте --debug для просмотра отладочной информации"
+
+#: pisi/sourcearchive.py:56
+#, python-format
+msgid "Fetching source from: %s"
+msgstr "Получение исходного кода из: %s"
+
+#: pisi/sourcearchive.py:67
+#, python-format
+msgid "Source archive is stored: %s/%s"
+msgstr "Архив исходных файлов хранится: %s/%s"
+
+#: pisi/sourcearchive.py:79
+#, python-format
+msgid "%s mirrors are not defined."
+msgstr "%s зеркала не определены."
+
+#: pisi/sourcearchive.py:84
+#, python-format
+msgid "Fetching source from mirror: %s"
+msgstr "Загрузка архива исходного кода из зеркала: %s"
+
+#: pisi/sourcearchive.py:91
+#, python-format
+msgid "Could not fetch source from %s mirrors."
+msgstr "Не удалось извлечь исходный код из зеркала %s"
+
+#: pisi/sourcearchive.py:109
+msgid "unpack: check_file_hash failed"
+msgstr "распаковка: не верный хэш файла"
+
+#: pisi/sourcearchive.py:115
+#, python-format
+msgid "Unknown archive type '%s' is given for '%s'."
+msgstr "Неизвестный тип архива '%s' задан для '%s'."
+
+#: pisi/sourcearchive.py:120
+#, python-format
+msgid "Pisi needs %s to unpack this archive but it is not installed."
+msgstr "Pisi необходим %s для распаковки архива, но он не установлен."
+
+#: pisi/specfile.py:169
+#, python-format
+msgid "URI: %s, type: %s, sha1sum: %s"
+msgstr "URI: %s, тип%s, sha1 сумма: %s"
+
+#: pisi/specfile.py:201 pisi/specfile.py:204
+msgid " or "
+msgstr "или"
+
+#: pisi/specfile.py:400 pisi/specfile.py:505
+#, python-format
+msgid "Summary: %s\n"
+msgstr "Краткое описание: %s\n"
+
+#: pisi/specfile.py:401 pisi/specfile.py:506
+#, python-format
+msgid "Description: %s\n"
+msgstr "Описание: %s\n"
+
+#: pisi/specfile.py:402 pisi/specfile.py:507
+#, python-format
+msgid "Licenses: %s\n"
+msgstr "Лицензии: %s\n"
+
+#: pisi/specfile.py:403 pisi/specfile.py:508
+#, python-format
+msgid "Component: %s\n"
+msgstr "Компонент: %s\n"
+
+#: pisi/specfile.py:409
+msgid "Provides: "
+msgstr "Обеспечивает: "
+
+#: pisi/specfile.py:422
+msgid "Dependencies: "
+msgstr "Зависимости: "
+
+#: pisi/specfile.py:479
+msgid "translations.xml file is badly formed."
+msgstr "Файл translations.xml неправильно сформирован."
+
+#: pisi/specfile.py:509
+msgid "Build Dependencies: "
+msgstr "Сборка зависимостей:"
+
+#: pisi/uri.py:68
+msgid "setAuthInfo needs a tuple (user, pass)"
+msgstr "setAuthInfo needs a tuple (user, pass)"
+
+#: pisi/util.py:199 pisi/util.py:213
+msgid "Running "
+msgstr "Запуск"
+
+#: pisi/util.py:204 pisi/util.py:231
+#, python-format
+msgid "return value for \"%s\" is %s"
+msgstr "возвращение значения для \"%s\" есть %s"
+
+#: pisi/util.py:445
+#, python-format
+msgid "Including external link '%s'"
+msgstr "Включая внешнюю ссылку '%s'"
+
+#: pisi/util.py:447
+#, python-format
+msgid "Including directory '%s'"
+msgstr "Подключение деректории '%s'"
+
+#: pisi/util.py:534
+msgid "You don't have necessary read permissions"
+msgstr "У вас нет необходимого разрешения на чтение"
+
+#: pisi/util.py:538
+#, fuzzy, python-format
+msgid "File %s was not found"
+msgstr "Файл %s не найден"
+
+#: pisi/util.py:540
+#, python-format
+msgid "Cannot calculate SHA1 hash of %s"
+msgstr "Не могу вычислить SHA1 хэш для %s"
+
+#: pisi/util.py:554
+#, python-format
+msgid "Compression type is not valid: '%s'"
+msgstr "Тип сжатия не верный: '%s'"
+
+#: pisi/util.py:560
+#, python-format
+msgid "Error while decompressing %s: %s"
+msgstr "Ошибка в процессе декомпрессии %s: %s"
+
+#: pisi/util.py:609
+#, python-format
+msgid "ERROR: patch (%s) failed"
+msgstr "СБОЙ: не удалось применить патч (%s)"
+
+#: pisi/util.py:611
+#, python-format
+msgid "ERROR: patch (%s) failed: %s"
+msgstr "СБОЙ: не удалось применить патч (%s): %s"
+
+#: pisi/util.py:623
+#, python-format
+msgid "strip command failed for file '%s'!"
+msgstr "Команда strip не удалась для файла '%s'!"
+
+#: pisi/util.py:630
+#, python-format
+msgid "chrpath command failed for file '%s'!"
+msgstr "Команда chrpath не удалась для файла '%s'!"
+
+#: pisi/util.py:639
+#, python-format
+msgid "objcopy (keep-debug) command failed for file '%s'!"
+msgstr "Команда objcopy (keep-debug) не удалась для файла '%s'!"
+
+#: pisi/util.py:648
+#, python-format
+msgid "objcopy (add-debuglink) command failed for file '%s'!"
+msgstr "Команда objcopy (add-debuglink) не удалась для файла '%s'!"
+
+#: pisi/util.py:751
+#, python-format
+msgid "Invalid package name: %s"
+msgstr "Неверное имя пакета: %s"
+
+#: pisi/util.py:793
+#, python-format
+msgid "Invalid delta package name: %s"
+msgstr "Неверное имя дельта пакета: %s"
+
+#: pisi/version.py:67
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr "Недопустимая строка версии: '%s'"
+
+#~ msgid ""
+#~ "\n"
+#~ "Changed config file: %s"
+#~ msgstr ""
+#~ "\n"
+#~ "Изменен конфигурационный файл: %s"
+
+#~ msgid ""
+#~ "\n"
+#~ "Package %s has changed config files."
+#~ msgstr ""
+#~ "\n"
+#~ "Package %s изменение конфигурационного файла."
+
+#~ msgid ""
+#~ "\n"
+#~ "Package %s is corrupt."
+#~ msgstr ""
+#~ "\n"
+#~ "Package %s поврежден."
+
+#~ msgid "%prog [options]"
+#~ msgstr "%prog [options]"
+
+#, python-format
+#~ msgid "%s configuration failed."
+#~ msgstr "%s ошибка конфигурации."
+
+#, python-format
+#~ msgid "%s option does not take a value"
+#~ msgstr "%s опция не требует аргумент"
+
+#, python-format
+#~ msgid "%s option requires %d arguments"
+#~ msgstr "%s опция требует %d аргумент"
+
+#, python-format
+#~ msgid "%s option requires an argument"
+#~ msgstr "%s опция требует аргумент"
+
+#, python-format
+#~ msgid "%s package is not found in source repositories"
+#~ msgstr "%s пакет не найден в репозитории с исходными кодами"
+
+#~ msgid "* Checking %s... "
+#~ msgstr "* Проверка %s... "
+
+#~ msgid ""
+#~ "Build and install eopkg source packages from repository\n"
+#~ "\n"
+#~ "Usage: emerge <sourcename> ...\n"
+#~ "\n"
+#~ "You should give the name of a source package to be\n"
+#~ "downloaded from a repository containing sources.\n"
+#~ "\n"
+#~ "You can also give the name of a component.\n"
+#~ msgstr ""
+#~ "Создать и установить пакет исходных файлов eopkg из репозитория\n"
+#~ "\n"
+#~ "Использование: emerge <имя исходноников>... \n"
+#~ "\n"
+#~ "Вам следует указать имя пакета с исходными файлами, который\n"
+#~ "будет скачан с репозитория, содержащего такие файоы.\n"
+#~ "\n"
+#~ "Вы также можете задать имя компонента.\n"
+
+#, python-format
+#~ msgid "Cannot find source package: %s"
+#~ msgstr "Не могу найти пакет исходного кода: %s"
+
+#~ msgid "Checking /%s "
+#~ msgstr "Проверка /%s"
+
+#, python-format
+#~ msgid "Could not fetch destination file \"%s\": %s"
+#~ msgstr "Не удалось получить конечный файл \"%s\": %s"
+
+#~ msgid "Do not index eopkg spec files."
+#~ msgstr "Не индексировать файлы eopkg"
+
+#~ msgid "Do not show installed packages"
+#~ msgstr "Не показывать установленные пакеты"
+
+#~ msgid "Done."
+#~ msgstr "Выполнено."
+
+#~ msgid "Dot output file"
+#~ msgstr "Окончательное размещение файла"
+
+#~ msgid "Draw reverse dependency graph"
+#~ msgstr "Нарисовать график обратных зависимостей"
+
+#~ msgid "Emerge available packages under given component"
+#~ msgstr "Собрать выбранные пакеты в занный компонент"
+
+#~ msgid ""
+#~ "Graph package relations\n"
+#~ "\n"
+#~ "Usage: graph [<package1> <package2> ...]\n"
+#~ "\n"
+#~ "Write a graph of package relations, tracking dependency and\n"
+#~ "conflicts relations starting from given packages. By default\n"
+#~ "shows the package relations among repository packages, and writes\n"
+#~ "the package in graphviz format to 'pgraph.dot'.\n"
+#~ msgstr ""
+#~ "График связей между пакетами\n"
+#~ "\n"
+#~ "Использование: graph [<пакет1> <пакет2> ...]\n"
+#~ "\n"
+#~ "Создать график связей между пакетами, отслеживающий зависимости и\n"
+#~ "конфликты, начиная с заданных пакетов. По умолчанию\n"
+#~ "показывает связи между пакетами в репозитории и записывает\n"
+#~ "результат в формате graphviz в файл 'pgraph.dot'.\n"
+
+#~ msgid ""
+#~ "List available sources\n"
+#~ "\n"
+#~ "Usage: list-sources\n"
+#~ "\n"
+#~ "Gives a brief list of sources published in the repositories.\n"
+#~ msgstr ""
+#~ "Показать список доступных источников\n"
+#~ "\n"
+#~ "Использование: list-sources\n"
+#~ "\n"
+#~ "Предоставляет краткий список источников, опубликованных в репозиториях.\n"
+
+#~ msgid "Multiple 'Path' tags specified for this path: %s"
+#~ msgstr "Множественные тэги 'Path' определены для этого пути: %s"
+
+#~ msgid "No packages to emerge."
+#~ msgstr "Нет пакетов для сборки."
+
+#~ msgid "Options"
+#~ msgstr "Опции"
+
+#, python-format
+#~ msgid "Output directory: %s"
+#~ msgstr "Конечная дериктория: %s"
+
+#~ msgid "Outputting binary packages in the package cache."
+#~ msgstr "Бинарные пакеты, как результат, в кэше пакетов."
+
+#~ msgid "Outputting packages in the working directory."
+#~ msgstr "Пакеты в рабочей директории."
+
+#~ msgid "PartOf tag not defined, looking for component"
+#~ msgstr "Тег PartOf не указан, поиск компонента"
+
+#~ msgid "Path must start with a slash: %s"
+#~ msgstr "Путь должен начинаться с \"/\": %s"
+
+#~ msgid "Plotting a graph of relations among all installed packages"
+#~ msgstr "Создание графика связей между всеми установленными пакетами"
+
+#~ msgid "Plotting a graph of relations among all repository packages"
+#~ msgstr "Создание графика связей между всеми пакетами в репозитории"
+
+#, python-format
+#~ msgid "Plotting packages in repository %s"
+#~ msgstr "Размещение пакетов в репозитории %s"
+
+#, python-format
+#~ msgid "Repo %s already present."
+#~ msgstr "Репозиторий %s уже существует."
+
+#~ msgid "Reverse Build Dependencies:"
+#~ msgstr "Обратные зависимости для сборки:"
+
+#~ msgid "Safety switch: system.devel is already installed"
+#~ msgstr "Изменение безопасности: system.devel уже установлен"
+
+#~ msgid "Search in sourcedb"
+#~ msgstr "Искать в sourcedb"
+
+#, python-format
+#~ msgid "Source %s not found in any active repository."
+#~ msgstr "Исходный код %s не обнаружен ни в одном активном репозитории."
+
+#, python-format
+#~ msgid "Source URI: %s"
+#~ msgstr "Адрес исходного кода: %s"
+
+#~ msgid "Source is part of %s component"
+#~ msgstr "Источник является частью %s компонента"
+
+#~ msgid "Specify a particular repository"
+#~ msgstr "Установить особый репозиторий"
+
+#~ msgid ""
+#~ "The following list of packages will be built and\n"
+#~ "installed in the respective order to satisfy dependencies:\n"
+#~ msgstr ""
+#~ "Следующий список пакетов будет собран и \n"
+#~ "установлен в соответствии с зависимостями:\n"
+
+#~ msgid ""
+#~ "The following list of packages will be installed\n"
+#~ "from repository in the respective order to satisfy dependencies:\n"
+#~ msgstr ""
+#~ "Следующий список пакетов будет установлен\n"
+#~ "из репозитория в соответствии с зависимостями:\n"
+
+#, python-format
+#~ msgid "Trying fallback address: %s"
+#~ msgstr "Проба резервных адресов: %s"
+
+#~ msgid "Usage"
+#~ msgstr "Использование"
+
+#, python-format
+#~ msgid "Usage: %s\n"
+#~ msgstr "Использование: %s\n"
+
+#~ msgid "You must restart the following service(s) manually for the updated software to take effect:"
+#~ msgstr "Вы должны перезапустить следующие службы вручную для того чтобы обновления программного обеспечения вступили в силу:"
+
+#~ msgid "[source] "
+#~ msgstr "[source] "
+
+#, python-format
+#~ msgid "ambiguous option: %s (%s?)"
+#~ msgstr "неоднозначная опция: %s (%s?)"
+
+#~ msgid "comar package is not fully installed"
+#~ msgstr "Пакет сomar  не полностью установлен"
+
+#~ msgid "complex"
+#~ msgstr "complex"
+
+#~ msgid "emerge options"
+#~ msgstr "emerge опции"
+
+#~ msgid "eopkg package"
+#~ msgstr "eopkg пакет"
+
+#~ msgid "floating-point"
+#~ msgstr "floating-point"
+
+#~ msgid "getNodeText: Expected text node, got something else!"
+#~ msgstr "getNodeText: Ожидаемый текстовый узел, получено кое-что еще!"
+
+#~ msgid "graph options"
+#~ msgstr "graph опции"
+
+#~ msgid "integer"
+#~ msgstr "integer"
+
+#~ msgid "list-sources options"
+#~ msgstr "опции list-sources"
+
+#~ msgid "long integer"
+#~ msgstr "long integer"
+
+#, python-format
+#~ msgid "no such option: %s"
+#~ msgstr "нет такой опции: %s"
+
+#, python-format
+#~ msgid "option %s: invalid %s value: %r"
+#~ msgstr "опция %s: некорректное %s значение: %r"
+
+#, python-format
+#~ msgid "option %s: invalid choice: %r (choose from %s)"
+#~ msgstr "опция %s: неверный выбор: %r (выбирайте из %s)"
+
+#~ msgid "show program's version number and exit"
+#~ msgstr "показать версию и выйти"
+
+#~ msgid "show this help message and exit"
+#~ msgstr "показать справку и выйти"
