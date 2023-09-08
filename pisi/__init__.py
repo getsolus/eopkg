@@ -12,9 +12,6 @@ import os
 import sys
 from importlib.resources import files
 
-import pisi.api
-import pisi.config
-from pisi import context as ctx
 
 locale.setlocale(locale.LC_ALL, "")
 
@@ -57,6 +54,13 @@ class Error(Exception):
     """Class of exceptions that lead to program termination"""
 
     pass
+
+
+# Keep these imports here, not on top of the file!
+# It's a circular dependency otherwise.
+import pisi.api
+import pisi.config
+from pisi import context as ctx
 
 
 def init_logging():
