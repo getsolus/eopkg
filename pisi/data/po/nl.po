@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"POT-Creation-Date: 2023-09-09 11:16+0200\n"
 "PO-Revision-Date: 2011-06-17 15:13+0200\n"
 "Last-Translator: Antoon Tolboom <atolboo@gmail.com>\n"
 "Language-Team: Dutch <kde-i18n-doc@kde.org>\n"
@@ -2155,7 +2155,7 @@ msgstr "Aanroepen post-verwijder afhandelingen"
 msgid "Unregistering comar scripts"
 msgstr "Deregistreren comar-scripts"
 
-#: pisi/config.py:82
+#: pisi/config.py:85
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
 msgstr "Doelmap %s bestaat niet. Deze wordt nu aangemaakt."
@@ -2265,7 +2265,7 @@ msgstr "Bronitem %s niet gevonden"
 msgid "Repository %s does not exist."
 msgstr "Softwarebron %s bestaat niet."
 
-#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
 #, python-format
 msgid "Package %s not found."
 msgstr "Pakket %s niet gevonden."

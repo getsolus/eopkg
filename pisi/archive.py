@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, 2017-Present Solus Developers
+# SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """Archive module provides access to regular archive file types."""
@@ -98,7 +98,7 @@ class TarFile(tarfile.TarFile):
         fileobj=None,
         compressformat="xz",
         compresslevel=9,
-        **kwargs
+        **kwargs,
     ):
         """Open lzma/xz compressed tar archive name for reading or writing.
         Appending is not allowed.

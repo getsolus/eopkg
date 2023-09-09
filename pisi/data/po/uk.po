@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"POT-Creation-Date: 2023-09-09 11:16+0200\n"
 "PO-Revision-Date: 2011-02-04 12:21+0300\n"
 "Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
 "Language-Team: translation@linux.org.ua\n"
@@ -1897,7 +1897,7 @@ msgstr ""
 msgid "Unregistering comar scripts"
 msgstr ""
 
-#: pisi/config.py:82
+#: pisi/config.py:85
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
 msgstr ""
@@ -2004,7 +2004,7 @@ msgstr ""
 msgid "Repository %s does not exist."
 msgstr ""
 
-#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
 #, python-format
 msgid "Package %s not found."
 msgstr ""

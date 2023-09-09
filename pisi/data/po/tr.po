@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"POT-Creation-Date: 2023-09-09 11:16+0200\n"
 "PO-Revision-Date: 2010-03-24 16:28+0200\n"
 "Last-Translator: Fatih Aşıcı <fatih@pardus.org.tr>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -2154,7 +2154,7 @@ msgstr "Kaldırma sonrası işleyicileri çağrılıyor"
 msgid "Unregistering comar scripts"
 msgstr "comar betikleri kayıtlardan siliniyor"
 
-#: pisi/config.py:82
+#: pisi/config.py:85
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
 msgstr "Hedef dizini %s bulunamadı. Yaratılıyor."
@@ -2264,7 +2264,7 @@ msgstr "Depo elemanı %s bulunamadı."
 msgid "Repository %s does not exist."
 msgstr "%s deposu yok."
 
-#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
 #, python-format
 msgid "Package %s not found."
 msgstr "Paket %s bulunamadı."

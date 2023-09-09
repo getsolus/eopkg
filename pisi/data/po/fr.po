@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"POT-Creation-Date: 2023-09-09 11:16+0200\n"
 "PO-Revision-Date: 2010-01-01 22:22+0100\n"
 "Last-Translator: Philippe Svetoslavsky <philsvet@gmail.com>\n"
 "Language-Team: French <pardus-translators@pardus.org.tr>\n"
@@ -2124,7 +2124,7 @@ msgstr "Appel aux officiants de post-suppression"
 msgid "Unregistering comar scripts"
 msgstr "Désenregistrement des scripts comar"
 
-#: pisi/config.py:82
+#: pisi/config.py:85
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
 msgstr "Le répertoire de destination %s n'existe pas. Création du répertoire."
@@ -2234,7 +2234,7 @@ msgstr "L'item de dépôt %s est introuvable."
 msgid "Repository %s does not exist."
 msgstr "Le dépôt %s n'existe pas."
 
-#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
 #, python-format
 msgid "Package %s not found."
 msgstr "Le paquet %s est introuvable."

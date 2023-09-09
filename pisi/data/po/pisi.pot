@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"POT-Creation-Date: 2023-09-09 11:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,118 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: pisi/api.py:51 pisi/cli/command.py:201
-msgid "You have to be root for this operation."
-msgstr ""
-
-#: pisi/api.py:61
-msgid "Another instance of eopkg is running. Only one instance is allowed."
-msgstr ""
-
-#: pisi/api.py:410
-#, python-format
-msgid "%s package found in %s repository"
-msgstr ""
-
-#: pisi/api.py:416
-#, python-format
-msgid "%s package already fetched"
-msgstr ""
-
-#: pisi/api.py:549
-#, python-format
-msgid "Cleaning package cache %s..."
-msgstr ""
-
-#: pisi/api.py:551
-#, python-format
-msgid "Cleaning source archive cache %s..."
-msgstr ""
-
-#: pisi/api.py:553
-#, python-format
-msgid "Cleaning temporary directory %s..."
-msgstr ""
-
-#: pisi/api.py:559
-#, python-format
-msgid "Removing cache file %s..."
-msgstr ""
-
-#: pisi/api.py:592
-msgid "Taking snapshot of the system"
-msgstr ""
-
-#: pisi/api.py:764
-#, python-format
-msgid "File %s not found"
-msgstr ""
-
-#: pisi/api.py:805
-#, python-format
-msgid "Building index of eopkg files under %s"
-msgstr ""
-
-#: pisi/api.py:810
-msgid "Index file written"
-msgstr ""
-
-#: pisi/api.py:816
-msgid "Not a valid repo name."
-msgstr ""
-
-#: pisi/api.py:824
-#, python-format
-msgid "Repo already present with name %s and same URL. Removing first."
-msgstr ""
-
-#: pisi/api.py:837
-#, python-format
-msgid "Repo %s added to system."
-msgstr ""
-
-#: pisi/api.py:846
-#, python-format
-msgid "Repo %s removed from system."
-msgstr ""
-
-#: pisi/api.py:848
-#, python-format
-msgid "Repository %s does not exist. Cannot remove."
-msgstr ""
-
-#: pisi/api.py:872
-#, python-format
-msgid "Updating repository: %s"
-msgstr ""
-
-#: pisi/api.py:881
-#, python-format
-msgid "%s repository information is up-to-date."
-msgstr ""
-
-#: pisi/api.py:883
-msgid "Updating database at any rate as requested"
-msgstr ""
-
-#: pisi/api.py:890
-msgid "Package database updated."
-msgstr ""
-
-#: pisi/api.py:892
-#, python-format
-msgid "No repository named %s found."
-msgstr ""
-
-#: pisi/api.py:905
-#, python-format
-msgid "Adding '%s' to db... "
-msgstr ""
-
-#: pisi/api.py:908
-msgid "OK."
-msgstr ""
 
 #: pisi/archive.py:508
 #, python-format
@@ -316,7 +204,7 @@ msgstr ""
 msgid "Unregistering comar scripts"
 msgstr ""
 
-#: pisi/config.py:82
+#: pisi/config.py:85
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
 msgstr ""
@@ -781,6 +669,118 @@ msgstr ""
 
 #: pisi/specfile.py:509
 msgid "Build Dependencies: "
+msgstr ""
+
+#: pisi/api.py:51 pisi/cli/command.py:201
+msgid "You have to be root for this operation."
+msgstr ""
+
+#: pisi/api.py:61
+msgid "Another instance of eopkg is running. Only one instance is allowed."
+msgstr ""
+
+#: pisi/api.py:410
+#, python-format
+msgid "%s package found in %s repository"
+msgstr ""
+
+#: pisi/api.py:416
+#, python-format
+msgid "%s package already fetched"
+msgstr ""
+
+#: pisi/api.py:549
+#, python-format
+msgid "Cleaning package cache %s..."
+msgstr ""
+
+#: pisi/api.py:551
+#, python-format
+msgid "Cleaning source archive cache %s..."
+msgstr ""
+
+#: pisi/api.py:553
+#, python-format
+msgid "Cleaning temporary directory %s..."
+msgstr ""
+
+#: pisi/api.py:559
+#, python-format
+msgid "Removing cache file %s..."
+msgstr ""
+
+#: pisi/api.py:592
+msgid "Taking snapshot of the system"
+msgstr ""
+
+#: pisi/api.py:764
+#, python-format
+msgid "File %s not found"
+msgstr ""
+
+#: pisi/api.py:805
+#, python-format
+msgid "Building index of eopkg files under %s"
+msgstr ""
+
+#: pisi/api.py:810
+msgid "Index file written"
+msgstr ""
+
+#: pisi/api.py:816
+msgid "Not a valid repo name."
+msgstr ""
+
+#: pisi/api.py:824
+#, python-format
+msgid "Repo already present with name %s and same URL. Removing first."
+msgstr ""
+
+#: pisi/api.py:837
+#, python-format
+msgid "Repo %s added to system."
+msgstr ""
+
+#: pisi/api.py:846
+#, python-format
+msgid "Repo %s removed from system."
+msgstr ""
+
+#: pisi/api.py:848
+#, python-format
+msgid "Repository %s does not exist. Cannot remove."
+msgstr ""
+
+#: pisi/api.py:872
+#, python-format
+msgid "Updating repository: %s"
+msgstr ""
+
+#: pisi/api.py:881
+#, python-format
+msgid "%s repository information is up-to-date."
+msgstr ""
+
+#: pisi/api.py:883
+msgid "Updating database at any rate as requested"
+msgstr ""
+
+#: pisi/api.py:890
+msgid "Package database updated."
+msgstr ""
+
+#: pisi/api.py:892
+#, python-format
+msgid "No repository named %s found."
+msgstr ""
+
+#: pisi/api.py:905
+#, python-format
+msgid "Adding '%s' to db... "
+msgstr ""
+
+#: pisi/api.py:908
+msgid "OK."
 msgstr ""
 
 #: pisi/actionsapi/autotools.py:33 pisi/actionsapi/cmaketools.py:28
@@ -1677,6 +1677,109 @@ msgid ""
 "Use \"%prog help <command>\" for help on a specific command.\n"
 msgstr ""
 
+#: pisi/cli/history.py:18
+msgid "upgrade"
+msgstr ""
+
+#: pisi/cli/history.py:19
+msgid "remove"
+msgstr ""
+
+#: pisi/cli/history.py:20
+msgid "emerge"
+msgstr ""
+
+#: pisi/cli/history.py:21
+msgid "install"
+msgstr ""
+
+#: pisi/cli/history.py:22
+msgid "snapshot"
+msgstr ""
+
+#: pisi/cli/history.py:23
+msgid "takeback"
+msgstr ""
+
+#: pisi/cli/history.py:24
+msgid "repository update"
+msgstr ""
+
+#: pisi/cli/history.py:30
+msgid ""
+"History of pisi operations\n"
+"\n"
+"Usage: history\n"
+"\n"
+"Lists previous operations."
+msgstr ""
+
+#: pisi/cli/history.py:44
+msgid "history options"
+msgstr ""
+
+#: pisi/cli/history.py:55
+msgid "Output only the last n operations"
+msgstr ""
+
+#: pisi/cli/history.py:62
+msgid "Take snapshot of the current system"
+msgstr ""
+
+#: pisi/cli/history.py:70
+msgid "Takeback to the state after the given operation finished"
+msgstr ""
+
+#: pisi/cli/history.py:81
+#, python-format
+msgid "Operation #%d: %s"
+msgstr ""
+
+#: pisi/cli/history.py:82
+#, python-format
+msgid "Date: %s %s"
+msgstr ""
+
+#: pisi/cli/history.py:87
+#, python-format
+msgid "    * There are %d packages in this snapshot."
+msgstr ""
+
+#: pisi/cli/index.py:13
+msgid ""
+"Index eopkg files in a given directory\n"
+"\n"
+"Usage: index <directory> ...\n"
+"\n"
+"This command searches for all eopkg files in a directory, collects eopkg\n"
+"tags from them and accumulates the information in an output XML file,\n"
+"named by default 'eopkg-index.xml'. In particular, it indexes both\n"
+"source and binary packages.\n"
+"\n"
+"If you give multiple directories, the command still works, but puts\n"
+"everything in a single index file.\n"
+msgstr ""
+
+#: pisi/cli/index.py:37
+msgid "index options"
+msgstr ""
+
+#: pisi/cli/index.py:44
+msgid "Store absolute links for indexed files."
+msgstr ""
+
+#: pisi/cli/index.py:52
+msgid "Index output file"
+msgstr ""
+
+#: pisi/cli/index.py:59
+msgid "Comma-separated compression types for index file"
+msgstr ""
+
+#: pisi/cli/index.py:66
+msgid "Do not sign index."
+msgstr ""
+
 #: pisi/cli/info.py:17
 msgid ""
 "Display package information\n"
@@ -1746,6 +1849,80 @@ msgstr ""
 msgid "%s package is not found in binary repositories"
 msgstr ""
 
+#: pisi/cli/install.py:16
+msgid ""
+"Install eopkg packages\n"
+"\n"
+"Usage: install <package1> <package2> ... <packagen>\n"
+"\n"
+"You may use filenames, URI's or package names for packages. If you have\n"
+"specified a package name, it should exist in a specified repository.\n"
+"\n"
+"You can also specify components instead of package names, which will be\n"
+"expanded to package names.\n"
+msgstr ""
+
+#: pisi/cli/install.py:35
+msgid "install options"
+msgstr ""
+
+#: pisi/cli/install.py:43
+msgid "Reinstall already installed packages"
+msgstr ""
+
+#: pisi/cli/install.py:49
+msgid "Skip distribution release and architecture check"
+msgstr ""
+
+#: pisi/cli/install.py:55 pisi/cli/upgrade.py:61
+msgid "Ignore file conflicts"
+msgstr ""
+
+#: pisi/cli/install.py:61 pisi/cli/upgrade.py:67
+msgid "Ignore package conflicts"
+msgstr ""
+
+#: pisi/cli/install.py:68
+msgid ""
+"Don't check for updates in reverse dependencies of runtime dependencies when "
+"updates are available"
+msgstr ""
+
+#: pisi/cli/install.py:76
+msgid "Install component's and recursive components' packages"
+msgstr ""
+
+#: pisi/cli/install.py:84
+msgid "Name of the component's repository"
+msgstr ""
+
+#: pisi/cli/install.py:91 pisi/cli/upgrade.py:89
+msgid "Fetch upgrades but do not install."
+msgstr ""
+
+#: pisi/cli/install.py:99
+msgid ""
+"When installing packages, ignore packages and components whose basenames "
+"match pattern."
+msgstr ""
+
+#: pisi/cli/install.py:107
+msgid ""
+"When installing packages, ignore packages and components whose basenames "
+"match any pattern contained in file."
+msgstr ""
+
+#: pisi/cli/install.py:141
+#, python-format
+msgid "There is no component named %s"
+msgstr ""
+
+#: pisi/cli/install.py:159
+msgid ""
+"Updates available, checking reverse dependencies of runtime dependencies for "
+"safety."
+msgstr ""
+
 #: pisi/cli/listavailable.py:17
 msgid ""
 "List available packages in the repositories\n"
@@ -1762,8 +1939,8 @@ msgid "list-available options"
 msgstr ""
 
 #: pisi/cli/listavailable.py:41 pisi/cli/listcomponents.py:37
-#: pisi/cli/searchfile.py:35 pisi/cli/listinstalled.py:51
-#: pisi/cli/listupgrades.py:39
+#: pisi/cli/listinstalled.py:51 pisi/cli/listupgrades.py:39
+#: pisi/cli/searchfile.py:35
 msgid "Show in long format"
 msgstr ""
 
@@ -1800,6 +1977,42 @@ msgstr ""
 
 #: pisi/cli/listcomponents.py:45 pisi/cli/search.py:49
 msgid "Name of the source or package repository"
+msgstr ""
+
+#: pisi/cli/listinstalled.py:17
+msgid ""
+"Print the list of all installed packages\n"
+"\n"
+"Usage: list-installed\n"
+msgstr ""
+
+#: pisi/cli/listinstalled.py:31
+msgid "list-installed options"
+msgstr ""
+
+#: pisi/cli/listinstalled.py:37
+msgid "Show automatically installed packages and the parent dependency"
+msgstr ""
+
+#: pisi/cli/listinstalled.py:44
+msgid "Only list the installed packages built by the given host"
+msgstr ""
+
+#: pisi/cli/listinstalled.py:58
+msgid "List installed packages under given component"
+msgstr ""
+
+#: pisi/cli/listinstalled.py:65 pisi/cli/listupgrades.py:53
+msgid "Show detailed install info"
+msgstr ""
+
+#: pisi/cli/listinstalled.py:97 pisi/cli/listupgrades.py:83
+msgid ""
+"Package Name          |St|        Version|  Rel.|  Distro|             Date"
+msgstr ""
+
+#: pisi/cli/listinstalled.py:134
+msgid "Orphaned package"
 msgstr ""
 
 #: pisi/cli/listnewest.py:16
@@ -1870,6 +2083,27 @@ msgstr ""
 #: pisi/cli/listrepo.py:33 pisi/cli/listrepo.py:35
 #, python-format
 msgid "%s [%s]"
+msgstr ""
+
+#: pisi/cli/listupgrades.py:17
+msgid ""
+"List packages to be upgraded\n"
+"\n"
+"Usage: list-upgrades\n"
+"\n"
+"Lists the packages that will be upgraded.\n"
+msgstr ""
+
+#: pisi/cli/listupgrades.py:33
+msgid "list-upgrades options"
+msgstr ""
+
+#: pisi/cli/listupgrades.py:46
+msgid "List upgradable packages under given component"
+msgstr ""
+
+#: pisi/cli/listupgrades.py:72 pisi/operations/upgrade.py:144
+msgid "No packages to upgrade."
 msgstr ""
 
 #: pisi/cli/pisicli.py:76
@@ -2042,240 +2276,6 @@ msgstr ""
 
 #: pisi/cli/updaterepo.py:39
 msgid "Update database in any case"
-msgstr ""
-
-#: pisi/cli/history.py:18
-msgid "upgrade"
-msgstr ""
-
-#: pisi/cli/history.py:19
-msgid "remove"
-msgstr ""
-
-#: pisi/cli/history.py:20
-msgid "emerge"
-msgstr ""
-
-#: pisi/cli/history.py:21
-msgid "install"
-msgstr ""
-
-#: pisi/cli/history.py:22
-msgid "snapshot"
-msgstr ""
-
-#: pisi/cli/history.py:23
-msgid "takeback"
-msgstr ""
-
-#: pisi/cli/history.py:24
-msgid "repository update"
-msgstr ""
-
-#: pisi/cli/history.py:30
-msgid ""
-"History of pisi operations\n"
-"\n"
-"Usage: history\n"
-"\n"
-"Lists previous operations."
-msgstr ""
-
-#: pisi/cli/history.py:44
-msgid "history options"
-msgstr ""
-
-#: pisi/cli/history.py:55
-msgid "Output only the last n operations"
-msgstr ""
-
-#: pisi/cli/history.py:62
-msgid "Take snapshot of the current system"
-msgstr ""
-
-#: pisi/cli/history.py:70
-msgid "Takeback to the state after the given operation finished"
-msgstr ""
-
-#: pisi/cli/history.py:81
-#, python-format
-msgid "Operation #%d: %s"
-msgstr ""
-
-#: pisi/cli/history.py:82
-#, python-format
-msgid "Date: %s %s"
-msgstr ""
-
-#: pisi/cli/history.py:87
-#, python-format
-msgid "    * There are %d packages in this snapshot."
-msgstr ""
-
-#: pisi/cli/index.py:13
-msgid ""
-"Index eopkg files in a given directory\n"
-"\n"
-"Usage: index <directory> ...\n"
-"\n"
-"This command searches for all eopkg files in a directory, collects eopkg\n"
-"tags from them and accumulates the information in an output XML file,\n"
-"named by default 'eopkg-index.xml'. In particular, it indexes both\n"
-"source and binary packages.\n"
-"\n"
-"If you give multiple directories, the command still works, but puts\n"
-"everything in a single index file.\n"
-msgstr ""
-
-#: pisi/cli/index.py:37
-msgid "index options"
-msgstr ""
-
-#: pisi/cli/index.py:44
-msgid "Store absolute links for indexed files."
-msgstr ""
-
-#: pisi/cli/index.py:52
-msgid "Index output file"
-msgstr ""
-
-#: pisi/cli/index.py:59
-msgid "Comma-separated compression types for index file"
-msgstr ""
-
-#: pisi/cli/index.py:66
-msgid "Do not sign index."
-msgstr ""
-
-#: pisi/cli/install.py:16
-msgid ""
-"Install eopkg packages\n"
-"\n"
-"Usage: install <package1> <package2> ... <packagen>\n"
-"\n"
-"You may use filenames, URI's or package names for packages. If you have\n"
-"specified a package name, it should exist in a specified repository.\n"
-"\n"
-"You can also specify components instead of package names, which will be\n"
-"expanded to package names.\n"
-msgstr ""
-
-#: pisi/cli/install.py:35
-msgid "install options"
-msgstr ""
-
-#: pisi/cli/install.py:43
-msgid "Reinstall already installed packages"
-msgstr ""
-
-#: pisi/cli/install.py:49
-msgid "Skip distribution release and architecture check"
-msgstr ""
-
-#: pisi/cli/install.py:55 pisi/cli/upgrade.py:61
-msgid "Ignore file conflicts"
-msgstr ""
-
-#: pisi/cli/install.py:61 pisi/cli/upgrade.py:67
-msgid "Ignore package conflicts"
-msgstr ""
-
-#: pisi/cli/install.py:68
-msgid ""
-"Don't check for updates in reverse dependencies of runtime dependencies when "
-"updates are available"
-msgstr ""
-
-#: pisi/cli/install.py:76
-msgid "Install component's and recursive components' packages"
-msgstr ""
-
-#: pisi/cli/install.py:84
-msgid "Name of the component's repository"
-msgstr ""
-
-#: pisi/cli/install.py:91 pisi/cli/upgrade.py:89
-msgid "Fetch upgrades but do not install."
-msgstr ""
-
-#: pisi/cli/install.py:99
-msgid ""
-"When installing packages, ignore packages and components whose basenames "
-"match pattern."
-msgstr ""
-
-#: pisi/cli/install.py:107
-msgid ""
-"When installing packages, ignore packages and components whose basenames "
-"match any pattern contained in file."
-msgstr ""
-
-#: pisi/cli/install.py:141
-#, python-format
-msgid "There is no component named %s"
-msgstr ""
-
-#: pisi/cli/install.py:159
-msgid ""
-"Updates available, checking reverse dependencies of runtime dependencies for "
-"safety."
-msgstr ""
-
-#: pisi/cli/listinstalled.py:17
-msgid ""
-"Print the list of all installed packages\n"
-"\n"
-"Usage: list-installed\n"
-msgstr ""
-
-#: pisi/cli/listinstalled.py:31
-msgid "list-installed options"
-msgstr ""
-
-#: pisi/cli/listinstalled.py:37
-msgid "Show automatically installed packages and the parent dependency"
-msgstr ""
-
-#: pisi/cli/listinstalled.py:44
-msgid "Only list the installed packages built by the given host"
-msgstr ""
-
-#: pisi/cli/listinstalled.py:58
-msgid "List installed packages under given component"
-msgstr ""
-
-#: pisi/cli/listinstalled.py:65 pisi/cli/listupgrades.py:53
-msgid "Show detailed install info"
-msgstr ""
-
-#: pisi/cli/listinstalled.py:97 pisi/cli/listupgrades.py:83
-msgid ""
-"Package Name          |St|        Version|  Rel.|  Distro|             Date"
-msgstr ""
-
-#: pisi/cli/listinstalled.py:134
-msgid "Orphaned package"
-msgstr ""
-
-#: pisi/cli/listupgrades.py:17
-msgid ""
-"List packages to be upgraded\n"
-"\n"
-"Usage: list-upgrades\n"
-"\n"
-"Lists the packages that will be upgraded.\n"
-msgstr ""
-
-#: pisi/cli/listupgrades.py:33
-msgid "list-upgrades options"
-msgstr ""
-
-#: pisi/cli/listupgrades.py:46
-msgid "List upgradable packages under given component"
-msgstr ""
-
-#: pisi/cli/listupgrades.py:72 pisi/operations/upgrade.py:144
-msgid "No packages to upgrade."
 msgstr ""
 
 #: pisi/cli/upgrade.py:16
@@ -2454,9 +2454,253 @@ msgstr ""
 msgid "Package %s is not installed"
 msgstr ""
 
-#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
 #, python-format
 msgid "Package %s not found."
+msgstr ""
+
+#: pisi/operations/build.py:115
+#, python-format
+msgid "Path %s belongs in multiple packages"
+msgstr ""
+
+#: pisi/operations/build.py:362
+#, python-format
+msgid "pspec.xml avoids this package from building for '%s'"
+msgstr ""
+
+#: pisi/operations/build.py:365
+#, python-format
+msgid "Building source package: %s"
+msgstr ""
+
+#: pisi/operations/build.py:382
+msgid "ccache detected..."
+msgstr ""
+
+#: pisi/operations/build.py:386
+msgid "IceCream detected. Make sure your daemon is up and running..."
+msgstr ""
+
+#: pisi/operations/build.py:421
+#, python-format
+msgid "Rebuilding for %s"
+msgstr ""
+
+#: pisi/operations/build.py:540
+msgid ""
+"Cannot find component.xml in remote directory, Source is now part of unknown "
+"component"
+msgstr ""
+
+#: pisi/operations/build.py:552
+msgid ""
+"Cannot find component.xml in upper directory, Source is now part of unknown "
+"component"
+msgstr ""
+
+#: pisi/operations/build.py:568
+msgid "Unpacking archive(s)..."
+msgstr ""
+
+#: pisi/operations/build.py:576
+#, python-format
+msgid " unpacked (%s)"
+msgstr ""
+
+#: pisi/operations/build.py:581
+msgid "Setting up source..."
+msgstr ""
+
+#: pisi/operations/build.py:586
+msgid "Building source..."
+msgstr ""
+
+#: pisi/operations/build.py:591
+msgid "Testing package..."
+msgstr ""
+
+#: pisi/operations/build.py:595
+msgid "Installing..."
+msgstr ""
+
+#: pisi/operations/build.py:663
+#, python-format
+msgid "Unable to read Actions Script (%s): %s"
+msgstr ""
+
+#: pisi/operations/build.py:665
+#, python-format
+msgid "SyntaxError in Actions Script (%s): %s"
+msgstr ""
+
+#: pisi/operations/build.py:694
+#, python-format
+msgid "Unable to read COMAR script (%s): %s"
+msgstr ""
+
+#: pisi/operations/build.py:696
+#, python-format
+msgid "SyntaxError in COMAR file (%s): %s"
+msgstr ""
+
+#: pisi/operations/build.py:737
+#, python-format
+msgid "Sandbox violation: %s (%s -> %s)"
+msgstr ""
+
+#: pisi/operations/build.py:764
+msgid "Sandbox enabled build..."
+msgstr ""
+
+#: pisi/operations/build.py:789
+msgid "Sandbox violation result:"
+msgstr ""
+
+#: pisi/operations/build.py:794
+msgid "Sandbox violations!"
+msgstr ""
+
+#: pisi/operations/build.py:800
+#, python-format
+msgid "unable to call function from actions: %s"
+msgstr ""
+
+#: pisi/operations/build.py:815
+#, python-format
+msgid "Source package '%s' defines a relative 'Path' element: %s"
+msgstr ""
+
+#: pisi/operations/build.py:823
+#, python-format
+msgid "Source package '%s' defines multiple 'Path' tags for %s"
+msgstr ""
+
+#: pisi/operations/build.py:861
+msgid ""
+"Safety switch: following extra packages in system.devel will be installed: "
+msgstr ""
+
+#: pisi/operations/build.py:869
+msgid "Safety switch: the component system.devel cannot be found"
+msgstr ""
+
+#: pisi/operations/build.py:882
+msgid "Unsatisfied Build Dependencies:"
+msgstr ""
+
+#: pisi/operations/build.py:889
+msgid "Cannot build package due to unsatisfied build dependencies"
+msgstr ""
+
+#: pisi/operations/build.py:896
+#, python-format
+msgid "Build dependency %s cannot be satisfied"
+msgstr ""
+
+#: pisi/operations/build.py:899
+msgid "Do you want to install the unsatisfied build dependencies"
+msgstr ""
+
+#: pisi/operations/build.py:901
+msgid "Installing build dependencies."
+msgstr ""
+
+#: pisi/operations/build.py:919
+msgid "Ignoring build dependencies."
+msgstr ""
+
+#: pisi/operations/build.py:928
+#, python-format
+msgid "Patch file is missing: %s\n"
+msgstr ""
+
+#: pisi/operations/build.py:930
+#, python-format
+msgid "Patch file is empty: %s"
+msgstr ""
+
+#: pisi/operations/build.py:947
+#, python-format
+msgid "Applying patch: %s"
+msgstr ""
+
+#: pisi/operations/build.py:1101
+msgid ""
+"pkg-config not found but package provides .pc files - skipping export of "
+"pkgconfig information"
+msgstr ""
+
+#: pisi/operations/build.py:1137
+#, python-format
+msgid "Unable to obtain pkgconfig module version for %s"
+msgstr ""
+
+#: pisi/operations/build.py:1145
+#, python-format
+msgid "Adding %s to provided pkgconfig32 list"
+msgstr ""
+
+#: pisi/operations/build.py:1150
+#, python-format
+msgid "Adding %s to provided pkgconfig list"
+msgstr ""
+
+#: pisi/operations/build.py:1375
+#, python-format
+msgid "/%s has suid bit set"
+msgstr ""
+
+#: pisi/operations/build.py:1567
+#, python-format
+msgid "No user named '%s' found on the system"
+msgstr ""
+
+#: pisi/operations/build.py:1574
+#, python-format
+msgid "No group named '%s' found on the system"
+msgstr ""
+
+#: pisi/operations/build.py:1583
+#, python-format
+msgid "There are abandoned files under the install dir (%s):"
+msgstr ""
+
+#: pisi/operations/build.py:1629
+#, python-format
+msgid "Ignoring empty package %s"
+msgstr ""
+
+#: pisi/operations/build.py:1632
+#, python-format
+msgid "Building package: %s"
+msgstr ""
+
+#: pisi/operations/build.py:1651 pisi/operations/delta.py:73
+#, python-format
+msgid "Creating %s..."
+msgstr ""
+
+#: pisi/operations/build.py:1698
+msgid "Cleaning build directory..."
+msgstr ""
+
+#: pisi/operations/build.py:1701
+msgid "Keeping build directory"
+msgstr ""
+
+#: pisi/operations/build.py:1784
+msgid "Action script error caught."
+msgstr ""
+
+#: pisi/operations/build.py:1789
+#, python-format
+msgid "*** %d error(s), %d warning(s)"
+msgstr ""
+
+#: pisi/operations/build.py:1876
+#, python-format
+msgid "Last state was '%s'"
 msgstr ""
 
 #: pisi/operations/delta.py:43
@@ -2469,11 +2713,6 @@ msgstr ""
 #, python-format
 msgid ""
 "Package '%s' has the same release number with the new package. Skipping it..."
-msgstr ""
-
-#: pisi/operations/delta.py:73 pisi/operations/build.py:1651
-#, python-format
-msgid "Creating %s..."
 msgstr ""
 
 #: pisi/operations/delta.py:85
@@ -2697,245 +2936,6 @@ msgstr ""
 
 #: pisi/operations/upgrade.py:405
 msgid "Safety switch forces the upgrade of following packages:"
-msgstr ""
-
-#: pisi/operations/build.py:115
-#, python-format
-msgid "Path %s belongs in multiple packages"
-msgstr ""
-
-#: pisi/operations/build.py:362
-#, python-format
-msgid "pspec.xml avoids this package from building for '%s'"
-msgstr ""
-
-#: pisi/operations/build.py:365
-#, python-format
-msgid "Building source package: %s"
-msgstr ""
-
-#: pisi/operations/build.py:382
-msgid "ccache detected..."
-msgstr ""
-
-#: pisi/operations/build.py:386
-msgid "IceCream detected. Make sure your daemon is up and running..."
-msgstr ""
-
-#: pisi/operations/build.py:421
-#, python-format
-msgid "Rebuilding for %s"
-msgstr ""
-
-#: pisi/operations/build.py:540
-msgid ""
-"Cannot find component.xml in remote directory, Source is now part of unknown "
-"component"
-msgstr ""
-
-#: pisi/operations/build.py:552
-msgid ""
-"Cannot find component.xml in upper directory, Source is now part of unknown "
-"component"
-msgstr ""
-
-#: pisi/operations/build.py:568
-msgid "Unpacking archive(s)..."
-msgstr ""
-
-#: pisi/operations/build.py:576
-#, python-format
-msgid " unpacked (%s)"
-msgstr ""
-
-#: pisi/operations/build.py:581
-msgid "Setting up source..."
-msgstr ""
-
-#: pisi/operations/build.py:586
-msgid "Building source..."
-msgstr ""
-
-#: pisi/operations/build.py:591
-msgid "Testing package..."
-msgstr ""
-
-#: pisi/operations/build.py:595
-msgid "Installing..."
-msgstr ""
-
-#: pisi/operations/build.py:663
-#, python-format
-msgid "Unable to read Actions Script (%s): %s"
-msgstr ""
-
-#: pisi/operations/build.py:665
-#, python-format
-msgid "SyntaxError in Actions Script (%s): %s"
-msgstr ""
-
-#: pisi/operations/build.py:694
-#, python-format
-msgid "Unable to read COMAR script (%s): %s"
-msgstr ""
-
-#: pisi/operations/build.py:696
-#, python-format
-msgid "SyntaxError in COMAR file (%s): %s"
-msgstr ""
-
-#: pisi/operations/build.py:737
-#, python-format
-msgid "Sandbox violation: %s (%s -> %s)"
-msgstr ""
-
-#: pisi/operations/build.py:764
-msgid "Sandbox enabled build..."
-msgstr ""
-
-#: pisi/operations/build.py:789
-msgid "Sandbox violation result:"
-msgstr ""
-
-#: pisi/operations/build.py:794
-msgid "Sandbox violations!"
-msgstr ""
-
-#: pisi/operations/build.py:800
-#, python-format
-msgid "unable to call function from actions: %s"
-msgstr ""
-
-#: pisi/operations/build.py:815
-#, python-format
-msgid "Source package '%s' defines a relative 'Path' element: %s"
-msgstr ""
-
-#: pisi/operations/build.py:823
-#, python-format
-msgid "Source package '%s' defines multiple 'Path' tags for %s"
-msgstr ""
-
-#: pisi/operations/build.py:861
-msgid ""
-"Safety switch: following extra packages in system.devel will be installed: "
-msgstr ""
-
-#: pisi/operations/build.py:869
-msgid "Safety switch: the component system.devel cannot be found"
-msgstr ""
-
-#: pisi/operations/build.py:882
-msgid "Unsatisfied Build Dependencies:"
-msgstr ""
-
-#: pisi/operations/build.py:889
-msgid "Cannot build package due to unsatisfied build dependencies"
-msgstr ""
-
-#: pisi/operations/build.py:896
-#, python-format
-msgid "Build dependency %s cannot be satisfied"
-msgstr ""
-
-#: pisi/operations/build.py:899
-msgid "Do you want to install the unsatisfied build dependencies"
-msgstr ""
-
-#: pisi/operations/build.py:901
-msgid "Installing build dependencies."
-msgstr ""
-
-#: pisi/operations/build.py:919
-msgid "Ignoring build dependencies."
-msgstr ""
-
-#: pisi/operations/build.py:928
-#, python-format
-msgid "Patch file is missing: %s\n"
-msgstr ""
-
-#: pisi/operations/build.py:930
-#, python-format
-msgid "Patch file is empty: %s"
-msgstr ""
-
-#: pisi/operations/build.py:947
-#, python-format
-msgid "Applying patch: %s"
-msgstr ""
-
-#: pisi/operations/build.py:1101
-msgid ""
-"pkg-config not found but package provides .pc files - skipping export of "
-"pkgconfig information"
-msgstr ""
-
-#: pisi/operations/build.py:1137
-#, python-format
-msgid "Unable to obtain pkgconfig module version for %s"
-msgstr ""
-
-#: pisi/operations/build.py:1145
-#, python-format
-msgid "Adding %s to provided pkgconfig32 list"
-msgstr ""
-
-#: pisi/operations/build.py:1150
-#, python-format
-msgid "Adding %s to provided pkgconfig list"
-msgstr ""
-
-#: pisi/operations/build.py:1375
-#, python-format
-msgid "/%s has suid bit set"
-msgstr ""
-
-#: pisi/operations/build.py:1567
-#, python-format
-msgid "No user named '%s' found on the system"
-msgstr ""
-
-#: pisi/operations/build.py:1574
-#, python-format
-msgid "No group named '%s' found on the system"
-msgstr ""
-
-#: pisi/operations/build.py:1583
-#, python-format
-msgid "There are abandoned files under the install dir (%s):"
-msgstr ""
-
-#: pisi/operations/build.py:1629
-#, python-format
-msgid "Ignoring empty package %s"
-msgstr ""
-
-#: pisi/operations/build.py:1632
-#, python-format
-msgid "Building package: %s"
-msgstr ""
-
-#: pisi/operations/build.py:1698
-msgid "Cleaning build directory..."
-msgstr ""
-
-#: pisi/operations/build.py:1701
-msgid "Keeping build directory"
-msgstr ""
-
-#: pisi/operations/build.py:1784
-msgid "Action script error caught."
-msgstr ""
-
-#: pisi/operations/build.py:1789
-#, python-format
-msgid "*** %d error(s), %d warning(s)"
-msgstr ""
-
-#: pisi/operations/build.py:1876
-#, python-format
-msgid "Last state was '%s'"
 msgstr ""
 
 #: pisi/pxml/autoxml.py:73

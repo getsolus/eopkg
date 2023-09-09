@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pisi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"POT-Creation-Date: 2023-09-09 11:16+0200\n"
 "PO-Revision-Date: 2006-04-08 12:19+0900\n"
 "Last-Translator: Piotr Maliński <riklaunim@gmail.com>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -1924,7 +1924,7 @@ msgstr ""
 msgid "Unregistering comar scripts"
 msgstr ""
 
-#: pisi/config.py:82
+#: pisi/config.py:85
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
 msgstr ""
@@ -2032,7 +2032,7 @@ msgstr "Plik %s nie został znaleziony"
 msgid "Repository %s does not exist."
 msgstr "Repozytorium %s nie istnieje. Nie można usunąć."
 
-#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
 #, fuzzy, python-format
 msgid "Package %s not found."
 msgstr "Plik %s nie został znaleziony"

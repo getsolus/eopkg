@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"POT-Creation-Date: 2023-09-09 11:16+0200\n"
 "PO-Revision-Date: 2011-07-04 23:03+0400\n"
 "Last-Translator: Alexey Ivanov <alexey.ivanes@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -2132,7 +2132,7 @@ msgstr "Вызов послеудаляционных обработчиков"
 msgid "Unregistering comar scripts"
 msgstr "Отмена регистрации сценариев comar"
 
-#: pisi/config.py:82
+#: pisi/config.py:85
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
 msgstr "Конечный каталог %s не существует. Каталог создаётся."
@@ -2242,7 +2242,7 @@ msgstr "Элемент %s репозитория не обнаружен"
 msgid "Repository %s does not exist."
 msgstr "Репозиторий %s не существует."
 
-#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
 #, python-format
 msgid "Package %s not found."
 msgstr "Пакет %s не найден."

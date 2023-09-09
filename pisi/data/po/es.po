@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"POT-Creation-Date: 2023-09-09 11:16+0200\n"
 "PO-Revision-Date: 2010-03-28 20:37-0400\n"
 "Last-Translator: \n"
 "Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
@@ -2186,7 +2186,7 @@ msgstr "Llamando actuadores posteriores de la desinstalación"
 msgid "Unregistering comar scripts"
 msgstr "Eliminando scripts comar del registro"
 
-#: pisi/config.py:82
+#: pisi/config.py:85
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
 msgstr "Carpeta destino %s no existe. Creando ahora."
@@ -2297,7 +2297,7 @@ msgstr "Item %s no encontrado en repositorio"
 msgid "Repository %s does not exist."
 msgstr "Repositorio %s no existe."
 
-#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
 #, python-format
 msgid "Package %s not found."
 msgstr "Paquete %s no encontrado."

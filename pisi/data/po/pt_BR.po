@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 15:48+0200\n"
+"POT-Creation-Date: 2023-09-09 11:16+0200\n"
 "PO-Revision-Date: 2017-05-02 22:19-0300\n"
 "Last-Translator: Fábio Nogueira <fnogueira@gnome.org>\n"
 "Language-Team: \n"
@@ -2121,7 +2121,7 @@ msgstr ""
 msgid "Unregistering comar scripts"
 msgstr ""
 
-#: pisi/config.py:82
+#: pisi/config.py:85
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
 msgstr ""
@@ -2229,7 +2229,7 @@ msgstr "O item %s do repositório não foi encontrado"
 msgid "Repository %s does not exist."
 msgstr "O repositório %s não existe."
 
-#: pisi/db/packagedb.py:192 pisi/db/packagedb.py:203
+#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
 #, python-format
 msgid "Package %s not found."
 msgstr "O pacote %s não foi encontrado."
