@@ -38,15 +38,16 @@ class Config(object, metaclass=pisi.util.Singleton):
 
     def __init__(self, options=Options()):
         self.set_options(options)
-        paths = [
+        confpath = "/usr/share/defaults/eopkg/eopkg.conf"
+        possible = [
             str(resources.files("pisi.data").joinpath("eopkg.conf")),
             "/etc/eopkg/eopkg.conf",
-            "/usr/share/defaults/eopkg/eopkg.conf",
         ]
-        for path in paths:
+        for path in possible:
             if os.path.exists(path):
-                self.values = pisi.configfile.ConfigurationFile(path)
+                confpath = path
                 break
+        self.values = pisi.configfile.ConfigurationFile(confpath)
 
         # get the initial environment variables. this is needed for
         # build process.
