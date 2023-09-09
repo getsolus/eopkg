@@ -2,6 +2,7 @@
 .vscode/
 build/
 env/
+pisi/data/eopkg.conf
 
 *.bak
 *.bak
