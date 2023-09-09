@@ -1,11 +1,10 @@
 .idea/
+.venv/
 .vscode/
+*.egg-info/
 build/
 env/
-pisi/data/eopkg.conf
 
 *.bak
-*.bak
-*.mo
 *.pyc
 *.whl

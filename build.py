@@ -51,7 +51,7 @@ class Build(build):
 
     def compile_mo(self):
         for item in glob.glob("*.po", root_dir=PO_DIR):
-            dir = path(LOCALE_DIR, item[:-3], "LC_MESSAGES")
+            dir = path(self.build_lib, LOCALE_DIR, item[:-3], "LC_MESSAGES")
             os.makedirs(dir, exist_ok=True)
             self.spawn(
                 [
@@ -66,7 +66,7 @@ class Build(build):
         sys.path.append(".")
         import pisi
 
-        conffile = open(CONF_FILE, "w")
+        conffile = open(path(self.build_lib, CONF_FILE), "w")
 
         klasses = inspect.getmembers(pisi.configfile, inspect.isclass)
         defaults = [klass for klass in klasses if klass[0].endswith("Defaults")]
