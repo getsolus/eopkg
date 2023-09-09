@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
-  <mime-type type="application/x-solus-package">
-    <_comment>Solus Operating System package</_comment>
-    <glob pattern="*.eopkg"/>
-  </mime-type>
-</mime-info>
