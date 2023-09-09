@@ -6,16 +6,16 @@ eopkg Configuration module is used for gathering and providing
 regular eopkg configurations.
 """
 
+import copy
 import os
 import os.path
-import copy
-
-from pisi import translate as _
+from importlib import resources
 
 import pisi
-import pisi.context as ctx
 import pisi.configfile
 import pisi.util
+from pisi import context as ctx
+from pisi import translate as _
 
 
 class Error(pisi.Error):
@@ -38,12 +38,15 @@ class Config(object, metaclass=pisi.util.Singleton):
 
     def __init__(self, options=Options()):
         self.set_options(options)
-        if os.path.exists("/etc/eopkg/eopkg.conf"):
-            self.values = pisi.configfile.ConfigurationFile("/etc/eopkg/eopkg.conf")
-        else:
-            self.values = pisi.configfile.ConfigurationFile(
-                "/usr/share/defaults/eopkg/eopkg.conf"
-            )
+        paths = [
+            str(resources.files("pisi.data").joinpath("eopkg.conf")),
+            "/etc/eopkg/eopkg.conf",
+            "/usr/share/defaults/eopkg/eopkg.conf",
+        ]
+        for path in paths:
+            if os.path.exists(path):
+                self.values = pisi.configfile.ConfigurationFile(path)
+                break
 
         # get the initial environment variables. this is needed for
         # build process.
