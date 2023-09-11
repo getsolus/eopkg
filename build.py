@@ -10,8 +10,7 @@ PROJECT = "pisi"
 
 DATA_DIR = path(PROJECT, "data")
 
-PO_DIR = path(DATA_DIR, "po")
-LOCALE_DIR = path(DATA_DIR, "locale")
+PO_DIR = "po"
 POTFILE = path(PO_DIR, "pisi.pot")
 
 CONF_FILE = path(DATA_DIR, "eopkg.conf")
@@ -51,7 +50,7 @@ class Build(build):
 
     def compile_mo(self):
         for item in glob.glob("*.po", root_dir=PO_DIR):
-            dir = path(self.build_lib, LOCALE_DIR, item[:-3], "LC_MESSAGES")
+            dir = path(self._locale_dir(), item[:-3], "LC_MESSAGES")
             os.makedirs(dir, exist_ok=True)
             self.spawn(
                 [
@@ -84,3 +83,6 @@ class Build(build):
                     conffile.write("# ")
                 conffile.write("%s = %s\n" % (member[0], member[1]))
             conffile.write("\n")
+
+    def _locale_dir(self):
+        return path(self.build_lib, DATA_DIR, "locale")
