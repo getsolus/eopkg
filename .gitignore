@@ -8,3 +8,4 @@ env/
 *.bak
 *.pyc
 *.whl
+dist/man/*.1

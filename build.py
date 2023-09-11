@@ -9,11 +9,13 @@ from setuptools.command.build import build
 PROJECT = "pisi"
 
 DATA_DIR = path(PROJECT, "data")
+CONF_FILE = path(DATA_DIR, "eopkg.conf")
 
 PO_DIR = "po"
 POTFILE = path(PO_DIR, "pisi.pot")
 
-CONF_FILE = path(DATA_DIR, "eopkg.conf")
+DIST_DIR = "dist"
+MAN_DIR = path(DIST_DIR, "man")
 
 
 def source_files():
@@ -29,6 +31,7 @@ class Build(build):
         self.extract_pot()
         self.update_po()
         self.compile_mo()
+        self.compile_manpage()
         self.generate_config_file()
 
     def extract_pot(self):
@@ -60,6 +63,15 @@ class Build(build):
                     path(dir, PROJECT + ".mo"),
                 ]
             )
+
+    def compile_manpage(self):
+        try:
+            for page in glob.glob("*.md", root_dir=MAN_DIR):
+                self.spawn(["ronn", "--roff", path(MAN_DIR, page), "-o", MAN_DIR])
+        except Exception as e:
+            # It's not that important if we didn't manage
+            # to build a manpage. Just warn the user.
+            print("Failed to build man pages:", e)
 
     def generate_config_file(self):
         sys.path.append(".")
