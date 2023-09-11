@@ -73,7 +73,7 @@ alias, if available. Most commands in eopkg support a short form.
     typically is compressed with `.xz` or similar.
 
  * `--ignore-check`:
- 
+
         Ignore checking metadata for a valid distribution specifier.
 
  * `--no-fetch`:
@@ -487,7 +487,7 @@ alias, if available. Most commands in eopkg support a short form.
  * `-f`, `--files`:
 
         Only rebuild the files database
-        
+
 `remove (rm) <package1> <package2> ...`
 
     Remove packages from the system. Unless `--ignore-dependency`
@@ -496,7 +496,7 @@ alias, if available. Most commands in eopkg support a short form.
     dependencies of the package being removed, however. For those
     packages, use `rmf` or later invoke `rmo`.
 
-    
+
  * `--ignore-comar`:
 
         Bypass system configuration. Deprecated in favour
@@ -565,7 +565,7 @@ alias, if available. Most commands in eopkg support a short form.
 
         Only search for summaries/descriptions with the matching
         language code. The default language code is `en`
-        
+
  * `-r`, `--repository`:
 
         Only search within the specified repository.
