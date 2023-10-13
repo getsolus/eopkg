@@ -85,8 +85,13 @@ class Package:
         dest = ctx.config.cached_packages_dir()
         self.filepath = os.path.join(dest, url.filename())
 
+        # So we can emit a notify event with the package info
+        pkg_name, pkg_version = pisi.util.parse_package_name(url.filename())
+        self.metadata, self.files, self.repo = pisi.api.info_name(pkg_name, False)
+
         if not os.path.exists(self.filepath):
             try:
+                ctx.ui.notify(pisi.ui.downloading, package=self.metadata.package, files=self.files)
                 pisi.file.File.download(url, dest)
             except pisi.fetcher.FetchError:
                 # Bug 3465
