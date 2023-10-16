@@ -86,7 +86,7 @@ class BuildDefaults:
     enableSandbox = False # Dropping sandbox support soon
     cflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -fno-plt -Wformat -Wformat-security -D_FORTIFY_SOURCE=2 -fstack-protector-strong --param=ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-vectorize -feliminate-unused-debug-types -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -Wall -Wno-error -Wp,-D_REENTRANT"
     cxxflags = "-mtune=generic -march=x86-64 -g2 -O2 -pipe -fPIC -fno-plt -D_FORTIFY_SOURCE=2 -fstack-protector-strong --param=ssp-buffer-size=32 -fasynchronous-unwind-tables -ftree-vectorize -feliminate-unused-debug-types -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -Wall -Wno-error -Wp,-D_REENTRANT"
-    ldflags = "-Wl,--copy-dt-needed-entries -Wl,-O1 -Wl,-z,relro -Wl,-z,now -Wl,-z,max-page-size=0x1000 -Wl,-Bsymbolic-functions -Wl,--sort-common"
+    ldflags = "-Wl,--copy-dt-needed-entries -Wl,-O1 -Wl,-z,relro -Wl,-z,now -Wl,-z,max-page-size=0x1000 -Wl,-Bsymbolic-functions -Wl,--sort-common -Wl,-z,pack-relative-relocs"
     buildhelper = "ccache"
     compressionlevel = 1
     fallback = "https://sources.getsol.us/"
