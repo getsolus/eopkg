@@ -70,7 +70,7 @@ class RepoOrder:
         for r in repo_doc.iterfind("Repo"):
             if r.findtext("Name") == repo_name:
                 status_elem = r.find("Status")
-                if status_elem:
+                if status_elem is not None:
                     status_elem.text = status
                 else:
                     status_elem = xml.Element("Status")
