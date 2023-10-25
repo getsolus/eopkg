@@ -5,7 +5,6 @@
 import re
 import sys
 
-
 from itertools import count
 
 from itertools import filterfalse
@@ -15,7 +14,7 @@ import pisi.actionsapi
 
 
 def cat(filename):
-    return file(filename)
+    return open(filename, "r").read()
 
 
 class grep:

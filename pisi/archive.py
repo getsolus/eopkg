@@ -121,7 +121,7 @@ class TarFile(tarfile.TarFile):
         try:
             t = cls.taropen(name, mode, fileobj, **kwargs)
         except IOError:
-            raise ReadError("not a lzma file")
+            raise tarfile.ReadError("not a lzma file")
         t._extfileobj = False
         return t
 

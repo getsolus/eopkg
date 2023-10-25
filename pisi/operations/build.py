@@ -137,7 +137,7 @@ def exclude_special_files(filepath, fileinfo, ag):
                 "%s/\S*/install/" % ctx.config.tmp_dir(), "/", new_ladata
             )
             if new_ladata != ladata:
-                file(filepath, "w").write(new_ladata)
+                open(filepath, "w").write(new_ladata)
 
     for name, pattern in list(patterns.items()):
         if name in keeplist:
@@ -767,7 +767,7 @@ class Builder:
                 valid_paths = [self.pkg_dir()]
                 conf_file = ctx.const.sandbox_conf
                 if os.path.exists(conf_file):
-                    for line in file(conf_file):
+                    for line in open(conf_file).readlines():
                         line = line.strip()
                         if len(line) > 0 and not line.startswith("#"):
                             if line.startswith("~"):

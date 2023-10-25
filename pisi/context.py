@@ -6,6 +6,7 @@
 import signal
 import os
 
+import pisi.context as ctx
 import pisi.constants
 import pisi.signalhandler
 import pisi.ui

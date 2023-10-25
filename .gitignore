@@ -8,3 +8,5 @@ env/
 *.bak
 *.pyc
 *.whl
+# Cython
+*.c
