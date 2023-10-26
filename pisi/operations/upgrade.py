@@ -441,7 +441,8 @@ def is_upgradable(name):
         ) = packagedb.get_version_and_distro_release(name, packagedb.which_repo(name))
     except KeyboardInterrupt:
         raise
-    except Exception:  # FIXME: what exception could we catch here, replace with that.
+    # FIXME: what exception could we catch here, replace with that.
+    except Exception:
         return False
 
     if distro == i_distro and pisi.version.make_version(
