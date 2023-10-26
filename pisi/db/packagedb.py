@@ -194,7 +194,8 @@ class PackageDB(lazydb.LazyDB):
         if not self.has_package(name, repo):
             raise Exception(_("Package %s not found.") % name)
 
-        pkg_doc = xml.ElementTree(xml.fromstring(self.pdb.get_item(name, repo)))
+        pkg_doc = xml.Element("PISI")
+        pkg_doc.append(xml.fromstring(self.pdb.get_item(name, repo)))
         version = db._get_version(pkg_doc)
         release = db._get_distro_release(pkg_doc)
         if not version or not release:
