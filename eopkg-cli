@@ -61,10 +61,13 @@ def handle_exception(exception, value, tb):
 
     exit()
 
-if __name__ == "__main__":
+def main():
     sys.excepthook = handle_exception
 
     signal.signal(signal.SIGTERM, sig_handler)
 
     cli = pisicli.PisiCLI()
     cli.run_command()
+
+if __name__ == "__main__":
+    main()

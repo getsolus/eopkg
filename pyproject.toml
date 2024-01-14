@@ -35,4 +35,4 @@ find = {}
 "pisi.data" = ["*", "locale/**"]
 
 [tool.setuptools.cmdclass]
-build = "build.Build"
+build = "eopkg_build.Build"
