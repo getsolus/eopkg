@@ -110,7 +110,8 @@ Lists previous operations."""
                     )
 
                 def __del__(self):
-                    self.less.stdin.close()
+                    if self.less.poll() is None:
+                        self.less.stdin.close()
                     self.less.wait()
 
                 def flush(self):
