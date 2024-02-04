@@ -852,7 +852,7 @@ class autoxml(oo.autosuper, oo.autoprop):
             if l:
                 for item in l:
                     if list_tagpath:
-                        listnode = xmlext.addNode(node, list_tagpath, branch=False)
+                        listnode = xmlext.addNode(node, list_tagpath)
                     else:
                         listnode = node
                     encode_item(listnode, item, errs)
