@@ -472,7 +472,7 @@ class ArchiveTar(ArchiveBase):
             if self.tar is None:
                 self.tar = tarfile.open(self.file_path, wmode, fileobj=self.fileobj)
 
-        self.tar.add(file_name, arc_name)
+        self.tar.add(file_name.decode('latin-1'), arc_name)
 
     def close(self):
         self.tar.close()
