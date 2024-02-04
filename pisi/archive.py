@@ -115,8 +115,7 @@ class TarFile(tarfile.TarFile):
         if fileobj is not None:
             fileobj = _LZMAProxy(fileobj, mode)
         else:
-            options = {"format": compressformat, "level": compresslevel}
-            fileobj = lzma.LZMAFile(name, mode, options=options)
+            fileobj = lzma.LZMAFile(name, mode)
 
         try:
             t = cls.taropen(name, mode, fileobj, **kwargs)
