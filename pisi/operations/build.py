@@ -1359,7 +1359,6 @@ class Builder:
                 else:
                     st = os.lstat(fpath)
 
-                frpath = frpath.decode("latin1").encode("utf-8")
                 d[frpath] = pisi.files.FileInfo(
                     path=frpath,
                     type=ftype,
@@ -1410,10 +1409,9 @@ class Builder:
 
         if code != 0:
             return None
-
-        for line in out.split("\n"):
+        for line in out.split(b"\n"):
             line = line.strip()
-            g = self.r_soname.match(line)
+            g = self.r_soname.match(str(line))
             if g:
                 return g.group(1)
         return None

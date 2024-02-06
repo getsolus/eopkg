@@ -224,15 +224,14 @@ class File:
             if ctypes & File.COMPRESSION_TYPE_XZ:
                 compressed_file = self.localfile + ".xz"
                 compressed_files.append(compressed_file)
-                options = {"level": 9}
-                lzma_file = lzma.LZMAFile(compressed_file, "w", options=options)
+                lzma_file = lzma.open(compressed_file, "wt")
                 lzma_file.write(open(self.localfile, "r").read())
                 lzma_file.close()
 
             if ctypes & File.COMPRESSION_TYPE_BZ2:
                 compressed_file = self.localfile + ".bz2"
                 compressed_files.append(compressed_file)
-                bz2.BZ2File(compressed_file, "w").write(
+                bz2.open(compressed_file, "wt").write(
                     open(self.localfile, "r").read()
                 )
 
