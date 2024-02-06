@@ -231,7 +231,7 @@ class File:
             if ctypes & File.COMPRESSION_TYPE_BZ2:
                 compressed_file = self.localfile + ".bz2"
                 compressed_files.append(compressed_file)
-                bz2.BZ2File(compressed_file, "w").write(
+                bz2.open(compressed_file, "wt").write(
                     open(self.localfile, "r").read()
                 )
 
