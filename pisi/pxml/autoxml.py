@@ -88,7 +88,7 @@ class LocalText(dict):
         assert self.tag != ""
         for key in list(self.keys()):
             newnode = xmlext.addNode(node, self.tag)
-            xmlext.setNodeAttribute(newnode, "xml:lang", key)
+            xmlext.setNodeAttribute(newnode, "en", key)
             xmlext.addText(newnode, "", self[key])
 
     # FIXME: maybe more appropriate for pisi.util
@@ -852,7 +852,7 @@ class autoxml(oo.autosuper, oo.autoprop):
             if l:
                 for item in l:
                     if list_tagpath:
-                        listnode = xmlext.addNode(node, list_tagpath, branch=False)
+                        listnode = xmlext.addNode(node, list_tagpath)
                     else:
                         listnode = node
                     encode_item(listnode, item, errs)

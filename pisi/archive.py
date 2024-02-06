@@ -115,8 +115,7 @@ class TarFile(tarfile.TarFile):
         if fileobj is not None:
             fileobj = _LZMAProxy(fileobj, mode)
         else:
-            options = {"format": compressformat, "level": compresslevel}
-            fileobj = lzma.LZMAFile(name, mode, options=options)
+            fileobj = lzma.LZMAFile(name, mode)
 
         try:
             t = cls.taropen(name, mode, fileobj, **kwargs)
@@ -473,7 +472,7 @@ class ArchiveTar(ArchiveBase):
             if self.tar is None:
                 self.tar = tarfile.open(self.file_path, wmode, fileobj=self.fileobj)
 
-        self.tar.add(file_name, arc_name)
+        self.tar.add(file_name.decode('latin-1'), arc_name)
 
     def close(self):
         self.tar.close()

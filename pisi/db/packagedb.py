@@ -114,7 +114,7 @@ class PackageDB(lazydb.LazyDB):
             for pkg in doc.iterfind("Package"):
                 prov = pkg.find("Provides")
                 name = pkg.findtext("Name")
-                if not prov or not name:
+                if prov is None or name is None:
                     continue
                 for node in prov.iterfind("PkgConfig32"):
                     pkgConfigs32[node.text] = name
