@@ -96,13 +96,13 @@ class XmlFile(object):
                 compress=compress,
                 sign=sign,
             )
-            xml.indent(self.doc)
+            xml.indent(self.doc, level=4)
             f.write(xml.tostring(self.doc.getroot()))
         finally:
             f.close()
 
     def writexmlfile(self, file: pisi.file.File or _io.TextIOWrapper):
-        xml.indent(self.doc)
+        xml.indent(self.doc, level=4)
         if type(file) is pisi.file.File:
             file.write(xml.tostring(self.doc.getroot()))
         elif type(file) is _io.TextIOWrapper:
