@@ -55,7 +55,7 @@ class FilesDB(lazydb.LazyDB):
             "usr/share/pkgconfig",
         ]
         for p in pcPaths:
-            fp = p + "/" + pkgconfigName + ".pc"
+            fp = p + "/" + str(pkgconfigName) + ".pc"
             if self.has_file(fp):
                 return self.get_file(fp)
         return None
