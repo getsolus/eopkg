@@ -88,7 +88,7 @@ class LocalText(dict):
         assert self.tag != ""
         for key in list(self.keys()):
             newnode = xmlext.addNode(node, self.tag)
-            xmlext.setNodeAttribute(newnode, "en", key)
+            xmlext.setNodeAttribute(newnode, "{http://www.w3.org/XML/1998/namespace}lang", key)
             xmlext.addText(newnode, "", self[key])
 
     # FIXME: maybe more appropriate for pisi.util
