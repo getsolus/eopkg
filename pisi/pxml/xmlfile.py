@@ -38,7 +38,7 @@ class XmlFile(object):
         """deallocate DOM structure"""
         del self.doc
 
-    def rootNode(self) -> xml._Element:
+    def rootNode(self) -> xml.Element:
         """returns root document element"""
         return self.doc.getroot()
 
@@ -96,13 +96,13 @@ class XmlFile(object):
                 compress=compress,
                 sign=sign,
             )
-            xml.indent(self.doc, level=4)
+            xml.indent(self.doc, space='    ')
             f.write(xml.tostring(self.doc.getroot()))
         finally:
             f.close()
 
     def writexmlfile(self, file: pisi.file.File or _io.TextIOWrapper):
-        xml.indent(self.doc, level=4)
+        xml.indent(self.doc, space='    ')
         if type(file) is pisi.file.File:
             file.write(xml.tostring(self.doc.getroot()))
         elif type(file) is _io.TextIOWrapper:
