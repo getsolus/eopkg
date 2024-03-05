@@ -10,3 +10,5 @@ env/
 *.whl
 # Cython
 *.c
+# nuitka'd builds
+eopkg-cli.*
