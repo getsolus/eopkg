@@ -121,3 +121,5 @@ class MetaData(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         self.source.release = src.release
         self.package.version = src.version
         self.package.release = src.release
+
+        print(">>> pisi/metadata.py: ", self.package.license)

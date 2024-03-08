@@ -34,6 +34,7 @@ class Pspec:
         tmp.pspec.source.archive = spec.source.archive
         tmp.pspec.source.name = spec.source.name
         tmp.pspec.source.license = spec.source.license
+        print(">>> pisi/scenarioapi/pspec.py/Pspec/read/tmp.pspec.source.license", tmp.pspec.source.license)
         tmp.pspec.source.partOf = spec.source.partOf
         tmp.pspec.source.summary = spec.source.summary
         tmp.pspec.source.description = spec.source.description
@@ -112,6 +113,7 @@ class Pspec:
         self.pspec.source.name = self.name
         self.pspec.source.homepage = homepage
         self.pspec.source.license = license
+        print(">>> pisi/scenarioapi/pspec.py/Pspec/set_source/self.pspec.source.license:", self.pspec.source.license)
         self.pspec.source.partOf = partOf
         self.pspec.source.summary = LocalText("Summary")
         self.pspec.source.description = LocalText("Description")

@@ -9,7 +9,7 @@
  function names are mixedCase for compatibility with minidom,
  an 'old library'
 
- this implementation uses piksemel
+ this implementation uses lxml
 """
 import _io
 
@@ -87,6 +87,10 @@ class XmlFile(object):
         except Exception as e:
             raise Error(_("File '%s' has invalid XML") % (localpath))
 
+    def getxml(self):
+        xml.indent(self.doc, space='    ')
+        return f"{xml.tostring(self.doc.getroot()).decode('utf8')}"
+
     def writexml(self, uri, tmpDir="/tmp", sha1sum=False, compress=None, sign=None):
         try:
             f = pisi.file.File(
@@ -97,6 +101,9 @@ class XmlFile(object):
                 sign=sign,
             )
             xml.indent(self.doc, space='    ')
+            print(f"> pisi/pxml/xmlfile.py/XmlFile/writexml:")
+            print(f">> xml.tostring(self.doc.getroot) for {uri}:")
+            print(f"{xml.tostring(self.doc.getroot()).decode('utf8')}")
             f.write(xml.tostring(self.doc.getroot()))
         finally:
             f.close()
@@ -104,9 +111,11 @@ class XmlFile(object):
     def writexmlfile(self, file: pisi.file.File or _io.TextIOWrapper):
         xml.indent(self.doc, space='    ')
         if type(file) is pisi.file.File:
+            print(f"> pisi/pxml/xmlfile.py/XmlFile/writexmlfile/pisi.file.File: {file}")
             file.write(xml.tostring(self.doc.getroot()))
         elif type(file) is _io.TextIOWrapper:
             # It looks like all the --xml options probably use this to write to stdout. Can't write bytes to stdout.
+            print(f"> pisi/pxml/xmlfile.py/XmlFile/writexmlfile/_io.TextIOWrapper: {file}")
             file.write(xml.tostring(self.doc.getroot()).decode('utf8'))
         else:
             raise(TypeError('file must be pisi.file.File, _io.TextIOWrapper'))

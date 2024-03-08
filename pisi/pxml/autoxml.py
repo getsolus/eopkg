@@ -254,7 +254,7 @@ class autoxml(oo.autosuper, oo.autoprop):
 
     def __init__(cls, name, bases, dict):
         """entry point for metaclass code"""
-        # print 'generating class', name
+        print('generating class: ', name)
 
         # standard initialization
         super().__init__(name, bases, dict)
@@ -311,6 +311,9 @@ class autoxml(oo.autosuper, oo.autoprop):
                     x = autoxml.gen_attr_member(cls, name)
                 elif var.startswith("t_"):
                     x = autoxml.gen_tag_member(cls, name)
+                    if name=="License":
+                        print(f"> pisi/pxml/autoxml.py/__init__: x = autoxml.get_tag_member({type(cls).__name__}, {name})")
+                        print(f">> {name}, {init}, {decoder}, {encoder}, {errors}, {format_x}")
                 elif var.startswith("s_"):
                     x = autoxml.gen_str_member(cls, name)
                 (name, init, decoder, encoder, errors, format_x) = x
@@ -541,7 +544,7 @@ class autoxml(oo.autosuper, oo.autoprop):
 
     def gen_attr_member(cls, attr):
         """generate readers and writers for an attribute member"""
-        # print 'attr:', attr
+        print('attr: ', attr)
         spec = getattr(cls, "a_" + attr)
         tag_type = spec[0]
         assert isinstance(tag_type, type(type))
@@ -550,7 +553,7 @@ class autoxml(oo.autosuper, oo.autoprop):
             return xmlext.getNodeAttribute(node, attr)
 
         def writetext(node, attr, text):
-            # print 'write attr', attr, text
+            print('write attr: ', attr, text)
             xmlext.setNodeAttribute(node, attr, text)
 
         anonfuns = cls.gen_anon_basic(attr, spec, readtext, writetext)
@@ -558,30 +561,43 @@ class autoxml(oo.autosuper, oo.autoprop):
 
     def gen_tag_member(cls, tag):
         """generate helper funs for tag member of class"""
-        # print 'tag:', tag
+        print('tag: ', tag)
+        if tag=="License":
+            print(f"> pisi/pxml/autoxml.py/autoxml/gen_tag_member({type(cls).__name__}, {tag})")
         spec = getattr(cls, "t_" + tag)
         anonfuns = cls.gen_tag(tag, spec)
         return cls.gen_named_comp(tag, spec, anonfuns)
 
     def gen_tag(cls, tag, spec):
         """generate readers and writers for the tag"""
+        if tag=="License":
+            print(f"> pisi/pxml/autoxml.py/autoxml/gen_tag({type(cls).__name__}, {tag}, {spec[0]})")
         tag_type = spec[0]
         if isinstance(tag_type, type) and tag_type in autoxml.basic_cons_map:
 
             def readtext(node, tagpath):
-                # print 'read tag', node, tagpath
+                print('read tag: ', str(node), tagpath)
+                if tag=="License":
+                    print(f">> pisi/pxml/autoxml.py/autoxml/gen_tag/isinstance({tag_type}, {type})/def readtext({node}, {tagpath})")
                 return xmlext.getNodeText(node, tagpath)
 
             def writetext(node, tagpath, text):
-                # print 'write tag', node, tagpath, text
+                print('write tag: ', node, tagpath, text)
+                if tag=="License":
+                    print(f">> pisi/pxml/autoxml.py/autoxml/gen_tag/isinstance({tag_type}, {type})/def writetext({node}, {tagpath}, {text})")
+                    # node should be Package or Source here
                 xmlext.addText(node, tagpath, text)
 
             return cls.gen_anon_basic(tag, spec, readtext, writetext)
         elif isinstance(tag_type, list):
+            if tag=="License":
+                print(f"> pisi/pxml/autoxml.py/autoxml/gen_tag/isinstance({tag_type}, list)")
             return cls.gen_list_tag(tag, spec)
         elif tag_type is LocalText:
             return cls.gen_insetclass_tag(tag, spec)
         elif isinstance(tag_type, autoxml) or isinstance(tag_type, type):
+            if tag=="License":
+                print(f"> pisi/pxml/autoxml.py/autoxml/gen_tag/isinstance({tag_type}, autoxml/type)")
             return cls.gen_class_tag(tag, spec)
         else:
             raise Error(
@@ -595,9 +611,13 @@ class autoxml(oo.autosuper, oo.autoprop):
         assert isinstance(tag_type, type(type))
 
         def readtext(node: xml._Element, blah):
+            if node.text=="License":
+                print(f"pisi/pxml/autoxml.py/autoxml/gen_str_member({type(cls).__name__}, {token})/readtext({node}, {blah})")
             return node.text
 
         def writetext(node, blah, text):
+            if node.text=="License":
+                print(f"pisi/pxml/autoxml.py/autoxml/gen_str_member({type(cls).__name__}, {token})/writetext({node}, {blah}, {text})")
             xmlext.addText(node, "", text)
 
         anonfuns = cls.gen_anon_basic(token, spec, readtext, writetext)
@@ -672,6 +692,9 @@ class autoxml(oo.autosuper, oo.autoprop):
         token_type = spec[0]
         req = spec[1]
 
+        if name=="License":
+            print(f"> pisi/pxml/autoxml.py/parse_spec({type(cls).__name__}, {token}, {spec})")
+
         if len(spec) >= 3:
             path = spec[2]  # an alternative path specified
         elif isinstance(token_type, type([])):
@@ -705,7 +728,7 @@ class autoxml(oo.autosuper, oo.autoprop):
         def decode(node, errs, where):
             """decode from DOM node, the value, watching the spec"""
             text = readtext(node, token)
-            # print 'read text ', text
+            print('read text: ', text)
             if text:
                 try:
                     value = autoxml.basic_cons_map[token_type](text)
@@ -814,8 +837,9 @@ class autoxml(oo.autosuper, oo.autoprop):
 
     def gen_list_tag(cls, tag, spec):
         """generate a list datatype. stores comps in tag/comp_tag"""
+        if tag=="License":
+            print(f"> pisi/pxml/autoxml.py/gen_list_tag({type(cls).__name__}, {tag}, {spec})")
         name, tag_type, req, path = cls.parse_spec(tag, spec)
-
         pathcomps = path.split("/")
         comp_tag = pathcomps.pop()
         list_tagpath = util.makepath(pathcomps, sep="/", relative=True)

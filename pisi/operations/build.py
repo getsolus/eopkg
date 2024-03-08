@@ -1617,6 +1617,7 @@ class Builder:
                     package.partOf = self.spec.source.partOf
             if not package.license:
                 package.license = self.spec.source.license
+                print(">>> pisi/operations/build.py/package.license: ", package.license)
             if not package.icon:
                 package.icon = self.spec.source.icon
 

@@ -56,10 +56,14 @@ def getTagByName(parent: xml._Element, childName: str) -> Iterator[xml.Element]:
 def getNodeText(node: xml._Element, tagpath: str) -> str | None:
     """get the first child and expect it to be text!"""
     if node.tag == tagpath:
+        if "License" in node.tag:
+            print("> pisi/pxml/xmlext.py/getNodeText/node.tag: ", node.tag)
         return node.text
     child = getNode(node, tagpath)
     if child is None:
         return None
+    if "License" in tagpath:
+        print("> pisi/pxml/xmlext.py/getNodeText/child.text: ", child.text)
     return child.text
 
 
@@ -102,10 +106,16 @@ def addNode(
         return node
     for tag in tagpath.split("/"):
         child = node.find(tag)
+        if "License" in tagpath:
+            print(f">> pisi/pxml/xmlext.py/addNode({node}, {tagpath}) (in for tag in ...)")
+            xml.dump(node)  # Package
         if child is None:
             child = xml.Element(tag)
             node.append(child)
-        node = child
+        node = child # this assigns to the _first_ License node found _always_ (= the bug)
+        if "License" in tagpath:
+            print(f">> pisi/pxml/xmlext.py/addNode (after node = child, where child is of tag 'License' now)")
+            xml.dump(child) # License now
     if newnode is not None:
         node.append(newnode)
         node = newnode
@@ -113,9 +123,17 @@ def addNode(
 
 
 def addText(node: xml._Element, tagpath: str, text: str):
-    node = addNode(node, tagpath)
-    node.text = text
-
+    if "License" in tagpath:
+        print(f">> pisi/pxml/xmlext.py/addText (function start): {node}, {tagpath}, {text}")
+        xml.dump(node) # Package node
+    newnode = addNode(node, tagpath)
+    if "License" in tagpath:
+        print(f">> pisi/pxml/xmlext.py/addText (before setting newnode.text): {newnode}, {tagpath}, {text}")
+        xml.dump(node) # Package node
+    newnode.text = text # this overwrites any _existing_ text in the first child (= License) node above
+    if "License" in tagpath:
+        print(f">> pisi/pxml/xmlext.py/addText (after setting newnode.text): {newnode}, {tagpath}, {text}")
+        xml.dump(node) # Package node
 
 def newNode(tag: str) -> xml._Element:
     return xml.Element(tag)

@@ -400,6 +400,7 @@ class Package(metaclass=autoxml.autoxml):
         s += _("Summary: %s\n") % str(self.summary)
         s += _("Description: %s\n") % str(self.description)
         s += _("Licenses: %s\n") % ", ".join(self.license)
+        print(">>> pisi/specfile.py/__str__/self.license: ", self.license)
         s += _("Component: %s\n") % str(self.partOf)
         if (
             len(self.providesComar) > 0
@@ -505,6 +506,7 @@ class SpecFile(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         s += _("Summary: %s\n") % str(self.source.summary)
         s += _("Description: %s\n") % str(self.source.description)
         s += _("Licenses: %s\n") % ", ".join(self.source.license)
+        print(">>> pisi/specfile.py/SpecFile/__str__/self.source.license", self.source.license)
         s += _("Component: %s\n") % str(self.source.partOf)
         s += _("Build Dependencies: ")
         for x in self.source.buildDependencies:
