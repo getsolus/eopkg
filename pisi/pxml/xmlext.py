@@ -102,7 +102,7 @@ def addNode(
         return node
     for tag in tagpath.split("/"):
         child = node.find(tag)
-        if child is None:
+        if child is None or tag == "License":
             child = xml.Element(tag)
             node.append(child)
         node = child
