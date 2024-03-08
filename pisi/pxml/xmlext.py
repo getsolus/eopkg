@@ -103,6 +103,9 @@ def addNode(
     for tag in tagpath.split("/"):
         child = node.find(tag)
         if child is None or tag == "License":
+            # Always append licenses, otherwise we end up with only the last license listed in pspec.xml.
+            # This fixes a regression in the python3 port of ypkg. More "or" statements can be added if other keys
+            # have a similar issue.
             child = xml.Element(tag)
             node.append(child)
         node = child
