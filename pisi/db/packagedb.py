@@ -249,7 +249,7 @@ class PackageDB(lazydb.LazyDB):
         for pkg, dep in rvdb:
             node = xml.fromstring(dep)
             dependency = pisi.dependency.Dependency()
-            dependency.package = node.text
+            dependency.package = node.find('Name').text
 
             attr = next(iter(node.attrib.items()), None)
             if attr:
