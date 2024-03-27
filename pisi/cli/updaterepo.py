@@ -48,6 +48,14 @@ If no repository is given, all repositories are updated.
     def run(self):
         self.init(database = True)
 
+        if pisi.api.is_offline_upgrade_prepared() is True:
+            ctx.ui.warning(_('An offline update is already prepared'))
+            if ctx.ui.confirm(_('Do you wish to clear the previously prepared offline update?')):
+                if pisi.api.clear_prepared_offline_upgrade() is False:
+                    return
+            else:
+                return
+
         if self.args:
             repos = self.args
         else:

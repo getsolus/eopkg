@@ -11,11 +11,14 @@
 #
 
 import optparse
+import os
+import subprocess
 
 from pisi import translate as _
 
 import pisi.cli.command as command
 import pisi.context as ctx
+import pisi.util as util
 import pisi.api
 import pisi.db
 
@@ -62,6 +65,7 @@ expanded to package names.
                                type="string", default=None, help=_('Name of the to be upgraded packages\' repository'))
         group.add_option("-f", "--fetch-only", action="store_true",
                      default=False, help=_("Fetch upgrades but do not install."))
+        group.add_option("--offline", action="store_true", default=False, help=_("Perform upgrades offline"))
         group.add_option("-x", "--exclude", action="append",
                      default=None, help=_("When upgrading system, ignore packages and components whose basenames match pattern."))
         group.add_option("--exclude-from", action="store",
@@ -74,10 +78,18 @@ expanded to package names.
 
     def run(self):
 
-        if self.options.fetch_only:
+        if self.options.fetch_only or self.options.offline:
             self.init(database=True, write=False)
         else:
             self.init()
+
+        if pisi.api.is_offline_upgrade_prepared() is True:
+            ctx.ui.warning(_('An offline update is already prepared'))
+            if ctx.ui.confirm(_('Do you wish to clear the previously prepared offline update?')):
+                if pisi.api.clear_prepared_offline_upgrade() is False:
+                    return
+            else:
+                return
 
         if not ctx.get_option('bypass_update_repo'):
             ctx.ui.info(_('Updating repositories'))
@@ -100,3 +112,9 @@ expanded to package names.
         packages.extend(self.args)
 
         pisi.api.upgrade(packages, repository)
+
+        if self.options.offline:
+            offline_file = os.path.join(ctx.config.history_dir(), 'prepared-offline-update')
+            if os.path.exists(offline_file):
+                if ctx.ui.confirm(_('The updates will be applied on next reboot. Do you wish to reboot now?')):
+                    subprocess.Popen(["systemctl", "soft-reboot"])

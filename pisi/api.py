@@ -775,8 +775,33 @@ def remove_repo(name):
         raise pisi.Error(_('Repository %s does not exist. Cannot remove.')
                  % name)
 
+def is_offline_upgrade_prepared():
+    if os.path.exists('/etc/system-update') or os.path.exists('/system-update'):
+        return True
+
+    return False
+
+def clear_prepared_offline_upgrade():
+    try:
+        if os.path.exists('/etc/system-update'):
+            os.remove('/etc/system-update')
+            ctx.ui.debug(_('Deleted /etc/system-update'))
+        if os.path.exists('/system-update'):
+            os.remove('/system-update')
+            ctx.ui.debug(_('Deleted /system-update'))
+    except IOError as e:
+        ctx.ui.error(_('Failed to remove prepared offline upgrade, reason: %s') % e)
+    finally:
+        return True
+
 @locked
 def update_repos(repos, force=False):
+    if is_offline_upgrade_prepared() is True:
+        if force is True:
+            pisi.api.clear_prepared_offline_upgrade()
+        else:
+            ctx.ui.error(_('An offline upgrade is prepared for installation, blocking.'))
+
     pisi.db.historydb.HistoryDB().create_history("repoupdate")
     updated = False
     try:
@@ -788,6 +813,12 @@ def update_repos(repos, force=False):
 
 @locked
 def update_repo(repo, force=False):
+    if is_offline_upgrade_prepared() is True:
+        if force is True:
+            pisi.api.clear_prepared_offline_upgrade()
+        else:
+            ctx.ui.error(_('An offline upgrade is prepared for installation, blocking.'))
+
     pisi.db.historydb.HistoryDB().create_history("repoupdate")
     updated = __update_repo(repo, force)
     if updated:

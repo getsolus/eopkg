@@ -10,6 +10,7 @@
 # Please read the COPYING file.
 #
 
+import os
 import sys
 
 from pisi import translate as _
@@ -190,6 +191,12 @@ def upgrade(A=[], repo=None):
     if ctx.get_option('fetch_only'):
         return
 
+    # For offline upgrades return here after fetching of upgrades
+    # but prepare it first
+    if ctx.get_option('offline'):
+        prepare_offline_upgrade(order)
+        return
+
     if conflicts:
         operations.remove.remove_conflicting_packages(conflicts)
 
@@ -206,6 +213,47 @@ def upgrade(A=[], repo=None):
         raise e
     finally:
         ctx.exec_usysconf()
+
+def prepare_offline_upgrade(order):
+    # https://www.freedesktop.org/software/systemd/man/latest/systemd.offline-updates.html
+    #
+    # For a high-level overview
+    # 1. Fetch upgrades with eopkg up --fetch-only
+    # 2. Create symlink to /system-update to instruct systemd to perform offline upgrades
+    # 3. Soft reboot to initiate offline upgrades
+    # 3. eopkg-offline-upgrades.service will run eopkg up --bypass-update-repo --yes-all
+    # 4. System reboots and /system-update file is removed
+
+    # a bit of a hard coded safety hack here
+    if not os.path.exists('/usr/lib/systemd/system/system-update.target.wants/eopkg-offline-update.service'):
+        ctx.ui.error(_("eopkg-offline-update.service doesn't exist, check your installation"))
+        return
+
+    # If we get to this point just unconditionally clear any previously
+    # prepared offline upgrades to avoid issues.
+    if os.path.exists('/system-update'):
+        os.remove('/system-update')
+    if os.path.exists('/etc/system-update'):
+        os.remove('/etc/system-update')
+
+    # Nothing special about this file but we need to create some sort of symlink to /system-update
+    # to instruct systemd to perform an offline update
+    offline_file = os.path.join(ctx.config.history_dir(), 'prepared-offline-update')
+
+    packagedb = pisi.db.packagedb.PackageDB()
+
+    try:
+        with open(offline_file, 'w') as f:
+            for pkg in order:
+                info = packagedb.get_package(pkg)
+                f.write("%s\n\n" % unicode(info))
+        os.symlink(offline_file, '/system-update')
+        ctx.ui.debug(_('Created symlink from %s to /system-update') % offline_file)
+    except IOError:
+        ctx.ui.error(_('Failed to prepare offline upgrade'))
+        return
+    finally:
+        ctx.ui.info(util.colorize(_('Successfully prepared offline upgrade'), 'green'))
 
 def plan_upgrade(A, force_replaced=True, replaces=None):
     # FIXME: remove force_replaced
