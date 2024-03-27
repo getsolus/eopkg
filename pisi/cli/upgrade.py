@@ -11,11 +11,14 @@
 #
 
 import optparse
+import os
+import subprocess
 
 from pisi import translate as _
 
 import pisi.cli.command as command
 import pisi.context as ctx
+import pisi.util as util
 import pisi.api
 import pisi.db
 
@@ -62,6 +65,7 @@ expanded to package names.
                                type="string", default=None, help=_('Name of the to be upgraded packages\' repository'))
         group.add_option("-f", "--fetch-only", action="store_true",
                      default=False, help=_("Fetch upgrades but do not install."))
+        group.add_option("--offline", action="store_true", default=False, help=_("Perform upgrades offline"))
         group.add_option("-x", "--exclude", action="append",
                      default=None, help=_("When upgrading system, ignore packages and components whose basenames match pattern."))
         group.add_option("--exclude-from", action="store",
@@ -74,10 +78,18 @@ expanded to package names.
 
     def run(self):
 
-        if self.options.fetch_only:
+        if self.options.fetch_only or self.options.offline:
             self.init(database=True, write=False)
         else:
             self.init()
+
+        if self.options.offline:
+            if os.path.exists('/system-update'):
+                ctx.ui.warning(_('An offline update is already prepared'))
+                if ctx.ui.confirm(_('Do you wish to clear the previously prepared offline update?')):
+                    os.remove('/system-update')
+                else:
+                    return
 
         if not ctx.get_option('bypass_update_repo'):
             ctx.ui.info(_('Updating repositories'))
@@ -100,3 +112,39 @@ expanded to package names.
         packages.extend(self.args)
 
         pisi.api.upgrade(packages, repository)
+
+        # https://www.freedesktop.org/software/systemd/man/latest/systemd.offline-updates.html
+        if self.options.offline:
+
+            upgradable_pkgs = pisi.api.list_upgradable()
+            upgradable_pkgs.sort()
+
+            if not upgradable_pkgs:
+                return
+
+            # a bit of a hard coded safety hack here
+            if not os.path.exists('/usr/lib/systemd/system/system-update.target.wants/eopkg-offline-update.service'):
+                ctx.ui.error(_("eopkg-offline-update.service doesn't exist, check your installation"))
+                return
+
+            packagedb = pisi.db.packagedb.PackageDB()
+
+            # Nothing special about this file but we need to create some sort of symlink to /system-update
+            # to instruct systemd to perform an offline update
+            offline_file = os.path.join(ctx.config.history_dir(), 'prepared-offline-update')
+
+            try:
+                with open(offline_file, 'w') as f:
+                    for pkg in upgradable_pkgs:
+                        info = packagedb.get_package(pkg)
+                        f.write(unicode(info))
+                os.symlink(offline_file, '/system-update')
+                ctx.ui.debug(_('Created symlink from %s to /system-update') % offline_file)
+            except IOError:
+                ctx.ui.error(_('Failed to prepare offline upgrade'))
+                return
+            finally:
+                ctx.ui.info(util.colorize(_('Successfully prepared offline upgrade'), 'green'))
+
+            if ctx.ui.confirm(_('The updates will be applied on next reboot. Do you wish to reboot now?')):
+                subprocess.Popen(["systemctl", "soft-reboot"])

@@ -187,7 +187,7 @@ def upgrade(A=[], repo=None):
         paths.append(install_op.package_fname)
 
     # fetch to be upgraded packages but do not install them.
-    if ctx.get_option('fetch_only'):
+    if ctx.get_option('fetch_only') or ctx.get_option('offline'):
         return
 
     if conflicts:
