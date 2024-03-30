@@ -231,14 +231,14 @@ class InstallDB(lazydb.LazyDB):
             dependency.__dict__[attr[0]] = attr[1]
         return dependency
 
-    def __create_dependency(self, dep: bytes):
-        if "<AnyDependency>" in dep.decode():
+    def __create_dependency(self, depStr: str):
+        if "<AnyDependency>" in depStr:
             anydep = pisi.specfile.AnyDependency()
-            for dep in re.compile("(<Dependency .*?>.*?</Dependency>)").findall(dep):
+            for dep in re.compile("(<Dependency .*?>.*?</Dependency>)").findall(depStr):
                 anydep.dependencies.append(self.__make_dependency(dep))
             return anydep
         else:
-            return self.__make_dependency(dep)
+            return self.__make_dependency(depStr)
 
     def get_rev_deps(self, name):
         rev_deps = []
