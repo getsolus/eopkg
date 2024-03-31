@@ -288,7 +288,7 @@ def dirName(filePath):
 
 
 def system(command):
-    command = ' '.join(command.split())
+    command = " ".join(command.split())
     retValue = run_logged(command)
 
     # if return value is different than 0, it means error, raise exception

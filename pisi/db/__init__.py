@@ -1,8 +1,6 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from lxml import etree as xml
-
 from pisi.db import componentdb, groupdb, historydb, installdb, packagedb, repodb
 
 
@@ -43,25 +41,3 @@ def regenerate_caches():
     # Force cache regeneration
     for db in [packagedb.PackageDB(), componentdb.ComponentDB(), groupdb.GroupDB()]:
         db.cache_regenerate()
-
-
-def _get_version(meta_doc: xml._ElementTree) -> tuple[str, str, None] | None:
-    history = meta_doc.find("Package/History")
-    if history is None:
-        return None
-    update = history.find("Update")
-    if update is None:
-        return None
-    return (
-        update.findtext("Version") or "",
-        update.attrib.get("release") or "",
-        None,  # TODO Remove None
-    )
-
-
-def _get_distro_release(meta_doc: xml._ElementTree) -> tuple[str, str] | None:
-    distro = meta_doc.findtext("Package/Distribution")
-    release = meta_doc.findtext("Package/DistributionRelease")
-    if not distro or not release:
-        return None
-    return distro, release
