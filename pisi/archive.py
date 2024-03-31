@@ -10,6 +10,7 @@ import errno
 import shutil
 import tarfile
 import zipfile
+import lzma
 
 from pisi import translate as _
 
@@ -63,7 +64,7 @@ class _LZMAProxy(object):
                 break
             b.append(data)
             x += len(data)
-        self.buf = b"".join(b)
+        self.buf = b"".join([b_item if type(b_item) == bytes else b_item.encode() for b_item in b])
 
         buf = self.buf[:size]
         self.buf = self.buf[size:]
@@ -96,7 +97,7 @@ class TarFile(tarfile.TarFile):
         name=None,
         mode="r",
         fileobj=None,
-        compressformat="xz",
+        compressformat=lzma.FORMAT_XZ,
         compresslevel=9,
         **kwargs,
     ):
@@ -115,7 +116,7 @@ class TarFile(tarfile.TarFile):
         if fileobj is not None:
             fileobj = _LZMAProxy(fileobj, mode)
         else:
-            fileobj = lzma.LZMAFile(name, mode)
+            fileobj = lzma.LZMAFile(name, mode, format=1, preset=compresslevel)
 
         try:
             t = cls.taropen(name, mode, fileobj, **kwargs)
@@ -233,7 +234,7 @@ class ArchiveLzma(ArchiveBase):
 
         lzma_file = lzma.LZMAFile(self.file_path, "r")
         output = open(output_path, "w")
-        output.write(lzma_file.read())
+        output.write(lzma_file.read().decode())
         output.close()
         lzma_file.close()
 
