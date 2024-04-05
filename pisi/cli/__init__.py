@@ -48,7 +48,7 @@ class CLI(pisi.ui.UI):
     def close(self):
         pisi.util.xterm_title_reset()
 
-    def output(self, msg, err = False, verbose = False, formatted = False):
+    def output(self, msg, err = False, verbose = False):
         if (verbose and self.show_verbose) or (not verbose):
             if type(msg)==type(unicode()):
                 msg = msg.encode('utf-8')
@@ -56,24 +56,8 @@ class CLI(pisi.ui.UI):
                 out = sys.stderr
             else:
                 out = sys.stdout
-            term_height, term_width = pisi.util.get_terminal_size()
-            truncated = False
-            # Truncate output to fit term_width
-            if len(msg) > term_width:
-                if formatted is not True:
-                    truncated = True
-                    maxlen = term_width - 2
-                    msg = msg[:maxlen] + '...\n'
             out.write(msg)
-            # Clear after cursor due to truncated lines sometimes
-            # getting stuck there
-            out.write('\x1B[0K')
             out.flush()
-            # Don't keep truncated lines around
-            if truncated:
-                out.write('\x1B[0K')  # clear after cursor
-                out.write('\x1b[1A')  # move cursor up (\n)
-                out.write('\x1b[2K')  # delete line
 
     def formatted_output(self, msg, verbose = False, noln = False, column=":"):
         key_width = 20
@@ -112,7 +96,7 @@ class CLI(pisi.ui.UI):
             if not noln:
                 new_msg = "%s\n" % new_msg
         msg = new_msg
-        self.output(unicode(msg), verbose=verbose, formatted=True)
+        self.output(unicode(msg), verbose=verbose)
 
     def info(self, msg, verbose = False, noln = False):
         # TODO: need to look at more kinds of info messages
