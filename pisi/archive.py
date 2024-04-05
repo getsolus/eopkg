@@ -64,7 +64,9 @@ class _LZMAProxy(object):
                 break
             b.append(data)
             x += len(data)
-        self.buf = b"".join([b_item if type(b_item) == bytes else b_item.encode() for b_item in b])
+        self.buf = b"".join(
+            [b_item if type(b_item) == bytes else b_item.encode() for b_item in b]
+        )
 
         buf = self.buf[:size]
         self.buf = self.buf[size:]
@@ -473,7 +475,7 @@ class ArchiveTar(ArchiveBase):
             if self.tar is None:
                 self.tar = tarfile.open(self.file_path, wmode, fileobj=self.fileobj)
 
-        self.tar.add(file_name.decode('latin-1'), arc_name)
+        self.tar.add(file_name.decode("latin-1"), arc_name)
 
     def close(self):
         self.tar.close()

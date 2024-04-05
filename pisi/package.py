@@ -91,7 +91,9 @@ class Package:
 
         if not os.path.exists(self.filepath):
             try:
-                ctx.ui.notify(pisi.ui.downloading, package=self.metadata.package, files=self.files)
+                ctx.ui.notify(
+                    pisi.ui.downloading, package=self.metadata.package, files=self.files
+                )
                 pisi.file.File.download(url, dest)
             except pisi.fetcher.FetchError:
                 # Bug 3465

@@ -52,7 +52,7 @@ class File:
     COMPRESSION_TYPE_BZ2 = 1
     COMPRESSION_TYPE_XZ = 2
 
-    (MODE_READ, MODE_WRITE) = list(range(2))  # modes
+    (read, write) = list(range(2))  # modes
     (detached, whatelse) = list(range(2))
 
     __compressed_file_extensions = {
@@ -190,24 +190,24 @@ class File:
         self.sign = sign
 
         uri = File.make_uri(uri)
-        if mode == File.MODE_READ or mode == File.MODE_WRITE:
+        if mode == File.read or mode == File.write:
             self.mode = mode
         else:
             raise Error(_("File mode must be either File.read or File.write"))
         if uri.is_remote_file():
-            if self.mode == File.MODE_READ:
+            if self.mode == File.read:
                 localfile = File.download(uri, transfer_dir, sha1sum, compress, sign)
             else:
                 raise Error(_("Remote write not implemented"))
         else:
             localfile = uri.get_uri()
-            if self.mode == File.MODE_READ:
+            if self.mode == File.read:
                 localfile = File.decompress(localfile, self.compress)
 
-        if self.mode == File.MODE_READ:
-            access = "rb"
+        if self.mode == File.read:
+            access = "r"
         else:
-            access = "wb"
+            access = "w"
         self.__file__ = open(localfile, access)
         self.localfile = localfile
 
@@ -218,21 +218,21 @@ class File:
     def close(self, delete_transfer=False):
         "this method must be called at the end of operation"
         self.__file__.close()
-        if self.mode == File.MODE_WRITE:
+        if self.mode == File.write:
             compressed_files = []
             ctypes = self.compress or 0
             if ctypes & File.COMPRESSION_TYPE_XZ:
                 compressed_file = self.localfile + ".xz"
                 compressed_files.append(compressed_file)
-                lzma_file = lzma.open(compressed_file, "wt")
-                lzma_file.write(open(self.localfile, "r").read())
+                lzma_file = lzma.open(compressed_file, "w")
+                lzma_file.write(open(self.localfile, "r").read().encode())
                 lzma_file.close()
 
             if ctypes & File.COMPRESSION_TYPE_BZ2:
                 compressed_file = self.localfile + ".bz2"
                 compressed_files.append(compressed_file)
-                bz2.open(compressed_file, "wt").write(
-                    open(self.localfile, "r").read()
+                bz2.open(compressed_file, "w").write(
+                    open(self.localfile, "r").read().encode()
                 )
 
             if self.sha1sum:

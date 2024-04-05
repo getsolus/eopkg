@@ -235,19 +235,19 @@ class Fetcher:
         proxies = {}
 
         if ctx.config.values.general.http_proxy and self.url.scheme() == "http":
-            proxies[
-                pisi.uri.URI(ctx.config.values.general.http_proxy).scheme()
-            ] = ctx.config.values.general.http_proxy
+            proxies[pisi.uri.URI(ctx.config.values.general.http_proxy).scheme()] = (
+                ctx.config.values.general.http_proxy
+            )
 
         if ctx.config.values.general.https_proxy and self.url.scheme() == "https":
-            proxies[
-                pisi.uri.URI(ctx.config.values.general.https_proxy).scheme()
-            ] = ctx.config.values.general.https_proxy
+            proxies[pisi.uri.URI(ctx.config.values.general.https_proxy).scheme()] = (
+                ctx.config.values.general.https_proxy
+            )
 
         if ctx.config.values.general.ftp_proxy and self.url.scheme() == "ftp":
-            proxies[
-                pisi.uri.URI(ctx.config.values.general.ftp_proxy).scheme()
-            ] = ctx.config.values.general.ftp_proxy
+            proxies[pisi.uri.URI(ctx.config.values.general.ftp_proxy).scheme()] = (
+                ctx.config.values.general.ftp_proxy
+            )
 
         if self.url.scheme() in proxies:
             ctx.ui.info(

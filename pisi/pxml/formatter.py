@@ -250,9 +250,9 @@ class AbstractFormatter:
                 return
             if not self.nospace:
                 data = " " + data
-        self.hard_break = (
-            self.nospace
-        ) = self.para_end = self.parskip = self.have_label = 0
+        self.hard_break = self.nospace = self.para_end = self.parskip = (
+            self.have_label
+        ) = 0
         self.softspace = postspace
         self.writer.send_flowing_data(data)
 
@@ -262,16 +262,16 @@ class AbstractFormatter:
         if self.softspace:
             self.writer.send_flowing_data(" ")
         self.hard_break = data[-1:] == "\n"
-        self.nospace = (
-            self.para_end
-        ) = self.softspace = self.parskip = self.have_label = 0
+        self.nospace = self.para_end = self.softspace = self.parskip = (
+            self.have_label
+        ) = 0
         self.writer.send_literal_data(data)
 
     def flush_softspace(self):
         if self.softspace:
-            self.hard_break = (
-                self.para_end
-            ) = self.parskip = self.have_label = self.softspace = 0
+            self.hard_break = self.para_end = self.parskip = self.have_label = (
+                self.softspace
+            ) = 0
             self.nospace = 1
             self.writer.send_flowing_data(" ")
 

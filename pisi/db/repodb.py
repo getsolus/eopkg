@@ -1,17 +1,18 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+from pisi import translate as _
 
 import os
-from lxml import etree as xml
+
+import iksemel
 
 import pisi
+import pisi.uri
+import pisi.util
 import pisi.context as ctx
 import pisi.db.lazydb as lazydb
-import pisi.uri
 import pisi.urlcheck
-import pisi.util
-from pisi import translate as _
 from pisi.file import File
 
 
@@ -33,123 +34,132 @@ medias = (cd, usb, remote, local) = list(range(4))
 
 class RepoOrder:
     def __init__(self):
-        self.legacy_repo_used = False
+        self._doc = None
+        self.legacy_repo_used = None
         self.repos = self._get_repos()
 
-    def add(self, repo_name: str, repo_url: str, repo_type="remote"):
-        new_repo = xml.Element("Repo")
+    def add(self, repo_name, repo_url, repo_type="remote"):
+        repo_doc = self._get_doc()
 
-        name_elem = xml.Element("Name")
-        name_elem.text = repo_name
-        new_repo.append(name_elem)
+        try:
+            node = [x for x in repo_doc.tags("Repo")][-1]
+            repo_node = node.appendTag("Repo")
+        except IndexError:
+            repo_node = repo_doc.insertTag("Repo")
 
-        url_elem = xml.Element("Url")
+        name_node = repo_node.insertTag("Name")
+        name_node.insertData(repo_name)
+
+        url_node = repo_node.insertTag("Url")
         old_uri = repo_url
         repo_url = pisi.urlcheck.switch_from_legacy(repo_url)
+
         if old_uri != repo_url:
             self.legacy_repo_used = True
-        url_elem.text = repo_url
-        new_repo.append(url_elem)
 
-        status_elem = xml.Element("Status")
-        status_elem.text = "active"
-        new_repo.append(status_elem)
+        url_node.insertData(repo_url)
 
-        media_elem = xml.Element("Media")
-        media_elem.text = repo_type
-        new_repo.append(media_elem)
+        name_node = repo_node.insertTag("Status")
+        name_node.insertData("active")
 
-        repo_doc = self._get_doc()
-        repo_doc.getroot().append(new_repo)
+        media_node = repo_node.insertTag("Media")
+        media_node.insertData(repo_type)
+
         self._update(repo_doc)
 
-    def set_status(self, repo_name: str, status: str):
-        # TODO: document possible values of status, or make it an enum.
-
+    def set_status(self, repo_name, status):
         repo_doc = self._get_doc()
-        for r in repo_doc.iterfind("Repo"):
-            if r.findtext("Name") == repo_name:
-                status_elem = r.find("Status")
-                if status_elem is not None:
-                    status_elem.text = status
+
+        for r in repo_doc.tags("Repo"):
+            if r.getTagData("Name") == repo_name:
+                status_node = r.getTag("Status")
+                if status_node:
+                    status_node.firstChild().hide()
+                    status_node.insertData(status)
                 else:
-                    status_elem = xml.Element("Status")
-                    status_elem.text = status
-                    r.append(status_elem)
+                    status_node = r.insertTag("Status")
+                    status_node.insertData(status)
+
         self._update(repo_doc)
 
-    def get_status(self, repo_name: str) -> str:
+    def get_status(self, repo_name):
         repo_doc = self._get_doc()
-        for r in repo_doc.iterfind("Repo"):
-            if r.findtext("Name") == repo_name:
-                status_elem = r.find("Status")
-                if status_elem is not None:
-                    if status_elem.text in ["active", "inactive"]:
-                        return status_elem.text
+        for r in repo_doc.tags("Repo"):
+            if r.getTagData("Name") == repo_name:
+                status_node = r.getTag("Status")
+                if status_node:
+                    status = status_node.firstChild().data()
+                    if status in ["active", "inactive"]:
+                        return status
         return "inactive"
 
-    def get_uri(self, repo_name: str) -> str:
+    def get_uri(self, repo_name):
         repo_doc = self._get_doc()
         url = ""
 
-        for r in repo_doc.iterfind("Repo"):
-            name = r.findtext("Name")
-            uri = r.findtext("Url")
+        for r in repo_doc.tags("Repo"):
+            name = r.getTagData("Name")
+            uri = r.getTagData("Url")
 
             if name == repo_name:
                 url = pisi.urlcheck.switch_from_legacy(uri)
+
                 if url != uri:
                     self.legacy_repo_used = True
+
                 break
+
         return url.rstrip()
 
-    def remove(self, repo_name: str):
+    def remove(self, repo_name):
         repo_doc = self._get_doc()
-        for r in repo_doc.iterfind("Repo"):
-            if r.findtext("Name") == repo_name:
-                repo_doc.getroot().remove(r)
+
+        for r in repo_doc.tags("Repo"):
+            if r.getTagData("Name") == repo_name:
+                r.hide()
+
         self._update(repo_doc)
 
-    def get_order(self) -> list[str]:
-        """Returns a list of repo names ordered by the priority of their media."""
+    def get_order(self):
         order = []
+
         # FIXME: get media order from pisi.conf
         for m in ["cd", "usb", "remote", "local"]:
             if m in self.repos:
                 order.extend(self.repos[m])
+
         return order
 
-    def _update(self, doc: xml._ElementTree):
-        repos_file = os.path.join(ctx.config.info_dir(), ctx.const.repos)
-        xml.indent(doc)
-        doc.write(repos_file)
+    def _update(self, doc):
+        repos_file_path = os.path.join(ctx.config.info_dir(), ctx.const.repos)
+        repo_file = open(repos_file_path, "w")
+        repo_file.write("%s\n" % doc.toPrettyString())
+        repo_file.close()
+        self._doc = None
         self.repos = self._get_repos()
 
-    def _get_doc(self) -> xml._ElementTree:
-        repos_file = os.path.join(ctx.config.info_dir(), ctx.const.repos)
-        if os.path.exists(repos_file):
-            doc = xml.parse(repos_file)
-        else:
-            doc = xml.ElementTree(xml.Element("REPOS"))
-        return doc
+    def _get_doc(self):
+        if self._doc is None:
+            repos_file = os.path.join(ctx.config.info_dir(), ctx.const.repos)
+            if os.path.exists(repos_file):
+                self._doc = iksemel.parse(repos_file)
+            else:
+                self._doc = iksemel.newDocument("REPOS")
 
-    def _get_repos(self) -> dict[str, list[str]]:
-        """Returns a dictionary where keys are media types and values are lists of repo names."""
+        return self._doc
+
+    def _get_repos(self):
         repo_doc = self._get_doc()
-        order: dict[str, list[str]] = {}
+        order = {}
 
-        for r in repo_doc.iterfind("Repo"):
-            media = r.findtext("Media")
-            name = r.findtext("Name")
-            if media is None or name is None:
-                continue
-
-            # Why are these vars ignored?
-            status = r.findtext("Status")
-            old_url = r.findtext("Url")
+        for r in repo_doc.tags("Repo"):
+            media = r.getTagData("Media")
+            name = r.getTagData("Name")
+            status = r.getTagData("Status")
+            old_url = r.getTagData("Url")
             url = pisi.urlcheck.switch_from_legacy(old_url)
-
             order.setdefault(media, []).append(name)
+
         return order
 
 
@@ -164,13 +174,13 @@ class RepoDB(lazydb.LazyDB):
             ctx.ui.warning("No repository found. Automatically adding Solus stable.")
             self.add_repo("Solus", repo, ctx.get_option("at"))
 
-    def has_repo(self, name: str) -> bool:
+    def has_repo(self, name):
         return name in self.list_repos(only_active=False)
 
-    def has_repo_url(self, url: str, only_active=True):
+    def has_repo_url(self, url, only_active=True):
         return url in self.list_repo_urls(only_active)
 
-    def get_repo_doc(self, repo_name: str) -> xml._ElementTree:
+    def get_repo_doc(self, repo_name):
         repo = self.get_repo(repo_name)
 
         index_path = repo.indexuri.get_uri()
@@ -185,10 +195,10 @@ class RepoDB(lazydb.LazyDB):
 
         if not os.path.exists(index_path):
             ctx.ui.warning(_("%s repository needs to be updated") % repo_name)
-            return xml.ElementTree(xml.Element("PISI"))
+            return iksemel.newDocument("PISI")
 
         try:
-            return xml.parse(index_path)
+            return iksemel.parse(index_path)
         except Exception as e:
             raise RepoError(
                 _(
@@ -205,9 +215,9 @@ class RepoDB(lazydb.LazyDB):
         if self.repoorder.legacy_repo_used:
             repo_doc = self.repoorder._get_doc()
 
-            for r in repo_doc.iterfind("Repo"):
-                name = r.findtext("Name")
-                old_url = r.findtext("Url")
+            for r in repo_doc.tags("Repo"):
+                name = r.getTagData("Name")
+                old_url = r.getTagData("Url")
                 url = pisi.urlcheck.switch_from_legacy(old_url)
 
                 if old_url != url:
@@ -229,74 +239,65 @@ class RepoDB(lazydb.LazyDB):
         open(urifile_path, "w").write(repo_info.indexuri.get_uri())
         self.repoorder.add(name, repo_info.indexuri.get_uri())
 
-    def remove_repo(self, name: str):
+    def remove_repo(self, name):
         pisi.util.clean_dir(os.path.join(ctx.config.index_dir(), name))
         self.repoorder.remove(name)
 
-    def get_source_repos(self, only_active=True) -> list[str]:
-        """Returns a list of repo names that provide source packages."""
+    def get_source_repos(self, only_active=True):
         repos = []
         for r in self.list_repos(only_active):
-            if self.get_repo_doc(r).find("SpecFile") is not None:
+            if self.get_repo_doc(r).getTag("SpecFile"):
                 repos.append(r)
         return repos
 
-    def get_binary_repos(self, only_active=True) -> list[str]:
-        """Returns a list of repo names that provide binary packages."""
+    def get_binary_repos(self, only_active=True):
         repos = []
         for r in self.list_repos(only_active):
-            if self.get_repo_doc(r).find("SpecFile") is None:
+            if not self.get_repo_doc(r).getTag("SpecFile"):
                 repos.append(r)
         return repos
 
-    def list_repos(self, only_active=True) -> list[str]:
-        """Returns a list of repo names."""
+    def list_repos(self, only_active=True):
         return [
             x
             for x in self.repoorder.get_order()
             if (True if not only_active else self.repo_active(x))
         ]
 
-    def list_repo_urls(self, only_active=True) -> list[str]:
+    def list_repo_urls(self, only_active=True):
         repos = []
         for r in self.list_repos(only_active):
-            u = self.get_repo_url(r)
-            if u is not None:
-                repos.append(u)
+            repos.append(self.get_repo_url(r))
         return repos
 
-    def get_repo_by_url(self, url: str) -> str | None:
+    def get_repo_by_url(self, url):
         if not self.has_repo_url(url):
             return None
+
         for r in self.list_repos(only_active=False):
             if self.get_repo_url(r) == url:
                 return r
-        return None
 
-    def activate_repo(self, name: str):
+    def activate_repo(self, name):
         self.repoorder.set_status(name, "active")
 
-    def deactivate_repo(self, name: str):
+    def deactivate_repo(self, name):
         self.repoorder.set_status(name, "inactive")
 
-    def repo_active(self, name: str) -> bool:
+    def repo_active(self, name):
         return self.repoorder.get_status(name) == "active"
 
-    def get_distribution(self, name: str) -> str | None:
+    def get_distribution(self, name):
         doc = self.get_repo_doc(name)
-        distro = doc.find("Distribution")
-        if distro is None:
-            return None
-        return distro.findtext("SourceName") or None
+        distro = doc.getTag("Distribution")
+        return distro and distro.getTagData("SourceName")
 
-    def get_distribution_release(self, name: str) -> str | None:
+    def get_distribution_release(self, name):
         doc = self.get_repo_doc(name)
-        distro = doc.find("Distribution")
-        if distro is None:
-            return None
-        return distro.findtext("Version") or None
+        distro = doc.getTag("Distribution")
+        return distro and distro.getTagData("Version")
 
-    def check_distribution(self, name: str):
+    def check_distribution(self, name):
         if ctx.get_option("ignore_check"):
             return
 

@@ -10,20 +10,24 @@
  an old library.
 """
 
-import inspect
-import io
+# System
 import locale
-import re
+import types
 import sys
-from lxml import etree as xml
-from typing import Any
+import io
+import inspect
+import re
 
-import pisi
-from pisi import context as ctx
-from pisi import oo
 from pisi import translate as _
-from pisi import util
-from pisi.pxml import formatter, xmlext, xmlfile
+
+# eopkg
+import pisi
+import pisi.pxml.formatter as formatter
+import pisi.pxml.xmlext as xmlext
+import pisi.pxml.xmlfile as xmlfile
+import pisi.context as ctx
+import pisi.util as util
+import pisi.oo as oo
 
 
 class Error(pisi.Error):
@@ -58,23 +62,11 @@ class LocalText(dict):
         self.req = req
         dict.__init__(self)
 
-    def decode(self, node: xml._Element, errs, where=""):
-        lang: str | None = None
-        for child in node.iterfind(self.tag):
-            lang = child.attrib.get("{http://www.w3.org/XML/1998/namespace}lang")
-            # FIXME: check for dups and 'en'
-            if not lang:
-                lang = "en"
-            c = child.text
-            if not c:
-                errs.append(
-                    where
-                    + ": "
-                    + _("'{0}' language of tag '{1}' is empty.").format(lang, self.tag)
-                )
-                continue
-            self[lang] = str(c)
-        if lang is None:
+    def decode(self, node, errs, where=""):
+        # flags, tag name, instance attribute
+        assert self.tag != ""
+        nodes = xmlext.getAllNodes(node, self.tag)
+        if not nodes:
             if self.req == MANDATORY:
                 errs.append(
                     where
@@ -83,12 +75,28 @@ class LocalText(dict):
                         self.tag
                     )
                 )
+        else:
+            for node in nodes:
+                lang = xmlext.getNodeAttribute(node, "xml:lang")
+                c = xmlext.getNodeText(node)
+                if not c:
+                    errs.append(
+                        where
+                        + ": "
+                        + _("'{0}' language of tag '{1}' is empty.").format(
+                            lang, self.tag
+                        )
+                    )
+                # FIXME: check for dups and 'en'
+                if not lang:
+                    lang = "en"
+                self[lang] = str(c)
 
     def encode(self, node, errs):
         assert self.tag != ""
         for key in list(self.keys()):
             newnode = xmlext.addNode(node, self.tag)
-            xmlext.setNodeAttribute(newnode, "{http://www.w3.org/XML/1998/namespace}lang", key)
+            xmlext.setNodeAttribute(newnode, "xml:lang", key)
             xmlext.addText(newnode, "", self[key])
 
     # FIXME: maybe more appropriate for pisi.util
@@ -192,8 +200,8 @@ class autoxml(oo.autosuper, oo.autoprop):
     elaborated. A simple example follows:
 
     class Employee(metaclass=autoxml):
-         t_Name = [xmlfile.Text, xmlfile.mandatory]
-         a_Type = [xmlfile.Integer, xmlfile.optional]
+         t_Name = [xmlfile.Text, xmlfile.MANDATORY]
+         a_Type = [xmlfile.Integer, xmlfile.OPTIONAL]
 
     This class defines a tag and an attribute nested in Employee
     class. Name is a string and type is an integer, called basic
@@ -218,15 +226,15 @@ class autoxml(oo.autosuper, oo.autoprop):
     A declared class can be nested in another class as follows
 
     class Position(metaclass=autoxml):
-         t_Name = [xmlfile.Text, xmlfile.mandatory]
-         t_Description = [xmlfile.Text, xmlfile.optional]
+         t_Name = [xmlfile.Text, xmlfile.MANDATORY]
+         t_Description = [xmlfile.Text, xmlfile.OPTIONAL]
 
     which we can add to our Employee class.
 
     class Employee(metaclass=autoxml):
-         t_Name = [xmlfile.Text, xmlfile.mandatory]
-         a_Type = [xmlfile.Integer, xmlfile.optional]
-         t_Position = [Position, xmlfile.mandatory]
+         t_Name = [xmlfile.Text, xmlfile.MANDATORY]
+         a_Type = [xmlfile.Integer, xmlfile.OPTIONAL]
+         t_Position = [Position, xmlfile.MANDATORY]
 
     Note some unfortunate redundancy here with Position; this is
     justified by the implementation (kidding). Still, you might
@@ -237,7 +245,7 @@ class autoxml(oo.autosuper, oo.autoprop):
     of course many employees.
 
     class Company(metaclass=autoxml):
-        t_Employees = [ [Employee], xmlfile.mandatory, 'Employees/Employee']
+        t_Employees = [ [Employee], xmlfile.MANDATORY, 'Employees/Employee']
 
     Logically, inside the Company/Employees tag, we will have several
     Employee tags, which are inserted to the Employees instance variable of
@@ -284,7 +292,7 @@ class autoxml(oo.autosuper, oo.autoprop):
         # read declaration order from source
         # code contributed by bahadir kandemir
         try:
-            fn = re.compile(r"^\s*[ast]_\w+").findall
+            fn = re.compile(r"\s*([tas]_[a-zA-Z]+).*").findall
 
             inspect.linecache.clearcache()
             lines = list(filter(fn, inspect.getsourcelines(cls)[0]))
@@ -358,7 +366,7 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         cls.encoders = encoders
 
-        def encode(self, node: xml._Element, errs):
+        def encode(self, node, errs):
             for base in cls.autoxml_bases:
                 base.encode(self, node, errs)
             for encode_member in encoders:  # self.__class__.encoders:
@@ -594,8 +602,12 @@ class autoxml(oo.autosuper, oo.autoprop):
         tag_type = spec[0]
         assert isinstance(tag_type, type(type))
 
-        def readtext(node: xml._Element, blah):
-            return node.text
+        def readtext(node, blah):
+            try:
+                node.normalize()  # iksemel doesn't have this
+            except BaseException:
+                pass
+            return xmlext.getNodeText(node)
 
         def writetext(node, blah, text):
             xmlext.addText(node, "", text)
@@ -603,11 +615,10 @@ class autoxml(oo.autosuper, oo.autoprop):
         anonfuns = cls.gen_anon_basic(token, spec, readtext, writetext)
         return cls.gen_named_comp(token, spec, anonfuns)
 
-    def gen_named_comp(cls, token: str, spec, anonfuns):
+    def gen_named_comp(cls, token, spec, anonfuns):
         """generate a named component tag/attr. a decoration of
         anonymous functions that do not bind to variable names"""
         name = cls.mixed_case(token)
-        # name = token
         req = spec[1]
         (init_a, decode_a, encode_a, errors_a, format_a) = anonfuns
 
@@ -615,19 +626,23 @@ class autoxml(oo.autosuper, oo.autoprop):
             """initialize component"""
             setattr(self, name, init_a())
 
-        def decode(self, node: xml._Element, errs, where: str):
+        def decode(self, node, errs, where):
             """decode component from DOM node"""
-            setattr(self, name, decode_a(node, errs, name))
+            setattr(self, name, decode_a(node, errs, where + "." + str(name)))
 
-        def encode(self, node: xml._Element, errs):
+        def encode(self, node, errs):
             """encode self inside, possibly new, DOM node using xml"""
-            encode_a(node, getattr(self, name, None), errs)
+            if hasattr(self, name):
+                value = getattr(self, name)
+            else:
+                value = None
+            encode_a(node, value, errs)
 
         def errors(self, where):
             """return errors in the object"""
             errs = []
-            value = getattr(self, name, None)
-            if value is not None:
+            if hasattr(self, name) and getattr(self, name):
+                value = getattr(self, name)
                 errs.extend(errors_a(value, where + "." + name))
             else:
                 if req == MANDATORY:
@@ -639,8 +654,8 @@ class autoxml(oo.autosuper, oo.autoprop):
             return errs
 
         def format(self, f, errs):
-            value = getattr(self, name, None)
-            if value is not None:
+            if hasattr(self, name):
+                value = getattr(self, name)
                 f.add_literal_data(token + ": ")
                 format_a(value, f, errs)
                 f.add_line_break()
@@ -653,9 +668,16 @@ class autoxml(oo.autosuper, oo.autoprop):
     @staticmethod
     def mixed_case(identifier):
         """helper function to turn token name into mixed case"""
-        if not identifier:
-            return identifier
-        return identifier[0].lower() + identifier[1:]
+        if identifier == "":
+            return ""
+        else:
+            if identifier[0] == "I":
+                lowly = (
+                    "i"  # because of pythonic idiots we can't choose locale in lower
+                )
+            else:
+                lowly = identifier[0].lower()
+            return lowly + identifier[1:]
 
     @staticmethod
     def tagpath_head_last(tagpath):
@@ -760,41 +782,43 @@ class autoxml(oo.autosuper, oo.autoprop):
 
         def make_object():
             obj = tag_type.__new__(tag_type)
-            obj.__init__(tag=tag, req=req)
-            # obj.__init__()
+            # obj.__init__(tag=tag, req=req)
+            obj.__init__()
             return obj
 
         def init():
             return make_object()
 
-        def decode(node: xml._Element, errs, where):
-            obj = make_object()
-            child = node.find(obj.tag)
-            if child is None:
+        def decode(node, errs, where):
+            node = xmlext.getNode(node, tag)
+            if node:
+                try:
+                    obj = make_object()
+                    obj.decode(node, errs, where)
+                    return obj
+                except Error:
+                    errs.append(
+                        where + ": " + _("Type mismatch: DOM cannot be decoded.")
+                    )
+            else:
                 if req == MANDATORY:
                     errs.append(where + ": " + _("Mandatory argument not available."))
-                return None
-            try:
-                obj.decode(child, errs, obj.tag)
-                return obj
-            except Error:
-                errs.append(where + ": " + _("Type mismatch: DOM cannot be decoded."))
-                return None
+            return None
 
-        def encode(node: xml._Element, obj: Any | None, errs):
-            if obj is None:
+        def encode(node, obj, errs):
+            if node and obj:
+                try:
+                    # FIXME: this doesn't look pretty
+                    classnode = xmlext.newNode(node, tag)
+                    obj.encode(classnode, errs)
+                    xmlext.addNode(node, "", classnode)
+                except Error:
+                    if req == MANDATORY:
+                        # note: we can receive an error if obj has no content
+                        errs.append(_("Object cannot be encoded."))
+            else:
                 if req == MANDATORY:
                     errs.append(_("Mandatory argument not available."))
-                return
-            try:
-                # FIXME: this doesn't look pretty
-                classnode = xmlext.newNode(tag)
-                obj.encode(classnode, errs)
-                xmlext.addNode(node, "", classnode)
-            except Error:
-                if req == MANDATORY:
-                    # note: we can receive an error if obj has no content
-                    errs.append(_("Object cannot be encoded."))
 
         def errors(obj, where):
             return obj.errors(where)
@@ -829,30 +853,31 @@ class autoxml(oo.autosuper, oo.autoprop):
         def init():
             return []
 
-        def decode(node: xml._Element, errs, where):
+        def decode(node, errs, where):
             l = []
-            nodes = node.iterfind(path)
-            ix = 1
-            for node in nodes:
-                dummy = xml.Element("Dummy")
-                dummy.append(node)
-                l.append(decode_item(dummy, errs, where))
-                ix += 1
-            if ix == 1 and req == MANDATORY:
+            nodes = xmlext.getAllNodes(node, path)
+            # print node, tag + '/' + comp_tag, nodes
+            if len(nodes) == 0 and req == MANDATORY:
                 errs.append(
                     where
                     + ": "
                     + _('Mandatory list "{0}" under "{1}" node is empty.').format(
-                        path, node.tag
+                        path, node.name()
                     )
                 )
+            ix = 1
+            for node in nodes:
+                dummy = xmlext.newNode(node, "Dummy")
+                xmlext.addNode(dummy, "", node)
+                l.append(decode_item(dummy, errs, where + str("[{}]".format(ix))))
+                ix += 1
             return l
 
         def encode(node, l, errs):
             if l:
                 for item in l:
                     if list_tagpath:
-                        listnode = xmlext.addNode(node, list_tagpath)
+                        listnode = xmlext.addNode(node, list_tagpath, branch=False)
                     else:
                         listnode = node
                     encode_item(listnode, item, errs)
@@ -898,26 +923,32 @@ class autoxml(oo.autosuper, oo.autoprop):
             return make_object()
 
         def decode(node, errs, where):
-            try:
-                obj = make_object()
-                obj.decode(node, errs, where)
-                return obj
-            except Error:
-                errs.append(where + ": " + _("Type mismatch: DOM cannot be decoded."))
-                return None
+            if node:
+                try:
+                    obj = make_object()
+                    obj.decode(node, errs, where)
+                    return obj
+                except Error:
+                    errs.append(
+                        where + ": " + _("Type mismatch: DOM cannot be decoded.")
+                    )
+            else:
+                if req == MANDATORY:
+                    errs.append(where + ": " + _("Mandatory argument not available."))
+            return None
 
-        def encode(node: xml._Element, obj: Any | None, errs):
-            if obj is None:
+        def encode(node, obj, errs):
+            if node and obj:
+                try:
+                    # FIXME: this doesn't look pretty
+                    obj.encode(node, errs)
+                except Error:
+                    if req == MANDATORY:
+                        # note: we can receive an error if obj has no content
+                        errs.append(_("Object cannot be encoded."))
+            else:
                 if req == MANDATORY:
                     errs.append(_("Mandatory argument not available."))
-                return
-            try:
-                # FIXME: this doesn't look pretty
-                obj.encode(node, errs)
-            except Error:
-                if req == MANDATORY:
-                    # note: we can receive an error if obj has no content
-                    errs.append(_("Object cannot be encoded."))
 
         def errors(obj, where):
             return obj.errors(where)

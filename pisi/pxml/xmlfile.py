@@ -11,13 +11,13 @@
 
  this implementation uses piksemel
 """
-import _io
 
-from lxml import etree as xml
+from pisi import translate as _
+
+import iksemel as iks
 
 import pisi
 import pisi.file
-from pisi import translate as _
 
 
 class Error(pisi.Error):
@@ -27,25 +27,25 @@ class Error(pisi.Error):
 class XmlFile(object):
     """A class to help reading and writing an XML file"""
 
-    def __init__(self, tag: str):
+    def __init__(self, tag):
         self.rootTag = tag
 
     def newDocument(self):
         """clear DOM"""
-        self.doc = xml.ElementTree(xml.Element(self.rootTag))
+        self.doc = iks.newDocument(self.rootTag)
 
     def unlink(self):
         """deallocate DOM structure"""
         del self.doc
 
-    def rootNode(self) -> xml.Element:
+    def rootNode(self):
         """returns root document element"""
-        return self.doc.getroot()
+        return self.doc
 
-    def parsexml(self, s: str):
+    def parsexml(self, xml):
         """parses xml string and returns DOM"""
         try:
-            self.doc = xml.ElementTree(xml.fromstring(s))
+            self.doc = iks.parseString(xml.decode() if type(xml) == bytes else xml)
             return self.doc
         except Exception as e:
             raise Error(_("String '%s' has invalid XML") % (xml))
@@ -59,6 +59,7 @@ class XmlFile(object):
         sign=None,
         copylocal=False,
     ):
+
         uri = pisi.file.File.make_uri(uri)
 
         # workaround for repo index files to fix
@@ -80,7 +81,7 @@ class XmlFile(object):
             )
 
         try:
-            self.doc = xml.parse(localpath)
+            self.doc = iks.parse(localpath)
             return self.doc
         except OSError as e:
             raise Error(_("Unable to read file (%s): %s") % (localpath, e))
@@ -88,25 +89,11 @@ class XmlFile(object):
             raise Error(_("File '%s' has invalid XML") % (localpath))
 
     def writexml(self, uri, tmpDir="/tmp", sha1sum=False, compress=None, sign=None):
-        try:
-            f = pisi.file.File(
-                uri,
-                pisi.file.File.MODE_WRITE,
-                sha1sum=sha1sum,
-                compress=compress,
-                sign=sign,
-            )
-            xml.indent(self.doc, space='    ')
-            f.write(xml.tostring(self.doc.getroot()))
-        finally:
-            f.close()
+        f = pisi.file.File(
+            uri, pisi.file.File.write, sha1sum=sha1sum, compress=compress, sign=sign
+        )
+        f.write(self.doc.toPrettyString())
+        f.close()
 
-    def writexmlfile(self, file: pisi.file.File or _io.TextIOWrapper):
-        xml.indent(self.doc, space='    ')
-        if type(file) is pisi.file.File:
-            file.write(xml.tostring(self.doc.getroot()))
-        elif type(file) is _io.TextIOWrapper:
-            # It looks like all the --xml options probably use this to write to stdout. Can't write bytes to stdout.
-            file.write(xml.tostring(self.doc.getroot()).decode('utf8'))
-        else:
-            raise(TypeError('file must be pisi.file.File, _io.TextIOWrapper'))
+    def writexmlfile(self, f):
+        f.write(self.doc.toPrettyString())

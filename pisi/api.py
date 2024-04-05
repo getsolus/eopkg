@@ -273,12 +273,15 @@ def get_install_order(packages):
     return order
 
 
-def get_remove_order(packages):
+def get_remove_order(packages, autoremove=False):
     """
     Return a list of packages in the remove order -> list_of_strings
     @param packages: list of package names -> list_of_strings
     """
-    remove_order = pisi.operations.remove.plan_remove
+    if autoremove is True:
+        remove_order = pisi.operations.remove.plan_autoremove
+    else:
+        remove_order = pisi.operations.remove.plan_remove
     i_graph, order = remove_order(packages)
     return order
 
