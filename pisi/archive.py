@@ -450,8 +450,9 @@ class ArchiveTar(ArchiveBase):
             pass
         self.close()
 
-    def add_to_archive(self, file_name, arc_name=None):
+    def add_to_archive(self, file_name: bytes, arc_name=None):
         """Add file or directory path to the tar archive"""
+
         if not self.tar:
             if self.type == "tar":
                 wmode = "w:"
@@ -475,7 +476,10 @@ class ArchiveTar(ArchiveBase):
             if self.tar is None:
                 self.tar = tarfile.open(self.file_path, wmode, fileobj=self.fileobj)
 
-        self.tar.add(file_name.decode("latin-1"), arc_name)
+        # py3 needs strings encoded to utf-8, so decode the bytestream to latin-1 first
+        # and then re-encode it as an utf-8 string for the tarfile.py py3 library.
+        # This bug was exposed by the usdx package.yml
+        self.tar.add(file_name.decode("latin-1").encode("utf-8"), arc_name)
 
     def close(self):
         self.tar.close()
