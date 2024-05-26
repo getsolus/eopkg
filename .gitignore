@@ -5,6 +5,9 @@
 build/
 env/
 
+# used for deploying on non-Solus systems
+eopkg_venv/
+
 *.bak
 *.pyc
 *.whl
