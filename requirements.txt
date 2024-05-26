@@ -1,0 +1,5 @@
+PyYaml
+iksemel
+python-magic
+xattr
+
