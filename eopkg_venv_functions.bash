@@ -30,10 +30,12 @@ function prepare_venv () {
 function compile_iksemel_cleanly () {
     # Solus is currently carrying a patch to iksemel that has not yet been upstreamed
     # clone iksemel fresh to ensure patches apply cleanly every time
-    echo ">>> Uninstalling existing iksemel copy in /usr/local prefix ..."
-    pushd ../iksemel
-    sudo ninja uninstall -C build/
-    popd
+    if [[ -d ../iksemel/build ]]; then
+        echo ">>> Uninstalling existing custom-compiled iksemel copy ..."
+        pushd ../iksemel/
+        sudo ninja uninstall -C build/
+        popd
+    fi
     echo ">>> Set up a clean iksemel copy w/Solus patches ..."
     rm -rf ../iksemel/
     git clone https://github.com/Zaryob/iksemel.git ../iksemel/
