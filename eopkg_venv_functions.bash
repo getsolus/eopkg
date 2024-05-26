@@ -17,10 +17,13 @@ function prepare_venv () {
     echo ">>> Symlink eopkg into the eopgk_venv bin/ directory so it can be executed ..."
     ln -srvf pisi/scripts/eopkg.py eopkg_venv/bin/eopkg
 
-    # NOTE: please leave the grep commands in for visibility purposes during build. Thanks. /ermo
+    # get rid of any existing lines w/git ref version info
+    sed "/__version__ += /d" -i pisi/__init__.py
+    echo ">>> pisi version variable BEFORE patching:":
     grep -Hn version pisi/__init__.py
     # append the git ref to __version__ on a new line
     gawk -i inplace 'BEGIN { "git rev-parse --short HEAD" | getline gitref } { print }; /__version__ = / { printf "%s %s\n", $1, "+= \" (" gitref ")\"" }' pisi/__init__.py
+    echo ">>> pisi version variable AFTER patching w/git revision:"
     grep -Hn version pisi/__init__.py
 }
 
