@@ -14,8 +14,8 @@ function prepare_venv () {
     python3.11 -m pip install -r requirements.txt
     compile_iksemel_cleanly
 
-    echo ">>> Symlink eopkg into the eopgk_venv bin/ directory so it can be executed ..."
-    ln -srvf pisi/scripts/eopkg.py eopkg_venv/bin/eopkg
+    echo ">>> Symlink eopkg-cli into the eopkg_venv bin/ directory so it can be executed as eopkg.py3 ..."
+    ln -srvf ./eopkg-cli eopkg_venv/bin/eopkg.py3
 
     # get rid of any existing lines w/git ref version info
     sed "/__version__ += /d" -i pisi/__init__.py
