@@ -145,6 +145,8 @@ unmountBindMounts() {
     printInfo "${MSG}"
     for d in run sys proc; do
         ${umount} "${SOLROOT}"/${d}
+        # avoid the kernel tripping itself up and failing to recursively unmount
+        sleep 1
     done
 }
 
@@ -304,6 +306,8 @@ unmount_bind_mounts() {
     print_info "${MSG}"
     for d in run proc sys dev; do
         \${umount} "${SOLROOT}"/\${d}
+        # avoid the kernel tripping itself up and failing to recursively unmount
+        sleep 1
     done
 }
 
@@ -330,7 +334,6 @@ print_error () {
 
 die() {
     print_error "${*} failed, exiting.\n"
-    showHelp
     exit 1
 }
 
