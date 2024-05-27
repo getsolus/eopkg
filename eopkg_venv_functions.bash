@@ -41,15 +41,14 @@ function compile_iksemel_cleanly () {
     git clone https://github.com/Zaryob/iksemel.git ../iksemel/
     # fetch solus patches into iksemel dir
     pushd ../iksemel/
-    for p in 0001-src-iks.c-Retain-py2-piksemel-behaviour.patch 0001-Escape-non-ASCII-characters.patch 0002-Escape-non-printable-ASCII-characters.patch
-    do
-        wget https://raw.githubusercontent.com/getsolus/packages/main/packages/i/iksemel/files/"${p}"
-        patch -p1 -i "${p}"
-    done
-    # this should now build against the python in the eopkg_venv
-    meson build -Dwith_python=true
-    meson compile -C build/
-    sudo meson install -C build/
+        for p in 0001-src-iks.c-Retain-py2-piksemel-behaviour.patch 0001-Escape-non-ASCII-characters.patch 0002-Escape-non-printable-ASCII-characters.patch
+        do
+            wget https://raw.githubusercontent.com/getsolus/packages/main/packages/i/iksemel/files/"${p}"
+            patch -p1 -i "${p}"
+        done
+        # this should now build against the python in the eopkg_venv
+        meson build -Dwith_python=true
+        meson compile -C build/
     popd
     # symlink the iksemel python C module into our eopkg_venv
     echo -e ">>> Symlink the newly built Solus-patched iksemel python C-extension into the eopkg_venv ..."
