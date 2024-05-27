@@ -70,7 +70,11 @@ function help () {
 
        ... depending on which shell you use.
 
-    2. When you are done, execute:
+    2. To run a command with elevated privileges via sudo inside the venv, execute:
+
+       sudo -E env PATH="\${PATH}" <the command>
+
+    3. When you are done, execute:
 
          deactivate
 

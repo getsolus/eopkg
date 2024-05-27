@@ -15,6 +15,18 @@ On other distributions, install the equivalent packages.
 ### Setting up the `eopkg_venv` venv
 
 - Execute `./prepare_eopkg_venv.sh`
-- source eopkg_venv/bin/activate || eopkg_venv/bin/activate.fish || eopkg_venv/bin/activate.zsh (depending on the shell you use)
+- Depending on the shell you use, `source` one of `eopkg_venv/bin/activate`, `eopkg_venv/bin/activate.fish`, or `eopkg_venv/bin/activate.zsh`.
 
-Now you should be able to execute `eopkg --version` successfully.
+Now you should be able to execute `eopkg.py3 --version` successfully, independently of whether your host system is running Solus or not.
+
+### Running commands with sudo inside the venv
+
+To run a command with elevated privileges via sudo inside the venv, execute:
+
+    sudo -E env PATH="${PATH}" <the command>
+
+**Example:**
+
+    source eopkg_venv/bin/activate
+    sudo -E env PATH="${PATH}" eopkg.py3 --version
+    deactivate
