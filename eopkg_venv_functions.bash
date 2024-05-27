@@ -50,8 +50,8 @@ function compile_iksemel_cleanly () {
         meson build -Dwith_python=true
         meson compile -C build/
         # Install iksemel, except for on Solus systems that already have iksemel installed
-        grep -q 'NAME="Solus"' /etc/os-release && find /usr/lib* -name libiksemel.so -quit \
-        || sudo meson install -C build/
+        grep -q 'NAME="Solus"' /etc/os-release && find /usr/lib* -name libiksemel.so -quit || \
+        sudo meson install -C build/
     popd
     # symlink the iksemel python C module into our eopkg_venv
     echo -e ">>> Symlink the newly built Solus-patched iksemel python C-extension into the eopkg_venv ..."
