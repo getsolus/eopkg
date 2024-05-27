@@ -7,11 +7,17 @@ env/
 
 # used for deploying on non-Solus systems
 eopkg_venv/
+# build_chroot.sh related
+run/
+solus_minimal_chroot/
+start_chroot.sh
 
-*.bak
-*.pyc
-*.whl
 # Cython
 *.c
 # nuitka'd builds
 eopkg-cli.*
+
+# misc
+*.bak
+*.pyc
+*.whl
