@@ -267,6 +267,7 @@ mount_bind_mounts() {
     \${mount} -o rbind /dev "${SOLROOT}"/dev --make-rslave
     \${mount} -o rbind /sys "${SOLROOT}"/sys --make-rslave
     \${mount} -t proc proc "${SOLROOT}"/proc
+    \${mount} -t tmpfs tmpfs "${SOLROOT}"/run
 
     if [[ -d "${LOCALREPO}" ]]; then
         MSG="Bind-mounting the host ${LOCALREPO} directory..."
@@ -301,7 +302,7 @@ unmount_bind_mounts() {
 
     MSG="Unmounting existing ${SOLROOT} virtual kernel file systems..."
     print_info "${MSG}"
-    for d in proc sys dev; do
+    for d in run proc sys dev; do
         \${umount} "${SOLROOT}"/\${d}
     done
 }
@@ -339,7 +340,8 @@ mount_bind_mounts || die "${MSG}"
 
 MSG="Chrooting into ${SOLROOT} ..."
 print_info "${MSG}"
-sudo -E TERM="${TERM}" $(command -v chroot) "${SOLROOT}" /usr/bin/bash -l || die "${MSG}"
+# ensure that usysconf run -f is run before we exec the login shell for convenience
+sudo -E TERM="${TERM}" $(command -v chroot) "${SOLROOT}" /usr/bin/bash -l -c "usysconf run -f && exec /usr/bin/bash -l" || die "${MSG}"
 
 MSG="Unmounting virtual kernel filesystems from ${SOLROOT} ..."
 print_info "${MSG}"
@@ -359,7 +361,9 @@ Building '${EDITION}' chroot from the -unstable repo in the output folder:
 
 succeeded.
 
-You can now chroot into the new ${SOLROOT} dir.
+You can now chroot into the minimal Solus install folder above by executing:
+
+  ./start_chroot.sh
 
 Login: By default, the only enabled user is 'root' with no password.
 
