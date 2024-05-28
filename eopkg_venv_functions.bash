@@ -2,6 +2,8 @@
 #
 # This is designed to be sourced from other bash scripts
 
+source shared_functions.bash
+
 function prepare_venv () {
     # Assume the user starts in the eopkg dir
     echo ">>> Updating the eopkg git repo ..."

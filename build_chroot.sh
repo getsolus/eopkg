@@ -9,11 +9,7 @@
 # script for conveniently creating a clean, minimal, self-hosting Solus root
 # suitable for use in a chroot or systemd-nspawn context for testing.
 
-# utility functions
-BOLD='\033[1m'
-RED='\033[0;31m'
-RESET='\033[0m'
-YELLOW='\033[0;33m'
+source shared_functions.bash
 
 showHelp() {
     cat <<EOF
@@ -25,27 +21,6 @@ Current \$PATH:
 ${PATH}
 
 EOF
-}
-
-printInfo () {
-    local INFO="${BOLD}INFO${RESET}"
-    echo -e "${INFO} ${*}"
-}
-
-printWarning () {
-    local WARNING="${YELLOW}${BOLD}WARNING${RESET}"
-    echo -e "${WARNING} ${*}"
-}
-
-printError () {
-    local ERROR="${RED}${BOLD}ERROR${RESET}"
-    echo -e "${ERROR} ${*}"
-}
-
-die() {
-    printError "${*} failed, exiting.\n"
-    showHelp
-    exit 1
 }
 
 # clean up env
@@ -79,7 +54,6 @@ LOCALREPO="/var/lib/solbuild/local"
 EOPKGCACHE="/var/cache/eopkg/packages"
 SOLNAME="solus_${EDITION}_chroot"
 SOLROOT="${PWD}/${SOLNAME}"
-
 
 checkPrereqs () {
     # prerequisite checks
@@ -162,11 +136,12 @@ basicSetup () {
     MSG="Path to eopkg.py3: ${eopkg_py3_path}"
     printInfo "${MSG}"
 
-    unmountBindMounts
+    # should no longer be necessary
+    # unmountBindMounts
 
     MSG="Removing old ${SOLROOT} directory..."
     printInfo "${MSG}"
-    sudo rm -rf "${SOLROOT}" || die "${MSG}"
+    sudo rm -rf "${SOLROOT}" || { unmountBindMounts && sudo rm -rf "${SOLROOT}"; } || die "${MSG}"
 
     MSG="Setting up new ${SOLROOT} directory..."
     printInfo "${MSG}"
@@ -258,29 +233,31 @@ buildStartChrootScript() {
 #
 # Script for chroot-ing into ${SOLROOT}
 
+source shared_functions.bash
+
 mount_bind_mounts() {
     # automagically go out of scope
     local mkdir='sudo mkdir -pv'
     local mount='sudo mount -v'
 
     MSG="Setting up virtual kernel file systems..."
-    print_info "${MSG}"
+    printInfo "${MSG}"
     # --make-rslave prevents these mounts from affecting the parent dirs
-    \${mount} -o rbind /dev "${SOLROOT}"/dev --make-rslave
-    \${mount} -o rbind /sys "${SOLROOT}"/sys --make-rslave
     \${mount} -t proc proc "${SOLROOT}"/proc
+    \${mount} -t sysfs /sys "${SOLROOT}"/sys --make-rslave
+    \${mount} -o rbind /dev "${SOLROOT}"/dev --make-rslave
     \${mount} -t tmpfs tmpfs "${SOLROOT}"/run
 
     if [[ -d "${LOCALREPO}" ]]; then
         MSG="Bind-mounting the host ${LOCALREPO} directory..."
-        print_info "${MSG}"
+        printInfo "${MSG}"
         \${mkdir} "${SOLROOT}${LOCALREPO}"
         \${mount} --bind "${LOCALREPO}" "${SOLROOT}${LOCALREPO}"
     fi
 
     if [[ -d "${EOPKGCACHE}" ]]; then
         MSG="Bind-mounting the host ${EOPKGCACHE} directory..."
-        print_info "${MSG}"
+        printInfo "${MSG}"
         \${mkdir} "${SOLROOT}${EOPKGCACHE}"
         \${mount} --bind "${EOPKGCACHE}" "${SOLROOT}${EOPKGCACHE}"
     fi
@@ -292,63 +269,41 @@ unmount_bind_mounts() {
 
     if [[ -d "${SOLROOT}/${EOPKGCACHE}" ]]; then
         MSG="Unmounting existing ${SOLROOT}${EOPKGCACHE} bind-mount...."
-        print_info "${MSG}"
+        printInfo "${MSG}"
         \${umount} "${SOLROOT}${EOPKGCACHE}"
     fi
 
     if [[ -d "${SOLROOT}/${LOCALREPO}" ]]; then
         MSG="Unmounting existing ${SOLROOT}${LOCALREPO} bind-mount...."
-        print_info "${MSG}"
+        printInfo "${MSG}"
         \${umount} "${SOLROOT}${LOCALREPO}"
     fi
 
     MSG="Unmounting existing ${SOLROOT} virtual kernel file systems..."
-    print_info "${MSG}"
-    for d in run proc sys dev; do
+    printInfo "${MSG}"
+    for d in run dev sys proc; do
         \${umount} "${SOLROOT}"/\${d}
         # avoid the kernel tripping itself up and failing to recursively unmount
         sleep 1
     done
 }
 
-# utility functions
-BOLD='\033[1m'
-RED='\033[0;31m'
-RESET='\033[0m'
-YELLOW='\033[0;33m'
-
-print_info () {
-    local INFO="${BOLD}INFO${RESET}"
-    echo -e "${INFO} ${*}"
-}
-
-print_warning () {
-    local WARNING="${YELLOW}${BOLD}WARNING${RESET}"
-    echo -e "${WARNING} ${*}"
-}
-
-print_error () {
-    local ERROR="${RED}${BOLD}ERROR${RESET}"
-    echo -e "${ERROR} ${*}"
-}
-
-die() {
-    print_error "${*} failed, exiting.\n"
-    exit 1
-}
+# it sucks to leave mounts up in the chroot 
+trap unmount_bind_mounts EXIT
 
 MSG="Mounting virtual kernel filesystems in ${SOLROOT} ..."
-print_info "${MSG}"
+printInfo "${MSG}"
 mount_bind_mounts || die "${MSG}"
 
 MSG="Chrooting into ${SOLROOT} ..."
-print_info "${MSG}"
+printInfo "${MSG}"
 # ensure that usysconf run -f is run before we exec the login shell for convenience
 sudo -E TERM="${TERM}" $(command -v chroot) "${SOLROOT}" /usr/bin/bash -l -c "usysconf run -f && exec /usr/bin/bash -l" || die "${MSG}"
 
-MSG="Unmounting virtual kernel filesystems from ${SOLROOT} ..."
-print_info "${MSG}"
-unmount_bind_mounts || die "${MSG}"
+# Should no longer be necessary due to the trap EXIT usage
+#MSG="Unmounting virtual kernel filesystems from ${SOLROOT} ..."
+#printInfo "${MSG}"
+#unmount_bind_mounts || die "${MSG}"
 
 EOF
 # be nice to the user
@@ -372,6 +327,9 @@ Login: By default, the only enabled user is 'root' with no password.
 
 EOF
 }
+
+# it sucks to leave mounts up in the chroot
+trap unmountBindMounts EXIT
 
 time {
 
@@ -433,10 +391,10 @@ basicSetup
 
 buildStartChrootScript
 
-unmountBindMounts
+#unmountBindMounts
 
 showStartMessage
 
-cleanEnv
+#cleanEnv
 
 } # end of `time` call
