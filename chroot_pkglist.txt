@@ -1,0 +1,58 @@
+# Do NOT mess with this list unless you know what you're doing!
+#  In this list, the commented out packages in the block directly
+#     below are already installed in system-base, but the full list
+#     can be installed on its own to make eopkg4-bin self-hosting
+#     within a systemd-nspawn chroot command.
+
+# When all packages in the list between the '# BEGIN' and '# END' lines
+# are uncommented, the list below represents just enough OS to enable
+# eopkg4-bin to run from _within_ the chroot and to confirm that the
+# network is working + enabling https to work without system.base being
+# installed.  Note that file and # zlib are prerequisites of eopkg4-bin.
+# Otherwise, the list just represents the additional packages needed to
+# confirm network connectivity when system.base _is_ installed.
+# BEGIN
+#bash
+bind-utils
+#ca-certs
+#coreutils
+eopkg4-bin
+#file
+#inetutils
+iproute2
+#kmod
+#libnss
+#libseccomp
+perl
+#shadow
+#sudo
+#systemd
+#usysconf
+#util-linux
+#zlib
+# END
+
+# ISO creation prerequisites, including ssh for cloning iso-tooling,
+# and keychain to manage ssh keys in the console
+# NB: ISO creation will only work with plain chroots running on systems
+#     with kernels that have AppArmor enabled!
+#dosfstools
+#git
+#keychain
+#libisoburn
+#make
+#openssh
+#python3
+#pyyaml
+#sbsigntools
+#squashfs-tools
+#syslinux
+#yq
+
+# Convenience packages
+fish
+helix
+man-pages
+nano
+neovim
+zsh

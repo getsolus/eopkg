@@ -83,19 +83,22 @@ mountBindMounts() {
     #${mount} -t tmpfs tmpfs "${SOLROOT}"/dev/shm
     ${mount} -t proc proc "${SOLROOT}"/proc
     ${mount} -t sysfs sysfs "${SOLROOT}"/sys
+    # when systemd-nspawn is not pid1, we need ot mount this ourselves
     ${mount} -t tmpfs tmpfs "${SOLROOT}"/run
 
+    # ensure it exists first
+    ${mkdir} "${SOLROOT}${LOCALREPO}"
     if [[ -d "${LOCALREPO}" ]]; then
         MSG="Bind-mounting the host ${LOCALREPO} directory ..."
         printInfo "${MSG}"
-        ${mkdir} "${SOLROOT}${LOCALREPO}"
         ${mount} --bind "${LOCALREPO}" "${SOLROOT}${LOCALREPO}"
     fi
 
+    # ensure it exists first
+    ${mkdir} "${SOLROOT}${EOPKGCACHE}"
     if [[ -d "${EOPKGCACHE}" ]]; then
         MSG="Bind-mounting the host ${EOPKGCACHE} directory ..."
         printInfo "${MSG}"
-        ${mkdir} "${SOLROOT}${EOPKGCACHE}"
         ${mount} --bind "${EOPKGCACHE}" "${SOLROOT}${EOPKGCACHE}"
     fi
 }
@@ -121,7 +124,7 @@ unmountBindMounts() {
     for d in run sys proc; do
         ${umount} "${SOLROOT}"/${d}
         # avoid the kernel tripping itself up and failing to recursively unmount
-        sleep 1
+        sleep 0.5
     done
 }
 
@@ -153,7 +156,7 @@ basicSetup () {
 
     mountBindMounts
 
-    if [[ -d ${LOCALREPO} ]]; then
+    if [[ -d "${LOCALREPO}" ]]; then
         MSG="Adding ${LOCALREPO} repo to list of active repositories ..."
         printInfo "${MSG}"
         ls -l "${SOLROOT}/${LOCALREPO}"
@@ -168,14 +171,21 @@ basicSetup () {
     printInfo "${MSG}"
     ${eopkg_py3} remove-repo Solus -D "${SOLROOT}" || die "${MSG}"
 
-    MSG="Installing baselayout..."
+    MSG="Installing baselayout ..."
     ${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety --ignore-comar baselayout || die "${MSG}"
 
-    MSG="Installing packages to act as a seed for systemd-nspawn chroot runs ..."
-    printInfo "${MSG}"
-    #${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety -c system.base || die "${MSG}"
-    ${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety "${SELFHOSTINGEOPKG[@]}" || die "${MSG}"
+    # Since we're testing eopkg.py3 from a venv, let's use that instead for creating the root
+    #MSG="Installing packages to act as a seed for systemd-nspawn chroot runs ..."
+    #printInfo "${MSG}"
+    #${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety "${SELFHOSTINGEOPKG[@]}" || die "${MSG}"
+    MSG="Installing system.base ..."
+    ${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety -c system.base || die "${MSG}"
 
+    MSG="Installing remaining packages from the chroot_pkglist.txt file ..."
+    printInfo "${MSG}"
+    # The lack of quoting around ${PACKAGES} is deliberate
+    ${eopkg_py3} install -y -D "${SOLROOT}" ${PACKAGES} || die "${MSG}"
+    
     MSG="Adding root group and user in ${SOLROOT} install ..."
     printInfo "${MSG}"
     # setting this as interactive, as the dir won't exist if $SOLROOT is non-empty.
@@ -205,19 +215,10 @@ basicSetup () {
     printInfo "${MSG}"
     ${chroot} usysconf run -f
 
-    MSG="Installing system.base from within the systemd-nspawn chroot ..."
-    printInfo "${MSG}"
-    ${chroot} ${eopkg_bin} install -y --ignore-safety -c system.base || die "${MSG}"
-
-    MSG="Installing remaining ${EDITION} packages from within the systemd-nspawn chroot ..."
-    printInfo "${MSG}"
-    ${chroot} ${eopkg_bin} install "${PACKAGES[@]}" -y || die "${MSG}"
-
     MSG="Disabling temporary Local repo within the systemd-nspawn chroot ..."
     printInfo "${MSG}"
     ${chroot} ${eopkg_bin} dr Local
     ${chroot} ${eopkg_bin} lr
-    ${chroot} ${mkdir} "${LOCALREPO}"
 }
 
 buildStartChrootScript() {
@@ -343,6 +344,7 @@ mount_bind_mounts || die "\${MSG}"
 
 MSG="Booting into ${SOLROOT} using systemd-nspawn ..."
 printInfo "\${MSG}"
+# Note that the bind mounts get auto-unmounted by systemd-nspawn on poweroff
 exec \${BOOT_CMD} || die "\${MSG}"
 
 EOF
@@ -374,63 +376,13 @@ trap unmountBindMounts EXIT
 
 time {
 
-# Pkg list check
 checkPrereqs
 
-# Just enough OS to enable eopkg4-bin to run from _within_ the root
-# and to confirm that the network is working + enabling https to work
-# NOTE: file and zlib are runtime reqs for eopgk4-bin
-SELFHOSTINGEOPKG=(
-    bash
-    bind-utils
-    ca-certs
-    coreutils
-    eopkg4-bin
-    file
-    inetutils
-    iproute2
-    kmod
-    libnss
-    libseccomp
-    perl
-    shadow
-    sudo
-    systemd
-    usysconf
-    util-linux
-    zlib
-)
+# strip out comment lines + empty lines. Yields a space separated string.
+# (the string deliberately includes duplicates to keep them visible)
+PACKAGES="$(sed -e '/^#.*$/d' -e '/^$/d' chroot_pkglist.txt| sort| tr '\n' ' ')"
 
-# ISO creation prerequisites, including ssh for cloning iso-tooling,
-# and keychain to manage ssh keys in the console
-# NB: ISO creation will only work on kernels with AppArmor support!
-PACKAGES=(
-    dosfstools
-    git
-    keychain
-    libisoburn
-    make
-    openssh
-    python3
-    pyyaml
-    sbsigntools
-    squashfs-tools
-    syslinux
-    yq
-)
-
-# Convenience packages
-PACKAGES+=(
-    fish
-    helix
-    man-pages
-    nano
-    neovim
-    zsh
-)
-    
-#echo "COMPONENTS: ${COMPONENTS[@]}"
-#echo "PACKAGES  : ${PACKAGES[@]}"
+echo "PACKAGES: ${PACKAGES}"
 #die "Test of PACKAGES."
 
 basicSetup
@@ -438,10 +390,7 @@ basicSetup
 buildStartChrootScript
 
 buildStartSystemdNspawnScript
-#unmountBindMounts
 
 showStartMessage
-
-#cleanEnv
 
 } # end of `time` call
