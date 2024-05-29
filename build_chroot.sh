@@ -325,7 +325,7 @@ mount_bind_mounts() {
     if [[ -d "${LOCALREPO}" ]]; then
         MSG="Bind-mounting the host ${LOCALREPO} directory ..."
         printInfo "\${MSG}"
-        BOOT_CMD=+" --bind ${LOCALREPO}"
+        BOOT_CMD+=" --bind ${LOCALREPO}"
     fi
 
     # needs to exist in any case
@@ -333,7 +333,7 @@ mount_bind_mounts() {
     if [[ -d "${EOPKGCACHE}" ]]; then
         MSG="Bind-mounting the host ${EOPKGCACHE} directory ..."
         printInfo "\${MSG}"
-        BOOT_CMD=+" --bind ${EOPKGCACHE}"
+        BOOT_CMD+=" --bind ${EOPKGCACHE}"
     fi
 }
 
