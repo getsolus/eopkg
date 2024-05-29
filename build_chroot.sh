@@ -65,6 +65,7 @@ checkPrereqs () {
     test -x $(command -v systemd-nspawn) || die "\n${0} assumes that systemd-nspawn is available\n"
     test -x $(command -v useradd) || die "\n${0} assumes that useradd is available\n"
     test -x $(command -v yq) || die "\n${0} assumes that yq is available.\n"
+    ldconfig -p |grep -q iksemel.so || die "\n${0} assumes that iksemel.so is available (check /etc/ld.so.conf).\n"
 }
 
 mountBindMounts() {
@@ -128,12 +129,15 @@ basicSetup () {
     # local variables go out of scope at the end of the function
     local chroot="sudo systemd-nspawn --as-pid2 --quiet -D ${SOLROOT}" # better chroot essentially
     #local chroot="sudo chroot ${SOLROOT}"
-    local eopkg_py3="sudo -E env PATH=${PATH} eopkg.py3" # necessary cruft for sudo to work with the eopkg_venv
+    # necessary cruft for sudo to work with the eopkg_venv
+    local eopkg_py3="sudo -E env PATH=${PATH} eopkg.py3"
     local eopkg_bin='eopkg4-bin'
     local mkdir='sudo mkdir -pv'
 
     local eopkg_py3_path="$(command -v eopkg.py3)"
     MSG="Path to eopkg.py3: ${eopkg_py3_path}"
+    printInfo "${MSG}"
+    MSG="Elevated eopkg.py3 command: ${eopkg_py3}"
     printInfo "${MSG}"
 
     # should no longer be necessary
@@ -169,7 +173,7 @@ basicSetup () {
 
     MSG="Installing packages to act as a seed for systemd-nspawn chroot runs..."
     printInfo "${MSG}"
-    #sudo ${eopkg} install -y -D "${SOLROOT}" --ignore-safety -c system.base || die "${MSG}"
+    #${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety -c system.base || die "${MSG}"
     ${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety "${SELFHOSTINGEOPKG[@]}" || die "${MSG}"
 
     MSG="Adding root group and user in ${SOLROOT} install..."
@@ -205,19 +209,7 @@ basicSetup () {
     printInfo "${MSG}"
     ${chroot} ${eopkg_bin} install -y --ignore-safety -c system.base || die "${MSG}"
 
-    if [[ "${EDITION}" != "minimal" ]]
-    then
-        MSG="Installing remaining components from within the systemd-nspawn chroot..."
-        printInfo "${MSG}"
-        for c in "${COMPONENTS[@]}"; do
-            MSG="Installing component ${c}..."
-            printInfo "${MSG}"
-            echo "Executing ${chroot} ${eopkg} install -c "${c}" -y"
-            ${chroot} ${eopkg_bin} install -c "${c}" -y || die "${MSG}"
-        done
-    fi
-
-    MSG="Installing remaining ${EDITION} ISO packages from within the systemd-nspawn chroot..."
+    MSG="Installing remaining ${EDITION} packages from within the systemd-nspawn chroot..."
     printInfo "${MSG}"
     ${chroot} ${eopkg_bin} install "${PACKAGES[@]}" -y || die "${MSG}"
 
@@ -225,6 +217,7 @@ basicSetup () {
     printInfo "${MSG}"
     ${chroot} ${eopkg_bin} dr Local
     ${chroot} ${eopkg_bin} lr
+    ${chroot} ${mkdir} "${LOCALREPO}"
 }
 
 buildStartChrootScript() {
@@ -360,12 +353,15 @@ SELFHOSTINGEOPKG=(
     zlib
 )
 
-# ISO creation prerequisites
+# ISO creation prerequisites, including ssh for cloning iso-tooling,
+# and keychain to manage ssh keys in the console
 PACKAGES=(
     dosfstools
     git
+    keychain
     libisoburn
     make
+    openssh
     python3
     pyyaml
     sbsigntools
@@ -379,6 +375,7 @@ PACKAGES+=(
     fish
     helix
     man-pages
+    nano
     neovim
     zsh
 )
