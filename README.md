@@ -33,7 +33,7 @@ To run a command with elevated privileges via sudo inside the venv, execute:
 
 ### Building a Solus chroot using the eopkg_venv eopkg.py3 version
 
-After setting up and activating the venv as above, run `./build_chroot.sh` followed by `./start_chroot.sh`.
+After setting up and activating the venv as above, run `./build_chroot.sh` followed by `./start_systemd_nspawn.sh` (recommend) or `/start_chroot.sh`.
 
 This will dump you to a root shell in a minimal Solus chroot.
 
