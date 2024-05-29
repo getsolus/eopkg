@@ -11,6 +11,7 @@ eopkg_venv/
 run/
 solus_minimal_chroot/
 start_chroot.sh
+start_systemd_nspawn.sh
 
 # Cython
 *.c

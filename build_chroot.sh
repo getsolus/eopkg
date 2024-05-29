@@ -47,7 +47,7 @@ then
     exit 1
 else
     EDITION="minimal"
-    echo "Building ${EDITION} self-hosting Solus chroot environment ..."
+    printInfo "Building ${EDITION} self-hosting Solus chroot environment ..."
 fi
 
 LOCALREPO="/var/lib/solbuild/local"
@@ -73,7 +73,7 @@ mountBindMounts() {
     local mkdir='sudo mkdir -pv'
     local mount='sudo mount -v'
 
-    MSG="Setting up virtual kernel file systems..."
+    MSG="Setting up virtual kernel file systems ..."
     printInfo "${MSG}"
     # NB: systemd-nspawn handles all the necessary /dev setup on its own.
     #${mount} -t devtmpfs devtmpfs "${SOLROOT}"/dev
@@ -86,14 +86,14 @@ mountBindMounts() {
     ${mount} -t tmpfs tmpfs "${SOLROOT}"/run
 
     if [[ -d "${LOCALREPO}" ]]; then
-        MSG="Bind-mounting the host ${LOCALREPO} directory..."
+        MSG="Bind-mounting the host ${LOCALREPO} directory ..."
         printInfo "${MSG}"
         ${mkdir} "${SOLROOT}${LOCALREPO}"
         ${mount} --bind "${LOCALREPO}" "${SOLROOT}${LOCALREPO}"
     fi
 
     if [[ -d "${EOPKGCACHE}" ]]; then
-        MSG="Bind-mounting the host ${EOPKGCACHE} directory..."
+        MSG="Bind-mounting the host ${EOPKGCACHE} directory ..."
         printInfo "${MSG}"
         ${mkdir} "${SOLROOT}${EOPKGCACHE}"
         ${mount} --bind "${EOPKGCACHE}" "${SOLROOT}${EOPKGCACHE}"
@@ -105,18 +105,18 @@ unmountBindMounts() {
     local umount='sudo umount -Rfv'
 
     if [[ -d "${SOLROOT}/${EOPKGCACHE}" ]]; then
-        MSG="Unmounting existing ${SOLROOT}${EOPKGCACHE} bind-mount...."
+        MSG="Unmounting existing ${SOLROOT}${EOPKGCACHE} bind-mount ..."
         printInfo "${MSG}"
         ${umount} "${SOLROOT}${EOPKGCACHE}"
     fi
 
     if [[ -d "${SOLROOT}/${LOCALREPO}" ]]; then
-        MSG="Unmounting existing ${SOLROOT}${LOCALREPO} bind-mount...."
+        MSG="Unmounting existing ${SOLROOT}${LOCALREPO} bind-mount ..."
         printInfo "${MSG}"
         ${umount} "${SOLROOT}${LOCALREPO}"
     fi
 
-    MSG="Unmounting existing ${SOLROOT} virtual kernel file systems..."
+    MSG="Unmounting existing ${SOLROOT} virtual kernel file systems ..."
     printInfo "${MSG}"
     for d in run sys proc; do
         ${umount} "${SOLROOT}"/${d}
@@ -143,40 +143,40 @@ basicSetup () {
     # should no longer be necessary
     # unmountBindMounts
 
-    MSG="Removing old ${SOLROOT} directory..."
+    MSG="Removing old ${SOLROOT} directory ..."
     printInfo "${MSG}"
     sudo rm -rf "${SOLROOT}" || { unmountBindMounts && sudo rm -rf "${SOLROOT}"; } || die "${MSG}"
 
-    MSG="Setting up new ${SOLROOT} directory..."
+    MSG="Setting up new ${SOLROOT} directory ..."
     printInfo "${MSG}"
     ${mkdir} "${SOLROOT}"/{dev,dev/shm,proc,sys,run} || die "${MSG}"
 
     mountBindMounts
 
     if [[ -d ${LOCALREPO} ]]; then
-        MSG="Adding ${LOCALREPO} repo to list of active repositories..."
+        MSG="Adding ${LOCALREPO} repo to list of active repositories ..."
         printInfo "${MSG}"
         ls -l "${SOLROOT}/${LOCALREPO}"
         ${eopkg_py3} add-repo --ignore-check Local "${LOCALREPO}/eopkg-index.xml" -D "${SOLROOT}" || die "${MSG}"
     fi
 
-    MSG="Adding unstable solus repository..."
+    MSG="Adding unstable solus repository ..."
     printInfo "${MSG}"
     ${eopkg_py3} add-repo Unstable https://packages.getsol.us/unstable/eopkg-index.xml.xz -D "${SOLROOT}" || die "${MSG}"
 
-    MSG="Removing automatically (and unhelpfully) added Solus repo..."
+    MSG="Removing automatically (and unhelpfully) added Solus repo ..."
     printInfo "${MSG}"
     ${eopkg_py3} remove-repo Solus -D "${SOLROOT}" || die "${MSG}"
 
     MSG="Installing baselayout..."
     ${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety --ignore-comar baselayout || die "${MSG}"
 
-    MSG="Installing packages to act as a seed for systemd-nspawn chroot runs..."
+    MSG="Installing packages to act as a seed for systemd-nspawn chroot runs ..."
     printInfo "${MSG}"
     #${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety -c system.base || die "${MSG}"
     ${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety "${SELFHOSTINGEOPKG[@]}" || die "${MSG}"
 
-    MSG="Adding root group and user in ${SOLROOT} install..."
+    MSG="Adding root group and user in ${SOLROOT} install ..."
     printInfo "${MSG}"
     # setting this as interactive, as the dir won't exist if $SOLROOT is non-empty.
     # IFF by some fluke $SOLROOT is empty, THEN we don't want to inadvertently rm -rf the _host_ /root dir,
@@ -185,35 +185,35 @@ basicSetup () {
     sudo groupadd -g 0 -r -R "${SOLROOT}" root
     sudo useradd -c Charlie -r -m -d /root/ -u 0 -g 0 -R "${SOLROOT}" root || die "${MSG}"
 
-    MSG="Re-setting password for root user in ${SOLROOT}..."
+    MSG="Re-setting password for root user in ${SOLROOT} ..."
     printInfo "${MSG}"
     ${chroot} passwd -d root || die "${MSG}"
     echo -n "I am (g)"
     ${chroot} whoami || die "${MSG}"
 
-    MSG="Listing eopkg related directory permissions..."
+    MSG="Listing eopkg related directory permissions ..."
     printInfo "${MSG}"
     ${chroot} ls -la /var/cache/eopkg /var/run/lock/subsys/pisi
 
-    MSG="Checking for network connectivity from within the systemd-nspawn chroot..."
+    MSG="Checking for network connectivity from within the systemd-nspawn chroot ..."
     printInfo "${MSG}"
     ${chroot} ip addr
     ${chroot} ip route
     ${chroot} nslookup packages.getsol.us
 
-    MSG="Forcing usysconf run inside the chroot (to enable eopkg to use https:// URIs)..."
+    MSG="Forcing usysconf run inside the chroot (to enable eopkg to use https:// URIs) ..."
     printInfo "${MSG}"
     ${chroot} usysconf run -f
 
-    MSG="Installing system.base from within the systemd-nspawn chroot..."
+    MSG="Installing system.base from within the systemd-nspawn chroot ..."
     printInfo "${MSG}"
     ${chroot} ${eopkg_bin} install -y --ignore-safety -c system.base || die "${MSG}"
 
-    MSG="Installing remaining ${EDITION} packages from within the systemd-nspawn chroot..."
+    MSG="Installing remaining ${EDITION} packages from within the systemd-nspawn chroot ..."
     printInfo "${MSG}"
     ${chroot} ${eopkg_bin} install "${PACKAGES[@]}" -y || die "${MSG}"
 
-    MSG="Disabling temporary Local repo within the systemd-nspawn chroot..."
+    MSG="Disabling temporary Local repo within the systemd-nspawn chroot ..."
     printInfo "${MSG}"
     ${chroot} ${eopkg_bin} dr Local
     ${chroot} ${eopkg_bin} lr
@@ -233,25 +233,27 @@ mount_bind_mounts() {
     local mkdir='sudo mkdir -pv'
     local mount='sudo mount -v'
 
-    MSG="Setting up virtual kernel file systems..."
-    printInfo "${MSG}"
+    MSG="Setting up virtual kernel file systems ..."
+    printInfo "\${MSG}"
     # --make-rslave prevents these mounts from affecting the parent dirs
     \${mount} -t proc proc "${SOLROOT}"/proc
     \${mount} -t sysfs /sys "${SOLROOT}"/sys --make-rslave
     \${mount} -o rbind /dev "${SOLROOT}"/dev --make-rslave
     \${mount} -t tmpfs tmpfs "${SOLROOT}"/run
 
+    # needs to exist in any case
+    \${mkdir} "${SOLROOT}${LOCALREPO}"
     if [[ -d "${LOCALREPO}" ]]; then
-        MSG="Bind-mounting the host ${LOCALREPO} directory..."
-        printInfo "${MSG}"
-        \${mkdir} "${SOLROOT}${LOCALREPO}"
+        MSG="Bind-mounting the host ${LOCALREPO} directory ..."
+        printInfo "\${MSG}"
         \${mount} --bind "${LOCALREPO}" "${SOLROOT}${LOCALREPO}"
     fi
 
+    # needs to exist in any case
+    \${mkdir} "${SOLROOT}${EOPKGCACHE}"
     if [[ -d "${EOPKGCACHE}" ]]; then
-        MSG="Bind-mounting the host ${EOPKGCACHE} directory..."
-        printInfo "${MSG}"
-        \${mkdir} "${SOLROOT}${EOPKGCACHE}"
+        MSG="Bind-mounting the host ${EOPKGCACHE} directory ..."
+        printInfo "\${MSG}"
         \${mount} --bind "${EOPKGCACHE}" "${SOLROOT}${EOPKGCACHE}"
     fi
 }
@@ -261,19 +263,19 @@ unmount_bind_mounts() {
     local umount='sudo umount -Rfv'
 
     if [[ -d "${SOLROOT}/${EOPKGCACHE}" ]]; then
-        MSG="Unmounting existing ${SOLROOT}${EOPKGCACHE} bind-mount...."
-        printInfo "${MSG}"
+        MSG="Unmounting existing ${SOLROOT}${EOPKGCACHE} bind-mount ..."
+        printInfo "\${MSG}"
         \${umount} "${SOLROOT}${EOPKGCACHE}"
     fi
 
     if [[ -d "${SOLROOT}/${LOCALREPO}" ]]; then
-        MSG="Unmounting existing ${SOLROOT}${LOCALREPO} bind-mount...."
-        printInfo "${MSG}"
+        MSG="Unmounting existing ${SOLROOT}${LOCALREPO} bind-mount ..."
+        printInfo "\${MSG}"
         \${umount} "${SOLROOT}${LOCALREPO}"
     fi
 
-    MSG="Unmounting existing ${SOLROOT} virtual kernel file systems..."
-    printInfo "${MSG}"
+    MSG="Unmounting existing ${SOLROOT} virtual kernel file systems ..."
+    printInfo "\${MSG}"
     for d in run dev sys proc; do
         \${umount} "${SOLROOT}"/\${d}
         # avoid the kernel tripping itself up and failing to recursively unmount
@@ -285,11 +287,11 @@ unmount_bind_mounts() {
 trap unmount_bind_mounts EXIT
 
 MSG="Mounting virtual kernel filesystems in ${SOLROOT} ..."
-printInfo "${MSG}"
-mount_bind_mounts || die "${MSG}"
+printInfo "\${MSG}"
+mount_bind_mounts || die "\${MSG}"
 
 MSG="Chrooting into ${SOLROOT} ..."
-printInfo "${MSG}"
+printInfo "\${MSG}"
 # ensure that usysconf run -f is run before we exec the login shell for convenience
 sudo -E TERM="${TERM}" $(command -v chroot) "${SOLROOT}" /usr/bin/bash -l -c "usysconf run -f && exec /usr/bin/bash -l" || die "${MSG}"
 
@@ -303,6 +305,51 @@ EOF
 chmod -c a+x start_chroot.sh
 }
 
+buildStartSystemdNspawnScript() {
+    cat <<EOF > start_systemd_nspawn.sh
+#!/usr/bin/env bash
+#
+# Script for booting into ${SOLROOT} via systemd-nspawn
+
+source shared_functions.bash
+
+BOOT_CMD="sudo $(command -v systemd-nspawn) -D ${SOLROOT} --boot"
+
+mount_bind_mounts() {
+    # automagically go out of scope
+    local mkdir='sudo mkdir -pv'
+    local mount='sudo mount -v'
+
+    # needs to exist in any case
+    \${mkdir} "${SOLROOT}${LOCALREPO}"
+    if [[ -d "${LOCALREPO}" ]]; then
+        MSG="Bind-mounting the host ${LOCALREPO} directory ..."
+        printInfo "\${MSG}"
+        BOOT_CMD=+" --bind ${LOCALREPO}"
+    fi
+
+    # needs to exist in any case
+    \${mkdir} "${SOLROOT}${EOPKGCACHE}"
+    if [[ -d "${EOPKGCACHE}" ]]; then
+        MSG="Bind-mounting the host ${EOPKGCACHE} directory ..."
+        printInfo "\${MSG}"
+        BOOT_CMD+=" --bind ${EOPKGCACHE}"
+    fi
+}
+
+MSG="Checking whether we can bind-mount useful host directories ..."
+printInfo "\${MSG}"
+mount_bind_mounts || die "\${MSG}"
+
+MSG="Booting into ${SOLROOT} using systemd-nspawn ..."
+printInfo "\${MSG}"
+exec \${BOOT_CMD} || die "\${MSG}"
+
+EOF
+# be nice to the user
+chmod -c a+x start_systemd_nspawn.sh
+}
+
 showStartMessage() {
     cat <<EOF
 
@@ -312,9 +359,10 @@ Building '${EDITION}' chroot from the -unstable repo in the output folder:
 
 succeeded.
 
-You can now chroot into the minimal Solus install folder above by executing:
+You can now chroot into the minimal Solus install folder above by executing one of:
 
-  ./start_chroot.sh
+  ./start_chroot.sh         # normal chroot
+  ./start_systemd_nspawn.sh # systemd-nspawn chroot on steroids
 
 Login: By default, the only enabled user is 'root' with no password.
 
@@ -355,6 +403,7 @@ SELFHOSTINGEOPKG=(
 
 # ISO creation prerequisites, including ssh for cloning iso-tooling,
 # and keychain to manage ssh keys in the console
+# NB: ISO creation will only work on kernels with AppArmor support!
 PACKAGES=(
     dosfstools
     git
@@ -388,6 +437,7 @@ basicSetup
 
 buildStartChrootScript
 
+buildStartSystemdNspawnScript
 #unmountBindMounts
 
 showStartMessage
