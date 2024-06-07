@@ -32,6 +32,7 @@ def exportFlags():
     os.environ['CXXFLAGS'] = values.build.cxxflags
     os.environ['LDFLAGS'] = values.build.ldflags
     os.environ['USER_LDFLAGS'] = values.build.ldflags
+    os.environ['RUSTFLAGS'] = values.build.rustflags
     os.environ['JOBS'] = values.build.jobs
 
     os.environ['LD_AS_NEEDED'] = "1"
@@ -58,6 +59,7 @@ class Env(object):
             'cflags': 'CFLAGS',
             'cxxflags': 'CXXFLAGS',
             'ldflags': 'LDFLAGS',
+            'rustflags': 'RUSTFLAGS',
             'clang': 'PKG_SUPPORTS_CLANG',            
             'jobs': 'JOBS'
         }
