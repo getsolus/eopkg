@@ -63,7 +63,7 @@ class LazyDB(Singleton):
                 f.write(LazyDB.cache_version)
                 f.flush()
                 os.fsync(f.fileno())
-            pickle.dump(self._instance, open(self.__cache_file(), "wb"))
+            pickle.dump(self._instance, open(self.__cache_file(), "wb"), protocol=2)
 
     def cache_valid(self):
         try:
