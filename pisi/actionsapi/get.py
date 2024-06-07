@@ -143,6 +143,10 @@ def LDFLAGS():
     return env.ldflags
 
 
+def RUSTFLAGS():
+    return env.rustflags
+
+
 def makeJOBS():
     # Note: "auto" only works when /sys is mounted.
     if env.jobs == "auto":
