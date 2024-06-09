@@ -134,7 +134,7 @@ basicSetup () {
     #local chroot="sudo chroot ${SOLROOT}"
     # necessary cruft for sudo to work with the eopkg_venv
     local eopkg_py3="sudo -E env PATH=${PATH} eopkg.py3"
-    local eopkg_bin='eopkg4-bin'
+    local eopkg_bin='eopkg.bin'
     local mkdir='sudo mkdir -pv'
 
     local eopkg_py3_path="$(command -v eopkg.py3)"

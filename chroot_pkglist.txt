@@ -6,9 +6,9 @@
 
 # When all packages in the list between the '# BEGIN' and '# END' lines
 # are uncommented, the list below represents just enough OS to enable
-# eopkg4-bin to run from _within_ the chroot and to confirm that the
+# eopkg.bin to run from _within_ the chroot and to confirm that the
 # network is working + enabling https to work without system.base being
-# installed.  Note that file and # zlib are prerequisites of eopkg4-bin.
+# installed.  Note that file and zlib are prerequisites of eopkg.
 # Otherwise, the list just represents the additional packages needed to
 # confirm network connectivity when system.base _is_ installed.
 # BEGIN
@@ -16,7 +16,7 @@
 bind-utils
 #ca-certs
 #coreutils
-eopkg4-bin
+eopkg
 #file
 #inetutils
 iproute2
