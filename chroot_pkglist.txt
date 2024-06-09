@@ -1,7 +1,7 @@
 # Do NOT mess with this list unless you know what you're doing!
 #  In this list, the commented out packages in the block directly
 #     below are already installed in system-base, but the full list
-#     can be installed on its own to make eopkg4-bin self-hosting
+#     can be installed on its own to make eopkg.bin self-hosting
 #     within a systemd-nspawn chroot command.
 
 # When all packages in the list between the '# BEGIN' and '# END' lines
