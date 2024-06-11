@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 #
 # just put a .pisipackager file in your home and fill it like
@@ -79,7 +79,7 @@ temp_pspec = '''<?xml version="1.0" ?>
 </PISI>
 '''
 
-temp_actions = '''#!/usr/bin/python
+temp_actions = '''#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 #
 # Copyright %(year)s TUBITAK/UEKAE

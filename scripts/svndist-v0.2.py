@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/env python2
 #
 # a script to prepare eopkg source tarball from any svn directory you specify
 #   in any revision you want.
