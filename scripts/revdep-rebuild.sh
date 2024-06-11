@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # revdep-rebuild: Reverse dependency rebuilder.
 # Author: Stanislav Brabec <utx@gentoo.org>
@@ -32,7 +32,7 @@ BL="\x1b[34;01m"
 alias echo_v=echo
 
 SONAME="not found"
-SONAME_GREP=fgrep
+SONAME_GREP="grep -F"
 SEARCH_BROKEN=true
 
 while : ; do

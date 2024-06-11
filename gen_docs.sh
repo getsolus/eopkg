@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Credit to swupd developers: https://github.com/clearlinux/swupd-client
 
