@@ -2,6 +2,8 @@
 
 Fork of the PiSi Package Manager, originally from Pardus Linux, and adapted/maintained during the lifetime of SolusOS, EvolveOS and Solus.
 
+The python3 port is now the main development branch.
+
 ## eopkg venv testing
 
 ### Prerequisites
