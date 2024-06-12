@@ -119,7 +119,7 @@ class Install(install):
         os.chdir('doc')
         for pdf in glob.glob('*.pdf'):
             print 'Installing', pdf
-            #shutil.copy(pdf, os.path.join(destpath, pdf))
+            shutil.copy(pdf, os.path.join(destpath, pdf))
         os.chdir('..')
 
     def generateConfigFile(self):
@@ -157,7 +157,7 @@ class Install(install):
 setup(name="pisi",
     version= pisi.__version__,
     description="eopkg - package manager",
-    long_description="Solus Interim Package Management",
+    long_description="Solus Legacy Package Management (py2)",
     license="GPL-2.0-or-later",
     author="Solus (Previously Pardus Developers)",
     author_email="releng@getsol.us",
