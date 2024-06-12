@@ -95,8 +95,9 @@ class Install(install):
     def run(self):
         install.run(self)
         self.installi18n()
-        self.installdoc()
-        self.generateConfigFile()
+        # now owned by the eopkg package, not the present pisi package
+        #self.installdoc()
+        #self.generateConfigFile()
 
     def installi18n(self):
         for name in os.listdir('po'):
@@ -119,7 +120,7 @@ class Install(install):
         os.chdir('doc')
         for pdf in glob.glob('*.pdf'):
             print 'Installing', pdf
-            #shutil.copy(pdf, os.path.join(destpath, pdf))
+            shutil.copy(pdf, os.path.join(destpath, pdf))
         os.chdir('..')
 
     def generateConfigFile(self):
@@ -157,7 +158,7 @@ class Install(install):
 setup(name="pisi",
     version= pisi.__version__,
     description="eopkg - package manager",
-    long_description="Solus Interim Package Management",
+    long_description="Solus Legacy Package Management (py2)",
     license="GPL-2.0-or-later",
     author="Solus (Previously Pardus Developers)",
     author_email="releng@getsol.us",
