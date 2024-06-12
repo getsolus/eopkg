@@ -59,10 +59,10 @@ class BuildPo(build):
 
         for root,dirs,filenames in os.walk("pisi"):
             for filename in filenames:
-                if filename.endswith(".py"):
+                if (filename.endswith(".py") or filename.endswith(".py2")):
                     filelist.append(os.path.join(root, filename))
 
-        filelist.extend(["eopkg-cli", "eopkg.xml.in.h", optparse_path])
+        filelist.extend(["eopkg.py2", "eopkg.xml.in.h", optparse_path])
         filelist.sort()
         with open(files, "w") as _files:
             _files.write("\n".join(filelist))
@@ -160,11 +160,11 @@ setup(name="pisi",
     long_description="Solus Interim Package Management",
     license="GPL-2.0-or-later",
     author="Solus (Previously Pardus Developers)",
-    author_email="copyright@getsol.us",
+    author_email="releng@getsol.us",
     url="https://getsol.us",
     package_dir = {'': ''},
     packages = ['pisi', 'pisi.cli', 'pisi.operations', 'pisi.actionsapi', 'pisi.pxml', 'pisi.scenarioapi', 'pisi.db'],
-    scripts = ['eopkg-cli', 'scripts/lseopkg', 'scripts/uneopkg', 'scripts/check-newconfigs.py', 'scripts/revdep-rebuild'],
+    scripts = ['eopkg.py2', 'scripts/lseopkg.py2', 'scripts/uneopkg.py2', 'scripts/check-newconfigs.py2', 'scripts/revdep-rebuild.sh'],
     cmdclass = {'build' : Build,
                 'build_po' : BuildPo,
                 'install' : Install}
