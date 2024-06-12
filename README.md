@@ -14,6 +14,8 @@ On e.g. RHEL 9.x compatible distros, install the following:
 
 On other distributions, install the equivalent packages.
 
+To build the eopkg.1 man-page, the `pandoc` executable needs to be available.
+
 ### Setting up the `eopkg_venv` venv
 
 - Execute `./prepare_eopkg_venv.sh`
