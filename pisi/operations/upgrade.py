@@ -24,6 +24,9 @@ import pisi.util as util
 import pisi.db
 import pisi.blacklist
 
+FILESYSTEM_PKG = 'baselayout'
+PACKAGEMANAGER_PKG = 'pisi'
+
 def check_update_actions(packages):
     installdb = pisi.db.installdb.InstallDB()
     packagedb = pisi.db.packagedb.PackageDB()
@@ -334,6 +337,17 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
         G_f.write_graphviz(sys.stdout)
 
     order = G_f.topological_sort()
+
+    # always upgrade the package manager first
+    # to break chicken and egg sceanrios
+    if PACKAGEMANAGER_PKG in order:
+        order = list(filter(lambda x: x in PACKAGEMANAGER_PKG, order))
+
+    # file system layout will always need to be updated first
+    # to ensure consistency
+    if FILESYSTEM_PKG in order:
+        order.sort(key='baselayout'.__eq__)
+
     order.reverse()
     return G_f, order
 
