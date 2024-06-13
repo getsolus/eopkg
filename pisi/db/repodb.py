@@ -59,7 +59,7 @@ class RepoOrder:
         old_uri = repo_url
         repo_url = pisi.urlcheck.switch_from_legacy(repo_url)
 
-        if old_uri != repo_url: 
+        if old_uri != repo_url:
             self.legacy_repo_used = True
 
         url_node.insertData(repo_url)
@@ -171,8 +171,8 @@ class RepoDB(lazydb.LazyDB):
         self.repoorder = RepoOrder()
 
         if len(self.repoorder.repos) == 0:
-            repo = pisi.db.repodb.Repo(pisi.uri.URI("https://cdn.getsol.us/repo/shannon/eopkg-index.xml.xz"))
-            ctx.ui.warning("No repository found. Automatically adding Solus stable.")
+            repo = pisi.db.repodb.Repo(pisi.uri.URI("https://packages.getsol.us/epoch-testing/eopkg-index.xml.xz"))
+            ctx.ui.warning("No repository found. Automatically adding epoch-testing.")
             self.add_repo("Solus", repo, ctx.get_option('at'))
 
     def has_repo(self, name):
