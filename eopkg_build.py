@@ -21,7 +21,7 @@ MAN_DIR = path(DIST_DIR, "man")
 def source_files():
     files = []
     for root, dirs, filenames in os.walk(PROJECT):
-        files.extend(path(root, f) for f in filenames if (f.endswith(".py") or f.endswith(".py3"))
+        files.extend(path(root, f) for f in filenames if (f.endswith(".py") or f.endswith(".py3")))
     return files
 
 
