@@ -5,8 +5,16 @@
 # configuration file. Module also defines default values for
 # configuration parameters.
 #
-# Configuration file is located in /etc/eopkg/eopkg.conf by default,
-# having an INI like format like below.
+# The configuration file is located in either one of the following locations:
+#
+# - /usr/share/defaults/eopkg/eopkg.conf
+# - /usr/lib/$(current python)/site-packages/pisi/data/eopkg.conf
+# - /etc/eopkg/eopkg.conf
+#
+# The config locations are searched in the order above and the last one found is used exclusively
+# which means it overrides all previous files.
+#
+# It has an INI like format like shown below:
 #
 # [general]
 # destinationdirectory = /
