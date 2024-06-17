@@ -725,7 +725,7 @@ class Builder:
             # still not exists? so  try first from dirnames returned by os.walk
             # usualy archives contains one root dir
             src_dir = util.join_path(
-                self.pkg_work_dir(), os.walk(self.pkg_work_dir()).next()[1][0]
+                self.pkg_work_dir(), next(os.walk(self.pkg_work_dir()))[1][0]
             )
             if self.get_state() == "unpack":
                 ctx.ui.debug("Setting WorkDir to %s" % src_dir)
@@ -1470,7 +1470,7 @@ class Builder:
             # Currently on Solus this is the same thing as /usr/lib.
             valid_libs.update(["/usr/lib64", "/lib64"])
 
-        for line in out.split("\n"):
+        for line in out.decode().split("\n"):
             line = line.strip()
             g = self.shared_lib.match(line)
             if g:
