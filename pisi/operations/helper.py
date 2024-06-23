@@ -12,6 +12,7 @@
 
 import os
 
+from ordered_set import OrderedSet as set
 from pisi import translate as _
 
 import pisi
@@ -35,8 +36,11 @@ def reorder_base_packages(order):
             systembase_order.append(pkg)
         else:
             nonbase_order.append(pkg)
-
-    return systembase_order + nonbase_order
+    install_order = systembase_order + nonbase_order
+    ctx.ui.warning(_("Reordering install order so system.base packages come first."))
+    if len(install_order) > 1 and ctx.config.get_option("debug"):
+        ctx.ui.info(_("install_order: %s" % install_order))
+    return install_order
 
 def check_conflicts(order, packagedb):
     """check if upgrading to the latest versions will cause havoc
