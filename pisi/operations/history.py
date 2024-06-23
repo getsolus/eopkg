@@ -7,6 +7,8 @@ import gettext
 __trans = gettext.translation("pisi", fallback=True)
 _ = __trans.gettext
 
+from ordered_set import OrderedSet as set
+
 import pisi
 import pisi.context as ctx
 import pisi.util

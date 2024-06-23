@@ -3,6 +3,7 @@
 
 import sys
 
+from ordered_set import OrderedSet as set
 from pisi import translate as _
 
 import pisi
@@ -355,6 +356,7 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
         G_f.write_graphviz(sys.stdout)
 
     order = G_f.topological_sort()
+    order = operations.install.plan_deterministic_install_order(order)
     order.reverse()
     return G_f, order
 
@@ -406,8 +408,15 @@ def upgrade_base(A=set()):
                 )
                 ctx.ui.info(util.format_by_columns(sorted(extra_upgrades)))
                 G_f, upgrade_order = plan_upgrade(extra_upgrades, force_replaced=False)
-            # return packages that must be added to any installation
-            return set(install_order + upgrade_order)
+
+             # return packages that must be added to any installation
+            install_and_upgrade_order = set(install_order + upgrade_order)
+            if len(install_and_upgrade_order) > 1 and ctx.config.get_option("debug"):
+                ctx.ui.info(_("installs and upgrades (unordered): %s" % install_and_upgrade_order))
+            install_and_upgrade_order = operations.install.plan_deterministic_install_order(install_and_upgrade_order)
+            if len(install_and_upgrade_order) > 1 and ctx.config.get_option("debug"):
+                ctx.ui.info(_("installs and upgrades (deterministic order): %s" % install_and_upgrade_order))
+            return install_and_upgrade_order
         else:
             ctx.ui.warning(
                 _("Safety switch: The component system.base cannot be found.")
