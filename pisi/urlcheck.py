@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pisi.context as ctx
 
 def switch_from_legacy(repo_url):
