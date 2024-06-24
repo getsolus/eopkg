@@ -29,7 +29,7 @@ except:
     def translate(msg): return msg
 
 
-__version__ = "3.11"
+__version__ = "3.12.1"
 
 __all__ = [ 'api', 'configfile', 'db']
 
