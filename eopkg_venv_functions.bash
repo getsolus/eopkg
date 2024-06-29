@@ -2,6 +2,8 @@
 #
 # This is designed to be sourced from other bash scripts
 
+set -euo pipefail
+
 source shared_functions.bash
 
 function prepare_venv () {
@@ -13,7 +15,7 @@ function prepare_venv () {
     # Assume the user starts in the eopkg dir
     printInfo "Updating the eopkg git repo ..."
     # ensure we show the current branch
-    git fetch && git checkout python3 && git pull && git branch
+    git fetch && git checkout main && git pull && git branch
 
     printInfo "Set up a clean eopkg_venv venv ..."
     ${PY3} -m venv --system-site-packages --clear eopkg_venv
