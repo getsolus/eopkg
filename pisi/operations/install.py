@@ -21,20 +21,11 @@ BASELAYOUT_PKG = 'baselayout'
 EOPKG_PKG = 'eopkg'
 
 def plan_deterministic_install_order(order):
-    """Ensure that baselayout and eopkg are put at the end of any topological sort that includes them."""
+    """Ensure that baselayout is put at the end of any topological sort that includes it."""
 
     # save cycles
     if len(order) <= 1:
         return order
-
-    # when eopkg is in the order, move it to the end of the order (since the order gets reversed)
-    # this is useful when file ownership between it and pisi changes.
-    if EOPKG_PKG in order:
-        order.remove(EOPKG_PKG)
-        order.append(EOPKG_PKG)
-        # An alternative is to _force_ eopkg to be upgraded/installed by itself, such that the next
-        # operation is guaranteed to be using the new eopkg version. This option needs to stay on the table.
-        #return [EOPKG_PKG]
 
     # always order baselayout _last_ (since the order gets reversed)
     if BASELAYOUT_PKG in order:
