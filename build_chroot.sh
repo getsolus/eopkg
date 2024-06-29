@@ -171,8 +171,8 @@ basicSetup () {
     printInfo "${MSG}"
     ${eopkg_py3} remove-repo Solus -D "${SOLROOT}" || die "${MSG}"
 
-    MSG="Installing baselayout ..."
-    ${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety --ignore-comar baselayout || die "${MSG}"
+    #MSG="Installing baselayout ..."
+    #${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety --ignore-comar baselayout || die "${MSG}"
 
     # Since we're testing eopkg.py3 from a venv, let's use that instead for creating the root
     #MSG="Installing packages to act as a seed for systemd-nspawn chroot runs ..."
