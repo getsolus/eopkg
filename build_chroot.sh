@@ -133,8 +133,8 @@ basicSetup () {
     local chroot="sudo systemd-nspawn --as-pid2 --quiet -D ${SOLROOT}" # better chroot essentially
     #local chroot="sudo chroot ${SOLROOT}"
     # necessary cruft for sudo to work with the eopkg_venv
-    local eopkg_py3="sudo -E env PATH=${PATH} eopkg.py3"
-    local eopkg_bin='eopkg.bin'
+    local eopkg_py3="sudo -E env PATH=${PATH} eopkg.py3 --debug"
+    local eopkg_bin='eopkg.bin --debug'
     local mkdir='sudo mkdir -pv'
 
     local eopkg_py3_path="$(command -v eopkg.py3)"
@@ -171,6 +171,9 @@ basicSetup () {
     printInfo "${MSG}"
     ${eopkg_py3} remove-repo Solus -D "${SOLROOT}" || die "${MSG}"
 
+    MSG="Listing enabled repositories ..."
+    printInfo "${MSG}"
+    ${eopkg_py3} list-repo -D "${SOLROOT}" || die "${MSG}"
     #MSG="Installing baselayout ..."
     #${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety --ignore-comar baselayout || die "${MSG}"
 
