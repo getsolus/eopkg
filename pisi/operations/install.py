@@ -27,23 +27,13 @@ import pisi.ui as ui
 import pisi.db
 
 BASELAYOUT_PKG = 'baselayout'
-EOPKG_PKG = 'eopkg'
 
-def plan_deterministic_install_order(order):
-    """Ensure that baselayout and eopkg are put at the end of any topological sort that includes them."""
+def reorder_baselayout(order):
+    """Ensure that baselayout is put at the end of any topological sort that includes it."""
 
     # save cycles
     if len(order) <= 1:
         return order
-
-    # when eopkg is in the order, move it to the end of the order (since the order gets reversed).
-    # this is useful when file ownership between it and pisi changes.
-    if EOPKG_PKG in order:
-        order.remove(EOPKG_PKG)
-        order.append(EOPKG_PKG)
-        # An alternative is to _force_ eopkg to be upgraded/installed by itself, such that the next
-        # operation is guaranteed to be using the new eopkg version. This option needs to stay on the table.
-        #return [EOPKG_PKG]
 
     # always order baselayout _last_ (since the order gets reversed)
     if BASELAYOUT_PKG in order:
@@ -274,7 +264,7 @@ def install_pkg_files(package_URIs, reinstall = False):
         conflicts = operations.helper.check_conflicts(order, packagedb)
         if conflicts:
             operations.remove.remove_conflicting_packages(conflicts)
-    order = plan_deterministic_install_order(order)
+    order = reorder_baselayout(order)
     order.reverse()
     ctx.ui.info(_('Installation order: ') + util.strlist(order) )
 
@@ -342,9 +332,9 @@ def plan_install_pkg_names(A):
     order = G_f.topological_sort()
     if len(order) > 1 and ctx.config.get_option("debug"):
         ctx.ui.info(_("topological_sort order: %s" % order))
-    order = plan_deterministic_install_order(order)
+    order = reorder_baselayout(order)
     if len(order) > 1 and ctx.config.get_option("debug"):
-        ctx.ui.info(_("deterministic order: %s" % order))
+        ctx.ui.info(_("baselayout last: %s" % order))
     order.reverse()
     if len(order) > 1 and ctx.config.get_option("debug"):
         ctx.ui.info(_("final order.reverse(): %s" % order))
