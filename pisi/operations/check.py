@@ -9,6 +9,7 @@
 #
 # Please read the COPYING file.
 
+from copy import deepcopy
 import os
 import pisi
 import pisi.context as ctx
@@ -41,6 +42,21 @@ _blessed_kernel_borks = [
     "modules.symbols.bin",
 ]
 
+_top_level_dirs = [
+    "/bin/",
+    "/lib/",
+    "/lib32/",
+    "/lib64/",
+    "/sbin/",
+]
+
+_empty_results = {
+                'missing'   :   [],
+                'corrupted' :   [],
+                'denied'    :   [],
+                'config'    :   [],
+                }
+
 
 def ignorance_is_bliss(f):
     """ Too many complaints about things that are missing. """
@@ -48,11 +64,17 @@ def ignorance_is_bliss(f):
     if not p.startswith("/"):
         p = "/{}".format(f)
 
+    if not p.startswith("/usr"):
+        for top in _top_level_dirs:
+            if p.startswith(top):
+                if os.path.islink(top.rstrip("/")):
+                    return True
+
     pbas = os.path.basename(p)
     p = p.replace("/lib64/", "/lib/")
 
     # Ignore kernel depmod changes?
-    if p.startswith("/lib/modules"):
+    if p.startswith("/lib/modules") or p.startswith("/usr/lib/modules"):
         if pbas in _blessed_kernel_borks:
             return True
 
@@ -62,12 +84,7 @@ def ignorance_is_bliss(f):
 
 
 def check_files(files, check_config=False):
-    results = {
-                'missing'   :   [],
-                'corrupted' :   [],
-                'denied'    :   [],
-                'config'    :   [],
-              }
+    results = deepcopy(_empty_results)
 
     for f in files:
         if not check_config and f.type == "config":
@@ -110,6 +127,9 @@ def check_package_files(package):
     return check_files(files)
 
 def check_package(package, config=False):
+    # Temporary hack until epoch
+    if package == "baselayout":
+        return deepcopy(_empty_results)
     if config:
         return check_config_files(package)
     else:
