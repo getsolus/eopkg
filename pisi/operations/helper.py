@@ -37,10 +37,25 @@ def reorder_base_packages(order):
         else:
             nonbase_order.append(pkg)
     install_order = systembase_order + nonbase_order
-    ctx.ui.warning(_("Reordering install order so system.base packages come first."))
+    # this is a cheat; the code runs regardless currently
+    if not ctx.config.values.general.ignore_safety and not ctx.get_option('ignore_safety'):
+        ctx.ui.warning(_("Reordering install order so system.base packages come first."))
     if len(install_order) > 1 and ctx.config.get_option("debug"):
         ctx.ui.info(_("install_order: %s" % install_order))
     return install_order
+
+def reorder_base_packages_dummy(order):
+    """Dummy function that doesn't actually re-order system.base in front.
+
+       We now use OrderedSets, which keep the original topological sort,
+       so this shouldn't actually be necessary now.
+
+       This also implies that the only function of system.base is for the
+       packages in it to be un-removable.
+    """
+    if len(order) > 1 and ctx.config.get_option("debug"):
+        ctx.ui.info(_("install_order including any system.base deps: %s" % order))
+    return order
 
 def check_conflicts(order, packagedb):
     """check if upgrading to the latest versions will cause havoc

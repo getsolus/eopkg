@@ -335,7 +335,7 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
         G_f.write_graphviz(sys.stdout)
 
     order = G_f.topological_sort()
-    order = operations.install.plan_deterministic_install_order(order)
+    order = operations.install.reorder_baselayout(order)
     order.reverse()
     return G_f, order
 
@@ -371,9 +371,9 @@ def upgrade_base(A = set()):
             install_and_upgrade_order = set(install_order + upgrade_order)
             if len(install_and_upgrade_order) > 1 and ctx.config.get_option("debug"):
                 ctx.ui.info(_("installs and upgrades (unordered): %s" % install_and_upgrade_order))
-            install_and_upgrade_order = operations.install.plan_deterministic_install_order(install_and_upgrade_order)
+            install_and_upgrade_order = operations.install.reorder_baselayout(install_and_upgrade_order)
             if len(install_and_upgrade_order) > 1 and ctx.config.get_option("debug"):
-                ctx.ui.info(_("installs and upgrades (deterministic order): %s" % install_and_upgrade_order))
+                ctx.ui.info(_("installs and upgrades (baselayout last): %s" % install_and_upgrade_order))
             # return packages that must be added to any installation
             return install_and_upgrade_order
         else:
