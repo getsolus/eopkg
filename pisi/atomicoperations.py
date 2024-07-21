@@ -12,6 +12,7 @@
 """Atomic package operations such as install/remove/upgrade"""
 
 from pisi import translate as _
+from pisi.usr_merge import is_usr_merged_duplicate
 
 import os
 import shutil
@@ -566,6 +567,10 @@ class Remove(AtomicOperation):
         self.check_dependencies()
 
         for fileinfo in self.files.list:
+            if is_usr_merged_duplicate(self.files.list, fileinfo.path):
+                ctx.ui.debug("Not removing usr-merged file: %s" % fileinfo.path)
+                continue
+
             self.remove_file(fileinfo, self.package_name, True)
 
         self.update_databases()
