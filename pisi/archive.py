@@ -281,8 +281,10 @@ class ArchiveTar(ArchiveBase):
         print("Overwriting stale pip install: /{}".format(info.name))
         shutil.rmtree(info.name)
 
-    def unpack_dir(self, target_dir, callback=None):
-        files = self._tar_file_list()
+    def unpack_dir(self, target_dir, callback=None, files=None):
+        if files is None:
+            files = self._tar_file_list()
+
         self.tar = self._open_tar()
 
         oldwd = None
