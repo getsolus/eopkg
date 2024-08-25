@@ -32,7 +32,7 @@ except:
         return msg
 
 
-__version__ = "4.1.2"
+__version__ = "4.1.4"
 
 __all__ = ["api", "configfile", "db"]
 
