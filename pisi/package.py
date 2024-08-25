@@ -233,9 +233,12 @@ class Package:
         tar = self.get_install_archive()
 
         if tar:
-            tar.unpack_dir(outdir, callback=callback)
+            tar.unpack_dir(outdir, callback=callback, files=self._files())
         else:
             self.extract_dir_flat("install", outdir)
+
+    def _files(self):
+        return [f.path for f in self.files.list]
 
     def extract_dir_flat(self, dir, outdir):
         """Extract directory recursively, this function
