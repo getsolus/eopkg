@@ -22,8 +22,7 @@ import pisi.ui as ui
 import pisi.conflict
 import pisi.db
 
-def reorder_base_packages(order):
-
+def reorder_base_packages_old(order):
     componentdb = pisi.db.componentdb.ComponentDB()
     
     """system.base packages must be first in order"""
@@ -44,7 +43,7 @@ def reorder_base_packages(order):
         ctx.ui.info(_("install_order: %s" % install_order))
     return install_order
 
-def reorder_base_packages_dummy(order):
+def reorder_base_packages(order):
     """Dummy function that doesn't actually re-order system.base in front.
 
        We now use OrderedSets, which keep the original topological sort,
