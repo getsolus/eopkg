@@ -21,6 +21,7 @@ import tarfile
 import zipfile
 
 from pisi import translate as _
+from pisi.usr_merge import is_usr_merged_duplicate
 
 # eopkg modules
 import pisi
@@ -280,23 +281,11 @@ class ArchiveTar(ArchiveBase):
         print("Overwriting stale pip install: /{}".format(info.name))
         shutil.rmtree(info.name)
 
-    def unpack_dir(self, target_dir, callback=None):
-        rmode = ""
-        self.tar = None
-        if self.type == 'tar':
-            rmode = 'r:'
-        elif self.type == 'targz':
-            rmode = 'r:gz'
-        elif self.type == 'tarbz2':
-            rmode = 'r:bz2'
-        elif self.type in ('tarlzma', 'tarxz'):
-            self.tar = TarFile.lzmaopen(self.file_path, fileobj=self.fileobj)
-        else:
-            raise UnknownArchiveType
+    def unpack_dir(self, target_dir, callback=None, files=None):
+        if files is None:
+            files = self._tar_file_list()
 
-        if self.tar is None:
-            self.tar = tarfile.open(self.file_path, rmode,
-                                    fileobj=self.fileobj)
+        self.tar = self._open_tar()
 
         oldwd = None
         try:
@@ -310,6 +299,10 @@ class ArchiveTar(ArchiveBase):
         gid = os.getgid()
 
         for tarinfo in self.tar:
+            if is_usr_merged_duplicate(files, tarinfo.path):
+                ctx.ui.debug("Skipping merged file %s" % tarinfo.path)
+                continue
+
             if callback:
                 callback(tarinfo, extracted=False)
 
@@ -470,6 +463,29 @@ class ArchiveTar(ArchiveBase):
     def close(self):
         self.tar.close()
 
+    def _open_tar(self):
+        self.tar = None
+        if self.type == 'tar':
+            rmode = 'r:'
+        elif self.type == 'targz':
+            rmode = 'r:gz'
+        elif self.type == 'tarbz2':
+            rmode = 'r:bz2'
+        elif self.type in ('tarlzma', 'tarxz'):
+            return TarFile.lzmaopen(self.file_path, fileobj=self.fileobj)
+        else:
+            raise UnknownArchiveType
+
+        return tarfile.open(self.file_path, rmode, fileobj=self.fileobj)
+
+    def _tar_file_list(self):
+        with self._open_tar() as tar:
+            paths = [tarinfo.path for tarinfo in tar]
+
+        self.fileobj.seek(0)
+
+        return paths
+
 
 class ArchiveTarZ(ArchiveBase):
     """ArchiveTar handles tar.Z archives.
@@ -497,6 +513,7 @@ class ArchiveTarZ(ArchiveBase):
                         _("Problem occured while uncompressing %s.Z file")
                         % self.file_path)
 
+        files = self._tar_file_list()
         self.tar = tarfile.open(self.file_path)
 
         oldwd = None
@@ -511,6 +528,10 @@ class ArchiveTarZ(ArchiveBase):
         gid = os.getgid()
 
         for tarinfo in self.tar:
+            if is_usr_merged_duplicate(files, tarinfo.path):
+                ctx.ui.debug("Skipping merged file %s" % tarinfo.path)
+                continue
+
             self.tar.extract(tarinfo)
 
             # tarfile.extract does not honor umask. It must be honored
@@ -538,6 +559,12 @@ class ArchiveTarZ(ArchiveBase):
         except OSError:
             pass
         self.tar.close()
+
+    def _tar_file_list(self):
+        with tarfile.open(self.file_path) as tar:
+            paths = [tarinfo.path for tarinfo in tar]
+
+        return paths
 
 class Archive7Zip(ArchiveBase):
     """Archive7Zip handles 7-Zip archives."""
@@ -639,8 +666,13 @@ class ArchiveZip(ArchiveBase):
         unpacks stuff into target_dir and only extracts files
         from archive_root, treating it as the archive root"""
         zip_obj = self.zip_obj
+        files = [info.filename for info in zip_obj.infolist()]
+
         for info in zip_obj.infolist():
-            if pred(info.filename):   # check if condition holds
+            if pred(info.filename):  # check if condition holds
+                if is_usr_merged_duplicate(files, info.filename):
+                    ctx.ui.debug("Skipping merged file %s" % info.filename)
+                    continue
 
                 # below code removes that, so we find it here
                 is_dir = info.filename.endswith('/')
