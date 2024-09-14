@@ -48,8 +48,10 @@ class Package:
 
     def __init__(self, packagefn, mode="r", format=None, tmp_dir=None):
         self.filepath = packagefn
-        url = pisi.uri.URI(packagefn)
+        self.files = None
+        self.repo = None
 
+        url = pisi.uri.URI(packagefn)
         if url.is_remote_file():
             self.fetch_remote_file(url)
 
@@ -238,6 +240,9 @@ class Package:
             self.extract_dir_flat("install", outdir)
 
     def _files(self):
+        if self.files is None:
+            return []
+
         return [f.path for f in self.files.list]
 
     def extract_dir_flat(self, dir, outdir):
