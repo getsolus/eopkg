@@ -10,19 +10,21 @@
 # Please read the COPYING file.
 #
 
+import hashlib
 import os
 import re
 import shelve
-import hashlib
 
 import pisi
 import pisi.context as ctx
 import pisi.db.lazydb as lazydb
 
+from pisi import translate as _
+
 # FIXME:
 # We could traverse through files.xml files of the packages to find the path and
-# the package - a linear search - as some well known package managers do. But the current 
-# file conflict mechanism of pisi prevents this and needs a fast has_file function. 
+# the package - a linear search - as some well known package managers do. But the current
+# file conflict mechanism of pisi prevents this and needs a fast has_file function.
 # So currently filesdb is the only db and we cant still get rid of rebuild-db :/
 
 # pickle protocol version 0 is a human-readable ASCII encoded format,
@@ -96,14 +98,25 @@ class FilesDB(lazydb.LazyDB):
             os.unlink(files_db)
 
     def close(self):
-        if isinstance(self.filesdb, shelve.DbfilenameShelf):
+        if isinstance(self.filesdb, DbfilenameShelf):
             self.filesdb.close()
 
     def __check_filesdb(self):
-        if isinstance(self.filesdb, shelve.DbfilenameShelf):
+        if isinstance(self.filesdb, DbfilenameShelf):
             return
 
         files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
+
+        if os.path.exists(files_db):
+            import whichdb
+            db_type = whichdb.whichdb(files_db)
+            if db_type != "gdbm":
+                if not os.access(files_db, os.W_OK):
+                    ctx.ui.action(_("Incompatible database cache found, run eopkg rebuild-db to regenerate."))
+                    return
+
+                ctx.ui.debug("Removing incompatible %s of type %s" % (files_db, db_type))
+                os.remove(files_db)
 
         if not os.path.exists(files_db):
             flag = "n"
@@ -112,4 +125,16 @@ class FilesDB(lazydb.LazyDB):
         else:
             flag = "r"
 
-        self.filesdb = shelve.open(files_db, flag, protocol=FILESDB_PICKLE_PROTOCOL_VERSION)
+        self.filesdb = myopen(files_db, flag, protocol=FILESDB_PICKLE_PROTOCOL_VERSION)
+
+# Ensure we use gdbm rather than bsddb which normally selected from anydb
+# https://github.com/python/cpython/blob/v2.7.18/Lib/shelve.py#L218
+class DbfilenameShelf(shelve.Shelf):
+    def __init__(self, filename, flag='c', protocol=None, writeback=False):
+        import gdbm
+        shelve.Shelf.__init__(self, gdbm.open(filename, flag), protocol, writeback)
+
+# Call our own DbfilenameShelf
+# https://github.com/python/cpython/blob/v2.7.18/Lib/shelve.py#L230
+def myopen(filename, flag='c', protocol=None, writeback=False):
+    return DbfilenameShelf(filename, flag, protocol, writeback)
