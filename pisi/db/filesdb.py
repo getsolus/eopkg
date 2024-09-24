@@ -95,8 +95,6 @@ class FilesDB(lazydb.LazyDB):
         files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
 
         if not os.path.exists(files_db):
-            if not os.access(files_db, os.W_OK):
-                return
             flag = "n"
         elif os.access(files_db, os.W_OK):
             flag = "w"
