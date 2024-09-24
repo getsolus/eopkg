@@ -36,7 +36,13 @@ class Singleton(object):
         del self._the_instances[type(self).__name__]
 
 
+# this is the pickle protocol version with which cache_version cache files
+# are written to disk in all LazyDB caches
+LAZYDB_PICKLE_PROTOCOL_VERSION = 2
+
 class LazyDB(Singleton):
+
+    # Make sure that caches get invalidated when switching between pisi/eopkg versions
     cache_version = pisi.__version__
 
     def __init__(self, cacheable=False, cachedir=None):
@@ -63,7 +69,8 @@ class LazyDB(Singleton):
                 f.write(LazyDB.cache_version)
                 f.flush()
                 os.fsync(f.fileno())
-            pickle.dump(self._instance, open(self.__cache_file(), "wb"), protocol=2)
+            pickle.dump(self._instance, open(self.__cache_file(), "wb"),
+                         protocol=LAZYDB_PICKLE_PROTOCOL_VERSION)
 
     def cache_valid(self):
         try:
@@ -76,8 +83,14 @@ class LazyDB(Singleton):
     def cache_load(self):
         if os.path.exists(self.__cache_file()) and self.cache_valid():
             try:
+                # Note that cache_version is checked prior to load,
+                # which means that using utf-8 encoding here is not an issue
+                # as we will only attempt to load a pickle cache which has
+                # been written with the current version of the codebase;
+                # this is particularly relevant if the pickle cache was
+                # written in py2 w/latin1 encoding.
                 self._instance = pickle.load(
-                    open(self.__cache_file(), "rb"), encoding="utf8"
+                    open(self.__cache_file(), "rb"), encoding="utf-8"
                 )
                 return True
             except (pickle.UnpicklingError, EOFError):
