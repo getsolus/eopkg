@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-import os
 import fcntl
+import os
 import re
 from . import fetcher
 
@@ -908,6 +908,9 @@ def rebuild_db(files=False):
             files = installdb.get_files(pkg)
             filesdb.add_files(pkg, files)
             ctx.ui.info(_("OK."))
+        # for if we need to call this from inside the FilesDB class
+        filesdb.add_version()
+        filesdb.close()
 
     # save parameters and shutdown pisi
     options = ctx.config.options
@@ -916,7 +919,7 @@ def rebuild_db(files=False):
 
     filesdb.close()
     filesdb.destroy()
-    filesdb.init()
+    filesdb.init(is_being_rebuilt=True)
 
     # reinitialize everything
     set_userinterface(ui)
