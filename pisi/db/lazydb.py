@@ -20,6 +20,10 @@ import string
 # lower borks for international locales. What we want is ascii lower.
 lower_map = string.maketrans(string.ascii_uppercase, string.ascii_lowercase)
 
+# this is the pickle protocol version with which cache_version cache files
+# are written to disk in all LazyDB caches
+LAZYDB_PICKLE_PROTOCOL_VERSION = 1
+
 class Singleton(object):
     _the_instances = {}
     def __new__(type):
@@ -66,7 +70,7 @@ class LazyDB(Singleton):
                 f.flush()
                 os.fsync(f.fileno())
             cPickle.dump(self._instance().__dict__,
-                         file(self.__cache_file(), 'wb'), 1)
+                         file(self.__cache_file(), 'wb'), LAZYDB_PICKLE_PROTOCOL_VERSION)
 
     def cache_valid(self):
         if not self.cachedir:
