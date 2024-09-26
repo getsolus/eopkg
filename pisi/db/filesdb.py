@@ -25,6 +25,12 @@ import pisi.db.lazydb as lazydb
 # file conflict mechanism of pisi prevents this and needs a fast has_file function. 
 # So currently filesdb is the only db and we cant still get rid of rebuild-db :/
 
+# pickle protocol version 0 is a human-readable ASCII encoded format,
+# which is fine for DB use as it can then be introspected by querying the db
+# directly.
+# pickle protocol version 0 is the default in python2.
+FILESDB_PICKLE_PROTOCOL_VERSION = 0
+
 class FilesDB(lazydb.LazyDB):
 
     def init(self):
@@ -106,4 +112,4 @@ class FilesDB(lazydb.LazyDB):
         else:
             flag = "r"
 
-        self.filesdb = shelve.open(files_db, flag)
+        self.filesdb = shelve.open(files_db, flag, protocol=FILESDB_PICKLE_PROTOCOL_VERSION)
