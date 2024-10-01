@@ -35,6 +35,7 @@ import pisi.cli.rebuilddb
 import pisi.cli.remove
 import pisi.cli.removeorphans
 import pisi.cli.removerepo
+import pisi.cli.repopriority
 import pisi.cli.search
 import pisi.cli.searchfile
 import pisi.cli.updaterepo
