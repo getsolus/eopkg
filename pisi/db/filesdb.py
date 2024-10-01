@@ -31,13 +31,33 @@ from pisi import translate as _
 # which is fine for DB use as it can then be introspected by querying the db
 # directly.
 # pickle protocol version 0 is the default in python2.
-FILESDB_PICKLE_PROTOCOL_VERSION = 0
+FILESDB_PICKLE_PROTOCOL_VERSION = 2
 
 class FilesDB(lazydb.LazyDB):
 
-    def init(self):
+    def init(self, is_being_rebuilt=False):
         self.filesdb = {}
-        self.__check_filesdb()
+        needs_rebuild = False
+        # We need to break the cycle for when pisi.api.rebuild_db() is called,
+        # which will itself call the present init function.
+        if not is_being_rebuilt:
+            needs_rebuild = self.__check_filesdb()
+        # needs_rebuild is never set to True if we can't write to the files_db file
+        if needs_rebuild:
+            ctx.ui.info("FilesDB needs a rebuild.")
+            self.close()
+            self.destroy()
+            # this creates a new FilesDB object (which calls add_version() below)
+            pisi.api.rebuild_db(files=True)
+            ctx.ui.info("Done rebuilding FilesDB (version: %s)" % (pisi.__version__))
+            self.filesdb = {}
+            self.__check_filesdb()
+
+    def add_version(self):
+        # will only _ever_ get called from pisi.api.rebuild_db()
+        # at a point where the underlying db is already guaranteed to be initialised.
+        self.filesdb["version"] = pisi.__version__
+        self.filesdb.sync()
 
     def has_file(self, path):
         return self.filesdb.has_key(hashlib.md5(path).digest())
@@ -102,32 +122,73 @@ class FilesDB(lazydb.LazyDB):
             self.filesdb.close()
 
     def __check_filesdb(self):
+        """Sets valid self.files_db reference and returns whether the underlying db needs to be rebuilt."""
+        # whether or not we need to rebuild the FilesDB
+        needs_rebuild = False
+
         if isinstance(self.filesdb, DbfilenameShelf):
-            return
+            # the db has already been correctly initialised
+            return needs_rebuild
+
+        # We don't know the db type by default
+        db_type = None
 
         files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
 
         if os.path.exists(files_db):
+            # check the kind of db
             import whichdb
             db_type = whichdb.whichdb(files_db)
             if db_type != "gdbm":
                 if not os.access(files_db, os.W_OK):
-                    ctx.ui.action(_("Incompatible database cache found, run eopkg rebuild-db to regenerate."))
-                    return
-
-                ctx.ui.debug("Removing incompatible %s of type %s" % (files_db, db_type))
-                os.remove(files_db)
-
+                    ctx.ui.debug("Cannot write to type %s database cache %s, ignoring." % (db_type, files_db))
+                    return needs_rebuild
+                else:
+                    ctx.ui.debug("Incompatible type %s database cache %s found, needs_rebuild = True" % (db_type, files_db))
+                    needs_rebuild = True
+    
         if not os.path.exists(files_db):
             flag = "n"
+            ctx.ui.debug("No type %s database cache %s found, needs_rebuild = True" % (db_type, files_db))
+            needs_rebuild = True
         elif os.access(files_db, os.W_OK):
             flag = "w"
         else:
             flag = "r"
+            ctx.ui.debug("Type %s database cache %s is read-only." % (db_type, files_db))
 
-        self.filesdb = myopen(files_db, flag, protocol=FILESDB_PICKLE_PROTOCOL_VERSION)
+        # At this point, we _should_ be able to _open_ the file.
+        # The only remaining question is whether the pickle protocol version is correct
+        try:
+             self.filesdb = myopen(files_db, flag, protocol=FILESDB_PICKLE_PROTOCOL_VERSION)
+        except:
+             ctx.ui.debug("myopen(files_db=%s, flag=%s, protocol=%s) failed, needs_rebuild = True"
+                           % (files_db, flag, FILESDB_PICKLE_PROTOCOL_VERSION))
+             needs_rebuild = True
+             return needs_rebuild
 
-# Ensure we use gdbm rather than bsddb which normally selected from anydb
+        # Check if self.filesdb has a version key
+        has_version = True
+        version = 0
+        try:
+            version = self.filesdb["version"]
+        except:
+            has_version = False
+
+        # At this point, either:
+        #  has_version is True and version != 0,
+        #   XOR
+        #  has_version is False and version == 0
+
+        if flag != "r":
+            if not has_version or version != pisi.__version__:
+                ctx.ui.debug("Incompatible type %s database cache %s found (version: (%s, %s), expected (%s, %s)), needs_rebuild = True" % (db_type, files_db, has_version, version, True, pisi.__version__))
+                needs_rebuild = True
+
+        return needs_rebuild
+
+
+# Ensure we use gdbm rather than bsddb which is normally selected from anydb
 # https://github.com/python/cpython/blob/v2.7.18/Lib/shelve.py#L218
 class DbfilenameShelf(shelve.Shelf):
     def __init__(self, filename, flag='c', protocol=None, writeback=False):
