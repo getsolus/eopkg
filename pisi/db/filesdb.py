@@ -21,6 +21,9 @@ from pisi.db import lazydb
 # This MUST match the version used in eopkg.py2 as long as that is in use.
 FILESDB_PICKLE_PROTOCOL_VERSION = 2
 
+# We suspect that there will be an advantage in versioning this separately
+FILESDB_FORMAT_VERSION = 4
+
 class FilesDB(lazydb.LazyDB):
 
     def init(self, is_being_rebuilt=False):
@@ -37,14 +40,14 @@ class FilesDB(lazydb.LazyDB):
             self.destroy()
             # this creates a new FilesDB object (which calls add_version() below)
             pisi.api.rebuild_db(files=True)
-            ctx.ui.info("Done rebuilding FilesDB (version: %s)" % (pisi.__version__))
+            ctx.ui.info("Done rebuilding FilesDB (version: %s)" % (FILESDB_FORMAT_VERSION))
             self.filesdb = {}
             self.__check_filesdb()
 
     def add_version(self):
         # will only _ever_ get called from pisi.api.rebuild_db()
         # at a point where the underlying db is already guaranteed to be initialised.
-        self.filesdb["version"] = pisi.__version__
+        self.filesdb["version"] = FILESDB_FORMAT_VERSION
         self.filesdb.sync()
 
     def has_file(self, path):
@@ -122,7 +125,7 @@ class FilesDB(lazydb.LazyDB):
             return needs_rebuild
 
         # We don't know the db type by default
-        db_type = None
+        db_type = "?"
 
         files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
 
@@ -172,8 +175,8 @@ class FilesDB(lazydb.LazyDB):
         #  has_version is False and version == 0
 
         if flag != "r":
-            if not has_version or version != pisi.__version__:
-                ctx.ui.debug("Incompatible type %s database cache %s found (version: (%s, %s), expected (%s, %s)), needs_rebuild = True" % (db_type, files_db, has_version, version, True, pisi.__version__))
+            if not has_version or version != FILESDB_FORMAT_VERSION:
+                ctx.ui.debug("Incompatible type %s database cache %s found (version: (%s, %s), expected (%s, %s)), needs_rebuild = True" % (db_type, files_db, has_version, version, True, FILESDB_FORMAT_VERSION))
                 needs_rebuild = True
 
         # False unless the logic above caused it to be toggled to True
