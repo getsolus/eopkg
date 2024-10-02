@@ -149,7 +149,7 @@ class FilesDB(lazydb.LazyDB):
     
         if not os.path.exists(files_db):
             flag = "n"
-            ctx.ui.debug("No type %s database cache %s found, needs_rebuild = True" % (db_type, files_db))
+            ctx.ui.debug("No database cache %s found, needs_rebuild = True" % (files_db))
             needs_rebuild = True
         elif os.access(files_db, os.W_OK):
             flag = "w"
