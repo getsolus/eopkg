@@ -10,19 +10,21 @@
 # Please read the COPYING file.
 #
 
-import os
 import cPickle
+import os
+import string
 import time
+
+import pisi
 import pisi.context as ctx
 import pisi.util as util
 
-import string
 # lower borks for international locales. What we want is ascii lower.
 lower_map = string.maketrans(string.ascii_uppercase, string.ascii_lowercase)
 
 # this is the pickle protocol version with which cache_version cache files
 # are written to disk in all LazyDB caches
-LAZYDB_PICKLE_PROTOCOL_VERSION = 1
+LAZYDB_PICKLE_PROTOCOL_VERSION = 2
 
 class Singleton(object):
     _the_instances = {}
@@ -40,7 +42,8 @@ class Singleton(object):
 
 class LazyDB(Singleton):
 
-    cache_version = "2.4"
+    # Make sure that the caches get invalidated when switching between pisi/eopkg versions
+    cache_version = pisi.__version__
 
     def __init__(self, cacheable=False, cachedir=None):
         if not self.__dict__.has_key("initialized"):
