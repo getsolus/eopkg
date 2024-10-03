@@ -492,7 +492,8 @@ class ArchiveTar(ArchiveBase):
         with self._open_tar() as tar:
             paths = [tarinfo.path for tarinfo in tar]
 
-        self.fileobj.seek(0)
+        if self.fileobj is not None:
+            self.fileobj.seek(0)
 
         return paths
 
