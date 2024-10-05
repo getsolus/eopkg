@@ -821,38 +821,21 @@ def __update_repo(repo, force=False):
 
     return True
 
-# FIXME: rebuild_db is only here for filesdb and it really is ugly. we should not need any rebuild.
+# This is here for the rare case where the FilesDB needs to be rebuilt manually.
 @locked
 def rebuild_db(files=False):
-
-    filesdb = pisi.db.filesdb.FilesDB()
-    installdb = pisi.db.installdb.InstallDB()
-
-    def rebuild_filesdb():
-        for pkg in list_installed():
-            ctx.ui.info(_('Adding \'%s\' to db... ') % pkg, noln=True)
-            files = installdb.get_files(pkg)
-            filesdb.add_files(pkg, files)
-            ctx.ui.info(_('OK.'))
-        # for if we need to call this from inside the FilesDB class
-        filesdb.add_version()
-        filesdb.close()
 
     # save parameters and shutdown pisi
     options = ctx.config.options
     ui = ctx.ui
     pisi._cleanup()
 
-    filesdb.close()
-    filesdb.destroy()
-    filesdb.init(is_being_rebuilt=True)
-
     # reinitialize everything
     set_userinterface(ui)
     set_options(options)
 
-    # construct new database
-    rebuild_filesdb()
+    filesdb = pisi.db.filesdb.FilesDB()
+    filesdb.init(force_rebuild=True)
 
 ############# FIXME: this was a quick fix. ##############################
 

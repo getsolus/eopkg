@@ -35,29 +35,9 @@ FILESDB_FORMAT_VERSION = 3
 
 class FilesDB(lazydb.LazyDB):
 
-    def init(self, is_being_rebuilt=False):
+    def init(self, force_rebuild=False):
         self.filesdb = {}
-        needs_rebuild = False
-        # We need to break the cycle for when pisi.api.rebuild_db() is called,
-        # which will itself call the present init function.
-        if not is_being_rebuilt:
-            needs_rebuild = self.__check_filesdb()
-        # needs_rebuild is never set to True if we can't write to the files_db file
-        if needs_rebuild:
-            ctx.ui.info("FilesDB needs a rebuild.")
-            self.close()
-            self.destroy()
-            # this creates a new FilesDB object (which calls add_version() below)
-            pisi.api.rebuild_db(files=True)
-            ctx.ui.info("Done rebuilding FilesDB (version: %s)" % (FILESDB_FORMAT_VERSION))
-            self.filesdb = {}
-            self.__check_filesdb()
-
-    def add_version(self):
-        # will only _ever_ get called from pisi.api.rebuild_db()
-        # at a point where the underlying db is already guaranteed to be initialised.
-        self.filesdb["version"] = FILESDB_FORMAT_VERSION
-        self.filesdb.sync()
+        self.__check_filesdb(force_rebuild)
 
     def has_file(self, path):
         return self.filesdb.has_key(hashlib.md5(path).digest())
@@ -121,72 +101,196 @@ class FilesDB(lazydb.LazyDB):
         if isinstance(self.filesdb, DbfilenameShelf):
             self.filesdb.close()
 
-    def __check_filesdb(self):
-        """Sets valid self.files_db reference and returns whether the underlying db needs to be rebuilt."""
-        # whether or not we need to rebuild the FilesDB
-        needs_rebuild = False
+    def __check_filesdb(self, force_rebuild=False):
+        """Sets valid self.files_db reference and automatically rebuilds the underlying db if necessary."""
 
+        # the db has already been correctly initialised and doesn't need a rebuild
         if isinstance(self.filesdb, DbfilenameShelf):
-            # the db has already been correctly initialised
-            return needs_rebuild
+            return
 
-        # We don't know the db type by default
-        db_type = "?"
+        # Valid states:
+        #
+        # file does not exist:
+        #   can write
+        #     => open flag "n" (rebuild)
+        #   cannot write
+        #     => ignore, don't rebuild
+        # file exists:
+        #   can write:
+        #     type == gdbm:
+        #       version match:
+        #         => open flag "w", don't rebuild
+        #       else:
+        #         => open flag "n" (rebuild)
+        #     else:
+        #       => open flag "n" (rebuild)
+        #   cannot write:
+        #     type == gdbm:
+        #       version match:
+        #         => open flag "r", don't rebuild
+        #       else:
+        #         => ignore, don't rebuild
+        #     else:
+        #       => ignore, don't rebuild
+
+        # Does the FilesDB filename exist?
+        file_exists = None
+        # Can we write to the file?
+        can_write = None
+        # Which type is the db?
+        db_type = None
+        # Which access rights do we open the shelve with?
+        # Note that flag = "n" is equivalent to "rebuild"
+        flag = None
+        # Can we read the shelve?
+        valid_shelve = None
+        # Does the FilesDB have a version?
+        version = None
+        # Do we need to rebuild the FilesDB?
+        needs_rebuild = None
+        # Do we need to display a reminder to rebuild FilesDB manually?
+        please_rebuild_manually = False
 
         files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
 
-        if os.path.exists(files_db):
-            # check the kind of db
-            import whichdb
-            db_type = whichdb.whichdb(files_db)
-            if db_type != "gdbm":
-                if not os.access(files_db, os.W_OK):
-                    ctx.ui.debug("Cannot write to type %s database cache %s, ignoring." % (db_type, files_db))
-                    return needs_rebuild
-                else:
-                    ctx.ui.debug("Incompatible type %s database cache %s found, needs_rebuild = True" % (db_type, files_db))
-                    needs_rebuild = True
-    
         if not os.path.exists(files_db):
-            flag = "n"
-            ctx.ui.debug("No database cache %s found, needs_rebuild = True" % (files_db))
-            needs_rebuild = True
-        elif os.access(files_db, os.W_OK):
-            flag = "w"
-        else:
-            flag = "r"
-            ctx.ui.debug("Type %s database cache %s is read-only." % (db_type, files_db))
-
-        # At this point, we _should_ be able to _open_ the file.
-        # The only remaining question is whether the pickle protocol version is correct
-        try:
-             self.filesdb = myopen(files_db, flag, protocol=FILESDB_PICKLE_PROTOCOL_VERSION)
-        except:
-             ctx.ui.debug("myopen(files_db=%s, flag=%s, protocol=%s) failed, needs_rebuild = True"
-                           % (files_db, flag, FILESDB_PICKLE_PROTOCOL_VERSION))
-             needs_rebuild = True
-             return needs_rebuild
-
-        # Check if self.filesdb has a version key
-        has_version = True
-        version = 0
-        try:
-            version = self.filesdb["version"]
-        except:
-            has_version = False
-
-        # At this point, either:
-        #  has_version is True and version != 0,
-        #   XOR
-        #  has_version is False and version == 0
-
-        if flag != "r":
-            if not has_version or version != FILESDB_FORMAT_VERSION:
-                ctx.ui.debug("Incompatible type %s database cache %s found (version: (%s, %s), expected (%s, %s)), needs_rebuild = True" % (db_type, files_db, has_version, version, True, FILESDB_FORMAT_VERSION))
+            msg = "FilesDB %s does not exist!" % files_db
+            file_exists = False
+            try:
+                with open(files_db, "w") as fp:
+                    pass
+                os.unlink(files_db)
+                can_write = True
+                flag = "n"
+                ctx.ui.info(msg)
                 needs_rebuild = True
+            except:
+                can_write = False
+                ctx.ui.warning(msg)
+                please_rebuild_manually = True
+                # This falls back to simple XML search if FilesDB isn't available
+        # path exists
+        else:
+            file_exists = True
+            if os.access(files_db, os.W_OK):
+                can_write = True
+                # check the kind of db
+                import whichdb
+                db_type = whichdb.whichdb(files_db)
+                if db_type != "gdbm":
+                    flag = "n"
+                    needs_rebuild = True
+                # type is "gdbm"
+                else:
+                    flag = "w" # we don't yet know if we need a rebuild
+            elif os.access(files_db, os.R_OK):
+                can_write = False
+                flag = "r"
+                ctx.ui.warning("Cannot open FilesDB %s for writing. Opening it read-only." % files_db)
+                # This falls back to simple XML search if FilesDB isn't avaiable
+            else:
+                can_write = False
+                # the file exists, but we can neither read nor write to it
+                ctx.ui.warning("FilesDB %s exists, but we cannot access it!" % files_db)
+                please_rebuild_manually = True
+                # This falls back to simple XML search if FilesDB isn't available
 
-        return needs_rebuild
+        # At this point, we have checked the first three indentation levels of the
+        # decision tree. This means we need to try to open the shelve.
 
+        if flag is not None:
+        # At this point, we _should_ be able to _open_ the file.
+            try:
+                self.filesdb = myopen(files_db, flag, protocol=FILESDB_PICKLE_PROTOCOL_VERSION)
+                valid_shelve = True
+            except:
+                ctx.ui.debug("myopen(files_db=%s, flag=%s, protocol=%s) failed."
+                               % (files_db, flag, FILESDB_PICKLE_PROTOCOL_VERSION))
+                valid_shelve = False
+                # something went wrong when attempting to open the shelve, it needs a rebuild
+                msg = "FilesDB %s is in an invalid format!" % files_db
+                if can_write:
+                    # since we can rewrite it, no need for anything but level info.
+                    ctx.ui.info(msg)
+                    needs_rebuild = True
+                else:
+                    ctx.ui.error(msg)
+                    please_rebuild_manually = True
+
+            # If the backing shelve exists and is valid, check if it has a version key
+            if valid_shelve and file_exists:
+                try:
+                    version = self.filesdb["version"]
+                except:
+                    msg = "FilesDB %s has no version!" % files_db
+                    if can_write:
+                        ctx.ui.info(msg)
+                        needs_rebuild = True
+                    else:
+                        ctx.ui.warning(msg)
+                        please_rebuild_manually = True
+
+                if version is not None:
+                    if version != FILESDB_FORMAT_VERSION:
+                        msg = "FilesDB version %s != current version %s!" % (version, FILESDB_FORMAT_VERSION)
+                        if can_write:
+                            ctx.ui.info(msg)
+                            needs_rebuild = True
+                        else:
+                            ctx.ui.warning(msg)
+                            please_rebuild_manually = True
+                    else:
+                        # Everything is ok, the shelve is open with flag = "w"
+                        needs_rebuild = False
+
+
+        # if needs_rebuild is None, then the state is invalid and FilesDB is ignored
+        ctx.ui.debug("FilesDB %s check result:" % files_db)
+        ctx.ui.debug("> file_exists = %s" % file_exists)
+        ctx.ui.debug("> can_write = %s" % can_write)
+        ctx.ui.debug("> db_type = %s" % db_type)
+        ctx.ui.debug("> flag = %s" % flag)
+        ctx.ui.debug("> valid_shelve = %s" % valid_shelve)
+        ctx.ui.debug("> version = %s" % version)
+        ctx.ui.debug("> please_rebuild_manually = %s" % please_rebuild_manually)
+        ctx.ui.debug("=> force_rebuild = %s" % force_rebuild)
+        ctx.ui.debug("=> needs_rebuild = %s" % needs_rebuild)
+
+        if please_rebuild_manually:
+            ctx.ui.warning("Please rebuild the FilesDB manually with 'sudo eopkg.py2 -y rdb'")
+
+        if force_rebuild or needs_rebuild:
+            self.__rebuild()
+
+    def __rebuild(self):
+        # This assumes that __check_db() has run
+        files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
+        ctx.ui.info("Rebuilding the FilesDB...")
+        self.close()
+        self.destroy()
+        self.filesdb = {}
+
+        try:
+            # "n" means we're opening a new shelve, overwriting the old one
+            self.filesdb = myopen(files_db, "n", protocol=FILESDB_PICKLE_PROTOCOL_VERSION)
+        except:
+            ctx.ui.debug("myopen(files_db=%s, flag=%s, protocol=%s) failed."
+                           % (files_db, flag, FILESDB_PICKLE_PROTOCOL_VERSION))
+            ctx.ui.error("FilesDB rebuild failed!!!")
+            raise IOError
+
+        self.filesdb["version"] = FILESDB_FORMAT_VERSION
+        # we need a list of installed files per package
+        installdb = pisi.db.installdb.InstallDB()
+        for pkg in installdb.list_installed():
+            ctx.ui.info('Adding \'%s\' to db... ' % pkg, noln=True)
+            files = installdb.get_files(pkg)
+            self.add_files(pkg, files)
+            ctx.ui.info('OK.')
+        # ensure that the changes get pushed out to disk
+        self.filesdb.sync()
+        # This acts as a check that the version has been correctly added and synced to disk
+        ctx.ui.info("Done rebuilding FilesDB (version: %s)" % (self.filesdb["version"]))
 
 # Ensure we use gdbm rather than bsddb which is normally selected from anydb
 # https://github.com/python/cpython/blob/v2.7.18/Lib/shelve.py#L218
