@@ -99,6 +99,7 @@ class FilesDB(lazydb.LazyDB):
 
     def close(self):
         if isinstance(self.filesdb, DbfilenameShelf):
+            self.filesdb.sync()
             self.filesdb.close()
 
     def __check_filesdb(self, force_rebuild=False):
