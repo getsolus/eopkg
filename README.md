@@ -13,7 +13,7 @@ anything but the above.
 In earlier versions, eopkg.py3 was using an unversioned gdbm/dbm.gnu format `/var/lib/eopkg/info/files.db` database.
 
 This implies that from version 4.1.5 and forward, eopkg.py3/bin will need to be built with gdbm support, but no
-longer needs to be built with bsddb/db5 support.
+longer needs to be built with bsddb/db5 support (for which upstream CPython support was dropped in 3.9 anyway).
 
 ## eopkg venv testing
 
