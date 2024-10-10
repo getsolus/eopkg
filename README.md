@@ -4,6 +4,17 @@ Fork of the PiSi Package Manager, originally from Pardus Linux, and adapted/main
 
 The python3 port is now the main development branch.
 
+## FilesDB on-disk version format 4
+
+From version 4.1.5, eopkg.py3/bin will be using a FILESDB_FORMAT_VERSION = 4 versioned gdbm/dbm.gnu format
+`/var/lib/eopkg/info/files.db` database, and will auto-regen its FilesDB cache if it encounters
+anything but the above.
+
+In earlier versions, eopkg.py3 was using an unversioned gdbm/dbm.gnu format `/var/lib/eopkg/info/files.db` database.
+
+This implies that from version 4.1.5 and forward, eopkg.py3/bin will need to be built with gdbm support, but no
+longer needs to be built with bsddb/db5 support.
+
 ## eopkg venv testing
 
 ### Prerequisites

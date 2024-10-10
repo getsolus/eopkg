@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-import os
 import fcntl
+import os
 import re
 from . import fetcher
 
@@ -899,32 +899,18 @@ def __update_repo(repo, force=False):
 # FIXME: rebuild_db is only here for filesdb and it really is ugly. we should not need any rebuild.
 @locked
 def rebuild_db(files=False):
-    filesdb = pisi.db.filesdb.FilesDB()
-    installdb = pisi.db.installdb.InstallDB()
-
-    def rebuild_filesdb():
-        for pkg in list_installed():
-            ctx.ui.info(_("Adding '%s' to db... ") % pkg, noln=True)
-            files = installdb.get_files(pkg)
-            filesdb.add_files(pkg, files)
-            ctx.ui.info(_("OK."))
 
     # save parameters and shutdown pisi
     options = ctx.config.options
     ui = ctx.ui
     pisi._cleanup()
 
-    filesdb.close()
-    filesdb.destroy()
-    filesdb.init()
-
     # reinitialize everything
     set_userinterface(ui)
     set_options(options)
 
-    # construct new database
-    rebuild_filesdb()
-
+    filesdb = pisi.db.filesdb.FilesDB()
+    filesdb.init(force_rebuild=True)
 
 ############# FIXME: this was a quick fix. ##############################
 
