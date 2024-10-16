@@ -147,6 +147,7 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         if latest_packages:
             try:
                 # Add binary packages to index using a process pool
+                ctx.ui.info("Adding packages to index:")
                 self.packages = pool.map(add_package, latest_packages)
             except:
                 pool.terminate()
@@ -163,10 +164,7 @@ def add_package(params):
     try:
         path, deltas, repo_uri = params
 
-        ctx.ui.info(
-            "%-80.80s\r" % (_("Adding package to index: %s") % os.path.basename(path)),
-            noln=True,
-        )
+        ctx.ui.info("  %s" % os.path.basename(path))
 
         package = pisi.package.Package(path, "r")
         md = package.get_metadata()
@@ -236,14 +234,14 @@ def add_package(params):
 
 
 def add_groups(path):
-    ctx.ui.info(_("Adding groups.xml to index"))
+    ctx.ui.info("Adding groups.xml to index")
     groups_xml = group.Groups()
     groups_xml.read(path)
     return groups_xml.groups
 
 
 def add_components(path):
-    ctx.ui.info(_("Adding components.xml to index"))
+    ctx.ui.info("Adding components.xml to index")
     components_xml = component.Components()
     components_xml.read(path)
     # try:
@@ -254,7 +252,7 @@ def add_components(path):
 
 
 def add_distro(path):
-    ctx.ui.info(_("Adding distribution.xml to index"))
+    ctx.ui.info("Adding distribution.xml to index")
     distro = component.Distribution()
     # try:
     distro.read(path)
@@ -277,7 +275,7 @@ def add_spec(params):
             sf.source.sourceURI = util.removepathprefix(repo_uri, path)
 
         ctx.ui.info(
-            "%-80.80s\r" % (_("Adding %s to source index") % path),
+            "%-80.80s\r" % (("Adding %s to source index") % path),
             noln=False if ctx.config.get_option("verbose") else True,
         )
         return sf
