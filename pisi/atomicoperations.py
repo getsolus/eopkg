@@ -270,43 +270,44 @@ class Install(AtomicOperation):
             ipkg = self.installdb.get_package(pkg.name)
             (iversion_s, irelease_s, ibuild) = self.installdb.get_version(pkg.name)
 
-            # determine if same version
+            # determine if same distribution release
             if pkg.release == irelease_s:
                 if self.ask_reinstall:
-                    if not ctx.ui.confirm(_("Re-install same version package?")):
-                        raise Error(_("Package re-install declined"))
+                    if not ctx.ui.confirm("Re-install same distribution release of package?"):
+                        raise Error("Package re-install declined")
                 self.operation = REINSTALL
             else:
-                pkg_version = pisi.version.make_version(pkg.version)
-                iversion = pisi.version.make_version(iversion_s)
-
-                pkg_release = int(pkg.release)
-                irelease = int(irelease_s)
+                #pkg_version = pisi.version.make_version(pkg.version)
+                #ctx.ui.debug(f"New upstream version after version parsing: {pkg_version}")
+                #iversion = pisi.version.make_version(iversion_s)
+                #ctx.ui.debug(f"Installed version after version parsing: {iversion}")
+                #pkg_release = int(pkg.release)
+                #irelease = int(irelease_s)
 
                 # is this an upgrade?
                 # determine and report the kind of upgrade: version, release
-                try:
-                    if pkg_version > iversion:
-                        ctx.ui.info(_("Upgrading to new upstream version"))
-                        self.operation = UPGRADE
-                except TypeError as e:
-                    ctx.ui.error(_("Malformed package version, falling back to distribution release"))
-                    ctx.ui.debug(str(e))
+                #try:
+                #    if pkg_version > iversion:
+                #        ctx.ui.info("Upgrading to new upstream version")
+                #        self.operation = UPGRADE
+                #except TypeError as e:
+                #    ctx.ui.error(f"Comparing new upstream version '{pkg_version}' to installed version '{iversion}' failed, falling back to distribution release comparison (Add '--debug' to see full traceback)")
+                #    ctx.ui.debug(str(e))
                 if pkg_release > irelease:
-                    ctx.ui.info(_("Upgrading to new distribution release"))
+                    ctx.ui.info("Upgrading to new upstream distribution release")
                     self.operation = UPGRADE
 
                 # is this a downgrade? confirm this action.
                 if not self.operation == UPGRADE:
-                    if pkg_version < iversion:
-                        # x = _('Downgrade to old upstream version?')
-                        x = None
-                    elif pkg_release < irelease:
-                        x = _("Downgrade to old distribution release?")
+                    #if pkg_version < iversion:
+                    #    # x = "Downgrade to old upstream version?"
+                    #    x = None
+                    if pkg_release < irelease:
+                        x = "Downgrade to old distribution release?"
                     else:
                         x = None
                     if self.ask_reinstall and x and not ctx.ui.confirm(x):
-                        raise Error(_("Package downgrade declined"))
+                        raise Error("Package downgrade declined")
                     self.operation = DOWNGRADE
 
             # schedule for reinstall
