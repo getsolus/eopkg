@@ -285,10 +285,14 @@ class Install(AtomicOperation):
 
                 # is this an upgrade?
                 # determine and report the kind of upgrade: version, release
-                if pkg_version > iversion:
-                    ctx.ui.info(_("Upgrading to new upstream version"))
-                    self.operation = UPGRADE
-                elif pkg_release > irelease:
+                try:
+                    if pkg_version > iversion:
+                        ctx.ui.info(_("Upgrading to new upstream version"))
+                        self.operation = UPGRADE
+                except TypeError as e:
+                    ctx.ui.error(_("Malformed package version, falling back to distribution release"))
+                    ctx.ui.debug(str(e))
+                if pkg_release > irelease:
                     ctx.ui.info(_("Upgrading to new distribution release"))
                     self.operation = UPGRADE
 
