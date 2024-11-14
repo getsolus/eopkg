@@ -119,6 +119,9 @@ class TarFile(tarfile.TarFile):
         if fileobj is not None:
             fileobj = _LZMAProxy(fileobj, mode)
         else:
+            if mode == "r":
+                compresslevel = None
+
             fileobj = lzma.LZMAFile(name, mode, format=1, preset=compresslevel)
 
         try:
