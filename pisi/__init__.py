@@ -23,14 +23,22 @@ try:
         _localedir = None  # Use the system one.
 
     # You usually want to import this function with the "_" alias.
-    translate = gettext.translation(
+    lang = gettext.translation(
         "pisi", localedir=_localedir, languages=[locale.getlocale()[0]]
-    ).gettext
+    )
+
+    translate = lang.gettext
+    ngettext = lang.ngettext
 except:
     # No .mo files found. Just return plain English.
     def translate(msg):
         return msg
 
+    def ngettext(singular, plural, n):
+        if (n == 1):
+            return singular
+        else
+            return plural
 
 __version__ = "4.1.6"
 
