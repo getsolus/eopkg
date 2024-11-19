@@ -15,30 +15,19 @@ from importlib.resources import files
 
 locale.setlocale(locale.LC_ALL, "")
 
-try:
-    _localeres = files("pisi.data").joinpath("locale")
-    if _localeres.is_dir():
-        _localedir: str | None = str(_localeres)
-    else:
-        _localedir = None  # Use the system one.
+_localeres = files("pisi.data").joinpath("locale")
+if _localeres.is_dir():
+    _localedir: str | None = str(_localeres)
+else:
+    _localedir = None  # Use the system one.
 
-    # You usually want to import this function with the "_" alias.
-    lang = gettext.translation(
-        "pisi", localedir=_localedir, languages=[locale.getlocale()[0]]
-    )
+lang = gettext.translation(
+    "pisi", localedir=_localedir, fallback=True, languages=[locale.getlocale()[0]]
+)
 
-    translate = lang.gettext
-    ngettext = lang.ngettext
-except:
-    # No .mo files found. Just return plain English.
-    def translate(msg):
-        return msg
-
-    def ngettext(singular, plural, n):
-        if (n == 1):
-            return singular
-        else
-            return plural
+# You usually want to import this function with the "_" alias.
+translate = lang.gettext
+ngettext = lang.ngettext
 
 __version__ = "4.1.6"
 
