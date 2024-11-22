@@ -1,0 +1,12 @@
+[main]
+host = https://app.transifex.com
+
+[o:solus:p:eopkg:r:pisi]
+file_filter            = po/<lang>.po
+source_file            = po/pisi.pot
+type                   = POT
+minimum_perc           = 0
+resource_name          = pisi.pot
+replace_edited_strings = false
+keep_translations      = false
+

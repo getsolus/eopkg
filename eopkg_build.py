@@ -18,24 +18,13 @@ DIST_DIR = "dist"
 MAN_DIR = path(DIST_DIR, "man")
 
 
-def source_files():
-    files = []
-    for root, dirs, filenames in os.walk(PROJECT):
-        files.extend(path(root, f) for f in filenames if (f.endswith(".py") or f.endswith(".py3")))
-    return files
-
-
 class Build(build):
     def run(self):
         super().run()
-        self.extract_pot()
         self.update_po()
         self.compile_mo()
         self.compile_manpage()
         self.generate_config_file()
-
-    def extract_pot(self):
-        self.spawn(["xgettext", "-L", "Python", "-o", POTFILE] + source_files())
 
     def update_po(self):
         for item in glob.glob("*.po", root_dir=PO_DIR):
