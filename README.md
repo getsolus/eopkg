@@ -15,6 +15,27 @@ In earlier versions, eopkg.py3 was using an unversioned gdbm/dbm.gnu format `/va
 This implies that from version 4.1.5 and forward, eopkg.py3/bin will need to be built with gdbm support, but no
 longer needs to be built with bsddb/db5 support (for which upstream CPython support was dropped in 3.9 anyway).
 
+## Updating translations
+
+There are two parts to updating translations: compiling the strings to be translated, and pulling the translations. Since this project has been added to the [Solus Transifex organization](transifex.com/solus), both parts are relatively easy.
+
+First, you need to have the Transifex CLI tool installed. If you do not have it installed, check out [their webpage](https://developers.transifex.com/docs/cli#installation) for instructions.
+
+To compile the strings and push them to Transifex, run:
+
+```bash
+./update_pot.sh
+tx push -s
+```
+
+To pull updated translations, run:
+
+```bash
+tx pull
+```
+
+When `eopkg` is built, the build system will then compile the translations into a format usable by Python.
+
 ## eopkg venv testing
 
 ### Prerequisites
