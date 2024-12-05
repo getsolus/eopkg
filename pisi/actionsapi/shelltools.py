@@ -42,13 +42,13 @@ def makedirs(destinationDirectory):
         error(_("Cannot create directory %s") % destinationDirectory)
 
 
-def echo(destionationFile, content):
+def echo(destinationFile, content):
     try:
-        f = open(destionationFile, "a")
+        f = open(destinationFile, "a")
         f.write("%s\n" % content)
         f.close()
     except IOError:
-        error(_("ActionsAPI [echo]: Can't append to file %s.") % (destionationFile))
+        error(_("ActionsAPI [echo]: Can't append to file %s.") % (destinationFile))
 
 
 def chmod(filePath, mode=0o755):

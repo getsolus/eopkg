@@ -56,10 +56,10 @@ def dohtml(*sourceFiles, **kw):
 
     """ example call: pisitools.dohtml("doc/doxygen/html/*")"""
     destDir = kw.get("destDir", get.srcNAME())
-    destionationDirectory = join_path(get.installDIR(), get.docDIR(), destDir, "html")
+    destinationDirectory = join_path(get.installDIR(), get.docDIR(), destDir, "html")
 
-    if not can_access_directory(destionationDirectory):
-        makedirs(destionationDirectory)
+    if not can_access_directory(destinationDirectory):
+        makedirs(destinationDirectory)
 
     allowed_extensions = [".png", ".gif", ".html", ".htm", ".jpg", ".css", ".js"]
     disallowed_directories = ["CVS", ".git", ".svn", ".hg"]
@@ -74,7 +74,7 @@ def dohtml(*sourceFiles, **kw):
                 os.path.isfile(source)
                 and os.path.splitext(source)[1] in allowed_extensions
             ):
-                system('install -m0644 "%s" %s' % (source, destionationDirectory))
+                system('install -m0644 "%s" %s' % (source, destinationDirectory))
             if (
                 os.path.isdir(source)
                 and os.path.basename(source) not in disallowed_directories
@@ -84,13 +84,13 @@ def dohtml(*sourceFiles, **kw):
                     newRoot = remove_prefix(eraser, root)
                     for sourcename in files:
                         if os.path.splitext(sourcename)[1] in allowed_extensions:
-                            makedirs(join_path(destionationDirectory, newRoot))
+                            makedirs(join_path(destinationDirectory, newRoot))
                             system(
                                 "install -m0644 %s %s"
                                 % (
                                     join_path(root, sourcename),
                                     join_path(
-                                        destionationDirectory, newRoot, sourcename
+                                        destinationDirectory, newRoot, sourcename
                                     ),
                                 )
                             )
