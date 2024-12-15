@@ -7,6 +7,9 @@ import os
 import re
 import shelve
 
+from pisi import translate as _
+from pisi import ngettext
+
 import pisi
 from pisi import context as ctx
 from pisi import util
@@ -162,7 +165,7 @@ class FilesDB(lazydb.LazyDB):
         # which in turn implies falling back to slow XML access for searches.
         #
         if not os.path.exists(files_db):
-            msg = "FilesDB %s does not exist." % files_db
+            msg = _("FilesDB %s does not exist.") % files_db
             file_exists = False
             try:
                 with open(files_db, "w") as fp:
@@ -191,7 +194,7 @@ class FilesDB(lazydb.LazyDB):
                 # we need dbm.gnu here for success
                 if db_type != "dbm.gnu":
                     if verbose:
-                        ctx.ui.info("FilesDB %s is writable, but is of wrong type '%s'." % (files_db, db_type))
+                        ctx.ui.info(_("FilesDB %s is writable, but is of wrong type '%s'.") % (files_db, db_type))
                     flag = "n"
                     needs_rebuild = True
                 else:
@@ -203,11 +206,11 @@ class FilesDB(lazydb.LazyDB):
                 # we need dbm.gnu here for success
                 if db_type != "dbm.gnu":
                     if verbose:
-                        ctx.ui.info("FilesDB %s is readable, but is of wrong type '%s'." % (files_db, db_type))
+                        ctx.ui.info(_("FilesDB %s is readable, but is of wrong type '%s'.") % (files_db, db_type))
                     please_rebuild_manually = True
                 else:
                     if verbose:
-                        ctx.ui.info("Cannot open FilesDB %s for writing. Opening it read-only." % files_db)
+                        ctx.ui.info(_("Cannot open FilesDB %s for writing. Opening it read-only.") % files_db)
                     flag = "r"
                     # db_type is dbm.gnu and the backing file looks to be readable.
                 # This block falls back to simple XML search if FilesDB is not the correct format
@@ -215,7 +218,7 @@ class FilesDB(lazydb.LazyDB):
                 can_write = False
                 # the file exists, but we can neither read nor write to it
                 if verbose:
-                    ctx.ui.warning("FilesDB %s of type '%s' exists, but we cannot access it." % (files_db, db_type))
+                    ctx.ui.warning(_("FilesDB %s of type '%s' exists, but we cannot access it.") % (files_db, db_type))
                 please_rebuild_manually = True
                 # This block falls back to simple search because FilesDB isn't available
 
@@ -229,11 +232,11 @@ class FilesDB(lazydb.LazyDB):
                 valid_shelve = True
             except:
                 if verbose:
-                    ctx.ui.info("shelve.open(files_db=%s, flag=%s, protocol=%s) failed."
+                    ctx.ui.debug("shelve.open(files_db=%s, flag=%s, protocol=%s) failed."
                                 % (files_db, flag, FILESDB_PICKLE_PROTOCOL_VERSION))
                 valid_shelve = False
                 # Can't open the shelve, it needs a rebuild
-                msg = "FilesDB %s is not in a valid shelve format." % files_db
+                msg = _("FilesDB %s is not in a valid shelve format.") % files_db
                 if can_write:
                     if verbose:
                         ctx.ui.info(msg)
@@ -249,7 +252,7 @@ class FilesDB(lazydb.LazyDB):
                 try:
                     version = self.filesdb["version"]
                 except:
-                    msg = "FilesDB %s has no version." % files_db
+                    msg = _("FilesDB %s has no version.") % files_db
                     if can_write:
                         if verbose:
                             ctx.ui.info(msg)
@@ -262,7 +265,7 @@ class FilesDB(lazydb.LazyDB):
 
                 if version is not None:
                     if version != FILESDB_FORMAT_VERSION:
-                        msg = "FilesDB is version %s, need version %s." % (version, FILESDB_FORMAT_VERSION)
+                        msg = _("FilesDB is version %s, need version %s.") % (version, FILESDB_FORMAT_VERSION)
                         if can_write:
                             if verbose:
                                 ctx.ui.info(msg)
@@ -290,8 +293,8 @@ class FilesDB(lazydb.LazyDB):
 
         # This block implies that the state is invalid
         if please_rebuild_manually:
-            ctx.ui.warning("FilesDB is invalid. Please rebuild it with 'sudo eopkg.py3 -y rdb'")
-            ctx.ui.warning("Falling back to slow and inaccurate XML search...")
+            ctx.ui.warning(_("FilesDB is invalid. Please rebuild it with 'sudo eopkg.py3 -y rdb'"))
+            ctx.ui.warning(_("Falling back to slow and inaccurate XML search..."))
 
         if force_rebuild or needs_rebuild:
             self.__rebuild()
@@ -299,7 +302,7 @@ class FilesDB(lazydb.LazyDB):
     def __rebuild(self):
         # This assumes that __check_db() has run
         files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
-        ctx.ui.info("Rebuilding the FilesDB...")
+        ctx.ui.info(_("Rebuilding the FilesDB..."))
         self.close()
         self.destroy()
         self.filesdb = {}
@@ -310,7 +313,7 @@ class FilesDB(lazydb.LazyDB):
         except Exception as err:
             ctx.ui.debug("shelve.open(files_db=%s, flag=%s, protocol=%s) failed."
                            % (files_db, flag, FILESDB_PICKLE_PROTOCOL_VERSION))
-            ctx.ui.error("FilesDB rebuild failed!!!")
+            ctx.ui.error(_("FilesDB rebuild failed!"))
             raise err
 
         self.filesdb["version"] = FILESDB_FORMAT_VERSION
@@ -318,28 +321,28 @@ class FilesDB(lazydb.LazyDB):
         installdb = pisi.db.installdb.InstallDB()
         pkgs = 0
         verbose = ctx.config.options.verbose
-        ctx.ui.info("Adding packages to FilesDB %s:" % files_db)
+        ctx.ui.info(_("Adding packages to FilesDB %s:") % files_db)
         for pkg in installdb.list_installed():
             files = installdb.get_files(pkg)
             if verbose:
-                ctx.ui.info("Adding '%s' ..." % pkg, noln=True)
+                ctx.ui.info(_("Adding '%s' ...") % pkg, noln=True)
             self.add_files(pkg, files)
             if verbose:
-                ctx.ui.info("OK.")
+                ctx.ui.info(_("Okay."))
             pkgs += 1
             # Print out useful markers every so often
             if pkgs % 50 == 0:
                 if verbose:
                     ctx.ui.info("-------------")
-                    ctx.ui.info("Added so far: %s" % pkgs)
+                    ctx.ui.info(_("Added so far: %s") % pkgs)
                     ctx.ui.info("-------------")
                 else:
                     ctx.ui.info(".", noln=True)
-        ctx.ui.info("\n%s packages added in total." % pkgs)
+        ctx.ui.info(ngettext("\nOne package added in total.", "\n%s packages added in total.", pkgs))
         # ensure that the changes get pushed out to disk
         self.filesdb.sync()
         # This acts as a check that the version has been correctly added and synced to disk
-        ctx.ui.info("Done rebuilding FilesDB (version: %s)" % self.filesdb["version"])
+        ctx.ui.info(_("Done rebuilding FilesDB (version: %s)") % self.filesdb["version"])
 
     def __check_filesdb_old(self):
         """Sets valid self.files_db reference and returns whether the underlying db needs to be rebuilt."""
