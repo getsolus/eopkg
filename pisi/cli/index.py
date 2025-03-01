@@ -56,7 +56,7 @@ class Index(command.Command, metaclass=command.autocommand):
             "--compression-types",
             action="store",
             default="xz",
-            help=_("Comma-separated compression types " "for index file"),
+            help=_("Comma-separated compression types " "for index file. Valid options are \"xz\" and \"bz2\". Defaults to \"xz\"."),
         )
 
         group.add_option(
