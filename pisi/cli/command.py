@@ -101,8 +101,10 @@ class Command(object):
             default=False,
             help=_("Assume yes in all yes/no queries"),
         )
-        group.add_option("-u", "--username", action="store")
-        group.add_option("-p", "--password", action="store")
+        # Username and password are leftovers from auth-basic support.
+        # These are here (but hidden) so we can issue a deprecation warning.
+        group.add_option("-u", "--username", action="store", help=optparse.SUPPRESS_HELP)
+        group.add_option("-p", "--password", action="store", help=optparse.SUPPRESS_HELP)
         group.add_option(
             "-L",
             "--bandwidth-limit",
@@ -152,7 +154,8 @@ class Command(object):
         pass
 
     def process_opts(self):
-        self.check_auth_info()
+        if self.options.username or self.options.password:
+            raise pisi.cli.Error(_("HTTP Basic-Auth is no longer supported. Please reconfigure your repository."))
 
         # make destdir absolute
         if self.options.destdir:
@@ -164,30 +167,6 @@ class Command(object):
                 )
                 os.makedirs(d)
             self.options.destdir = os.path.realpath(d)
-
-    def check_auth_info(self):
-        username = self.options.username
-        password = self.options.password
-
-        # TODO: We'll get the username, password pair from a configuration
-        # file from users home directory. Currently we need user to
-        # give it from the user interface.
-        #         if not username and not password:
-        #             if someauthconfig.username and someauthconfig.password:
-        #                 self.authInfo = (someauthconfig.username,
-        #                                  someauthconfig.password)
-        #                 return
-        if username and password:
-            self.options.authinfo = (username, password)
-            return
-
-        if username and not password:
-            from getpass import getpass
-
-            password = getpass(_("Password: "))
-            self.options.authinfo = (username, password)
-        else:
-            self.options.authinfo = None
 
     def init(self, database=True, write=True):
         """initialize eopkg components"""

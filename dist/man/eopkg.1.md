@@ -25,14 +25,6 @@ The following options are applicable to `eopkg(1)`.
 
    Assume yes in all yes/no queries
 
- * `-u`, `--username`
-
-   Set username used when connecting to Basic-Auth repositories. Rarely required.
-
- * `-p`, `--password`
-
-   Set password used when connecting to Basic-Auth repositories. Rarely required.
-
  * `-L`, `--bandwidth-limit`
 
    Keep bandwidth usage under the specified (numeric) KBs

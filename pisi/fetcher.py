@@ -109,9 +109,6 @@ class Fetcher:
         if not isinstance(url, pisi.uri.URI):
             url = pisi.uri.URI(url)
 
-        if ctx.config.get_option("authinfo"):
-            url.set_auth_info(ctx.config.get_option("authinfo"))
-
         self.url = url
         self.destdir = destdir
         self.destfile = destfile
@@ -225,9 +222,6 @@ class Fetcher:
 
     def _get_headers(self):
         headers = []
-        if self.url.auth_info():
-            enc = base64.encodestring("%s:%s" % self.url.auth_info())
-            headers.append(("Authorization", "Basic %s" % enc))
         headers.append(("User-Agent", "eopkg Fetcher/" + pisi.__version__))
         return headers
 

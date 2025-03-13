@@ -27,8 +27,6 @@ class URI(object):
             self.__fragment = None
             self.__uri = None
 
-        self.__authinfo = None
-
     def get_uri(self):
         if self.__uri:
             return self.__uri
@@ -62,14 +60,6 @@ class URI(object):
 
     def is_relative_path(self):
         return not self.is_absolute_path()
-
-    def set_auth_info(self, authTuple):
-        if not isinstance(authTuple, tuple):
-            raise Exception(_("setAuthInfo needs a tuple (user, pass)"))
-        self.__authinfo = authTuple
-
-    def auth_info(self):
-        return self.__authinfo
 
     def scheme(self):
         return self.__scheme
