@@ -410,6 +410,10 @@ alias, if available. Most commands in eopkg support a short form.
         Useful for finding packages that have been built and installed
         locally, as opposed to from an official repository.
 
+        Packages built by Solus' official build server come from the
+        build host "solus". By default, packages built locally come
+        from the build host "localhost".
+
  * `-l`, `--long`:
 
         Show full details of each package instead of one line
