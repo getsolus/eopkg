@@ -84,7 +84,7 @@ class GeneralDefaults:
 class BuildDefaults:
     """Default values for [build] section"""
 
-    build_host = "solus"
+    build_host = "localhost"
     host = "x86_64-solus-linux"
     jobs = "auto"
     generateDebug = False
