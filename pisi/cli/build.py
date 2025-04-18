@@ -184,6 +184,9 @@ class Build(command.Command, metaclass=command.autocommand):
         self.parser.add_option_group(group)
 
     def run(self):
+        if "__compiled__" in globals():
+            raise pisi.Error(_("Building packages is not supported when eopkg is compiled with nuitka. Please use eopkg.py3 instead."))
+
         if not self.options.quiet:
             self.options.debug = True
 
