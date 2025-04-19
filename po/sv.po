@@ -5,793 +5,22 @@
 # 
 # Translators:
 # Evan Maddock, 2024
+# Jakob <jakob@knugen.nu>, 2024
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-09 11:27+0200\n"
+"POT-Creation-Date: 2025-04-19 19:12-0400\n"
 "PO-Revision-Date: 2024-11-19 19:33+0000\n"
-"Last-Translator: Evan Maddock, 2024\n"
+"Last-Translator: Jakob <jakob@knugen.nu>, 2024\n"
 "Language-Team: Swedish (https://app.transifex.com/solus/teams/188714/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: pisi/archive.py:508
-#, python-format
-msgid "Problem occured while uncompressing %s.Z file"
-msgstr ""
-
-#: pisi/atomicoperations.py:75 pisi/operations/history.py:72
-#, python-format
-msgid "Package %s found in repository %s"
-msgstr "Paket %s hittades i förrådet %s"
-
-#: pisi/atomicoperations.py:112
-#, python-format
-msgid "Package URI: %s"
-msgstr "Paket-URI: %s"
-
-#: pisi/atomicoperations.py:128
-msgid "Download Error: Package does not match the repository package."
-msgstr "Hämtningsfel: Paketet matchar inte förrådspaketet."
-
-#: pisi/atomicoperations.py:134
-#, python-format
-msgid "Package %s not found in any active repository."
-msgstr "Paketet %s finns inte i något aktivt förråd."
-
-#: pisi/atomicoperations.py:161
-#, python-format
-msgid "Installing %s, version %s, release %s"
-msgstr "Installerar %s, version %s, utgåva %s"
-
-#: pisi/atomicoperations.py:197 pisi/operations/build.py:835
-#, python-format
-msgid "%s-%s is not a valid eopkg version format"
-msgstr ""
-
-#: pisi/atomicoperations.py:206
-#, python-format
-msgid "%s package cannot be installed unless the dependencies are satisfied"
-msgstr ""
-
-#: pisi/atomicoperations.py:244
-#, python-format
-msgid "/%s from %s gets replaced by %s package\n"
-msgstr ""
-
-#: pisi/atomicoperations.py:248 pisi/atomicoperations.py:253
-#, python-format
-msgid "/%s from %s package\n"
-msgstr "/%s från %s-paketet\n"
-
-#: pisi/atomicoperations.py:257
-#, python-format
-msgid ""
-"File conflicts:\n"
-"%s"
-msgstr ""
-"Filkonflikt:\n"
-"%s"
-
-#: pisi/atomicoperations.py:274
-msgid "Re-install same version package?"
-msgstr "Återinstallera samma paketversion?"
-
-#: pisi/atomicoperations.py:275
-msgid "Package re-install declined"
-msgstr ""
-
-#: pisi/atomicoperations.py:287
-msgid "Upgrading to new upstream version"
-msgstr "Uppdaterar till ny uppströmsversion"
-
-#: pisi/atomicoperations.py:290
-msgid "Upgrading to new distribution release"
-msgstr ""
-
-#: pisi/atomicoperations.py:299
-msgid "Downgrade to old distribution release?"
-msgstr ""
-
-#: pisi/atomicoperations.py:303
-msgid "Package downgrade declined"
-msgstr ""
-
-#: pisi/atomicoperations.py:409
-msgid ""
-"Unable to relocate following files. Reinstallation of this package is "
-"strongly recommended."
-msgstr ""
-
-#: pisi/atomicoperations.py:500 pisi/atomicoperations.py:503
-#: pisi/atomicoperations.py:510
-#, python-format
-msgid "Storing %s"
-msgstr "Lagrar %s"
-
-#: pisi/atomicoperations.py:590
-#, python-format
-msgid "File list could not be read for package %s, continuing removal."
-msgstr ""
-"Fillistan för paketet %s kunde inte läsas, fortsätter med borttagning."
-
-#: pisi/atomicoperations.py:598
-#, python-format
-msgid "Removing package %s"
-msgstr "Tar bort paketet %s"
-
-#: pisi/atomicoperations.py:602
-msgid "Trying to remove nonexistent package "
-msgstr ""
-
-#: pisi/atomicoperations.py:639
-#, python-format
-msgid "Not removing conflicted file : %s"
-msgstr "Tar inte bort fil i konflikt: %s"
-
-#: pisi/atomicoperations.py:669
-#, python-format
-msgid ""
-"Installed file %s does not exist on system [Probably you manually deleted]"
-msgstr ""
-
-#: pisi/comariface.py:22
-msgid "comar-api package is not fully installed"
-msgstr ""
-
-#: pisi/comariface.py:85
-#, python-format
-msgid ""
-"Cannot connect to COMAR: \n"
-"  %s\n"
-msgstr ""
-"Kan inte ansluta till COMAR: \n"
-"  %s\n"
-
-#: pisi/comariface.py:101
-#, python-format
-msgid "Configuring %s package"
-msgstr "Anpassar paketet %s..."
-
-#: pisi/comariface.py:108
-msgid "COMAR package updated. From now on, using new COMAR daemon."
-msgstr ""
-
-#: pisi/comariface.py:115
-#, python-format
-msgid "Registering %s comar script"
-msgstr ""
-
-#: pisi/comariface.py:124 pisi/comariface.py:129 pisi/comariface.py:141
-#: pisi/comariface.py:157 pisi/comariface.py:175 pisi/comariface.py:187
-#: pisi/comariface.py:207 pisi/comariface.py:219 pisi/comariface.py:226
-#, python-format
-msgid "Script error: %s"
-msgstr "Skriptfel: %s"
-
-#: pisi/comariface.py:131
-msgid "Calling post install handlers"
-msgstr ""
-
-#: pisi/comariface.py:149
-msgid "Running package's post install script"
-msgstr ""
-
-#: pisi/comariface.py:163
-#, python-format
-msgid "Running pre removal operations for %s"
-msgstr "Kör förberedande åtgärder före borttagning av %s"
-
-#: pisi/comariface.py:169
-msgid "Running package's pre remove script"
-msgstr ""
-
-#: pisi/comariface.py:177
-msgid "Calling pre remove handlers"
-msgstr ""
-
-#: pisi/comariface.py:193
-#, python-format
-msgid "Running post removal operations for %s"
-msgstr "Kör avslutande åtgärder efter borttagning av %s"
-
-#: pisi/comariface.py:201
-msgid "Running package's postremove script"
-msgstr ""
-
-#: pisi/comariface.py:209
-msgid "Calling post remove handlers"
-msgstr ""
-
-#: pisi/comariface.py:221
-msgid "Unregistering comar scripts"
-msgstr ""
-
-#: pisi/config.py:85
-#, python-format
-msgid "Destination directory %s does not exist. Creating it."
-msgstr ""
-
-#: pisi/configfile.py:125
-#, python-format
-msgid "No section by name '%s'"
-msgstr ""
-
-#: pisi/conflict.py:17 pisi/dependency.py:19 pisi/replace.py:15
-msgid " version >= "
-msgstr " version >= "
-
-#: pisi/conflict.py:19 pisi/dependency.py:21 pisi/replace.py:17
-msgid " version <= "
-msgstr " version <= "
-
-#: pisi/conflict.py:21 pisi/dependency.py:23 pisi/replace.py:19
-msgid " version "
-msgstr " version "
-
-#: pisi/conflict.py:23 pisi/dependency.py:25 pisi/replace.py:21
-msgid " release >= "
-msgstr " utgåva >= "
-
-#: pisi/conflict.py:25 pisi/dependency.py:27 pisi/replace.py:23
-msgid " release <= "
-msgstr " utgåva <= "
-
-#: pisi/conflict.py:27 pisi/dependency.py:29 pisi/replace.py:25
-msgid " release "
-msgstr " utgåva "
-
-#: pisi/constants.py:21
-#, python-format
-msgid "Can't rebind constant: %s"
-msgstr ""
-
-#: pisi/constants.py:27
-#, python-format
-msgid "Can't unbind constant: %s"
-msgstr ""
-
-#: pisi/context.py:78
-msgid "usysconf not installed. Please upgrade!"
-msgstr ""
-
-#: pisi/context.py:91
-msgid "Failed to configure system"
-msgstr ""
-
-#: pisi/fetcher.py:131
-msgid "Filename error"
-msgstr "Filnamnsfel"
-
-#: pisi/fetcher.py:135
-#, python-format
-msgid "Access denied to write to destination directory: \"%s\""
-msgstr ""
-
-#: pisi/fetcher.py:143
-#, python-format
-msgid "Access denied to destination file: \"%s\""
-msgstr ""
-
-#: pisi/fetcher.py:205
-#, python-format
-msgid "Hit max retry count when downloading: \"%s\""
-msgstr ""
-
-#: pisi/fetcher.py:209
-#, python-format
-msgid ""
-"\n"
-"Failed to fetch file, retrying %d out of %d \"%s\": %s"
-msgstr ""
-
-#: pisi/fetcher.py:218
-msgid ""
-"A problem occurred. Please check the archive address and/or permissions "
-"again."
-msgstr ""
-
-#: pisi/fetcher.py:254
-#, python-format
-msgid "Proxy configuration has been found for '%s' protocol"
-msgstr ""
-
-#: pisi/fetcher.py:266
-#, python-format
-msgid "Bandwidth usage is limited to %s KB/s"
-msgstr ""
-
-#: pisi/fetcher.py:292
-msgid ""
-"Remote file can not be reached. Previously downloaded part of the file will "
-"be removed."
-msgstr ""
-
-#: pisi/fetcher.py:305
-msgid ""
-"Server doesn't support partial downloads. Previously downloaded part of the "
-"file will be over-written."
-msgstr ""
-
-#: pisi/file.py:27
-#, python-format
-msgid "URL %s already downloaded as %s"
-msgstr ""
-
-#: pisi/file.py:35
-#, python-format
-msgid "No signature found for %s"
-msgstr ""
-
-#: pisi/file.py:45
-#, python-format
-msgid " invalid for %s"
-msgstr ""
-
-#: pisi/file.py:69
-msgid "uri must have type either URI or string"
-msgstr ""
-
-#: pisi/file.py:138
-#, python-format
-msgid "Fetching %s"
-msgstr "Hämtar %s"
-
-#: pisi/file.py:143
-#, python-format
-msgid "Copying %s to transfer dir"
-msgstr ""
-
-#: pisi/file.py:149
-#, python-format
-msgid "File '%s' not found."
-msgstr "Filen '%s' finns inte."
-
-#: pisi/file.py:172
-#, python-format
-msgid "File integrity of %s compromised."
-msgstr ""
-
-#: pisi/file.py:196
-msgid "File mode must be either File.read or File.write"
-msgstr ""
-
-#: pisi/file.py:201
-msgid "Remote write not implemented"
-msgstr ""
-
-#: pisi/file.py:250 pisi/file.py:254
-#, python-format
-msgid "ERROR: gpg --detach-sig %s failed"
-msgstr ""
-
-#: pisi/graph.py:17
-#, python-format
-msgid "Encountered cycle %s"
-msgstr ""
-
-#: pisi/history.py:35
-#, python-format
-msgid "%s repository is updated."
-msgstr "%s-förrådet uppdaterat."
-
-#: pisi/history.py:55
-#, python-format
-msgid "%s is upgraded from %s to %s with delta."
-msgstr ""
-
-#: pisi/history.py:61
-#, python-format
-msgid "%s is upgraded from %s to %s."
-msgstr ""
-
-#: pisi/history.py:67
-#, python-format
-msgid "%s %s is removed."
-msgstr ""
-
-#: pisi/history.py:69
-#, python-format
-msgid "%s %s is installed."
-msgstr ""
-
-#: pisi/history.py:71
-#, python-format
-msgid "%s %s is reinstalled."
-msgstr ""
-
-#: pisi/history.py:73
-#, python-format
-msgid "%s is downgraded from %s to %s."
-msgstr ""
-
-#: pisi/history.py:108 pisi/history.py:136
-msgid "Unknown package operation"
-msgstr ""
-
-#: pisi/index.py:167
-#, python-format
-msgid "Adding package to index: %s"
-msgstr ""
-
-#: pisi/index.py:185
-#, python-format
-msgid "Package %s: metadata corrupt, skipping..."
-msgstr ""
-
-#: pisi/index.py:239
-msgid "Adding groups.xml to index"
-msgstr ""
-
-#: pisi/index.py:246
-msgid "Adding components.xml to index"
-msgstr ""
-
-#: pisi/index.py:257
-msgid "Adding distribution.xml to index"
-msgstr ""
-
-#: pisi/index.py:280
-#, python-format
-msgid "Adding %s to source index"
-msgstr ""
-
-#: pisi/metadata.py:64
-#, python-format
-msgid "Distribution: %s, Dist. Release: %s\n"
-msgstr "Distribution: %s, Utgåva: %s\n"
-
-#: pisi/metadata.py:68
-#, python-format
-msgid "Architecture: %s, Installed Size: %s"
-msgstr "Arkitektur: %s, Installerad storlek: %s"
-
-#: pisi/metadata.py:73
-#, python-format
-msgid ", Package Size: %s"
-msgstr ", Paketstorlek: %s"
-
-#: pisi/mirrors.py:38
-#, python-format
-msgid "Mirrors file %s does not exist. Could not resolve mirrors://"
-msgstr ""
-
-#: pisi/package.py:59
-#, python-format
-msgid "Cannot open package file: %s"
-msgstr "Kan inte öppna paketfil: %s"
-
-#: pisi/package.py:80
-#, python-format
-msgid "Unsupported package format: %s"
-msgstr ""
-
-#: pisi/package.py:96
-#, python-format
-msgid ""
-"There was a problem while fetching '%s'.\n"
-"The package may have been upgraded. Please try to upgrade the package."
-msgstr ""
-
-#: pisi/package.py:103 pisi/sourcearchive.py:101
-#: pisi/operations/history.py:127
-#, python-format
-msgid "%s [cached]"
-msgstr "%s [cachad]"
-
-#: pisi/sourcearchive.py:56
-#, python-format
-msgid "Fetching source from: %s"
-msgstr ""
-
-#: pisi/sourcearchive.py:67
-#, python-format
-msgid "Source archive is stored: %s/%s"
-msgstr ""
-
-#: pisi/sourcearchive.py:79
-#, python-format
-msgid "%s mirrors are not defined."
-msgstr ""
-
-#: pisi/sourcearchive.py:84
-#, python-format
-msgid "Fetching source from mirror: %s"
-msgstr ""
-
-#: pisi/sourcearchive.py:91
-#, python-format
-msgid "Could not fetch source from %s mirrors."
-msgstr ""
-
-#: pisi/sourcearchive.py:109
-msgid "unpack: check_file_hash failed"
-msgstr ""
-
-#: pisi/sourcearchive.py:115
-#, python-format
-msgid "Unknown archive type '%s' is given for '%s'."
-msgstr ""
-
-#: pisi/sourcearchive.py:120
-#, python-format
-msgid "Pisi needs %s to unpack this archive but it is not installed."
-msgstr ""
-
-#: pisi/uri.py:68
-msgid "setAuthInfo needs a tuple (user, pass)"
-msgstr ""
-
-#: pisi/util.py:199 pisi/util.py:213
-msgid "Running "
-msgstr "Kör "
-
-#: pisi/util.py:204 pisi/util.py:231
-#, python-format
-msgid "return value for \"%s\" is %s"
-msgstr "returvärde för \"%s\" är %s"
-
-#: pisi/util.py:445
-#, python-format
-msgid "Including external link '%s'"
-msgstr ""
-
-#: pisi/util.py:447
-#, python-format
-msgid "Including directory '%s'"
-msgstr ""
-
-#: pisi/util.py:534
-msgid "You don't have necessary read permissions"
-msgstr ""
-
-#: pisi/util.py:538
-#, python-format
-msgid "File %s was not found"
-msgstr ""
-
-#: pisi/util.py:540
-#, python-format
-msgid "Cannot calculate SHA1 hash of %s"
-msgstr ""
-
-#: pisi/util.py:554
-#, python-format
-msgid "Compression type is not valid: '%s'"
-msgstr ""
-
-#: pisi/util.py:560
-#, python-format
-msgid "Error while decompressing %s: %s"
-msgstr ""
-
-#: pisi/util.py:577 pisi/operations/build.py:752
-#, python-format
-msgid "ERROR: WorkDir (%s) does not exist\n"
-msgstr ""
-
-#: pisi/util.py:609
-#, python-format
-msgid "ERROR: patch (%s) failed"
-msgstr "FEL: patch (%s) misslyckades"
-
-#: pisi/util.py:611
-#, python-format
-msgid "ERROR: patch (%s) failed: %s"
-msgstr "FEL: patch (%s) misslyckades: %s"
-
-#: pisi/util.py:623
-#, python-format
-msgid "strip command failed for file '%s'!"
-msgstr ""
-
-#: pisi/util.py:630
-#, python-format
-msgid "chrpath command failed for file '%s'!"
-msgstr ""
-
-#: pisi/util.py:639
-#, python-format
-msgid "objcopy (keep-debug) command failed for file '%s'!"
-msgstr ""
-
-#: pisi/util.py:648
-#, python-format
-msgid "objcopy (add-debuglink) command failed for file '%s'!"
-msgstr ""
-
-#: pisi/util.py:751
-#, python-format
-msgid "Invalid package name: %s"
-msgstr "Ogiltigt paketnamn: %s"
-
-#: pisi/util.py:793
-#, python-format
-msgid "Invalid delta package name: %s"
-msgstr ""
-
-#: pisi/version.py:67
-#, python-format
-msgid "Invalid version string: '%s'"
-msgstr "Ogiltig versionssträng: '%s'"
-
-#: pisi/specfile.py:169
-#, python-format
-msgid "URI: %s, type: %s, sha1sum: %s"
-msgstr ""
-
-#: pisi/specfile.py:201 pisi/specfile.py:204
-msgid " or "
-msgstr " eller "
-
-#: pisi/specfile.py:298 pisi/operations/install.py:343
-#, python-format
-msgid "%s dependency of package %s is not satisfied"
-msgstr ""
-
-#: pisi/specfile.py:395 pisi/specfile.py:500 pisi/cli/blame.py:69
-#, python-format
-msgid "Name: %s, version: %s, release: %s\n"
-msgstr "Namm: %s, version: %s, utgåva: %s\n"
-
-#: pisi/specfile.py:400 pisi/specfile.py:505
-#, python-format
-msgid "Summary: %s\n"
-msgstr "Sammandrag: %s\n"
-
-#: pisi/specfile.py:401 pisi/specfile.py:506
-#, python-format
-msgid "Description: %s\n"
-msgstr "Beskrivning: %s\n"
-
-#: pisi/specfile.py:402 pisi/specfile.py:507
-#, python-format
-msgid "Licenses: %s\n"
-msgstr ""
-
-#: pisi/specfile.py:403 pisi/specfile.py:508
-#, python-format
-msgid "Component: %s\n"
-msgstr "Komponent: %s\n"
-
-#: pisi/specfile.py:409
-msgid "Provides: "
-msgstr "Tillhandahåller: "
-
-#: pisi/specfile.py:422
-msgid "Dependencies: "
-msgstr "Beroenden: "
-
-#: pisi/specfile.py:479
-msgid "translations.xml file is badly formed."
-msgstr ""
-
-#: pisi/specfile.py:487 pisi/pxml/xmlfile.py:87
-#, python-format
-msgid "File '%s' has invalid XML"
-msgstr ""
-
-#: pisi/specfile.py:509
-msgid "Build Dependencies: "
-msgstr ""
-
-#: pisi/api.py:51 pisi/cli/command.py:201
-msgid "You have to be root for this operation."
-msgstr "Du måste vara root för den här åtgärden."
-
-#: pisi/api.py:61
-msgid "Another instance of eopkg is running. Only one instance is allowed."
-msgstr ""
-
-#: pisi/api.py:410
-#, python-format
-msgid "%s package found in %s repository"
-msgstr "%s-paketet finns i %s-förrådet."
-
-#: pisi/api.py:416
-#, python-format
-msgid "%s package already fetched"
-msgstr ""
-
-#: pisi/api.py:549
-#, python-format
-msgid "Cleaning package cache %s..."
-msgstr ""
-
-#: pisi/api.py:551
-#, python-format
-msgid "Cleaning source archive cache %s..."
-msgstr ""
-
-#: pisi/api.py:553
-#, python-format
-msgid "Cleaning temporary directory %s..."
-msgstr ""
-
-#: pisi/api.py:559
-#, python-format
-msgid "Removing cache file %s..."
-msgstr ""
-
-#: pisi/api.py:592
-msgid "Taking snapshot of the system"
-msgstr ""
-
-#: pisi/api.py:764
-#, python-format
-msgid "File %s not found"
-msgstr "Filen %s hittades inte"
-
-#: pisi/api.py:805
-#, python-format
-msgid "Building index of eopkg files under %s"
-msgstr ""
-
-#: pisi/api.py:810
-msgid "Index file written"
-msgstr ""
-
-#: pisi/api.py:816
-msgid "Not a valid repo name."
-msgstr "Ogiltigt förrådsnamn."
-
-#: pisi/api.py:824
-#, python-format
-msgid "Repo already present with name %s and same URL. Removing first."
-msgstr ""
-
-#: pisi/api.py:837
-#, python-format
-msgid "Repo %s added to system."
-msgstr "Förrådet %s lades till:"
-
-#: pisi/api.py:846
-#, python-format
-msgid "Repo %s removed from system."
-msgstr ""
-
-#: pisi/api.py:848
-#, python-format
-msgid "Repository %s does not exist. Cannot remove."
-msgstr ""
-
-#: pisi/api.py:872
-#, python-format
-msgid "Updating repository: %s"
-msgstr "Uppdaterar förråd: %s"
-
-#: pisi/api.py:881
-#, python-format
-msgid "%s repository information is up-to-date."
-msgstr "%s-förrådets information är aktuell."
-
-#: pisi/api.py:883
-msgid "Updating database at any rate as requested"
-msgstr ""
-
-#: pisi/api.py:890
-msgid "Package database updated."
-msgstr ""
-
-#: pisi/api.py:892
-#, python-format
-msgid "No repository named %s found."
-msgstr "Inget förråd med namnet %s funnet."
-
-#: pisi/api.py:905
-#, python-format
-msgid "Adding '%s' to db... "
-msgstr ""
-
-#: pisi/api.py:908
-msgid "OK."
-msgstr "OK."
 
 #: pisi/actionsapi/autotools.py:33 pisi/actionsapi/cmaketools.py:28
 #, python-format
@@ -857,12 +86,12 @@ msgstr ""
 msgid "No Makefile found."
 msgstr "Ingen Make-fil funnen."
 
-#: pisi/actionsapi/get.py:234
+#: pisi/actionsapi/get.py:238
 #, python-format
 msgid "Util %s cannot be found"
 msgstr "Verktyget %s kunde inte hittas"
 
-#: pisi/actionsapi/get.py:237
+#: pisi/actionsapi/get.py:241
 #, python-format
 msgid "Warning: %s does not exist, using plain name %s"
 msgstr ""
@@ -902,6 +131,150 @@ msgstr "perl-bygge misslyckades."
 #: pisi/actionsapi/perlmodules.py:75
 msgid "perl install failed."
 msgstr "perl-installation misslyckades."
+
+#: pisi/actionsapi/pisitoolsfunctions.py:38
+#: pisi/actionsapi/pisitoolsfunctions.py:59
+#: pisi/actionsapi/pisitoolsfunctions.py:77
+msgid "Insufficient arguments."
+msgstr "Otillräckligt med argument."
+
+#: pisi/actionsapi/pisitoolsfunctions.py:46
+#, python-format
+msgid "No executable file matched pattern \"%s\"."
+msgstr ""
+
+#: pisi/actionsapi/pisitoolsfunctions.py:67 pisi/actionsapi/pisitools.py:292
+#, python-format
+msgid "No file matched pattern \"%s\"."
+msgstr ""
+
+#: pisi/actionsapi/pythonmodules.py:51
+msgid "Configuration failed."
+msgstr "Konfigureringen misslyckades."
+
+#: pisi/actionsapi/pythonmodules.py:92
+#, python-format
+msgid "Running %s failed."
+msgstr "Körning av %s misslyckades."
+
+#: pisi/actionsapi/qt4.py:44
+#, python-format
+msgid "Project file '%s' not found."
+msgstr "Projektfilen '%s' finns inte."
+
+#: pisi/actionsapi/qt4.py:50
+#, python-format
+msgid ""
+"It seems there are more than one .pro file, you must specify one. (Possible "
+".pro files: %s)"
+msgstr ""
+
+#: pisi/actionsapi/rubymodules.py:133
+#, python-format
+msgid "Running 'ruby %s' failed."
+msgstr "Körning av 'ruby %s' misslyckades."
+
+#: pisi/actionsapi/texlivemodules.py:50
+msgid "Moving source files failed"
+msgstr "Flyttning av källfilen misslyckades."
+
+#: pisi/actionsapi/texlivemodules.py:53
+msgid "Generate config files failed"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:56
+msgid "Building format files failed"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:64
+msgid "Creating symlinks from format to engines failed"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:68
+msgid "Installing docs failed"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:72
+msgid "Installing texmf files failed"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:76
+msgid "Installing config files failed"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:80
+msgid "Handle config files failed"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:95
+#, python-format
+msgid "Symlink %s skipped (special case)"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:98
+#, python-format
+msgid "Symlink %s -> %s skipped (texlive-core takes care of it."
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:104
+#, python-format
+msgid "Symlink %s -> %s skipped."
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:109
+#, python-format
+msgid "Symlink %s skipped (file exists.)"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:112
+#, python-format
+msgid "Making symlink from %s to %s"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:178
+#, python-format
+msgid "Creating /etc/texmf/%s.d"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:182
+#, python-format
+msgid "Moving (and symlinking) /usr/share/texmf/%s to /etc/texmf/%s.d"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:263
+#, python-format
+msgid "Building format file %s"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:354
+#, python-format
+msgid "Map %s is added to %s/%s.cfg"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:363
+#, python-format
+msgid "MixedMap %s is added to %s/%s.cfg"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:372
+#, python-format
+msgid "p +%s is added to %s/%s-config.ps"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:381
+#, python-format
+msgid "f %s is added to %s/%s-config"
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:390
+#, python-format
+msgid "Language file  %s  already generated."
+msgstr ""
+
+#: pisi/actionsapi/texlivemodules.py:393
+#, python-format
+msgid "No rule to proccess %s. Please file a bug."
+msgstr ""
 
 #: pisi/actionsapi/pisitools.py:70 pisi/actionsapi/pisitools.py:146
 #, python-format
@@ -943,11 +316,6 @@ msgstr ""
 msgid "ActionsAPI [dosym]: File already exists: %s"
 msgstr "ActionsAPI [dosym]: Filen finns redan: %s"
 
-#: pisi/actionsapi/pisitools.py:292 pisi/actionsapi/pisitoolsfunctions.py:67
-#, python-format
-msgid "No file matched pattern \"%s\"."
-msgstr ""
-
 #: pisi/actionsapi/pisitools.py:341 pisi/actionsapi/shelltools.py:102
 #, python-format
 msgid "No file matched pattern \"%s\". Remove operation failed."
@@ -957,43 +325,6 @@ msgstr ""
 #, python-format
 msgid "No directory matched pattern \"%s\". Remove directory operation failed."
 msgstr ""
-
-#: pisi/actionsapi/pisitoolsfunctions.py:38
-#: pisi/actionsapi/pisitoolsfunctions.py:59
-#: pisi/actionsapi/pisitoolsfunctions.py:77
-msgid "Insufficient arguments."
-msgstr "Otillräckligt med argument."
-
-#: pisi/actionsapi/pisitoolsfunctions.py:46
-#, python-format
-msgid "No executable file matched pattern \"%s\"."
-msgstr ""
-
-#: pisi/actionsapi/pythonmodules.py:51
-msgid "Configuration failed."
-msgstr "Konfigureringen misslyckades."
-
-#: pisi/actionsapi/pythonmodules.py:92
-#, python-format
-msgid "Running %s failed."
-msgstr "Körning av %s misslyckades."
-
-#: pisi/actionsapi/qt4.py:44
-#, python-format
-msgid "Project file '%s' not found."
-msgstr "Projektfilen '%s' finns inte."
-
-#: pisi/actionsapi/qt4.py:50
-#, python-format
-msgid ""
-"It seems there are more than one .pro file, you must specify one. (Possible "
-".pro files: %s)"
-msgstr ""
-
-#: pisi/actionsapi/rubymodules.py:133
-#, python-format
-msgid "Running 'ruby %s' failed."
-msgstr "Körning av 'ruby %s' misslyckades."
 
 #: pisi/actionsapi/shelltools.py:42
 #, python-format
@@ -1110,107 +441,46 @@ msgstr "ActionsAPI [touch]: Tillstånd nekas: %s"
 msgid "Command \"%s\" failed, return value was %d."
 msgstr ""
 
-#: pisi/actionsapi/texlivemodules.py:50
-msgid "Moving source files failed"
-msgstr "Flyttning av källfilen misslyckades."
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Varning: "
 
-#: pisi/actionsapi/texlivemodules.py:53
-msgid "Generate config files failed"
-msgstr ""
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Fel: "
 
-#: pisi/actionsapi/texlivemodules.py:56
-msgid "Building format files failed"
-msgstr ""
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr " (ja/nej)"
 
-#: pisi/actionsapi/texlivemodules.py:64
-msgid "Creating symlinks from format to engines failed"
-msgstr ""
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr " [slutförd]\n"
 
-#: pisi/actionsapi/texlivemodules.py:68
-msgid "Installing docs failed"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:72
-msgid "Installing texmf files failed"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:76
-msgid "Installing config files failed"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:80
-msgid "Handle config files failed"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:95
+#: pisi/cli/__init__.py:188
 #, python-format
-msgid "Symlink %s skipped (special case)"
-msgstr ""
+msgid "Installed %s"
+msgstr "Installerat %s"
 
-#: pisi/actionsapi/texlivemodules.py:98
+#: pisi/cli/__init__.py:190
 #, python-format
-msgid "Symlink %s -> %s skipped (texlive-core takes care of it."
-msgstr ""
+msgid "Removed %s"
+msgstr "Tog bort %s"
 
-#: pisi/actionsapi/texlivemodules.py:104
+#: pisi/cli/__init__.py:192
 #, python-format
-msgid "Symlink %s -> %s skipped."
-msgstr ""
+msgid "Upgraded %s"
+msgstr "Uppdaterade %s"
 
-#: pisi/actionsapi/texlivemodules.py:109
+#: pisi/cli/__init__.py:194
 #, python-format
-msgid "Symlink %s skipped (file exists.)"
-msgstr ""
+msgid "Configured %s"
+msgstr "Anpassat paketet %s"
 
-#: pisi/actionsapi/texlivemodules.py:112
+#: pisi/cli/__init__.py:196
 #, python-format
-msgid "Making symlink from %s to %s"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:178
-#, python-format
-msgid "Creating /etc/texmf/%s.d"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:182
-#, python-format
-msgid "Moving (and symlinking) /usr/share/texmf/%s to /etc/texmf/%s.d"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:263
-#, python-format
-msgid "Building format file %s"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:354
-#, python-format
-msgid "Map %s is added to %s/%s.cfg"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:363
-#, python-format
-msgid "MixedMap %s is added to %s/%s.cfg"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:372
-#, python-format
-msgid "p +%s is added to %s/%s-config.ps"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:381
-#, python-format
-msgid "f %s is added to %s/%s-config"
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:390
-#, python-format
-msgid "Language file  %s  already generated."
-msgstr ""
-
-#: pisi/actionsapi/texlivemodules.py:393
-#, python-format
-msgid "No rule to proccess %s. Please file a bug."
-msgstr ""
+msgid "Extracting the files of %s"
+msgstr "Packar upp filer för %s"
 
 #: pisi/cli/addrepo.py:15
 msgid ""
@@ -1298,6 +568,11 @@ msgstr ""
 msgid "Blame for all of the releases"
 msgstr ""
 
+#: pisi/cli/blame.py:69 pisi/specfile.py:398 pisi/specfile.py:507
+#, python-format
+msgid "Name: %s, version: %s, release: %s\n"
+msgstr "Namm: %s, version: %s, utgåva: %s\n"
+
 #: pisi/cli/blame.py:74
 #, python-format
 msgid "Package Maintainer: %s <%s>\n"
@@ -1311,108 +586,6 @@ msgstr ""
 #: pisi/cli/blame.py:82
 #, python-format
 msgid "Update Date: %s\n"
-msgstr ""
-
-#: pisi/cli/build.py:15
-msgid ""
-"Build eopkg packages\n"
-"\n"
-"Usage: build [<pspec.xml> | <sourcename>] ...\n"
-"\n"
-"You can give a URI of the pspec.xml file. eopkg will\n"
-"fetch all necessary files and build the package for you.\n"
-"\n"
-"Alternatively, you can give the name of a source package\n"
-"to be downloaded from a repository containing sources.\n"
-msgstr ""
-
-#: pisi/cli/build.py:38
-msgid "build options"
-msgstr ""
-
-#: pisi/cli/build.py:49
-msgid "Run pisi build operation without printing extra debug information"
-msgstr ""
-
-#: pisi/cli/build.py:57 pisi/cli/command.py:245
-msgid "Do not take dependency information into account"
-msgstr ""
-
-#: pisi/cli/build.py:65
-msgid "Output directory for produced packages"
-msgstr ""
-
-#: pisi/cli/build.py:72
-msgid "Bypass errors from ActionsAPI"
-msgstr ""
-
-#: pisi/cli/build.py:79 pisi/cli/command.py:257
-msgid "Bypass safety switch"
-msgstr "Åsidosätt säkerhetslås"
-
-#: pisi/cli/build.py:86
-msgid "Bypass testing step"
-msgstr ""
-
-#: pisi/cli/build.py:93
-msgid "Create a static package with ar files"
-msgstr ""
-
-#: pisi/cli/build.py:101 pisi/cli/delta.py:64
-msgid ""
-"Create the binary package using the given format. Use '-F help' to see a "
-"list of supported formats."
-msgstr ""
-
-#: pisi/cli/build.py:111
-msgid "Use quilt patch management system instead of GNU patch"
-msgstr ""
-
-#: pisi/cli/build.py:118
-msgid "Do not constrain build process inside the build folder"
-msgstr ""
-
-#: pisi/cli/build.py:122
-msgid "build steps"
-msgstr ""
-
-#: pisi/cli/build.py:129
-msgid "Break build after fetching the source archive"
-msgstr ""
-
-#: pisi/cli/build.py:138
-msgid ""
-"Break build after unpacking the source archive, checking sha1sum and "
-"applying patches"
-msgstr ""
-
-#: pisi/cli/build.py:149
-msgid "Break build after running configure step"
-msgstr ""
-
-#: pisi/cli/build.py:157
-msgid "Break build after running compile step"
-msgstr ""
-
-#: pisi/cli/build.py:165
-msgid "Break build after running check step"
-msgstr ""
-
-#: pisi/cli/build.py:173
-msgid "Break build after running install step"
-msgstr ""
-
-#: pisi/cli/build.py:181
-msgid "Create eopkg package"
-msgstr "Skapar eopkg-paketet"
-
-#: pisi/cli/build.py:192 pisi/cli/delta.py:74
-msgid "Supported package formats:"
-msgstr "Hanterade paketformat:"
-
-#: pisi/cli/build.py:195 pisi/cli/delta.py:77
-#, python-format
-msgid "  %s (default)"
 msgstr ""
 
 #: pisi/cli/check.py:16
@@ -1447,6 +620,7 @@ msgstr ""
 msgid "Checking all installed packages"
 msgstr ""
 
+#. Line prefix
 #: pisi/cli/check.py:82
 #, python-format
 msgid "Checking integrity of %s"
@@ -1484,6 +658,7 @@ msgstr ""
 msgid "Modified configuration file: /%s"
 msgstr ""
 
+#. Package is not installed
 #: pisi/cli/check.py:136
 #, python-format
 msgid "Package %s not installed"
@@ -1504,78 +679,6 @@ msgid ""
 "eopkg uses filesystem locks for managing database access.\n"
 "This command deletes unused locks from the database directory."
 msgstr ""
-
-#: pisi/cli/command.py:19
-msgid "Command lacks name"
-msgstr ""
-
-#: pisi/cli/command.py:24
-#, python-format
-msgid "Duplicate command %s"
-msgstr ""
-
-#: pisi/cli/command.py:61 pisi/cli/pisicli.py:124
-#, python-format
-msgid "Unrecognized command: %s"
-msgstr ""
-
-#: pisi/cli/command.py:88
-msgid "general options"
-msgstr ""
-
-#: pisi/cli/command.py:95
-msgid "Change the system root for eopkg commands"
-msgstr ""
-
-#: pisi/cli/command.py:102
-msgid "Assume yes in all yes/no queries"
-msgstr "Anta ja på alla ja/nej -frågor"
-
-#: pisi/cli/command.py:111
-msgid "Keep bandwidth usage under specified KB's"
-msgstr ""
-
-#: pisi/cli/command.py:119
-msgid "Set the max number of retry attempts in case of connection timeouts"
-msgstr ""
-
-#: pisi/cli/command.py:128
-msgid "Detailed output"
-msgstr "Detaljerad utmatning"
-
-#: pisi/cli/command.py:135
-msgid "Show debugging information"
-msgstr "Visa debug-information"
-
-#: pisi/cli/command.py:142
-msgid "Suppresses all coloring of eopkg's output"
-msgstr ""
-
-#: pisi/cli/command.py:162
-#, python-format
-msgid "Destination directory %s does not exist. Creating directory.\n"
-msgstr ""
-
-#: pisi/cli/command.py:187
-msgid "Password: "
-msgstr "Lösenord: "
-
-#: pisi/cli/command.py:230
-msgid "Command terminated abnormally."
-msgstr ""
-
-#: pisi/cli/command.py:251
-msgid "Bypass comar configuration agent"
-msgstr ""
-
-#: pisi/cli/command.py:264
-msgid "Do not perform any action, just show what would be done"
-msgstr ""
-
-#: pisi/cli/command.py:283
-#, python-format
-msgid "usage: %s\n"
-msgstr "användning: %s\n"
 
 #: pisi/cli/configurepending.py:14
 msgid ""
@@ -1626,6 +729,21 @@ msgstr ""
 msgid "Output directory for produced packages."
 msgstr ""
 
+#: pisi/cli/delta.py:64 pisi/cli/build.py:101
+msgid ""
+"Create the binary package using the given format. Use '-F help' to see a "
+"list of supported formats."
+msgstr ""
+
+#: pisi/cli/delta.py:74 pisi/cli/build.py:195
+msgid "Supported package formats:"
+msgstr "Hanterade paketformat:"
+
+#: pisi/cli/delta.py:77 pisi/cli/build.py:198
+#, python-format
+msgid "  %s (default)"
+msgstr ""
+
 #: pisi/cli/disablerepo.py:12
 msgid ""
 "Disable repository\n"
@@ -1666,31 +784,6 @@ msgstr "fetch-alternativ"
 #: pisi/cli/fetch.py:42
 msgid "Output directory for the fetched packages"
 msgstr ""
-
-#: pisi/cli/help.py:13
-msgid ""
-"Prints help for given commands\n"
-"\n"
-"Usage: help [ <command1> <command2> ... <commandn> ]\n"
-"\n"
-"If run without parameters, it prints the general help."
-msgstr ""
-
-#: pisi/cli/help.py:40
-msgid ""
-"%prog [options] <command> [arguments]\n"
-"\n"
-"where <command> is one of:\n"
-"\n"
-msgstr ""
-
-#: pisi/cli/help.py:48
-msgid ""
-"\n"
-"Use \"%prog help <command>\" for help on a specific command.\n"
-msgstr ""
-"\n"
-"Använd \"%prog help <kommando>\" för att få hjälp om ett specifikt kommando.\n"
 
 #: pisi/cli/history.py:18
 msgid "upgrade"
@@ -1758,41 +851,6 @@ msgstr "Datum: %s %s"
 #: pisi/cli/history.py:87
 #, python-format
 msgid "    * There are %d packages in this snapshot."
-msgstr ""
-
-#: pisi/cli/index.py:13
-msgid ""
-"Index eopkg files in a given directory\n"
-"\n"
-"Usage: index <directory> ...\n"
-"\n"
-"This command searches for all eopkg files in a directory, collects eopkg\n"
-"tags from them and accumulates the information in an output XML file,\n"
-"named by default 'eopkg-index.xml'. In particular, it indexes both\n"
-"source and binary packages.\n"
-"\n"
-"If you give multiple directories, the command still works, but puts\n"
-"everything in a single index file.\n"
-msgstr ""
-
-#: pisi/cli/index.py:37
-msgid "index options"
-msgstr "index-alternativ"
-
-#: pisi/cli/index.py:44
-msgid "Store absolute links for indexed files."
-msgstr ""
-
-#: pisi/cli/index.py:52
-msgid "Index output file"
-msgstr ""
-
-#: pisi/cli/index.py:59
-msgid "Comma-separated compression types for index file"
-msgstr ""
-
-#: pisi/cli/index.py:66
-msgid "Do not sign index."
 msgstr ""
 
 #: pisi/cli/info.py:17
@@ -2076,7 +1134,7 @@ msgstr ""
 
 #: pisi/cli/listpending.py:32
 msgid "There are no packages waiting to be configured"
-msgstr ""
+msgstr "Det är inga paket som väntar på att konfigureras"
 
 #: pisi/cli/listrepo.py:14
 msgid ""
@@ -2117,21 +1175,9 @@ msgstr "list-upgrades-alternativ"
 msgid "List upgradable packages under given component"
 msgstr ""
 
-#: pisi/cli/listupgrades.py:72 pisi/operations/upgrade.py:144
+#: pisi/cli/listupgrades.py:72 pisi/operations/upgrade.py:145
 msgid "No packages to upgrade."
 msgstr "Inga paket att uppdatera."
-
-#: pisi/cli/pisicli.py:76
-msgid "Options must precede non-option arguments"
-msgstr ""
-
-#: pisi/cli/pisicli.py:117
-msgid "No command given"
-msgstr "Inget kommando angivet"
-
-#: pisi/cli/pisicli.py:120
-msgid "Command line parsing error"
-msgstr ""
 
 #: pisi/cli/rebuilddb.py:15
 msgid ""
@@ -2352,51 +1398,327 @@ msgstr "Uppdaterar förråd"
 msgid "Will not update repositories"
 msgstr ""
 
-#: pisi/cli/__init__.py:107
-msgid "Warning: "
-msgstr "Varning: "
+#: pisi/cli/build.py:15
+msgid ""
+"Build eopkg packages\n"
+"\n"
+"Usage: build [<pspec.xml> | <sourcename>] ...\n"
+"\n"
+"You can give a URI of the pspec.xml file. eopkg will\n"
+"fetch all necessary files and build the package for you.\n"
+"\n"
+"Alternatively, you can give the name of a source package\n"
+"to be downloaded from a repository containing sources.\n"
+msgstr ""
 
-#: pisi/cli/__init__.py:121
-msgid "Error: "
-msgstr "Fel: "
+#: pisi/cli/build.py:38
+msgid "build options"
+msgstr ""
 
-#: pisi/cli/__init__.py:150
-msgid " (yes/no)"
-msgstr " (ja/nej)"
+#: pisi/cli/build.py:49
+msgid "Run pisi build operation without printing extra debug information"
+msgstr ""
 
-#: pisi/cli/__init__.py:178
-msgid " [complete]\n"
-msgstr " [slutförd]\n"
+#: pisi/cli/build.py:57 pisi/cli/command.py:224
+msgid "Do not take dependency information into account"
+msgstr ""
 
-#: pisi/cli/__init__.py:188
+#: pisi/cli/build.py:65
+msgid "Output directory for produced packages"
+msgstr ""
+
+#: pisi/cli/build.py:72
+msgid "Bypass errors from ActionsAPI"
+msgstr ""
+
+#: pisi/cli/build.py:79 pisi/cli/command.py:236
+msgid "Bypass safety switch"
+msgstr "Åsidosätt säkerhetslås"
+
+#: pisi/cli/build.py:86
+msgid "Bypass testing step"
+msgstr ""
+
+#: pisi/cli/build.py:93
+msgid "Create a static package with ar files"
+msgstr ""
+
+#: pisi/cli/build.py:111
+msgid "Use quilt patch management system instead of GNU patch"
+msgstr ""
+
+#: pisi/cli/build.py:118
+msgid "Do not constrain build process inside the build folder"
+msgstr ""
+
+#: pisi/cli/build.py:122
+msgid "build steps"
+msgstr ""
+
+#: pisi/cli/build.py:129
+msgid "Break build after fetching the source archive"
+msgstr ""
+
+#: pisi/cli/build.py:138
+msgid ""
+"Break build after unpacking the source archive, checking sha1sum and "
+"applying patches"
+msgstr ""
+
+#: pisi/cli/build.py:149
+msgid "Break build after running configure step"
+msgstr ""
+
+#: pisi/cli/build.py:157
+msgid "Break build after running compile step"
+msgstr ""
+
+#: pisi/cli/build.py:165
+msgid "Break build after running check step"
+msgstr ""
+
+#: pisi/cli/build.py:173
+msgid "Break build after running install step"
+msgstr ""
+
+#: pisi/cli/build.py:181
+msgid "Create eopkg package"
+msgstr "Skapar eopkg-paketet"
+
+#: pisi/cli/build.py:188
+msgid ""
+"Building packages is not supported when eopkg is compiled with nuitka. "
+"Please use eopkg.py3 instead."
+msgstr ""
+
+#: pisi/cli/command.py:19
+msgid "Command lacks name"
+msgstr ""
+
+#: pisi/cli/command.py:24
 #, python-format
-msgid "Installed %s"
-msgstr "Installerat %s"
+msgid "Duplicate command %s"
+msgstr ""
 
-#: pisi/cli/__init__.py:190
+#: pisi/cli/command.py:61 pisi/cli/pisicli.py:125
 #, python-format
-msgid "Removed %s"
-msgstr "Tog bort %s"
+msgid "Unrecognized command: %s"
+msgstr ""
 
-#: pisi/cli/__init__.py:192
-#, python-format
-msgid "Upgraded %s"
-msgstr "Uppdaterade %s"
+#: pisi/cli/command.py:88
+msgid "general options"
+msgstr ""
 
-#: pisi/cli/__init__.py:194
-#, python-format
-msgid "Configured %s"
-msgstr "Anpassat paketet %s"
+#: pisi/cli/command.py:95
+msgid "Change the system root for eopkg commands"
+msgstr ""
 
-#: pisi/cli/__init__.py:196
+#: pisi/cli/command.py:102
+msgid "Assume yes in all yes/no queries"
+msgstr "Anta ja på alla ja/nej -frågor"
+
+#: pisi/cli/command.py:113
+msgid "Keep bandwidth usage under specified KB's"
+msgstr ""
+
+#: pisi/cli/command.py:121
+msgid "Set the max number of retry attempts in case of connection timeouts"
+msgstr ""
+
+#: pisi/cli/command.py:130
+msgid "Detailed output"
+msgstr "Detaljerad utmatning"
+
+#: pisi/cli/command.py:137
+msgid "Show debugging information"
+msgstr "Visa debug-information"
+
+#: pisi/cli/command.py:144
+msgid "Suppresses all coloring of eopkg's output"
+msgstr ""
+
+#: pisi/cli/command.py:158
+msgid ""
+"HTTP Basic-Auth is no longer supported. Please reconfigure your repository."
+msgstr ""
+
+#: pisi/cli/command.py:165
 #, python-format
-msgid "Extracting the files of %s"
-msgstr "Packar upp filer för %s"
+msgid "Destination directory %s does not exist. Creating directory.\n"
+msgstr ""
+
+#: pisi/cli/command.py:180 pisi/api.py:51
+msgid "You have to be root for this operation."
+msgstr "Du måste vara root för den här åtgärden."
+
+#. FIXME: not called from anywhere?
+#: pisi/cli/command.py:209
+msgid "Command terminated abnormally."
+msgstr ""
+
+#: pisi/cli/command.py:230
+msgid "Bypass comar configuration agent"
+msgstr ""
+
+#: pisi/cli/command.py:243
+msgid "Do not perform any action, just show what would be done"
+msgstr ""
+
+#: pisi/cli/command.py:262
+#, python-format
+msgid "usage: %s\n"
+msgstr "användning: %s\n"
+
+#: pisi/cli/help.py:37
+msgid ""
+"Prints help for given commands\n"
+"\n"
+"Usage: help [ <command1> <command2> ... <commandn> ]\n"
+"\n"
+"If run without parameters, it prints the general help."
+msgstr ""
+
+#: pisi/cli/help.py:64
+msgid ""
+"%prog [options] <command> [arguments]\n"
+"\n"
+"where <command> is one of:\n"
+"\n"
+msgstr ""
+
+#: pisi/cli/help.py:72
+msgid ""
+"\n"
+"Use \"%prog help <command>\" for help on a specific command.\n"
+msgstr ""
+"\n"
+"Använd \"%prog help <kommando>\" för att få hjälp om ett specifikt kommando.\n"
+
+#: pisi/cli/index.py:13
+msgid ""
+"Index eopkg files in a given directory\n"
+"\n"
+"Usage: index <directory> ...\n"
+"\n"
+"This command searches for all eopkg files in a directory, collects eopkg\n"
+"tags from them and accumulates the information in an output XML file,\n"
+"named by default 'eopkg-index.xml'. In particular, it indexes both\n"
+"source and binary packages.\n"
+"\n"
+"If you give multiple directories, the command still works, but puts\n"
+"everything in a single index file.\n"
+msgstr ""
+
+#: pisi/cli/index.py:37
+msgid "index options"
+msgstr "index-alternativ"
+
+#: pisi/cli/index.py:44
+msgid "Store absolute links for indexed files."
+msgstr ""
+
+#: pisi/cli/index.py:52
+msgid "Index output file"
+msgstr ""
+
+#: pisi/cli/index.py:59
+msgid ""
+"Comma-separated compression types for index file. Valid options are \"xz\" "
+"and \"bz2\". Defaults to \"xz\"."
+msgstr ""
+
+#: pisi/cli/index.py:66
+msgid "Do not sign index."
+msgstr ""
+
+#: pisi/cli/pisicli.py:77
+msgid "Options must precede non-option arguments"
+msgstr ""
+
+#: pisi/cli/pisicli.py:118
+msgid "No command given"
+msgstr "Inget kommando angivet"
+
+#: pisi/cli/pisicli.py:121
+msgid "Command line parsing error"
+msgstr ""
+
+#: pisi/cli/repopriority.py:19
+msgid ""
+"Set a repository's priority\n"
+"\n"
+"Usage: repo-priority <repo> <priority>\n"
+"\n"
+"<repo>: Name of repository to adjust priority\n"
+"<priority>: Set the repository's priority at given position (0 is first)\n"
+msgstr ""
+
+#: pisi/cli/repopriority.py:44
+msgid "Priority needs to be a number"
+msgstr ""
+
+#: pisi/cli/repopriority.py:48
+#, python-format
+msgid "Unable to locate repository file, expected: %s"
+msgstr ""
+
+#: pisi/cli/repopriority.py:62
+#, python-format
+msgid "Repository %s does not exist. Cannot reorder."
+msgstr ""
+
+#: pisi/cli/repopriority.py:71
+msgid "Failed to write to repository file"
+msgstr ""
+
+#: pisi/cli/repopriority.py:73
+#, python-format
+msgid "Repo %s reordered to position %s."
+msgstr ""
+
+#: pisi/db/componentdb.py:85
+#, python-format
+msgid "Component %s not found"
+msgstr ""
 
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
 msgid "Group %s not found"
 msgstr ""
+
+#: pisi/db/installdb.py:27
+msgid "installed"
+msgstr "installerad"
+
+#: pisi/db/installdb.py:27
+msgid "installed-pending"
+msgstr ""
+
+#: pisi/db/installdb.py:50
+#, python-format
+msgid ""
+"State: %s\n"
+"Version: %s, Release: %s\n"
+msgstr ""
+"Tillstånd: %s\n"
+"Version: %s, Utgåva: %s:\n"
+
+#: pisi/db/installdb.py:58
+#, python-format
+msgid "Distribution: %s, Install Time: %s\n"
+msgstr "Distribution: %s, Installationstid: %s\n"
+
+#: pisi/db/installdb.py:95
+#, python-format
+msgid ""
+"Installation info for package '%s' is broken. Reinstall it to fix this "
+"problem."
+msgstr ""
+
+#: pisi/db/installdb.py:377
+#, python-format
+msgid "Package %s is not installed"
+msgstr "Paketet %s är inte installerat"
 
 #: pisi/db/itembyrepo.py:30
 #, python-format
@@ -2413,66 +1735,121 @@ msgstr "Paketet %s hittades ej"
 msgid "Repository %s does not exist."
 msgstr ""
 
-#: pisi/db/componentdb.py:95
+#: pisi/db/packagedb.py:199 pisi/db/packagedb.py:205
 #, python-format
-msgid "Component %s not found"
+msgid "Package %s not found."
 msgstr ""
 
-#: pisi/db/repodb.py:187
+#: pisi/db/repodb.py:197
 #, python-format
 msgid "%s repository needs to be updated"
 msgstr "%s-förrådet behöver uppdateras"
 
-#: pisi/db/repodb.py:195
+#: pisi/db/repodb.py:205
 msgid ""
 "Error parsing repository index information. Index file does not exist or is "
 "malformed."
 msgstr ""
 
-#: pisi/db/repodb.py:317
+#: pisi/db/repodb.py:318
 #, python-format
 msgid ""
 "Repository '%s' is not compatible with your distribution. Repository is "
 "disabled."
 msgstr ""
 
-#: pisi/db/installdb.py:26
-msgid "installed"
-msgstr "installerad"
-
-#: pisi/db/installdb.py:26
-msgid "installed-pending"
+#: pisi/db/filesdb.py:168
+#, python-format
+msgid "FilesDB %s does not exist."
 msgstr ""
 
-#: pisi/db/installdb.py:49
+#: pisi/db/filesdb.py:197
+#, python-format
+msgid "FilesDB %s is writable, but is of wrong type '%s'."
+msgstr ""
+
+#: pisi/db/filesdb.py:209
+#, python-format
+msgid "FilesDB %s is readable, but is of wrong type '%s'."
+msgstr ""
+
+#: pisi/db/filesdb.py:213
+#, python-format
+msgid "Cannot open FilesDB %s for writing. Opening it read-only."
+msgstr ""
+
+#: pisi/db/filesdb.py:221
+#, python-format
+msgid "FilesDB %s of type '%s' exists, but we cannot access it."
+msgstr ""
+
+#. Can't open the shelve, it needs a rebuild
+#: pisi/db/filesdb.py:239
+#, python-format
+msgid "FilesDB %s is not in a valid shelve format."
+msgstr ""
+
+#: pisi/db/filesdb.py:255
+#, python-format
+msgid "FilesDB %s has no version."
+msgstr ""
+
+#: pisi/db/filesdb.py:268
+#, python-format
+msgid "FilesDB is version %s, need version %s."
+msgstr ""
+
+#: pisi/db/filesdb.py:296
+msgid "FilesDB is invalid. Please rebuild it with 'sudo eopkg.py3 -y rdb'"
+msgstr ""
+
+#: pisi/db/filesdb.py:297
+msgid "Falling back to slow and inaccurate XML search..."
+msgstr ""
+
+#: pisi/db/filesdb.py:305
+msgid "Rebuilding the FilesDB..."
+msgstr ""
+
+#: pisi/db/filesdb.py:316
+msgid "FilesDB rebuild failed!"
+msgstr ""
+
+#: pisi/db/filesdb.py:324
+#, python-format
+msgid "Adding packages to FilesDB %s:"
+msgstr ""
+
+#: pisi/db/filesdb.py:328
+#, python-format
+msgid "Adding '%s' ..."
+msgstr ""
+
+#: pisi/db/filesdb.py:331
+msgid "Okay."
+msgstr ""
+
+#: pisi/db/filesdb.py:337
+#, python-format
+msgid "Added so far: %s"
+msgstr ""
+
+#: pisi/db/filesdb.py:341
 #, python-format
 msgid ""
-"State: %s\n"
-"Version: %s, Release: %s\n"
-msgstr ""
-"Tillstånd: %s\n"
-"Version: %s, Utgåva: %s:\n"
+"\n"
+"One package added in total."
+msgid_plural ""
+"\n"
+"%s packages added in total."
+msgstr[0] ""
+msgstr[1] ""
 
-#: pisi/db/installdb.py:57
+#. This acts as a check that the version has been correctly added and synced
+#. to disk
+#: pisi/db/filesdb.py:345
 #, python-format
-msgid "Distribution: %s, Install Time: %s\n"
-msgstr "Distribution: %s, Installationstid: %s\n"
-
-#: pisi/db/installdb.py:94
-#, python-format
-msgid ""
-"Installation info for package '%s' is broken. Reinstall it to fix this "
-"problem."
-msgstr ""
-
-#: pisi/db/installdb.py:366
-#, python-format
-msgid "Package %s is not installed"
-msgstr "Paketet %s är inte installerat"
-
-#: pisi/db/packagedb.py:195 pisi/db/packagedb.py:206
-#, python-format
-msgid "Package %s not found."
+msgid "Done rebuilding FilesDB (version: %s)"
 msgstr ""
 
 #: pisi/operations/build.py:115
@@ -2524,6 +1901,7 @@ msgstr "Packar upp arkiv..."
 msgid " unpacked (%s)"
 msgstr " uppackad (%s)"
 
+#. Run configure, build and install phase
 #: pisi/operations/build.py:581
 msgid "Setting up source..."
 msgstr ""
@@ -2565,6 +1943,11 @@ msgstr ""
 msgid "Sandbox violation: %s (%s -> %s)"
 msgstr ""
 
+#: pisi/operations/build.py:752 pisi/util.py:577
+#, python-format
+msgid "ERROR: WorkDir (%s) does not exist\n"
+msgstr ""
+
 #: pisi/operations/build.py:764
 msgid "Sandbox enabled build..."
 msgstr ""
@@ -2591,6 +1974,11 @@ msgstr ""
 #, python-format
 msgid "Source package '%s' defines multiple 'Path' tags for %s"
 msgstr ""
+
+#: pisi/operations/build.py:835 pisi/atomicoperations.py:199
+#, python-format
+msgid "%s-%s is not a valid eopkg version format"
+msgstr "%s-%s är inte ett giltigt eopkg versionsformat"
 
 #: pisi/operations/build.py:861
 msgid ""
@@ -2662,59 +2050,59 @@ msgstr ""
 msgid "Adding %s to provided pkgconfig list"
 msgstr ""
 
-#: pisi/operations/build.py:1375
+#: pisi/operations/build.py:1374
 #, python-format
 msgid "/%s has suid bit set"
 msgstr ""
 
-#: pisi/operations/build.py:1567
+#: pisi/operations/build.py:1565
 #, python-format
 msgid "No user named '%s' found on the system"
 msgstr ""
 
-#: pisi/operations/build.py:1574
+#: pisi/operations/build.py:1572
 #, python-format
 msgid "No group named '%s' found on the system"
 msgstr ""
 
-#: pisi/operations/build.py:1583
+#: pisi/operations/build.py:1581
 #, python-format
 msgid "There are abandoned files under the install dir (%s):"
 msgstr ""
 
-#: pisi/operations/build.py:1629
+#: pisi/operations/build.py:1627
 #, python-format
 msgid "Ignoring empty package %s"
 msgstr "Hoppar över tomt paket %s"
 
-#: pisi/operations/build.py:1632
+#: pisi/operations/build.py:1630
 #, python-format
 msgid "Building package: %s"
 msgstr "Bygger paketet: %s"
 
-#: pisi/operations/build.py:1651 pisi/operations/delta.py:73
+#: pisi/operations/build.py:1649 pisi/operations/delta.py:73
 #, python-format
 msgid "Creating %s..."
 msgstr "Skapar %s... "
 
-#: pisi/operations/build.py:1698
+#: pisi/operations/build.py:1696
 msgid "Cleaning build directory..."
 msgstr "Rensar byggkatalog..."
 
-#: pisi/operations/build.py:1701
+#: pisi/operations/build.py:1699
 msgid "Keeping build directory"
 msgstr "Behåller byggkatalog"
 
-#: pisi/operations/build.py:1784
+#: pisi/operations/build.py:1782
 msgid "Action script error caught."
 msgstr ""
 
-#: pisi/operations/build.py:1789
+#: pisi/operations/build.py:1787
 #, python-format
 msgid "*** %d error(s), %d warning(s)"
 msgstr "*** %d fel, %d varning(ar)"
 
-#: pisi/operations/build.py:1876
+#: pisi/operations/build.py:1874
 #, python-format
 msgid "Last state was '%s'"
 msgstr ""
@@ -2744,17 +2132,31 @@ msgstr ""
 msgid "New package '%s' exists in the list of old packages. Skipping it..."
 msgstr ""
 
-#: pisi/operations/helper.py:42
+#: pisi/operations/helper.py:32
+msgid "Reordering install order so system.base packages come first."
+msgstr ""
+
+#: pisi/operations/helper.py:34
+#, python-format
+msgid "install_order: %s"
+msgstr ""
+
+#: pisi/operations/helper.py:47
+#, python-format
+msgid "order: %s"
+msgstr ""
+
+#: pisi/operations/helper.py:59
 #, python-format
 msgid "Selected packages [%s] are in conflict with each other."
 msgstr ""
 
-#: pisi/operations/helper.py:49
+#: pisi/operations/helper.py:66
 #, python-format
 msgid "[%s conflicts with: %s]\n"
 msgstr "[%s står i konflikt med: %s]\n"
 
-#: pisi/operations/helper.py:54
+#: pisi/operations/helper.py:71
 #, python-format
 msgid ""
 "The following packages have conflicts:\n"
@@ -2763,111 +2165,142 @@ msgstr ""
 "Följande paket har konflikter:\n"
 "%s"
 
-#: pisi/operations/helper.py:56
+#: pisi/operations/helper.py:73
 msgid "Remove the following conflicting packages?"
 msgstr ""
 
-#: pisi/operations/helper.py:57
+#: pisi/operations/helper.py:74
 msgid "Conflicting packages should be removed to continue"
 msgstr ""
 
-#: pisi/operations/history.py:105 pisi/operations/history.py:123
+#: pisi/operations/history.py:74 pisi/atomicoperations.py:77
+#, python-format
+msgid "Package %s found in repository %s"
+msgstr "Paket %s hittades i förrådet %s"
+
+#: pisi/operations/history.py:107 pisi/operations/history.py:125
 #, python-format
 msgid "%s could not be found"
 msgstr "%s kunde inte hittas"
 
-#: pisi/operations/history.py:180
+#: pisi/operations/history.py:129 pisi/package.py:112
+#: pisi/sourcearchive.py:101
+#, python-format
+msgid "%s [cached]"
+msgstr "%s [cachad]"
+
+#: pisi/operations/history.py:182
 msgid "Following packages will be installed:\n"
 msgstr "Följande paket kommer att installeras:\n"
 
-#: pisi/operations/history.py:186
+#: pisi/operations/history.py:188
 msgid "Following packages will be removed:\n"
 msgstr "Följande paket kommer att tas bort:\n"
 
-#: pisi/operations/history.py:189 pisi/operations/history.py:213
-#: pisi/operations/install.py:247 pisi/operations/remove.py:106
-#: pisi/operations/upgrade.py:182
+#: pisi/operations/history.py:191 pisi/operations/history.py:215
+#: pisi/operations/install.py:264 pisi/operations/remove.py:106
+#: pisi/operations/upgrade.py:183
 msgid "Do you want to continue?"
 msgstr "Vill du fortsätta?"
 
-#: pisi/operations/history.py:197 pisi/operations/install.py:100
-#: pisi/operations/upgrade.py:196
+#: pisi/operations/history.py:199 pisi/operations/install.py:117
+#: pisi/operations/upgrade.py:197
 #, python-format
 msgid "Downloading %d / %d"
 msgstr "Hämtar %d / %d"
 
-#: pisi/operations/history.py:209
+#: pisi/operations/history.py:211
 msgid ""
 "\n"
 "Following packages could not be found in repositories and are not cached:\n"
 msgstr ""
 
-#: pisi/operations/install.py:39 pisi/operations/install.py:161
+#: pisi/operations/install.py:56 pisi/operations/install.py:178
 msgid ""
 "The following package(s) are already installed and are not going to be "
 "installed again:"
 msgstr ""
 
-#: pisi/operations/install.py:47 pisi/operations/install.py:260
+#: pisi/operations/install.py:64 pisi/operations/install.py:277
 msgid "No packages to install."
 msgstr "Inga paket att installera."
 
-#: pisi/operations/install.py:66
+#: pisi/operations/install.py:83
 msgid "Following packages will be installed:"
 msgstr "Följande paket kommer att installeras: "
 
-#: pisi/operations/install.py:74 pisi/operations/upgrade.py:168
+#: pisi/operations/install.py:91 pisi/operations/upgrade.py:169
 #, python-format
 msgid "Total size of package(s): %.2f %s"
 msgstr "Sammanlagd paketstorlek: %.2f %s"
 
-#: pisi/operations/install.py:83
+#: pisi/operations/install.py:100
 msgid "There are extra packages due to dependencies. Do you want to continue?"
 msgstr "Det finns extra paket på grund av beroenden. Vill du fortsätta?"
 
-#: pisi/operations/install.py:117 pisi/operations/upgrade.py:215
+#: pisi/operations/install.py:134 pisi/operations/upgrade.py:216
 #, python-format
 msgid "Installing %d / %d"
 msgstr "Installerar %d / %d"
 
-#: pisi/operations/install.py:142
+#: pisi/operations/install.py:159
 msgid "Mixing file names and package names not supported yet."
 msgstr ""
 
-#: pisi/operations/install.py:199
+#: pisi/operations/install.py:216
 #, python-format
 msgid "Package %s is not compatible with your distribution release %s %s."
 msgstr ""
 
-#: pisi/operations/install.py:209
+#: pisi/operations/install.py:226
 #, python-format
 msgid "Package %s (%s) is not compatible with your %s architecture."
 msgstr ""
 
-#: pisi/operations/install.py:235
+#: pisi/operations/install.py:252
 #, python-format
 msgid "External dependencies not satisfied: %s"
 msgstr ""
 
-#: pisi/operations/install.py:242
+#: pisi/operations/install.py:259
 msgid ""
 "The following packages will be installed in order to satisfy dependencies:"
 msgstr "Följande paket kommer att installeras för att uppfylla beroenden:"
 
-#: pisi/operations/install.py:248
+#: pisi/operations/install.py:265
 msgid "External dependencies not satisfied"
 msgstr ""
 
-#: pisi/operations/install.py:291
+#: pisi/operations/install.py:309
 msgid "Installation order: "
 msgstr "Installationsordning: "
+
+#: pisi/operations/install.py:361 pisi/specfile.py:301
+#, python-format
+msgid "%s dependency of package %s is not satisfied"
+msgstr ""
+
+#: pisi/operations/install.py:383
+#, python-format
+msgid "topological_sort() order: %s"
+msgstr ""
+
+#: pisi/operations/install.py:386
+#, python-format
+msgid "deterministic order: %s"
+msgstr ""
+
+#: pisi/operations/install.py:389
+#, python-format
+msgid "final order.reverse(): %s"
+msgstr ""
 
 #: pisi/operations/remove.py:40 pisi/operations/remove.py:79
 msgid "Safety switch prevents the removal of following packages:\n"
 msgstr "Säkerhetsspärren förhindrar borttagning av följande paket:\n"
 
 #: pisi/operations/remove.py:46 pisi/operations/remove.py:88
-#: pisi/operations/upgrade.py:413
+#: pisi/operations/upgrade.py:422
 msgid "Safety switch: The component system.base cannot be found."
 msgstr "Säkerhetsspärr: Kan inte hitta komponenten system.base"
 
@@ -2909,7 +2342,7 @@ msgstr ""
 msgid "Replaced package remains"
 msgstr ""
 
-#: pisi/operations/upgrade.py:44
+#: pisi/operations/upgrade.py:45
 msgid ""
 "You must restart your system for the updates in the following package(s) to "
 "take effect:"
@@ -2917,144 +2350,165 @@ msgstr ""
 "Du måste starta om ditt system för att uppdateringen av följande paket skall"
 " träda i kraft:"
 
-#: pisi/operations/upgrade.py:68
+#: pisi/operations/upgrade.py:69
 msgid "Warning: package *name* ends with '.pisi'"
 msgstr ""
 
-#: pisi/operations/upgrade.py:71
+#: pisi/operations/upgrade.py:72
 #, python-format
 msgid "Package %s is not installed."
 msgstr "Paketet %s är inte installerat."
 
-#: pisi/operations/upgrade.py:75
+#: pisi/operations/upgrade.py:76
 #, python-format
 msgid "Package %s is not available in repositories."
 msgstr ""
 
-#: pisi/operations/upgrade.py:100
+#: pisi/operations/upgrade.py:101
 #, python-format
 msgid "Package %s is already at the latest release %s."
 msgstr ""
 
-#: pisi/operations/upgrade.py:161
+#: pisi/operations/upgrade.py:162
 msgid "The following packages will be upgraded:"
 msgstr "Följande paket kommer att uppdateras:"
 
-#: pisi/operations/upgrade.py:176
+#: pisi/operations/upgrade.py:177
 msgid "There are extra packages due to dependencies."
 msgstr "Det finns extra paket på grund av beroenden."
 
-#: pisi/operations/upgrade.py:274
+#: pisi/operations/upgrade.py:275
 #, python-format
 msgid "Dependency %s of %s cannot be satisfied"
 msgstr ""
 
-#: pisi/operations/upgrade.py:276
+#: pisi/operations/upgrade.py:277
 msgid "Upgrade is not possible."
 msgstr "Uppdatering ej möjlig."
 
-#: pisi/operations/upgrade.py:378
+#: pisi/operations/upgrade.py:380
 msgid "Safety switch forces the installation of following packages:"
 msgstr "Säkerhetsspärren påtvingar installation av följande paket:"
 
-#: pisi/operations/upgrade.py:405
+#: pisi/operations/upgrade.py:407
 msgid "Safety switch forces the upgrade of following packages:"
 msgstr "Säkerhetsspärren påtvingar uppdatering av följande paket:"
 
-#: pisi/pxml/autoxml.py:73
+#: pisi/operations/upgrade.py:415
+#, python-format
+msgid "installs and upgrades (unordered): %s"
+msgstr ""
+
+#: pisi/operations/upgrade.py:418
+#, python-format
+msgid "installs and upgrades (deterministic order): %s"
+msgstr ""
+
+#: pisi/pxml/autoxml.py:74
+msgid "At least one '{}' tag should have local text."
+msgstr ""
+
+#: pisi/pxml/autoxml.py:86
 #, python-brace-format
 msgid "'{0}' language of tag '{1}' is empty."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:82
-msgid "At least one '{}' tag should have local text."
-msgstr ""
-
-#: pisi/pxml/autoxml.py:110
+#. FIXME: what exception could we catch here, replace with that.
+#: pisi/pxml/autoxml.py:118
 msgid "LocalText: unable to get either current or default locale."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:124 pisi/pxml/autoxml.py:143
+#: pisi/pxml/autoxml.py:132 pisi/pxml/autoxml.py:151
 msgid ""
 "Tag should have at least the current locale, or failing that an English or "
 "Turkish version."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:388
+#: pisi/pxml/autoxml.py:396
 msgid "autoxml.check: '{}' errors."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:456 pisi/pxml/autoxml.py:466
+#: pisi/pxml/autoxml.py:464 pisi/pxml/autoxml.py:474
 msgid "autoxml.parse: String '{}' has errors."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:495 pisi/pxml/autoxml.py:505
+#: pisi/pxml/autoxml.py:503 pisi/pxml/autoxml.py:513
 msgid "autoxml.read: File '{}' has errors."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:520
+#: pisi/pxml/autoxml.py:528
 msgid "autoxml.write: object validation has failed."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:529
+#: pisi/pxml/autoxml.py:537
 msgid "autoxml.write: File encoding '{}' has errors."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:588
+#: pisi/pxml/autoxml.py:596
 msgid "gen_tag: unrecognized tag type {} in spec."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:637 pisi/pxml/autoxml.py:649
+#: pisi/pxml/autoxml.py:652 pisi/pxml/autoxml.py:664
 msgid "Mandatory variable {} not available."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:719
+#: pisi/pxml/autoxml.py:741
 msgid "Type mismatch: read text cannot be decoded."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:727 pisi/pxml/autoxml.py:737
+#: pisi/pxml/autoxml.py:749 pisi/pxml/autoxml.py:759
 msgid "Mandatory token {} not available."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:745
+#: pisi/pxml/autoxml.py:767
 #, python-brace-format
 msgid "Type mismatch. Expected {0}, got {1}"
 msgstr ""
 
-#: pisi/pxml/autoxml.py:775 pisi/pxml/autoxml.py:787 pisi/pxml/autoxml.py:811
-#: pisi/pxml/autoxml.py:912 pisi/pxml/autoxml.py:934
-msgid "Mandatory argument not available."
-msgstr ""
-
-#: pisi/pxml/autoxml.py:781 pisi/pxml/autoxml.py:906
+#: pisi/pxml/autoxml.py:801 pisi/pxml/autoxml.py:933
 msgid "Type mismatch: DOM cannot be decoded."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:797 pisi/pxml/autoxml.py:920
+#: pisi/pxml/autoxml.py:805 pisi/pxml/autoxml.py:821 pisi/pxml/autoxml.py:835
+#: pisi/pxml/autoxml.py:937 pisi/pxml/autoxml.py:951 pisi/pxml/autoxml.py:965
+msgid "Mandatory argument not available."
+msgstr ""
+
+#. note: we can receive an error if obj has no content
+#: pisi/pxml/autoxml.py:818 pisi/pxml/autoxml.py:948
 msgid "Object cannot be encoded."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:808 pisi/pxml/autoxml.py:931
+#: pisi/pxml/autoxml.py:832 pisi/pxml/autoxml.py:962
 msgid "Object cannot be formatted."
-msgstr ""
+msgstr "Objektet kan inte formateras."
 
-#: pisi/pxml/autoxml.py:824
+#: pisi/pxml/autoxml.py:848
 msgid "List type must contain only one element."
 msgstr ""
 
-#: pisi/pxml/autoxml.py:845 pisi/pxml/autoxml.py:863
+#: pisi/pxml/autoxml.py:864 pisi/pxml/autoxml.py:888
 #, python-brace-format
 msgid "Mandatory list \"{0}\" under \"{1}\" node is empty."
 msgstr ""
 
-#: pisi/pxml/xmlfile.py:50
+#: pisi/pxml/xmlext.py:74
+msgid "getNodeText: Expected text node, got something else!"
+msgstr ""
+
+#: pisi/pxml/xmlfile.py:51
 #, python-format
 msgid "String '%s' has invalid XML"
 msgstr ""
 
-#: pisi/pxml/xmlfile.py:85
+#: pisi/pxml/xmlfile.py:87
 #, python-format
 msgid "Unable to read file (%s): %s"
+msgstr ""
+
+#: pisi/pxml/xmlfile.py:89 pisi/specfile.py:494
+#, python-format
+msgid "File '%s' has invalid XML"
 msgstr ""
 
 #: pisi/scenarioapi/package.py:71
@@ -3072,15 +2526,371 @@ msgstr ""
 msgid "Repo does not have package named %s."
 msgstr ""
 
-#: pisi/scripts/eopkg.py:39
+#: pisi/api.py:61
+msgid "Another instance of eopkg is running. Only one instance is allowed."
+msgstr ""
+
+#: pisi/api.py:413
+#, python-format
+msgid "%s package found in %s repository"
+msgstr "%s-paketet finns i %s-förrådet."
+
+#: pisi/api.py:419
+#, python-format
+msgid "%s package already fetched"
+msgstr ""
+
+#: pisi/api.py:552
+#, python-format
+msgid "Cleaning package cache %s..."
+msgstr ""
+
+#: pisi/api.py:554
+#, python-format
+msgid "Cleaning source archive cache %s..."
+msgstr ""
+
+#: pisi/api.py:556
+#, python-format
+msgid "Cleaning temporary directory %s..."
+msgstr ""
+
+#: pisi/api.py:562
+#, python-format
+msgid "Removing cache file %s..."
+msgstr ""
+
+#: pisi/api.py:595
+msgid "Taking snapshot of the system"
+msgstr ""
+
+#: pisi/api.py:766
+#, python-format
+msgid "File %s not found"
+msgstr "Filen %s hittades inte"
+
+#: pisi/api.py:807
+#, python-format
+msgid "Building index of eopkg files under %s"
+msgstr ""
+
+#: pisi/api.py:812
+msgid "Index file written"
+msgstr ""
+
+#: pisi/api.py:818
+msgid "Not a valid repo name."
+msgstr "Ogiltigt förrådsnamn."
+
+#: pisi/api.py:826
+#, python-format
+msgid "Repo already present with name %s and same URL. Removing first."
+msgstr ""
+
+#: pisi/api.py:839
+#, python-format
+msgid "Repo %s added to system."
+msgstr "Förrådet %s lades till:"
+
+#: pisi/api.py:848
+#, python-format
+msgid "Repo %s removed from system."
+msgstr ""
+
+#: pisi/api.py:850
+#, python-format
+msgid "Repository %s does not exist. Cannot remove."
+msgstr ""
+
+#: pisi/api.py:874
+#, python-format
+msgid "Updating repository: %s"
+msgstr "Uppdaterar förråd: %s"
+
+#: pisi/api.py:883
+#, python-format
+msgid "%s repository information is up-to-date."
+msgstr "%s-förrådets information är aktuell."
+
+#: pisi/api.py:885
+msgid "Updating database at any rate as requested"
+msgstr ""
+
+#: pisi/api.py:892
+msgid "Package database updated."
+msgstr ""
+
+#: pisi/api.py:894
+#, python-format
+msgid "No repository named %s found."
+msgstr "Inget förråd med namnet %s funnet."
+
+#: pisi/archive.py:530
+#, python-format
+msgid "Problem occured while uncompressing %s.Z file"
+msgstr "Det uppstod ett problem vid dekomprimering av %s.Z-filen"
+
+#: pisi/comariface.py:22
+msgid "comar-api package is not fully installed"
+msgstr ""
+
+#: pisi/comariface.py:85
+#, python-format
+msgid ""
+"Cannot connect to COMAR: \n"
+"  %s\n"
+msgstr ""
+"Kan inte ansluta till COMAR: \n"
+"  %s\n"
+
+#: pisi/comariface.py:101
+#, python-format
+msgid "Configuring %s package"
+msgstr "Anpassar paketet %s..."
+
+#: pisi/comariface.py:108
+msgid "COMAR package updated. From now on, using new COMAR daemon."
+msgstr ""
+
+#: pisi/comariface.py:115
+#, python-format
+msgid "Registering %s comar script"
+msgstr ""
+
+#: pisi/comariface.py:124 pisi/comariface.py:129 pisi/comariface.py:141
+#: pisi/comariface.py:157 pisi/comariface.py:175 pisi/comariface.py:187
+#: pisi/comariface.py:207 pisi/comariface.py:219 pisi/comariface.py:226
+#, python-format
+msgid "Script error: %s"
+msgstr "Skriptfel: %s"
+
+#: pisi/comariface.py:131
+msgid "Calling post install handlers"
+msgstr ""
+
+#: pisi/comariface.py:149
+msgid "Running package's post install script"
+msgstr ""
+
+#: pisi/comariface.py:163
+#, python-format
+msgid "Running pre removal operations for %s"
+msgstr "Kör förberedande åtgärder före borttagning av %s"
+
+#: pisi/comariface.py:169
+msgid "Running package's pre remove script"
+msgstr ""
+
+#: pisi/comariface.py:177
+msgid "Calling pre remove handlers"
+msgstr ""
+
+#: pisi/comariface.py:193
+#, python-format
+msgid "Running post removal operations for %s"
+msgstr "Kör avslutande åtgärder efter borttagning av %s"
+
+#: pisi/comariface.py:201
+msgid "Running package's postremove script"
+msgstr ""
+
+#: pisi/comariface.py:209
+msgid "Calling post remove handlers"
+msgstr ""
+
+#: pisi/comariface.py:221
+msgid "Unregistering comar scripts"
+msgstr ""
+
+#: pisi/config.py:86
+#, python-format
+msgid "Destination directory %s does not exist. Creating it."
+msgstr ""
+
+#: pisi/conflict.py:17 pisi/dependency.py:19 pisi/replace.py:15
+msgid " version >= "
+msgstr " version >= "
+
+#: pisi/conflict.py:19 pisi/dependency.py:21 pisi/replace.py:17
+msgid " version <= "
+msgstr " version <= "
+
+#: pisi/conflict.py:21 pisi/dependency.py:23 pisi/replace.py:19
+msgid " version "
+msgstr " version "
+
+#: pisi/conflict.py:23 pisi/dependency.py:25 pisi/replace.py:21
+msgid " release >= "
+msgstr " utgåva >= "
+
+#: pisi/conflict.py:25 pisi/dependency.py:27 pisi/replace.py:23
+msgid " release <= "
+msgstr " utgåva <= "
+
+#: pisi/conflict.py:27 pisi/dependency.py:29 pisi/replace.py:25
+msgid " release "
+msgstr " utgåva "
+
+#: pisi/constants.py:21
+#, python-format
+msgid "Can't rebind constant: %s"
+msgstr ""
+
+#: pisi/constants.py:27
+#, python-format
+msgid "Can't unbind constant: %s"
+msgstr ""
+
+#: pisi/context.py:79
+msgid "usysconf not installed. Please upgrade!"
+msgstr ""
+
+#: pisi/context.py:92
+msgid "Failed to configure system"
+msgstr ""
+
+#: pisi/file.py:27
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr ""
+
+#: pisi/file.py:35
+#, python-format
+msgid "No signature found for %s"
+msgstr ""
+
+#: pisi/file.py:45
+#, python-format
+msgid " invalid for %s"
+msgstr ""
+
+#: pisi/file.py:69
+msgid "uri must have type either URI or string"
+msgstr ""
+
+#: pisi/file.py:138
+#, python-format
+msgid "Fetching %s"
+msgstr "Hämtar %s"
+
+#: pisi/file.py:143
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr ""
+
+#: pisi/file.py:149
+#, python-format
+msgid "File '%s' not found."
+msgstr "Filen '%s' finns inte."
+
+#: pisi/file.py:172
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr ""
+
+#: pisi/file.py:196
+msgid "File mode must be either File.read or File.write"
+msgstr ""
+
+#: pisi/file.py:201
+msgid "Remote write not implemented"
+msgstr ""
+
+#: pisi/file.py:249 pisi/file.py:253
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr ""
+
+#: pisi/graph.py:17
+#, python-format
+msgid "Encountered cycle %s"
+msgstr ""
+
+#: pisi/history.py:35
+#, python-format
+msgid "%s repository is updated."
+msgstr "%s-förrådet uppdaterat."
+
+#: pisi/history.py:55
+#, python-format
+msgid "%s is upgraded from %s to %s with delta."
+msgstr ""
+
+#: pisi/history.py:61
+#, python-format
+msgid "%s is upgraded from %s to %s."
+msgstr ""
+
+#: pisi/history.py:67
+#, python-format
+msgid "%s %s is removed."
+msgstr ""
+
+#: pisi/history.py:69
+#, python-format
+msgid "%s %s is installed."
+msgstr ""
+
+#: pisi/history.py:71
+#, python-format
+msgid "%s %s is reinstalled."
+msgstr ""
+
+#: pisi/history.py:73
+#, python-format
+msgid "%s is downgraded from %s to %s."
+msgstr ""
+
+#: pisi/history.py:108 pisi/history.py:136
+msgid "Unknown package operation"
+msgstr ""
+
+#: pisi/metadata.py:64
+#, python-format
+msgid "Distribution: %s, Dist. Release: %s\n"
+msgstr "Distribution: %s, Utgåva: %s\n"
+
+#: pisi/metadata.py:68
+#, python-format
+msgid "Architecture: %s, Installed Size: %s"
+msgstr "Arkitektur: %s, Installerad storlek: %s"
+
+#: pisi/metadata.py:73
+#, python-format
+msgid ", Package Size: %s"
+msgstr ", Paketstorlek: %s"
+
+#: pisi/mirrors.py:38
+#, python-format
+msgid "Mirrors file %s does not exist. Could not resolve mirrors://"
+msgstr ""
+
+#: pisi/package.py:61
+#, python-format
+msgid "Cannot open package file: %s"
+msgstr "Kan inte öppna paketfil: %s"
+
+#: pisi/package.py:82
+#, python-format
+msgid "Unsupported package format: %s"
+msgstr ""
+
+#: pisi/package.py:105
+#, python-format
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
+msgstr ""
+
+#: pisi/scripts/eopkg.py:33
 msgid "Keyboard Interrupt: Exiting..."
 msgstr "Tangentbordsavbrott: Avslutar..."
 
-#: pisi/scripts/eopkg.py:42
+#: pisi/scripts/eopkg.py:36
 msgid "Program terminated."
 msgstr "Programmet avbröts."
 
-#: pisi/scripts/eopkg.py:47
+#: pisi/scripts/eopkg.py:41
 msgid ""
 "Unhandled internal exception.\n"
 "Please file a bug report to <https://github.com/getsolus/package-management/>."
@@ -3088,15 +2898,15 @@ msgstr ""
 "Ohanterat internt undantag.\n"
 "Vänligen fyll i en felrapport på <https://github.com/getsolus/package-management/>."
 
-#: pisi/scripts/eopkg.py:58
+#: pisi/scripts/eopkg.py:52
 msgid "System error. Program terminated."
 msgstr "Systemfel. Programmet avbröts."
 
-#: pisi/scripts/eopkg.py:67
+#: pisi/scripts/eopkg.py:61
 msgid "Please use 'eopkg help' for general help."
 msgstr "Vänligen använd 'eopkg help' för allmän hjälp."
 
-#: pisi/scripts/eopkg.py:70
+#: pisi/scripts/eopkg.py:64
 msgid ""
 "\n"
 "Traceback:"
@@ -3104,6 +2914,365 @@ msgstr ""
 "\n"
 "Bakåtspårning:"
 
-#: pisi/scripts/eopkg.py:73
+#: pisi/scripts/eopkg.py:67
 msgid "Use --debug to see a traceback."
 msgstr "Använd --debug för att se en bakåtspårning."
+
+#: pisi/sourcearchive.py:56
+#, python-format
+msgid "Fetching source from: %s"
+msgstr ""
+
+#: pisi/sourcearchive.py:67
+#, python-format
+msgid "Source archive is stored: %s/%s"
+msgstr ""
+
+#: pisi/sourcearchive.py:79
+#, python-format
+msgid "%s mirrors are not defined."
+msgstr ""
+
+#: pisi/sourcearchive.py:84
+#, python-format
+msgid "Fetching source from mirror: %s"
+msgstr ""
+
+#: pisi/sourcearchive.py:91
+#, python-format
+msgid "Could not fetch source from %s mirrors."
+msgstr ""
+
+#: pisi/sourcearchive.py:109
+msgid "unpack: check_file_hash failed"
+msgstr ""
+
+#: pisi/sourcearchive.py:115
+#, python-format
+msgid "Unknown archive type '%s' is given for '%s'."
+msgstr ""
+
+#: pisi/sourcearchive.py:120
+#, python-format
+msgid "Pisi needs %s to unpack this archive but it is not installed."
+msgstr ""
+
+#: pisi/specfile.py:172
+#, python-format
+msgid "URI: %s, type: %s, sha1sum: %s"
+msgstr ""
+
+#: pisi/specfile.py:204 pisi/specfile.py:207
+msgid " or "
+msgstr " eller "
+
+#: pisi/specfile.py:403 pisi/specfile.py:512
+#, python-format
+msgid "Summary: %s\n"
+msgstr "Sammandrag: %s\n"
+
+#: pisi/specfile.py:404 pisi/specfile.py:513
+#, python-format
+msgid "Description: %s\n"
+msgstr "Beskrivning: %s\n"
+
+#: pisi/specfile.py:405 pisi/specfile.py:514
+#, python-format
+msgid "Licenses: %s\n"
+msgstr ""
+
+#: pisi/specfile.py:406 pisi/specfile.py:515
+#, python-format
+msgid "Component: %s\n"
+msgstr "Komponent: %s\n"
+
+#: pisi/specfile.py:412
+msgid "Provides: "
+msgstr "Tillhandahåller: "
+
+#: pisi/specfile.py:425
+msgid "Dependencies: "
+msgstr "Beroenden: "
+
+#: pisi/specfile.py:486
+msgid "translations.xml file is badly formed."
+msgstr ""
+
+#: pisi/specfile.py:516
+msgid "Build Dependencies: "
+msgstr ""
+
+#: pisi/util.py:199 pisi/util.py:213
+msgid "Running "
+msgstr "Kör "
+
+#: pisi/util.py:204 pisi/util.py:231
+#, python-format
+msgid "return value for \"%s\" is %s"
+msgstr "returvärde för \"%s\" är %s"
+
+#: pisi/util.py:445
+#, python-format
+msgid "Including external link '%s'"
+msgstr ""
+
+#: pisi/util.py:447
+#, python-format
+msgid "Including directory '%s'"
+msgstr ""
+
+#: pisi/util.py:534
+msgid "You don't have necessary read permissions"
+msgstr ""
+
+#. File not found, skip
+#: pisi/util.py:538
+#, python-format
+msgid "File %s was not found"
+msgstr ""
+
+#: pisi/util.py:540
+#, python-format
+msgid "Cannot calculate SHA1 hash of %s"
+msgstr ""
+
+#: pisi/util.py:554
+#, python-format
+msgid "Compression type is not valid: '%s'"
+msgstr ""
+
+#: pisi/util.py:560
+#, python-format
+msgid "Error while decompressing %s: %s"
+msgstr ""
+
+#. Which means stderr and stdout directed so they are None
+#: pisi/util.py:609
+#, python-format
+msgid "ERROR: patch (%s) failed"
+msgstr "FEL: patch (%s) misslyckades"
+
+#: pisi/util.py:611
+#, python-format
+msgid "ERROR: patch (%s) failed: %s"
+msgstr "FEL: patch (%s) misslyckades: %s"
+
+#: pisi/util.py:623
+#, python-format
+msgid "strip command failed for file '%s'!"
+msgstr ""
+
+#: pisi/util.py:630
+#, python-format
+msgid "chrpath command failed for file '%s'!"
+msgstr ""
+
+#: pisi/util.py:639
+#, python-format
+msgid "objcopy (keep-debug) command failed for file '%s'!"
+msgstr ""
+
+#: pisi/util.py:648
+#, python-format
+msgid "objcopy (add-debuglink) command failed for file '%s'!"
+msgstr ""
+
+#: pisi/util.py:751
+#, python-format
+msgid "Invalid package name: %s"
+msgstr "Ogiltigt paketnamn: %s"
+
+#: pisi/util.py:793
+#, python-format
+msgid "Invalid delta package name: %s"
+msgstr ""
+
+#: pisi/version.py:72
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr "Ogiltig versionssträng: '%s'"
+
+#: pisi/atomicoperations.py:114
+#, python-format
+msgid "Package URI: %s"
+msgstr "Paket-URI: %s"
+
+#: pisi/atomicoperations.py:130
+msgid "Download Error: Package does not match the repository package."
+msgstr "Hämtningsfel: Paketet matchar inte förrådspaketet."
+
+#: pisi/atomicoperations.py:136
+#, python-format
+msgid "Package %s not found in any active repository."
+msgstr "Paketet %s finns inte i något aktivt förråd."
+
+#: pisi/atomicoperations.py:163
+#, python-format
+msgid "Installing %s, version %s, release %s"
+msgstr "Installerar %s, version %s, utgåva %s"
+
+#: pisi/atomicoperations.py:208
+#, python-format
+msgid "%s package cannot be installed unless the dependencies are satisfied"
+msgstr "%s paketet kan inte installeras om inte beroendena är uppfylda "
+
+#: pisi/atomicoperations.py:247
+#, python-format
+msgid "/%s from %s gets replaced by %s package\n"
+msgstr "/%s från %s ersätts av %s paketet\n"
+
+#: pisi/atomicoperations.py:251 pisi/atomicoperations.py:256
+#, python-format
+msgid "/%s from %s package\n"
+msgstr "/%s från %s-paketet\n"
+
+#: pisi/atomicoperations.py:260
+#, python-format
+msgid ""
+"File conflicts:\n"
+"%s"
+msgstr ""
+"Filkonflikt:\n"
+"%s"
+
+#: pisi/atomicoperations.py:277
+msgid "Re-install same distribution release of package?"
+msgstr ""
+
+#: pisi/atomicoperations.py:278
+msgid "Package re-install declined"
+msgstr "Paketets ominstallation nekades"
+
+#: pisi/atomicoperations.py:286
+msgid "Upgrading to new distribution release"
+msgstr "Uppdaterar till en ny distributionsutgåva"
+
+#: pisi/atomicoperations.py:292
+msgid "Downgrade to old distribution release?"
+msgstr "Nedgradera till äldre distributionsutgåva?"
+
+#: pisi/atomicoperations.py:296
+msgid "Package downgrade declined"
+msgstr ""
+
+#: pisi/atomicoperations.py:402
+msgid ""
+"Unable to relocate following files. Reinstallation of this package is "
+"strongly recommended."
+msgstr ""
+
+#. comar prefix is added to the pkg_dir while extracting comar
+#. script file. so we'll use pkg_dir as destination.
+#: pisi/atomicoperations.py:508 pisi/atomicoperations.py:511
+#: pisi/atomicoperations.py:518
+#, python-format
+msgid "Storing %s"
+msgstr "Lagrar %s"
+
+#: pisi/atomicoperations.py:598
+#, python-format
+msgid "File list could not be read for package %s, continuing removal."
+msgstr ""
+"Fillistan för paketet %s kunde inte läsas, fortsätter med borttagning."
+
+#: pisi/atomicoperations.py:606
+#, python-format
+msgid "Removing package %s"
+msgstr "Tar bort paketet %s"
+
+#: pisi/atomicoperations.py:610
+msgid "Trying to remove nonexistent package "
+msgstr ""
+
+#: pisi/atomicoperations.py:651
+#, python-format
+msgid "Not removing conflicted file : %s"
+msgstr "Tar inte bort fil i konflikt: %s"
+
+#: pisi/atomicoperations.py:681
+#, python-format
+msgid ""
+"Installed file %s does not exist on system [Probably you manually deleted]"
+msgstr ""
+
+#: pisi/configfile.py:135
+#, python-format
+msgid "No section by name '%s'"
+msgstr ""
+
+#: pisi/fetcher.py:128
+msgid "Filename error"
+msgstr "Filnamnsfel"
+
+#: pisi/fetcher.py:132
+#, python-format
+msgid "Access denied to write to destination directory: \"%s\""
+msgstr ""
+
+#: pisi/fetcher.py:140
+#, python-format
+msgid "Access denied to destination file: \"%s\""
+msgstr ""
+
+#: pisi/fetcher.py:202
+#, python-format
+msgid "Hit max retry count when downloading: \"%s\""
+msgstr ""
+
+#: pisi/fetcher.py:206
+#, python-format
+msgid ""
+"\n"
+"Failed to fetch file, retrying %d out of %d \"%s\": %s"
+msgstr ""
+
+#: pisi/fetcher.py:215
+msgid ""
+"A problem occurred. Please check the archive address and/or permissions "
+"again."
+msgstr ""
+
+#: pisi/fetcher.py:248
+#, python-format
+msgid "Proxy configuration has been found for '%s' protocol"
+msgstr ""
+
+#: pisi/fetcher.py:260
+#, python-format
+msgid "Bandwidth usage is limited to %s KB/s"
+msgstr ""
+
+#: pisi/fetcher.py:286
+msgid ""
+"Remote file can not be reached. Previously downloaded part of the file will "
+"be removed."
+msgstr ""
+
+#: pisi/fetcher.py:299
+msgid ""
+"Server doesn't support partial downloads. Previously downloaded part of the "
+"file will be over-written."
+msgstr ""
+
+#. Add binary packages to index using a process pool
+#: pisi/index.py:150
+msgid "Adding packages to index:"
+msgstr ""
+
+#: pisi/index.py:183
+#, python-format
+msgid "Package %s: metadata corrupt, skipping..."
+msgstr ""
+
+#: pisi/index.py:237
+msgid "Adding groups.xml to index"
+msgstr ""
+
+#: pisi/index.py:244
+msgid "Adding components.xml to index"
+msgstr ""
+
+#: pisi/index.py:278
+#, python-format
+msgid "Adding %s to source index"
+msgstr ""
