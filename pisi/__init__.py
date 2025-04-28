@@ -21,8 +21,10 @@ if _localeres.is_dir():
 else:
     _localedir = None  # Use the system one.
 
+languages = [locale.getlocale()[0]]
+
 lang = gettext.translation(
-    "pisi", localedir=_localedir, fallback=True, languages=[locale.getlocale()[0]]
+    "pisi", localedir=_localedir, fallback=True, languages=languages
 )
 
 # You usually want to import this function with the "_" alias.
