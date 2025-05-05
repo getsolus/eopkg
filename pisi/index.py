@@ -147,7 +147,8 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         if latest_packages:
             try:
                 # Add binary packages to index using a process pool
-                ctx.ui.info(_("Adding packages to index:"))
+                if ctx.ui.show_verbose:
+                    ctx.ui.info(_("Adding packages to index:"))
                 self.packages = pool.map(add_package, latest_packages)
             except:
                 pool.terminate()
@@ -164,7 +165,13 @@ def add_package(params):
     try:
         path, deltas, repo_uri = params
 
-        ctx.ui.info("  %s" % os.path.basename(path))
+        if ctx.ui.show_verbose:
+            ctx.ui.info("  %s" % os.path.basename(path))
+        else:
+            ctx.ui.info(
+                "%-80.80s\r" % (_("Adding package to index: %s") % os.path.basename(path)),
+                noln=True,
+            )
 
         package = pisi.package.Package(path, "r")
         md = package.get_metadata()
