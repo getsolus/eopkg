@@ -9,6 +9,8 @@ import pisi.db.repodb
 import pisi.db.itembyrepo
 import pisi.component
 import pisi.db.lazydb as lazydb
+from pisi import context as ctx
+import os
 
 
 class ComponentDB(lazydb.LazyDB):
@@ -84,8 +86,19 @@ class ComponentDB(lazydb.LazyDB):
         if not self.has_component(component_name, repo):
             raise Exception(_("Component %s not found") % component_name)
 
-        component = pisi.component.Component()
-        component.parse(self.cdb.get_item(component_name, repo))
+        try:
+            component = pisi.component.Component()
+            component.parse(self.cdb.get_item(component_name, repo))
+        except pisi.pxml.autoxml.Error:
+            ctx.ui.debug('ComponentDB cache contains invalid XML; ignoring cache')
+            if os.access(ctx.config.cache_root_dir(), os.W_OK):
+                ctx.ui.debug(
+                    f'We have write access to {ctx.config.cache_root_dir()}; removing corrupted ComponentDB Cache'
+                )
+                self.cache_flush()
+            self.init()
+            component = pisi.component.Component()
+            component.parse(self.cdb.get_item(component_name, repo))
 
         try:
             component.packages = self.cpdb.get_item(component_name, repo)
@@ -105,8 +118,19 @@ class ComponentDB(lazydb.LazyDB):
 
     # Returns the component with combined packages and sources from all repos that contain this component
     def get_union_component(self, component_name):
-        component = pisi.component.Component()
-        component.parse(self.cdb.get_item(component_name))
+        try:
+            component = pisi.component.Component()
+            component.parse(self.cdb.get_item(component_name))
+        except pisi.pxml.autoxml.Error:
+            ctx.ui.debug('ComponentDB cache contains invalid XML; ignoring cache')
+            if os.access(ctx.config.cache_root_dir(), os.W_OK):
+                ctx.ui.debug(
+                    f'We have write access to {ctx.config.cache_root_dir()}; removing corrupted ComponentDB Cache'
+                )
+                self.cache_flush()
+            self.init()
+            component = pisi.component.Component()
+            component.parse(self.cdb.get_item(component_name))
 
         for repo in pisi.db.repodb.RepoDB().list_repos():
             try:
