@@ -30,7 +30,7 @@ lang = gettext.translation(
 translate = lang.gettext
 ngettext = lang.ngettext
 
-__version__ = "4.2.0"
+__version__ = "4.2.1"
 
 __all__ = ["api", "configfile", "db"]
 
