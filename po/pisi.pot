@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-19 19:12-0400\n"
+"POT-Creation-Date: 2025-05-17 10:37-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1636,11 +1636,6 @@ msgstr ""
 msgid "Repo %s reordered to position %s."
 msgstr ""
 
-#: pisi/db/componentdb.py:85
-#, python-format
-msgid "Component %s not found"
-msgstr ""
-
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
 msgid "Group %s not found"
@@ -1801,6 +1796,11 @@ msgstr[1] ""
 #: pisi/db/filesdb.py:345
 #, python-format
 msgid "Done rebuilding FilesDB (version: %s)"
+msgstr ""
+
+#: pisi/db/componentdb.py:87
+#, python-format
+msgid "Component %s not found"
 msgstr ""
 
 #: pisi/operations/build.py:115
@@ -3161,25 +3161,29 @@ msgstr ""
 msgid "Server doesn't support partial downloads. Previously downloaded part of the file will be over-written."
 msgstr ""
 
-#. Add binary packages to index using a process pool
-#: pisi/index.py:150
+#: pisi/index.py:151
 msgid "Adding packages to index:"
 msgstr ""
 
-#: pisi/index.py:183
+#: pisi/index.py:172
+#, python-format
+msgid "Adding package to index: %s"
+msgstr ""
+
+#: pisi/index.py:190
 #, python-format
 msgid "Package %s: metadata corrupt, skipping..."
 msgstr ""
 
-#: pisi/index.py:237
+#: pisi/index.py:244
 msgid "Adding groups.xml to index"
 msgstr ""
 
-#: pisi/index.py:244
+#: pisi/index.py:251
 msgid "Adding components.xml to index"
 msgstr ""
 
-#: pisi/index.py:278
+#: pisi/index.py:285
 #, python-format
 msgid "Adding %s to source index"
 msgstr ""
