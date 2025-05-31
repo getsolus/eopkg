@@ -315,6 +315,41 @@ class ArchiveTar(ArchiveBase):
                 print(("Failed to remove stale pip install: {}".format(e)))
                 raise e
 
+            # Check parent directories for conflicting symlinks.
+            # If a parent path exists as a symlink on the filesystem,
+            # and the archive contains entries within that path, replace
+            # the symlink with a real directory before extracting the current item.
+            # Otherwise tar will follow the existing symlink on disk and install the
+            # file to the wrong directory.
+            path_parts = tarinfo.name.split(os.sep)
+            current_path = ''
+            # Iterate up to the parent of the current tarinfo item
+            for i in range(len(path_parts) - 1):
+                part = path_parts[i]
+                if i > 0:
+                    current_path += os.sep
+                current_path += part
+                # Check if the path exists on the filesystem and is a symlink
+                if os.path.lexists(current_path) and os.path.islink(current_path):
+                    # Check if the archive contains entries within this path.
+                    # This indicates it should be a directory in the archive structure.
+                    should_be_directory = False
+                    prefix = current_path + os.sep
+                    for f in files:
+                        if f.startswith(prefix):
+                            should_be_directory = True
+                            break
+                    if should_be_directory:
+                        ctx.ui.debug(f"Replacing conflicting symlink {current_path} with a directory based on archive contents")
+                        try:
+                            os.unlink(current_path)
+                            # TODO: We probably don't need makedirs here, the tar extraction should be fine
+                            # os.makedirs(current_path, exist_ok=True)
+                        except OSError as e:
+                            # Log warning and re-raise as this is a critical failure
+                            ctx.ui.warning(f"Failed to replace symlink {current_path} with directory: {e}")
+                            raise
+
             if (
                 tarinfo.issym()
                 and os.path.isdir(tarinfo.name)
