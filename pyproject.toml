@@ -1,6 +1,6 @@
 [project]
 name = "eopkg"
-license = { text = "GPL-2.0-or-later" }
+license = "GPL-2.0-or-later"
 description = "eopkg is the package management system of Solus Operating System, originally written for Pardus Linux by the Pardus Developers."
 readme = "README.md"
 authors = [{ name = "Solus Project", email = "releng@getsol.us" }]
