@@ -62,6 +62,15 @@ def locked(func):
                     )
                 )
 
+        reason = f"Performing {func.__name__} operation"
+
+        conn = None
+        inhibit_fd = None
+        inhibit_file = None
+        conn, inhibit_fd = pisi.util.systemd_inhibit(reason)
+        if inhibit_fd is not None:
+            inhibit_file = inhibit_fd.to_file("wb")
+
         try:
             pisi.db.invalidate_caches()
             ret = func(*__args, **__kw)
@@ -70,6 +79,10 @@ def locked(func):
         finally:
             ctx.locked = False
             lock.close()
+            if inhibit_file:
+                inhibit_file.close()
+            if conn:
+                conn.close()
 
     return wrapper
 

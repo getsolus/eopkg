@@ -1,4 +1,5 @@
 PyYaml
 iksemel
+jeepney
 python-magic
 xattr

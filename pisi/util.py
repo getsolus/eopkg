@@ -951,3 +951,45 @@ def letters():
                 result.append(start + "-" + end)
             start = None
     return "".join(result)
+
+########################################
+# DBus Related Functions               #
+########################################
+
+
+# https://www.freedesktop.org/software/systemd/man/latest/systemd-inhibit.html
+def systemd_inhibit(reason: str):
+    from jeepney import DBusAddress, DBusErrorResponse, new_method_call
+    from jeepney.io.blocking import open_dbus_connection
+
+    try:
+        login1_addr = DBusAddress(
+            "/org/freedesktop/login1",
+            bus_name="org.freedesktop.login1",
+            interface="org.freedesktop.login1.Manager"
+        )
+        conn = open_dbus_connection(bus='SYSTEM', enable_fds=True)
+
+        # Create the method call: Inhibit(what, who, why, mode)
+        msg = new_method_call(
+            login1_addr,
+            "Inhibit",
+            "ssss",
+            ("shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch", "eopkg", reason, "block")
+        )
+
+        # Call and receive the file descriptor
+        reply = conn.send_and_get_reply(msg)
+
+        if isinstance(reply, DBusErrorResponse):
+            ctx.ui.warning(_("Failed to acquire inhibit lock %s" % reply.error_name))
+            return None, None
+
+        # Extract the file descriptor
+        (fd,) = reply.body
+
+        return conn, fd
+
+    except Exception as e:
+        ctx.ui.warning(_("D-Bus call failed: %s" % e))
+        return None, None
