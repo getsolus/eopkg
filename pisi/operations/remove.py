@@ -15,64 +15,66 @@ import pisi.db
 
 
 def remove(
-    A, ignore_dep=False, ignore_safety=False, autoremove=False, force_prompt=False
+    packages, ignore_dep=False, ignore_safety=False, autoremove=False, force_prompt=False
 ):
-    """remove set A of packages from system (A is a list of package names)"""
+    """Remove a set of packages from the system.
+    Parameters:
+        packages (list): A list of packages to remove.
+        ignore_dep (bool): Ignore packages that depend on other packages.
+        ignore_safety (bool): Ignore packages that are a part of the base system.
+        autoremove (bool): Automatically remove dependencies of packages.
+        force_prompt (bool): Force prompt for confirmation.
+    """
 
     componentdb = pisi.db.componentdb.ComponentDB()
     installdb = pisi.db.installdb.InstallDB()
 
-    A = [str(x) for x in A]
+    should_ignore_safety = (not ctx.get_option("ignore_safety")
+                            and not ctx.config.values.general.ignore_safety
+                            and not ignore_safety)
+
+    packages = [str(package) for package in packages]
 
     # filter packages that are not installed
-    A_0 = A = set(A)
+    filtered = packages = set(packages)
 
-    if (
-        not ctx.get_option("ignore_safety")
-        and not ctx.config.values.general.ignore_safety
-        and not ignore_safety
-    ):
+    if should_ignore_safety:
         if componentdb.has_component("system.base"):
             systembase = set(componentdb.get_union_component("system.base").packages)
-            refused = A.intersection(systembase)
+            refused = packages.intersection(systembase)
             if refused:
                 raise pisi.Error(
                     _("Safety switch prevents the removal of " "following packages:\n")
                     + util.format_by_columns(sorted(refused))
                 )
-                A = A - systembase
         else:
             ctx.ui.warning(
                 _("Safety switch: The component system.base cannot be found.")
             )
 
-    Ap = []
-    for x in A:
-        if installdb.has_package(x):
-            Ap.append(x)
+    installed = []
+    for package in packages:
+        if installdb.has_package(package):
+            installed.append(package)
         else:
-            ctx.ui.info(_("Package %s does not exist. Cannot remove.") % x)
-    A = set(Ap)
+            ctx.ui.info(_("Package %s does not exist. Cannot remove.") % package)
+    packages = set(installed)
 
-    if len(A) == 0:
+    if len(packages) == 0:
         ctx.ui.info(_("No packages to remove."))
         return False
 
     if not ctx.config.get_option("ignore_dependency") and not ignore_dep:
         if autoremove:
-            G_f, order = plan_autoremove(A)
-            A3 = set(order)
+            graph, order = plan_autoremove(packages)
+            sorted_packages = set(order)
 
-            if (
-                not ctx.get_option("ignore_safety")
-                and not ctx.config.values.general.ignore_safety
-                and not ignore_safety
-            ):
+            if should_ignore_safety:
                 if componentdb.has_component("system.base"):
                     systembase = set(
                         componentdb.get_union_component("system.base").packages
                     )
-                    refused = A3.intersection(systembase)
+                    refused = sorted_packages.intersection(systembase)
                     if refused:
                         raise pisi.Error(
                             _(
@@ -81,19 +83,17 @@ def remove(
                             )
                             + util.format_by_columns(sorted(refused))
                         )
-                        A3 = A3 - systembase
-                        order = list(A3)
                 else:
                     ctx.ui.warning(
                         _("Safety switch: The component system.base cannot be found.")
                     )
 
         else:
-            G_f, order = plan_remove(A)
+            graph, order = plan_remove(packages)
     else:
-        G_f = None
-        order = A
+        order = packages
 
+    # Print the list of packages to remove.
     ctx.ui.info(
         _(
             """The following list of packages will be removed
@@ -102,22 +102,29 @@ in the respective order to satisfy dependencies:
         )
         + util.strlist(order)
     )
-    if len(order) > len(A_0) or force_prompt:
+
+    # Don't prompt if we're just doing a dry run.
+    # It could confuse users thinking that it will
+    # still remove packages.
+    if ctx.get_option("dry_run"):
+        return True
+
+    # Determine if we should prompt the user to confirm
+    # the removal of packages.
+    if len(order) > len(filtered) or force_prompt:
         if not ctx.ui.confirm(_("Do you want to continue?")):
             ctx.ui.warning(_("Package removal declined"))
             return False
 
-    if ctx.get_option("dry_run"):
-        return
-
     ctx.ui.notify(ui.packagestogo, order=order)
 
+    # Remove the packages.
     try:
-        for x in order:
-            if installdb.has_package(x):
-                atomicoperations.remove_single(x)
+        for package in order:
+            if installdb.has_package(package):
+                atomicoperations.remove_single(package)
             else:
-                ctx.ui.info(_("Package %s is not installed. Cannot remove.") % x)
+                ctx.ui.info(_("Package %s is not installed. Cannot remove.") % package)
     except Exception as e:
         raise e
     finally:
