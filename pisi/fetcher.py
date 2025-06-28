@@ -106,7 +106,7 @@ class Fetcher:
     """Fetcher can fetch a file from various sources using various
     protocols."""
 
-    def __init__(self, url, destdir="/tmp", destfile=None):
+    def __init__(self, url, destdir="/tmp", destfile=None, headers_only=False):
         if not isinstance(url, pisi.uri.URI):
             url = pisi.uri.URI(url)
 
@@ -114,6 +114,7 @@ class Fetcher:
         self.destdir = destdir
         self.destfile = destfile
         self.progress = None
+        self.headers_only = headers_only
 
         self.archive_file = os.path.join(destdir, destfile or url.filename())
         self.partial_file = (
@@ -169,7 +170,10 @@ class Fetcher:
                 with contextlib.closing(
                     urllib.request.urlopen(self.url.get_uri(), timeout=15)
                 ) as fp:
-                    headers = fp.info()
+                    self.headers = fp.info()
+
+                    if self.headers_only:
+                        return
 
                     if self.url.is_local_file():
                         return os.path.normpath(self.url.path())
@@ -184,8 +188,8 @@ class Fetcher:
                         size = -1
                         read = 0
                         blocknum = 0
-                        if "content-length" in headers:
-                            size = int(headers["Content-Length"])
+                        if "content-length" in self.headers:
+                            size = int(self.headers["Content-Length"])
                         fetch_handler.update(blocknum, bs, size)
                         while True:
                             block = fp.read(bs)
@@ -305,7 +309,9 @@ class Fetcher:
 
 
 # helper function
-def fetch_url(url, destdir, progress=None, destfile=None):
-    fetch = Fetcher(url, destdir, destfile)
+def fetch_url(url, destdir, progress=None, destfile=None, headers_only=False):
+    fetch = Fetcher(url, destdir, destfile, headers_only)
     fetch.progress = progress
     fetch.fetch()
+    if headers_only:
+        return fetch
