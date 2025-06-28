@@ -338,7 +338,7 @@ class FilesDB(lazydb.LazyDB):
                     ctx.ui.info("-------------")
                 else:
                     ctx.ui.info(".", noln=True)
-        ctx.ui.info(ngettext("\nOne package added in total.", "\n%s packages added in total.", pkgs))
+        ctx.ui.info(ngettext("\n%(num)d package added in total.", "\n%(num)d packages added in total.", pkgs) % {"num": pkgs})
         # ensure that the changes get pushed out to disk
         self.filesdb.sync()
         # This acts as a check that the version has been correctly added and synced to disk
