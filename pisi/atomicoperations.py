@@ -670,6 +670,13 @@ class Remove(AtomicOperation):
                         os.unlink(fpath)
             except pisi.util.FileError:
                 pass
+            except pisi.util.FileNotFoundError:
+                ctx.ui.warning(
+                    _(
+                        "Installed config file %s does not exist on system [Probably you manually deleted]"
+                    )
+                    % fpath
+                )
         else:
             if os.path.isfile(fpath) or os.path.islink(fpath):
                 os.unlink(fpath)
