@@ -20,6 +20,7 @@ import pisi.db.installdb
 import pisi.db.historydb
 import pisi.db.componentdb
 import pisi.db.groupdb
+import pisi.db.appstreamdb
 import pisi.index
 import pisi.config
 import pisi.metadata
@@ -33,6 +34,7 @@ import pisi.operations.history
 import pisi.operations.helper
 import pisi.operations.check
 import pisi.operations.build
+import pisi.operations.appstream
 import pisi.errors
 
 
@@ -890,6 +892,7 @@ def __update_repo(repo, force=False):
     index = pisi.index.Index()
     if repodb.has_repo(repo):
         repouri = repodb.get_repo(repo).indexuri.get_uri()
+        pisi.operations.appstream.update_catalogs(repo, force)
         try:
             index.read_uri_of_repo(repouri, repo)
         except pisi.file.AlreadyHaveException as e:
