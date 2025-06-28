@@ -34,6 +34,7 @@ def handle_exception(exception, value, tb):
         exit()
     elif isinstance(value, pisi.Error):
         ui.error(_("Program terminated."))
+        show_traceback = ctx.get_option("debug")
     elif isinstance(value, pisi.Exception):
         show_traceback = True
         ui.error(
