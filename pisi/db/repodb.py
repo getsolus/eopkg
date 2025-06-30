@@ -271,7 +271,7 @@ class RepoDB(lazydb.LazyDB):
         return repos
 
     def get_repo_by_url(self, url):
-        if not self.has_repo_url(url):
+        if not self.has_repo_url(url, only_active=False):
             return None
 
         for r in self.list_repos(only_active=False):
