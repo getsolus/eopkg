@@ -139,10 +139,8 @@ class Check(command.Command, metaclass=command.autocommand):
             ctx.ui.info("")
             ctx.ui.warning(
                 _(
-                    "Pisi was unable to check the integrity of "
-                    "packages which contain files that you don't "
-                    "have read access.\n"
-                    "Running the check under a privileged user "
-                    "may help fixing this problem."
+                    "Could not check the integrity of packages which contain files your user "
+                    "did not have permission to read.\n"
+                    "Running the check under a privileged user may help to fix this problem."
                 )
             )
