@@ -101,8 +101,7 @@ class PackageDB(lazydb.LazyDB):
         pkgConfigs = dict()
         pkgConfigs32 = dict()
 
-        for repo in repodb.list_repos(repo):
-            doc = repodb.get_repo_doc(repo)
+        def map_providers(doc, pkgConfigs: dict, pkgConfigs32: dict):
             for pkg in doc.tags("Package"):
                 prov = pkg.getTag("Provides")
                 name = pkg.getTagData("Name")
@@ -112,6 +111,21 @@ class PackageDB(lazydb.LazyDB):
                     pkgConfigs32[node.firstChild().data()] = name
                 for node in prov.tags("PkgConfig"):
                     pkgConfigs[node.firstChild().data()] = name
+            return (pkgConfigs, pkgConfigs32)
+
+        if repo is None:
+            for repo in repodb.list_repos():
+                doc = repodb.get_repo_doc(repo)
+                pkgConfig, pkgConfigs32 = map_providers(
+                        doc, pkgConfigs, pkgConfigs32)
+        else:
+            repodb = pisi.db.repodb.RepoDB()
+            if repo not in repodb.list_repos(only_active=False):
+                raise Exception(_("Repo %s not found.") % repo)
+            doc = repodb.get_repo_doc(repo)
+            pkgConfig, pkgConfigs32 = map_providers(
+                        doc, pkgConfigs, pkgConfigs32)
+
         return (pkgConfigs, pkgConfigs32)
 
     def get_package_by_pkgconfig(self, pkgconfig):
