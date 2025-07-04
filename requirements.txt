@@ -1,5 +1,6 @@
 PyYaml
 iksemel
 jeepney
+ordered_set
 python-magic
 xattr
