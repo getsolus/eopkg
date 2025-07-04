@@ -222,7 +222,7 @@ alias, if available. Most commands in eopkg support a short form.
     will cause a new transaction to be recorded, which can be replayed
     through the log or rolled back to.
 
-    Note that rolling back to older snapshots has a limited shelflive
+    Note that rolling back to older snapshots has a limited shelflife
     due to the rolling nature of Solus, and that old packages may
     disappear that were previously installed as part of an older
     transaction.
@@ -695,6 +695,48 @@ alias, if available. Most commands in eopkg support a short form.
 
 On success, 0 is returned. A non-zero return code signals a failure.
 
+
+## EXAMPLES
+
+ 1. Install a package and its dependencies:
+ 
+    ```bash
+    sudo eopkg install nano
+    ```
+ 
+ 2. Uninstall a package and orphaned dependencies:
+
+    ```bash
+    sudo eopkg remove-orphans nano
+    ```
+ 
+ 3. List information about a package:
+
+    ```bash
+    eopkg info nano
+    ```
+
+ 4. Search for packages in the repository:
+
+    ```bash
+    eopkg search nano
+    ```
+
+ 5. View package transaction history:
+
+    ```bash
+    eopkg history
+    ```
+ 
+ 6. Take back a package operation:
+
+    ```bash
+    eopkg history --takeback 1234
+    ```
+ 
+    This assumes that `1234` is the operation number **before**
+    the operation you want to remove, because the command will
+    rollback to the state **after** the given number.
 
 ## COPYRIGHT
 
