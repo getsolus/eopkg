@@ -116,6 +116,10 @@ expanded to package names.
         else:
             self.init()
 
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         if not ctx.get_option("bypass_update_repo"):
             ctx.ui.info(_("Updating repositories"))
             repos = pisi.api.list_repos()

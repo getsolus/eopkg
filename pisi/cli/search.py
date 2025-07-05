@@ -82,6 +82,10 @@ database.
             self.help()
             return
 
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         replace = re.compile("(%s)" % "|".join(self.args), re.I)
         lang = ctx.get_option("language")
         repo = ctx.get_option("repository")

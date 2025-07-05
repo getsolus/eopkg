@@ -59,6 +59,10 @@ Finds the installed package which contains the specified file.
             self.help()
             return
 
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         # search among existing files
         for path in self.args:
             if not ctx.config.options.quiet:

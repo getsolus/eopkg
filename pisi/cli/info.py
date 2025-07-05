@@ -71,6 +71,10 @@ Usage: info <package1> <package2> ... <packagen>
     def run(self):
         self.init(database=True, write=False)
 
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         components = ctx.get_option("component")
         if not components and not self.args:
             self.help()
