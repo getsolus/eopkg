@@ -117,6 +117,10 @@ expanded to package names.
         else:
             self.init()
 
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         components = ctx.get_option("component")
         if not components and not self.args:
             self.help()

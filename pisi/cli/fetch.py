@@ -49,4 +49,8 @@ Downloads the given pisi packages to working directory
             self.help()
             return
 
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         pisi.api.fetch(self.args, ctx.config.options.output_dir)

@@ -56,6 +56,11 @@ Lists the packages that will be upgraded.
 
     def run(self):
         self.init(database=True, write=False)
+
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         upgradable_pkgs = pisi.api.list_upgradable()
 
         component = ctx.get_option("component")

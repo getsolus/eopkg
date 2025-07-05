@@ -1037,3 +1037,16 @@ def clearCache(all=False):
         removeOrderByLimit(cacheDir, order, cacheLimit)
     else:
         removeAll(cacheDir)
+
+
+def has_active_repositories() -> bool:
+    """
+    Check whether there are any active repositories configured
+    on the system.
+
+        Returns:
+            has_repos (bool): True if there are any active repositories
+    """
+    active_repos = pisi.db.repodb.RepoDB().list_repos(True)
+    has_repos = len(active_repos) > 0
+    return has_repos

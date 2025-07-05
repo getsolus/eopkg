@@ -59,6 +59,10 @@ all repositories.
     def run(self):
         self.init(database=True, write=False)
 
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         if not (ctx.get_option("no_color") or ctx.config.get_option("uninstalled")):
             ctx.ui.info(
                 util.colorize(_("Installed packages are shown in this color"), "green")

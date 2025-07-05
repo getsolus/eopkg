@@ -49,6 +49,10 @@ repositories.
     def run(self):
         self.init(database=True, write=False)
 
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         l = self.componentdb.list_components(ctx.get_option("repository"))
         l.sort()
         for p in l:

@@ -55,6 +55,10 @@ packages from all repositories.
     def run(self):
         self.init(database=True, write=False)
 
+        if not pisi.api.has_active_repositories():
+            ctx.ui.error(_("No active repositories found"))
+            return
+
         if self.args:
             for arg in self.args:
                 self.print_packages(arg)
