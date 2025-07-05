@@ -34,43 +34,47 @@ def plan_deterministic_install_order(order):
 
     return order
 
-def install_pkg_names(A, reinstall=False):
-    """This is the real thing. It installs packages from
-    the repository, trying to perform a minimum number of
-    installs"""
+def install_pkg_names(packages, reinstall=False):
+    """
+    Installs packages from the repository.
+
+        Parameters:
+            packages (list): List of package names
+            reinstall (bool): Reinstall packages
+    """
 
     installdb = pisi.db.installdb.InstallDB()
     packagedb = pisi.db.packagedb.PackageDB()
 
-    A = [str(x) for x in A]  # FIXME: why do we still get unicode input here? :/ -- exa
-    # A was a list, remove duplicates
-    A_0 = A = set(A)
+    packages = [str(package) for package in packages]  # FIXME: why do we still get unicode input here? :/ -- exa
+
+    deduped_packages = packages = set(packages)
 
     # filter packages that are already installed
     if not reinstall:
-        Ap = set([x for x in A if not installdb.has_package(x)])
-        d = A - Ap
-        if len(d) > 0:
+        not_installed = set([package for package in packages if not installdb.has_package(package)])
+        diff = packages - not_installed
+        if len(diff) > 0:
             ctx.ui.warning(
                 _(
                     "The following package(s) are already installed "
                     "and are not going to be installed again:"
                 )
             )
-            ctx.ui.info(util.format_by_columns(sorted(d)))
-            A = Ap
+            ctx.ui.info(util.format_by_columns(sorted(diff)))
+            packages = not_installed
 
-    if len(A) == 0:
+    if len(packages) == 0:
         ctx.ui.info(_("No packages to install."))
         return True
 
-    A |= operations.upgrade.upgrade_base(A)
+    packages |= operations.upgrade.upgrade_base(packages)
 
     if not ctx.config.get_option("ignore_dependency"):
-        G_f, order = plan_install_pkg_names(A)
+        graph, order = plan_install_pkg_names(packages)
     else:
-        G_f = None
-        order = list(A)
+        graph = None
+        order = list(packages)
 
     componentdb = pisi.db.componentdb.ComponentDB()
 
@@ -78,12 +82,17 @@ def install_pkg_names(A, reinstall=False):
     if componentdb.has_component("system.base"):
         order = operations.helper.reorder_base_packages(order)
 
+    # Show what packages will be downloaded or installed if there are
+    # more than one
     if len(order) > 1:
-        ctx.ui.info(
-            util.colorize(_("Following packages will be installed:"), "brightblue")
-        )
+        if ctx.get_option("fetch_only"):
+            ctx.ui.status(_("The following packages will be downloaded:"))
+        else:
+            ctx.ui.status(_("The following packages will be installed:"))
+
         ctx.ui.info(util.format_by_columns(sorted(order)))
 
+    # Figure out the total download size
     total_size, cached_size = operations.helper.calculate_download_sizes(order)
     total_size, symbol = util.human_readable_size(total_size)
     ctx.ui.info(
@@ -95,38 +104,42 @@ def install_pkg_names(A, reinstall=False):
     if ctx.get_option("dry_run"):
         return True
 
-    if set(order) - A_0:
-        if not ctx.ui.confirm(
-            _("There are extra packages due to dependencies. Do you want to continue?")
-        ):
+    # Figure out if we have additional packages to install
+    # for the upgrade to be successful
+    if set(order) - deduped_packages:
+        ctx.ui.warning(_("There are extra packages due to dependencies."))
+        needs_confirm = True
+
+        if needs_confirm and not ctx.ui.confirm(_("Do you want to continue?")):
             return False
 
     ctx.ui.notify(ui.packagestogo, order=order)
 
-    ignore_dep = ctx.config.get_option("ignore_dependency")
+    automatic = operations.helper.extract_automatic(packages, order)
+    paths = []
+    for package in order:
+        ctx.ui.info(
+            util.colorize(
+                _("Downloading %d / %d") % (order.index(package) + 1, len(order)), "yellow"
+            )
+        )
+        install_op = atomicoperations.Install.from_name(package)
+        paths.append(install_op.package_fname)
 
-    conflicts = []
+    ctx.ui.status(_("Finished downloading package upgrades."))
+
+    # Don't actually install if --fetch-only was set
+    if ctx.get_option("fetch_only"):
+        return True
+
+    # Remove conflicting packages
     if not ctx.get_option("ignore_package_conflicts"):
         conflicts = operations.helper.check_conflicts(order, packagedb)
 
-    automatic = operations.helper.extract_automatic(A, order)
-    paths = []
-    for x in order:
-        ctx.ui.info(
-            util.colorize(
-                _("Downloading %d / %d") % (order.index(x) + 1, len(order)), "yellow"
-            )
-        )
-        install_op = atomicoperations.Install.from_name(x)
-        paths.append(install_op.package_fname)
+        if conflicts:
+            operations.remove.remove_conflicting_packages(conflicts)
 
-    # fetch to be installed packages but do not install them.
-    if ctx.get_option("fetch_only"):
-        return
-
-    if conflicts:
-        operations.remove.remove_conflicting_packages(conflicts)
-
+    # Install all the packages
     try:
         for path in paths:
             ctx.ui.info(
@@ -141,7 +154,6 @@ def install_pkg_names(A, reinstall=False):
             install_op.install(False)
     except Exception as e:
         raise e
-        return False
     finally:
         ctx.exec_usysconf()
 
