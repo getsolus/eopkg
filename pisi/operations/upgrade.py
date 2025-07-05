@@ -106,52 +106,60 @@ def find_upgrades(packages, replaces):
     return Ap
 
 
-def upgrade(A=[], repo=None):
-    """Re-installs packages from the repository, trying to perform
-    a minimum or maximum number of upgrades according to options."""
+def upgrade(packages = [], repo = None):
+    """
+    Re-installs packages from the repository, trying to perform
+    a minimum or maximum number of upgrades according to options.
+
+        Parameters:
+            packages (list): A list of packages to upgrade.
+            repo (str): A repository to use.
+    """
 
     packagedb = pisi.db.packagedb.PackageDB()
     installdb = pisi.db.installdb.InstallDB()
     replaces = packagedb.get_replaces()
-    if not A:
-        # if A is empty, then upgrade all packages
-        A = installdb.list_installed()
+
+    if not packages:
+        # if packages is empty, then upgrade all packages
+        packages = installdb.list_installed()
 
     if repo:
         repo_packages = set(packagedb.list_packages(repo))
-        A = set(A).intersection(repo_packages)
+        packages = set(packages).intersection(repo_packages)
 
-    A_0 = A = set(A)
-    Ap = find_upgrades(A, replaces)
-    A = set(Ap)
+    deduped_packages = packages = set(packages)
+    upgrades = find_upgrades(packages, replaces)
+    packages = set(upgrades)
 
     # Force upgrading of installed but replaced packages or else they will be removed (they are obsoleted also).
     # This is not wanted for a replaced driver package (eg. nvidia-X).
-    A |= set(pisi.util.flatten_list(list(replaces.values())))
+    replaced = set(pisi.util.flatten_list(list(replaces.values())))
+    packages |= replaced
+    packages |= upgrade_base(packages)
 
-    A |= upgrade_base(A)
-
-    A = pisi.blacklist.exclude_from(A, ctx.const.blacklist)
+    # Figure out excluded packages
+    packages = pisi.blacklist.exclude_from(packages, ctx.const.blacklist)
 
     if ctx.get_option("exclude_from"):
-        A = pisi.blacklist.exclude_from(A, ctx.get_option("exclude_from"))
+        packages = pisi.blacklist.exclude_from(packages, ctx.get_option("exclude_from"))
 
     if ctx.get_option("exclude"):
-        A = pisi.blacklist.exclude(A, ctx.get_option("exclude"))
+        packages = pisi.blacklist.exclude(packages, ctx.get_option("exclude"))
 
-    ctx.ui.debug("A = %s" % str(A))
+    ctx.ui.debug("packages = %s" % str(packages))
 
-    if len(A) == 0:
+    if len(packages) == 0:
         ctx.ui.info(_("No packages to upgrade."))
         return True
 
-    ctx.ui.debug("A = %s" % str(A))
+    ctx.ui.debug("packages = %s" % str(packages))
 
     if not ctx.config.get_option("ignore_dependency"):
-        G_f, order = plan_upgrade(A, replaces=replaces)
+        graph, order = plan_upgrade(packages, replaces=replaces)
     else:
-        G_f = None
-        order = list(A)
+        graph = None
+        order = list(packages)
 
     componentdb = pisi.db.componentdb.ComponentDB()
 
@@ -159,9 +167,15 @@ def upgrade(A=[], repo=None):
     if componentdb.has_component("system.base"):
         order = operations.helper.reorder_base_packages(order)
 
-    ctx.ui.status(_("The following packages will be upgraded:"))
+    # Show what packages will be upgraded/fetched
+    if ctx.get_option("fetch_only"):
+        ctx.ui.status(_("The following packages will be downloaded:"))
+    else:
+        ctx.ui.status(_("The following packages will be upgraded:"))
+
     ctx.ui.info(util.format_by_columns(sorted(order)))
 
+    # Figure out the total download size
     total_size, cached_size = operations.helper.calculate_download_sizes(order)
     total_size, symbol = util.human_readable_size(total_size)
     ctx.ui.info(
@@ -170,26 +184,28 @@ def upgrade(A=[], repo=None):
         )
     )
 
+    if ctx.get_option("dry_run"):
+        return True
+
     needs_confirm = check_update_actions(order)
 
-    # NOTE: replaces.values() was already flattened above, it can be reused
-    if set(order) - A_0 - set(pisi.util.flatten_list(list(replaces.values()))):
+    # Figure out if we have additional packages to install
+    # for the upgrade to be successful
+    if set(order) - deduped_packages - replaced:
         ctx.ui.warning(_("There are extra packages due to dependencies."))
         needs_confirm = True
-
-    if ctx.get_option("dry_run"):
-        return
 
     if needs_confirm and not ctx.ui.confirm(_("Do you want to continue?")):
         return False
 
     ctx.ui.notify(ui.packagestogo, order=order)
 
+    # Detect package conflicts
     conflicts = []
     if not ctx.get_option("ignore_package_conflicts"):
         conflicts = operations.helper.check_conflicts(order, packagedb)
 
-    automatic = operations.helper.extract_automatic(A, order)
+    automatic = operations.helper.extract_automatic(packages, order)
     paths = []
     for x in order:
         ctx.ui.info(
@@ -200,15 +216,19 @@ def upgrade(A=[], repo=None):
         install_op = atomicoperations.Install.from_name(x)
         paths.append(install_op.package_fname)
 
-    # fetch to be upgraded packages but do not install them.
-    if ctx.get_option("fetch_only"):
-        return
+    ctx.ui.status(_("Finished downloading package upgrades."))
 
+    # Don't actually install if --fetch-only was set
+    if ctx.get_option("fetch_only"):
+        return True
+
+    # Handle package conflicts
     if conflicts:
         operations.remove.remove_conflicting_packages(conflicts)
 
     operations.remove.remove_obsoleted_packages()
 
+    # Install all the packages
     try:
         for path in paths:
             ctx.ui.info(
