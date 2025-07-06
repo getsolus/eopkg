@@ -9,7 +9,7 @@ body:
     attributes:
       label: Proposal
       description: Tell us about the feature you would like added.
-    validation:
+    validations:
       required: true
   - type: textarea
     id: use-cases
