@@ -13,6 +13,7 @@ import os
 import shutil
 import time
 import urllib.request, urllib.error, urllib.parse
+from urllib.error import URLError
 
 from pisi import translate as _
 
@@ -195,7 +196,7 @@ class Fetcher:
                             blocknum += 1
                             fetch_handler.update(blocknum, bs, size)
                     success = True
-            except IOError as e:
+            except URLError as e:
                 attempt += 1
                 if attempt == self._get_retry_attempts() + 1:
                     raise FetchError(
