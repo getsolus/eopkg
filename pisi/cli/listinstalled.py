@@ -37,6 +37,13 @@ Usage: list-installed
             help=_("Show automatically installed packages and the parent dependency"),
         )
         group.add_option(
+            "-e",
+            "--explicit",
+            action="store_true",
+            default=False,
+            help=_("Show installed packages that were installed by a user"),
+        )
+        group.add_option(
             "-b",
             "--with-build-host",
             action="store",
@@ -69,6 +76,11 @@ Usage: list-installed
 
     def run(self):
         self.init(database=True, write=False)
+
+        if self.options.automatic and self.options.explicit:
+            # TRANSLATORS: --explicit and --automatic are command line options and should not be translated.
+            ctx.ui.error(_("You cannot specify both --explicit and --automatic"))
+            return False
 
         if self.options.automatic:
             return self.run_automatic_only()
@@ -103,6 +115,13 @@ Usage: list-installed
         for pkg in installed:
             package = self.installdb.get_package(pkg)
             inst_info = self.installdb.get_info(pkg)
+
+            # Skip package if we only want to show explicitly installed
+            # packages to the user.
+            if self.options.explicit:
+                if package.name in self.installdb.list_auto_installed():
+                    continue
+
             if self.options.long:
                 ctx.ui.info(str(package))
                 ctx.ui.info(str(inst_info))

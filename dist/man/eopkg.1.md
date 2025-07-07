@@ -411,6 +411,15 @@ alias, if available. Most commands in eopkg support a short form.
         the package they are still associated with. Orphaned
         packages with no relationship will be clearly listed.
 
+        Cannot be used with `--explicit`.
+
+ * `-e`, `--explicit`:
+
+        Show a list of all packages that have been installed explicitly
+        by a user.
+
+        Cannot be used with `--automatic`.
+
  * `-b`, `--with-build-host`:
 
         Only show packages that come from a particular build host.
