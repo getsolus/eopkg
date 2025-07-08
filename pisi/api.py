@@ -886,6 +886,8 @@ def update_repo(repo, force=False):
 def __update_repo(repo, force=False):
     ctx.ui.action(_("Updating repository: %s") % repo)
     ctx.ui.notify(pisi.ui.updatingrepo, name=repo)
+    ctx.disable_keyboard_interrupts()
+
     repodb = pisi.db.repodb.RepoDB()
     index = pisi.index.Index()
     if repodb.has_repo(repo):
@@ -898,13 +900,17 @@ def __update_repo(repo, force=False):
                 ctx.ui.info(_("Updating database at any rate as requested"))
                 index.read_uri_of_repo(repouri, repo, force=force)
             else:
+                ctx.enable_keyboard_interrupts()
                 return False
 
         pisi.db.historydb.HistoryDB().update_repo(repo, repouri, "update")
         repodb.check_distribution(repo)
         ctx.ui.info(_("Package database updated."))
     else:
+        ctx.enable_keyboard_interrupts()
         raise pisi.Error(_("No repository named %s found.") % repo)
+
+    ctx.enable_keyboard_interrupts()
 
     return True
 
@@ -922,8 +928,12 @@ def rebuild_db(files=False):
     set_userinterface(ui)
     set_options(options)
 
+    ctx.disable_keyboard_interrupts()
+
     filesdb = pisi.db.filesdb.FilesDB()
     filesdb.init(force_rebuild=True)
+
+    ctx.enable_keyboard_interrupts()
 
 ############# FIXME: this was a quick fix. ##############################
 
