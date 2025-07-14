@@ -170,13 +170,10 @@ class Install(AtomicOperation):
         self.check_relations()
         self.check_operation()
 
-        ctx.disable_keyboard_interrupts()
-
         self.extract_install()
         self.store_pisi_files()
         self.update_databases()
 
-        ctx.enable_keyboard_interrupts()
         ctx.ui.close()
         if self.operation == UPGRADE:
             event = pisi.ui.upgraded
@@ -611,8 +608,6 @@ class Remove(AtomicOperation):
 
         self.check_dependencies()
 
-        ctx.disable_keyboard_interrupts()
-
         for fileinfo in self.files.list:
             if is_usr_merged_duplicate(self.files.list, fileinfo.path):
                 ctx.ui.debug("Not removing usr-merged file: %s" % fileinfo.path)
@@ -624,7 +619,6 @@ class Remove(AtomicOperation):
 
         self.remove_pisi_files()
 
-        ctx.enable_keyboard_interrupts()
         ctx.ui.close()
         ctx.ui.notify(pisi.ui.removed, package=self.package, files=self.files)
 

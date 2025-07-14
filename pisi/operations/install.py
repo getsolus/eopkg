@@ -140,6 +140,8 @@ def install_pkg_names(packages, reinstall=False):
             operations.remove.remove_conflicting_packages(conflicts)
 
     # Install all the packages
+    ctx.disable_keyboard_interrupts()
+
     try:
         for path in paths:
             ctx.ui.info(
@@ -156,6 +158,8 @@ def install_pkg_names(packages, reinstall=False):
         raise e
     finally:
         ctx.exec_usysconf()
+
+    ctx.enable_keyboard_interrupts()
 
     return True
 

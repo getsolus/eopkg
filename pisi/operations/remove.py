@@ -119,6 +119,8 @@ in the respective order to satisfy dependencies:
     ctx.ui.notify(ui.packagestogo, order=order)
 
     # Remove the packages.
+    ctx.disable_keyboard_interrupts()
+
     try:
         for package in order:
             if installdb.has_package(package):
@@ -129,6 +131,10 @@ in the respective order to satisfy dependencies:
         raise e
     finally:
         ctx.exec_usysconf()
+
+    ctx.enable_keyboard_interrupts()
+
+    return True
 
 
 def remove_orphans(ignore_dep=False, ignore_safety=False):

@@ -229,6 +229,8 @@ def upgrade(packages = [], repo = None):
     operations.remove.remove_obsoleted_packages()
 
     # Install all the packages
+    ctx.disable_keyboard_interrupts()
+
     try:
         for path in paths:
             ctx.ui.info(
@@ -245,6 +247,10 @@ def upgrade(packages = [], repo = None):
         raise e
     finally:
         ctx.exec_usysconf()
+
+    ctx.enable_keyboard_interrupts()
+
+    return True
 
 
 def plan_upgrade(A, force_replaced=True, replaces=None):
