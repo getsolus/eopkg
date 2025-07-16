@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import os
+import signal
 import sys
 import zipfile
 
@@ -14,6 +15,7 @@ import pisi.util as util
 import pisi.atomicoperations as atomicoperations
 import pisi.operations as operations
 import pisi.pgraph as pgraph
+import pisi.signalhandler as signalhandler
 import pisi.ui as ui
 import pisi.db
 
@@ -45,6 +47,7 @@ def install_pkg_names(packages, reinstall=False):
 
     installdb = pisi.db.installdb.InstallDB()
     packagedb = pisi.db.packagedb.PackageDB()
+    signal_handler = signalhandler.SignalHandler()
 
     packages = [str(package) for package in packages]  # FIXME: why do we still get unicode input here? :/ -- exa
 
@@ -141,7 +144,7 @@ def install_pkg_names(packages, reinstall=False):
 
     # Install all the packages
     ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
-    ctx.disable_keyboard_interrupts()
+    signal_handler.disable_signal(signal.SIGINT)
 
     try:
         for path in paths:
@@ -159,8 +162,6 @@ def install_pkg_names(packages, reinstall=False):
         raise e
     finally:
         ctx.exec_usysconf()
-
-    ctx.enable_keyboard_interrupts()
 
     return True
 

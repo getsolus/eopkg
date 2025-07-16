@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import os
+import signal
 import sys
 import optparse
 
@@ -12,6 +13,7 @@ import pisi.api
 import pisi.db
 import pisi.context as ctx
 import pisi.cli.command as command
+import pisi.signalhandler as signalhandler
 
 # Operation names for translation
 opttrans = {
@@ -37,6 +39,7 @@ Lists previous operations."""
     def __init__(self, args=None):
         super(History, self).__init__(args)
         self.historydb = pisi.db.historydb.HistoryDB()
+        self.signal_handler = signalhandler.SignalHandler()
 
     name = ("history", "hs")
 
@@ -146,6 +149,5 @@ Lists previous operations."""
                 self.takeback(opno)
                 return
 
-        ctx.disable_keyboard_interrupts()
+        self.signal_handler.disable_signal(signal.SIGINT)
         self.redirect_output(self.print_history)
-        ctx.enable_keyboard_interrupts()
