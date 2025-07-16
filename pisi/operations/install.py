@@ -140,6 +140,7 @@ def install_pkg_names(packages, reinstall=False):
             operations.remove.remove_conflicting_packages(conflicts)
 
     # Install all the packages
+    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     ctx.disable_keyboard_interrupts()
 
     try:

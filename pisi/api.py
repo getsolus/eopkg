@@ -886,6 +886,7 @@ def update_repo(repo, force=False):
 def __update_repo(repo, force=False):
     ctx.ui.action(_("Updating repository: %s") % repo)
     ctx.ui.notify(pisi.ui.updatingrepo, name=repo)
+    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     ctx.disable_keyboard_interrupts()
 
     repodb = pisi.db.repodb.RepoDB()
@@ -928,6 +929,7 @@ def rebuild_db(files=False):
     set_userinterface(ui)
     set_options(options)
 
+    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     ctx.disable_keyboard_interrupts()
 
     filesdb = pisi.db.filesdb.FilesDB()

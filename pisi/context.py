@@ -49,24 +49,16 @@ can_usysconf = True
 build_leftover = None
 
 
-def disable_keyboard_interrupts(should_hold: bool = True):
+def disable_keyboard_interrupts():
     """
     Temporarily disable keyboard interrupt signals.
-
-    Parameters:
-        should_hold (bool, optional): Whether the signal should be emitted when
-            being re-enabled. Defaults to True.
     """
-    sig and sig.disable_signal(signal.SIGINT, should_hold)
+    sig and sig.disable_signal(signal.SIGINT)
 
 
 def enable_keyboard_interrupts():
     """Re-enable keyboard interrupt signals."""
     sig and sig.enable_signal(signal.SIGINT)
-
-
-def keyboard_interrupt_disabled():
-    return sig and sig.signal_disabled(signal.SIGINT)
 
 
 def exec_usysconf():

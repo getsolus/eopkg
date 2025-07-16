@@ -229,6 +229,7 @@ def upgrade(packages = [], repo = None):
     operations.remove.remove_obsoleted_packages()
 
     # Install all the packages
+    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     ctx.disable_keyboard_interrupts()
 
     try:

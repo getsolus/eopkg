@@ -146,6 +146,6 @@ Lists previous operations."""
                 self.takeback(opno)
                 return
 
-        ctx.disable_keyboard_interrupts(should_hold=False)
+        ctx.disable_keyboard_interrupts()
         self.redirect_output(self.print_history)
         ctx.enable_keyboard_interrupts()

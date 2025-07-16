@@ -119,6 +119,7 @@ in the respective order to satisfy dependencies:
     ctx.ui.notify(ui.packagestogo, order=order)
 
     # Remove the packages.
+    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     ctx.disable_keyboard_interrupts()
 
     try:
