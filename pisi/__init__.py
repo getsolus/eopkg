@@ -9,8 +9,11 @@ import locale
 import logging
 import logging.handlers
 import os
+import signal
 import sys
 from importlib.resources import files
+
+import pisi.signalhandler as signalhandler
 
 
 locale.setlocale(locale.LC_ALL, "")
@@ -75,7 +78,9 @@ def init_logging():
 
 def _cleanup():
     """Close the database cleanly and do other cleanup."""
-    ctx.disable_keyboard_interrupts()
+    signal_handler = signalhandler.SignalHandler()
+
+    signal_handler.disable_signal(signal.SIGINT)
     if ctx.log:
         ctx.loghandler.flush()
         ctx.log.removeHandler(ctx.loghandler)
@@ -88,7 +93,7 @@ def _cleanup():
         os.unlink(ctx.build_leftover)
 
     ctx.ui.close()
-    ctx.enable_keyboard_interrupts()
+    signal_handler.enable_signal(signal.SIGINT)
 
 
 # Hack for pisi to work with non-patched Python. pisi needs

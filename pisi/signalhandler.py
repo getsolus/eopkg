@@ -3,43 +3,68 @@
 
 import signal
 
-exception = {signal.SIGINT: KeyboardInterrupt}
 
+class SignalWrapper:
+    """
+    Wraps a system signal, keeping track of the original signal
+    handler to restore when the signal is re-enabled.
 
-class Signal:
-    def __init__(self, sig):
+    Attributes:
+        signal (signal.Signals): The signal being wrapped.
+        old_handler (signal.Handlers): The original signal handler.
+    """
+
+    def __init__(self, sig: signal.Signals):
+        """
+        Create a new SignalWrapper instance.
+
+        Parameters:
+            sig (signal.Signals): The signal to wrap.
+        """
         self.signal = sig
-        self.oldhandler = signal.getsignal(sig)
-        self.pending = False
+        self.old_handler: signal.Handlers | None = signal.SIG_DFL
 
 
 class SignalHandler:
+    """
+    This class manages the disabling and enabling of system signals.
+    When a signal is disabled, the original handler is stored by our
+    handler so it can be restored when the signal becomes enabled.
+
+    Attributes:
+        signals (dict[signal.Signals, SignalWrapper]): Disabled signals
+            and their handlers.
+    """
+
     def __init__(self):
-        self.signals = {}
+        """Create a new SignalHandler instance."""
+        self.signals: dict[signal.Signals, SignalWrapper] = {}
 
-    def signal_handler(self, sig, frame):
-        signal.signal(sig, signal.SIG_IGN)
-        self.signals[sig].pending = True
+    def disable_signal(self, sig: signal.Signals):
+        """
+        Disables a system signal by setting the handler to our own signal
+        handler, storing the original handler in a dictionary.
 
-    def disable_signal(self, sig):
-        if sig not in list(self.signals.keys()):
-            self.signals[sig] = Signal(sig)
-            signal.signal(sig, self.signal_handler)
+        Parameters:
+            sig (signal.Signals): The signal to disable.
+        """
+        if sig not in self.signals:
+            wrapper = SignalWrapper(sig)
+            wrapper.old_handler = signal.signal(sig, signal.SIG_IGN)
+            self.signals[sig] = wrapper
 
-    def enable_signal(self, sig):
-        if sig in list(self.signals.keys()):
-            if self.signals[sig].oldhandler:
-                oldhandler = self.signals[sig].oldhandler
-            else:
-                oldhandler = signal.SIG_DFL
-            pending = self.signals[sig].pending
-            del self.signals[sig]
-            signal.signal(sig, oldhandler)
-            if pending:
-                raise exception[sig]
+    def enable_signal(self, sig: signal.Signals):
+        """
+        Enables a system signal, setting its handler to the original
+        handler, or the default handler if we don't have one stored.
 
-    def signal_disabled(self, sig):
-        return sig in list(self.signals.keys())
+        Parameters:
+            sig (signal.Signals): The signal to enable.
+        """
+        if not sig in self.signals:
+            return
 
-    def signal_pending(self, sig):
-        return self.signal_disabled(sig) and self.signals[sig].pending
+        wrapper = self.signals[sig]
+
+        signal.signal(sig, wrapper.old_handler)
+        del self.signals[sig]

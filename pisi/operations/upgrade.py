@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+import signal
 import sys
 
 from ordered_set import OrderedSet as set
@@ -12,6 +13,7 @@ import pisi.context as ctx
 import pisi.pgraph as pgraph
 import pisi.atomicoperations as atomicoperations
 import pisi.operations as operations
+import pisi.signalhandler as signalhandler
 import pisi.util as util
 import pisi.db
 import pisi.blacklist
@@ -119,6 +121,7 @@ def upgrade(packages = [], repo = None):
     packagedb = pisi.db.packagedb.PackageDB()
     installdb = pisi.db.installdb.InstallDB()
     replaces = packagedb.get_replaces()
+    signal_handler = signalhandler.SignalHandler()
 
     if not packages:
         # if packages is empty, then upgrade all packages
@@ -229,6 +232,9 @@ def upgrade(packages = [], repo = None):
     operations.remove.remove_obsoleted_packages()
 
     # Install all the packages
+    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
+    signal_handler.disable_signal(signal.SIGINT)
+
     try:
         for path in paths:
             ctx.ui.info(
@@ -245,6 +251,8 @@ def upgrade(packages = [], repo = None):
         raise e
     finally:
         ctx.exec_usysconf()
+
+    return True
 
 
 def plan_upgrade(A, force_replaced=True, replaces=None):

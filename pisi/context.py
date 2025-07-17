@@ -49,22 +49,6 @@ can_usysconf = True
 build_leftover = None
 
 
-def disable_keyboard_interrupts():
-    sig and sig.disable_signal(signal.SIGINT)
-
-
-def enable_keyboard_interrupts():
-    sig and sig.enable_signal(signal.SIGINT)
-
-
-def keyboard_interrupt_disabled():
-    return sig and sig.signal_disabled(signal.SIGINT)
-
-
-def keyboard_interrupt_pending():
-    return sig and sig.signal_pending(signal.SIGINT)
-
-
 def exec_usysconf():
     """Just stick this all in the one place"""
     global ui

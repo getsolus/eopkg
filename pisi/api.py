@@ -3,6 +3,7 @@
 
 import fcntl
 import os
+import signal
 import re
 from . import fetcher
 
@@ -33,6 +34,7 @@ import pisi.operations.history
 import pisi.operations.helper
 import pisi.operations.check
 import pisi.operations.build
+import pisi.signalhandler as signalhandler
 import pisi.errors
 
 
@@ -884,8 +886,13 @@ def update_repo(repo, force=False):
 
 
 def __update_repo(repo, force=False):
+    signal_handler = signalhandler.SignalHandler()
+
     ctx.ui.action(_("Updating repository: %s") % repo)
     ctx.ui.notify(pisi.ui.updatingrepo, name=repo)
+    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
+    signal_handler.disable_signal(signal.SIGINT)
+
     repodb = pisi.db.repodb.RepoDB()
     index = pisi.index.Index()
     if repodb.has_repo(repo):
@@ -912,6 +919,7 @@ def __update_repo(repo, force=False):
 # FIXME: rebuild_db is only here for filesdb and it really is ugly. we should not need any rebuild.
 @locked
 def rebuild_db(files=False):
+    signal_handler = signalhandler.SignalHandler()
 
     # save parameters and shutdown pisi
     options = ctx.config.options
@@ -921,6 +929,9 @@ def rebuild_db(files=False):
     # reinitialize everything
     set_userinterface(ui)
     set_options(options)
+
+    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
+    signal_handler.disable_signal(signal.SIGINT)
 
     filesdb = pisi.db.filesdb.FilesDB()
     filesdb.init(force_rebuild=True)

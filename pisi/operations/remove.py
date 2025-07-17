@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+import signal
 import sys
 
 from pisi import translate as _
@@ -9,6 +10,7 @@ import pisi
 import pisi.context as ctx
 import pisi.atomicoperations as atomicoperations
 import pisi.pgraph as pgraph
+import pisi.signalhandler as signalhandler
 import pisi.util as util
 import pisi.ui as ui
 import pisi.db
@@ -28,6 +30,7 @@ def remove(
 
     componentdb = pisi.db.componentdb.ComponentDB()
     installdb = pisi.db.installdb.InstallDB()
+    signal_handler = signalhandler.SignalHandler()
 
     should_ignore_safety = (not ctx.get_option("ignore_safety")
                             and not ctx.config.values.general.ignore_safety
@@ -119,6 +122,9 @@ in the respective order to satisfy dependencies:
     ctx.ui.notify(ui.packagestogo, order=order)
 
     # Remove the packages.
+    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
+    signal_handler.disable_signal(signal.SIGINT)
+
     try:
         for package in order:
             if installdb.has_package(package):
@@ -129,6 +135,8 @@ in the respective order to satisfy dependencies:
         raise e
     finally:
         ctx.exec_usysconf()
+
+    return True
 
 
 def remove_orphans(ignore_dep=False, ignore_safety=False):
