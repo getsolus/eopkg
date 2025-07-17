@@ -114,12 +114,16 @@ class PackageDB(lazydb.LazyDB):
             return (pkgConfigs, pkgConfigs32)
 
         if repo is None:
-            for repo in repodb.list_repos():
+            repos = repodb.list_repos()
+            # .reverse() doesn't work, so use the slice notation for reversing the non-empty list.
+            # This is necessary because we traverse the list in reverse order to solve the
+            # original problem, and now we need to reverse it back to the normal order
+            repos = repos[::-1] if repos is not None else None
+            for repo in repos:
                 doc = repodb.get_repo_doc(repo)
                 pkgConfig, pkgConfigs32 = map_providers(
                         doc, pkgConfigs, pkgConfigs32)
         else:
-            repodb = pisi.db.repodb.RepoDB()
             if repo not in repodb.list_repos(only_active=False):
                 raise Exception(_("Repo %s not found.") % repo)
             doc = repodb.get_repo_doc(repo)
