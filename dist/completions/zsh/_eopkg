@@ -1,0 +1,370 @@
+#compdef eopkg
+# ------------------------------------------------------------------------------
+#
+# Description
+# -----------
+#  Completion script for the eopkg package manager.
+#  (https://github.com/getsolus/eopkg)
+#
+# Authors
+# -------
+#
+#  * Evan Maddock <maddock.evan@vivaldi.net>
+#  * eopkg authors
+#
+# ------------------------------------------------------------------------------
+
+_commands=(
+  'add-repo:Add a repository'
+  'autoremove:Remove eopkg packages'
+  'blame:Information about the package owner and release'
+  'build:Build eopkg packages'
+  'check:Verify installation'
+  'clean:Clean stale locks'
+  'configure-pending:Configure pending packages'
+  'delete-cache:Delete cache files'
+  'delta:Create delta packages'
+  'disable-repo:Disable repository'
+  'enable-repo:Enable repository'
+  'fetch:Fetch a package'
+  'help:Prints help for given commands'
+  'history:History of pisi operations'
+  'index:Index eopkg files in a given directory'
+  'info:Display package information'
+  'install:Install eopkg packages'
+  'list-available:List available packages in the repositories'
+  'list-components:List available components'
+  'list-installed:Print the list of all installed packages'
+  'list-newest:List newest packages in the repositories'
+  'list-pending:List pending packages'
+  'list-repo:List repositories'
+  'list-upgrades:List packages to be upgraded'
+  'rebuild-db:Rebuild databases'
+  'remove:Remove eopkg packages'
+  'remove-orphans:Remove orphaned packages'
+  'remove-repo:Remove repositories'
+  'repo-priority:Set the priority of a repository'
+  'search:Search packages'
+  'search-file:Search for a file'
+  'update-repo:Update repository databases'
+  'upgrade:Upgrade eopkg packages'
+)
+
+_eopkg_commands() {
+  _describe 'command' _commands
+}
+
+_eopkg_installed_packages() {
+  # TODO: Figure out if we can pass along any -D option
+  local -a packages=($(eopkg list-installed | awk '{print $1;}'))
+  _describe 'package' packages
+}
+
+_eopkg_components() {
+  local -a components=($(eopkg list-components | awk '{print $1;}'))
+  _describe 'component' components
+}
+
+_eopkg_repos() {
+  local -a repos=($(eopkg list-repo | grep -v "/" | cut -d" " -f1))
+  _describe 'repo' repos
+}
+
+_eopkg_active_repos() {
+  local -a repos=($(eopkg list-repo | grep "active" | awk '{print $1}'))
+  _describe 'active-repos' repos
+}
+
+_eopkg_disabled_repos() {
+  local -a repos=($(eopkg list-repo | grep "inactive" | awk '{print $1}'))
+  _describe 'disabled-repos' repos
+}
+
+_eopkg() {
+  local context state state_descr line
+  typeset -A opt_args
+
+  _arguments \
+    '--version[Show the eopkg version number and exit]' \
+    '(-h --help)'{-h,--help}'[Show the help message and exit]' \
+    '(-D --destdir)'{-D,--destdir}':dirname:_files -/' \
+    '(-y --yes-all)'{-y,--yes-all}'[Assume yes in all yes/no queries]' \
+    '(-L --bandwidth-limit)'{-L,--bandwidth-limit}':limit:' \
+    '(-R --retry-attempts)'{-R,--retry-attempts}':retries:' \
+    '(-v --verbose)'{-v,--verbose}'[Detailed output]' \
+    '(-d --debug)'{-d,--debug}'[Show debugging information]' \
+    '(-N --no-color)'{-N,--no-color}'[Suppresses all coloring of eopkg output]' \
+    '1: :_eopkg_commands' \
+    '*:: :->command_args'
+
+  case $state in
+    command_args)
+      case "$words[1]" in
+        help)
+          _arguments \
+            '1: :_eopkg_commands'
+        ;;
+
+        add-repo|ar)
+          _arguments \
+            '--ignore-check[Ignore repository distribution check]' \
+            '--no-fetch[Does not fetch repository index and does not check distribution match]' \
+            '--at:pos:' \
+            '1:repo:' \
+            '2:indexuri:_files -g "eopkg-index.xml.xz"'
+        ;;
+
+        autoremove|rmf)
+          _arguments \
+            '--ignore-dependency[Do not take dependency information into account]' \
+            '--ignore-comar[Bypass comar configuration agent]' \
+            '--ignore-safety[Bypass safety switch]' \
+            '(-n --dry-run)'{-n,--dry-run}'[Do not perform any action, just show what would be done]' \
+            '--purge[Removes everything including changed config files of the package]' \
+            '*:package-name:_eopkg_installed_packages'
+        ;;
+
+        blame|bl)
+          _arguments \
+            '-r:release:' \
+            '(-a --all)'{-a,--all}'[Blame for all of the releases]' \
+            '*:package-name:_eopkg_installed_packages'
+        ;;
+
+        build|bi)
+          _arguments \
+            # Build steps
+            '--fetch[Break build after fetching the source archive]' \
+            '--unpack[Break build after unpacking the source archive]' \
+            '--setup[Break build after running configure step]' \
+            '--build[Break build after running compile step]' \
+            '--check[Break build after running check step]' \
+            '--install[Break build after running install step]' \
+            '--package[Create eopkg package]'\
+            # Build options
+            '(-q --quiet)'{-q,--quiet}'[Run pisi build operation without printing extra information]' \
+            '--ignore-dependency[Do not take dependency information into account]' \
+            '(-O --output-dir)'{-O,--output-dir}':dirname:_files -/' \
+            '--ignore-action-errors[Bypass errors from ActionsAPI]' \
+            '--ignore-safety[Bypass safety switch]' \
+            '--ignore-check[Bypass testing step]' \
+            '--create-static[Create a static package with ar files]' \
+            '(-F --package-format)'{-F,--package-format}":format:" \
+            '--use-quilt[Use quilt patch management system instead of GNU patch]' \
+            '--ignore-sandbox[Do not constrain build process inside the build folder]' \
+            '1:pspec:_files -g "pspec.xml"'
+        ;;
+
+        check)
+          _arguments \
+            '(-c --component)'{-c,--component}':component:_eopkg_components' \
+            '--config[Checks only changed config files of the packages]' \
+            '*:package-name:_eopkg_installed_packages'
+        ;;
+
+        configure-pending|cp)
+          _arguments \
+            '--ignore-dependency[Do not take dependency information into account]' \
+            '--ignore-comar[Bypass comar configuration agent]' \
+            '--ignore-safety[Bypass safety switch]' \
+            '(-n --dry-run)'{-n,--dry-run}'[Do not perform any action, just show what should be done]'
+        ;;
+
+        delta|dt)
+          _arguments \
+            '(-t --newest-package)'{-t,--newest-package}':package-name:_files -g "*.eopkg"' \
+            '(-O --output-dir)'{-O,--output-dir}':dirname:_files -/' \
+            '(-F --package-format)'{-F,--package-format}":format:" \
+            '*:package-name:_files -g "*.eopkg"'
+        ;;
+
+        disable-repo|dr)
+          _arguments \
+            '*:repo-name:_eopkg_active_repos'
+        ;;
+
+        enable-repo|er)
+          _arguments \
+            '*:repo-name:_eopkg_disabled_repos'
+        ;;
+
+        fetch|fc)
+          _arguments \
+            '(-O --output-dir)'{-O,--output-dir}':dirname:_files -/' \
+            '*:package-name:'
+        ;;
+
+        history|hs)
+          _arguments \
+            '(-l --last)'{-l,--last}':operations:' \
+            '(-s --snapshot)'{-s,--snapshot}'[Take snapshot of the current system]' \
+            '(-t --takeback)'{-t,--takeback}':operation:'
+        ;;
+
+        index|ix)
+          _arguments \
+            '(-a --absolute-urls)'{-a,--absolute-urls}'[Store absolute links for indexed files]' \
+            '(-o --output)'{-O,--output-dir}':dirname:_files -/' \
+            '--compression-types:types:->compression_args' \
+            '--skip-signing[Do not sign index]' \
+            '1:dirname:_files -/'
+        ;;
+
+        info)
+          _arguments \
+            '(-f --files)'{-f,--files}'[Show a list of package files]' \
+            '(-c --component)'{-c,--component}':component:_eopkg_components' \
+            '(-F --files-path)'{-F,--files-path}'[Show only paths]' \
+            '(-s --short)'{-s,--short}'[Do not show details]' \
+            '--xml[Output in xml format]' \
+            '*:package-name:_eopkg_installed_packages'
+        ;;
+
+        install|it)
+          _arguments \
+            '--ignore-dependency[Do not take dependency information into account]' \
+            '--ignore-comar[Bypass comar configuration agent]' \
+            '--ignore-safety[Bypass safety switch]' \
+            '(-n --dry-run)'{-n,--dry-run}'[Do not perform any action, just show what should be done]' \
+            '--reinstall[Reinstall already installed packages]' \
+            '--ignore-check[Ignore repository distribution check]' \
+            '--ignore-file-conflicts[Ignore file conflicts]' \
+            '--ignore-package-conflicts[Ignore package conflicts]' \
+            '--ignore-revdeps-of-deps-check[Do not check for updates in reverse dependencies of runtime dependencies when updates are available]' \
+            '(-c --component)'{-c,--component}':component:_eopkg_components' \
+            '(-r --repository)'{-r,--repository}':repo-name:_eopkg_active_repos' \
+            '(-f --fetch-only)'{-f,--fetch-only}'[Fetch updates but do not install]' \
+            '(-x --exclude)'{-x,--exclude}':pattern:' \
+            '--exclude-from:pattern:' \
+            '*:package-name:_files -g "*.eopkg"'
+        ;;
+
+        list-available|la)
+          _arguments \
+            '(-l --long)'{-l,--long}'[Show in long format]' \
+            '(-c --component)'{-c,--component}':component:_eopkg_components' \
+            '--uninstalled[Show uninstalled packages only]' \
+            '*:repo-name:_eopkg_active_repos'
+        ;;
+
+        list-components|lc)
+          _arguments \
+            '(-l --long)'{-l,--long}'[Show in long format]' \
+            '(-r --repository)'{-r,--repository}':repo-name:_eopkg_active_repos'
+        ;;
+
+        list-installed|li)
+          _arguments \
+            '(-a --automatic)'{-a,--automatic}'[Show automatically installed packages and the parent dependency]' \
+            '(-b --with-build-host)'{-b,--with-build-host}':host:' \
+            '(-l --long)'{-l,--long}'[Show in long format]' \
+            '(-c --component)'{-c,--component}':component:_eopkg_components' \
+            '(-i --install-info)'{-i,--install-info}'[Show detailed install info]'
+        ;;
+
+        list-newest|ln)
+          _arguments \
+            '(-s --since)'{-s,--since}':date:' \
+            '(-l --last)'{-l,--last}':update:' \
+            '*:repo-name:_eopkg_active_repos'
+        ;;
+
+        list-upgrades|lu)
+          _arguments \
+            '(-l --long)'{-l,--long}'[Show in long format]' \
+            '(-c --component)'{-c,--component}':component:_eopkg_components' \
+            '(-i --install-info)'{-i,--install-info}'[Show detailed install info]'
+        ;;
+
+        rebuild-db|rdb)
+          _arguments \
+            '(-f --files)'{-f,--files}'[Rebuild files database]'
+        ;;
+
+        remove|rm)
+          _arguments \
+            '--ignore-dependency[Do not take dependency information into account]' \
+            '--ignore-comar[Bypass comar configuration agent]' \
+            '--ignore-safety[Bypass safety switch]' \
+            '(-n --dry-run)'{-n,--dry-run}'[Do not perform any action, just show what should be done]' \
+            '--purge[Removes everything including changed config files of the package]' \
+            '(-c --component)'{-c,--component}':component:_eopkg_components' \
+            '*:package-name:_eopkg_installed_packages'
+        ;;
+
+        remove-orphans|rmo)
+          _arguments \
+            '--ignore-dependency[Do not take dependency information into account]' \
+            '--ignore-comar[Bypass comar configuration agent]' \
+            '--ignore-safety[Bypass safety switch]' \
+            '(-n --dry-run)'{-n,--dry-run}'[Do not perform any action, just show what should be done]' \
+            '--purge[Removes everything including changed config files of the package]'
+        ;;
+
+        remove_repo|rr)
+          _arguments \
+            '*:repo-name:_eopkg_repos'
+        ;;
+
+        search|sr)
+          _arguments \
+            '(-l --language)'{-l,--language}':lang:' \
+            '(-r --repository)'{-r,--repository}':repo-name:_eopkg_active_repos' \
+            '(-i --installdb)'{-i,--installdb}'[Search the installdb]' \
+            '--name[Search in the package name]' \
+            '--summary[Search in the package summary]' \
+            '--description[Search in the package description]' \
+            '*:term:'
+        ;;
+
+        search-file|sf)
+          _arguments \
+            '(-l --long)'{-l,--long}'[Show in long format]' \
+            '(-q --quiet)'{-q,--quiet}'[Show only package name]' \
+            '*:path:_files -/'
+        ;;
+
+        update-repo|ur)
+          _arguments \
+            '(-f --force)'{-f,--force}'[Update database in any case]' \
+            '*:repo-name:_eopkg_active_repos'
+        ;;
+
+        upgrade|up)
+          _arguments \
+            '--ignore-dependency[Do not take dependency information into account]' \
+            '--ignore-comar[Bypass comar configuration agent]' \
+            '--ignore-safety[Bypass safety switch]' \
+            '(-n --dry-run)'{-n,--dry-run}'[Do not perform any action, just show what should be done]' \
+            '--security-only[Security related package upgrades only]' \
+            '(-b --bypass-update-repo)'{-b,--bypass-update-repo}'[Do not update repositories]' \
+            '--ignore-file-conflicts[Ignore file conflicts]' \
+            '--ignore-package-conflicts[Ignore package conflicts]' \
+            '(-c --component)'{-c,--component}':component:_eopkg_components' \
+            '(-r --repository)'{-r,--repository}':repo-name:_eopkg_active_repos' \
+            '(-f --fetch-only)'{-f,--fetch-only}'[Fetch updates but do not install]' \
+            '(-x --exclude)'{-x,--exclude}':pattern:' \
+            '--exclude-from:pattern:' \
+            '*:package-name:_eopkg_installed_packages'
+        ;;
+      esac
+    ;;
+  esac
+
+  case $state in
+    compression_args)
+      local compression_types=(xz bz2)
+      _values -s ',' 'types' $compression_types
+    ;;
+  esac
+}
+
+_eopkg "$@"
+
+# Local Variables:
+# mode: Shell-Script
+# sh-indentation: 2
+# indent-tabs-mode: nil
+# sh-basic-offset: 2
+# End:
+# vim: ft=zsh sw=2 ts=2 et
