@@ -177,7 +177,10 @@ class Command(object):
             ui = pisi.cli.CLI()
 
         if write and not os.access(pisi.context.config.packages_dir(), os.W_OK):
-            raise pisi.cli.Error(_("You have to be root for this operation."))
+            try:
+                os.execv('/usr/bin/pkexec',  ['/usr/bin/pkexec', ] + sys.argv)
+            except:
+                raise pisi.cli.Error(_("You have to be root for this operation."))
 
         pisi.api.set_userinterface(ui)
         pisi.api.set_options(self.options)
