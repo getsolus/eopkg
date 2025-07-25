@@ -114,12 +114,13 @@ class PackageDB(lazydb.LazyDB):
             return (pkgConfigs, pkgConfigs32)
 
         if repo is None:
-            for repo in repodb.list_repos():
+            repos = repodb.list_repos()
+            repos = repos[::-1] if repos is not None else None
+            for repo in repos:
                 doc = repodb.get_repo_doc(repo)
                 pkgConfig, pkgConfigs32 = map_providers(
                         doc, pkgConfigs, pkgConfigs32)
         else:
-            repodb = pisi.db.repodb.RepoDB()
             if repo not in repodb.list_repos(only_active=False):
                 raise Exception(_("Repo %s not found.") % repo)
             doc = repodb.get_repo_doc(repo)
