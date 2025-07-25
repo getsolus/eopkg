@@ -17,7 +17,7 @@ longer needs to be built with bsddb/db5 support (for which upstream CPython supp
 
 ## Updating translations
 
-There are two parts to updating translations: compiling the strings to be translated, and pulling the translations. Since this project has been added to the [Solus Transifex organization](transifex.com/solus), both parts are relatively easy.
+There are two parts to updating translations: compiling the strings to be translated, and pulling the translations. Since this project has been added to the [Solus Transifex organization](https://explore.transifex.com/solus/), both parts are relatively easy.
 
 First, you need to have the Transifex CLI tool installed. If you do not have it installed, check out [their webpage](https://developers.transifex.com/docs/cli#installation) for instructions.
 
