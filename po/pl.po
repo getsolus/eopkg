@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-19 19:12-0400\n"
+"POT-Creation-Date: 2025-07-18 18:00-0400\n"
 "PO-Revision-Date: 2024-11-19 19:33+0000\n"
 "Last-Translator: pomon pl, 2025\n"
 "Language-Team: Polish (https://app.transifex.com/solus/teams/188714/pl/)\n"
@@ -629,90 +629,6 @@ msgstr "Wydanie zaktualizowane: %s <%s>\n"
 msgid "Update Date: %s\n"
 msgstr "Data aktualizacji: %s\n"
 
-#: pisi/cli/check.py:16
-msgid ""
-"Verify installation\n"
-"\n"
-"Usage: check [<package1> <package2> ... <packagen>]\n"
-"       check -c <component>\n"
-"\n"
-"<packagei>: package name\n"
-"\n"
-"A cryptographic checksum is stored for each installed\n"
-"file. Check command uses the checksums to verify a package.\n"
-"Just give the names of packages.\n"
-"\n"
-"If no packages are given, checks all installed packages.\n"
-msgstr ""
-
-#: pisi/cli/check.py:43
-msgid "check options"
-msgstr "wybierz opcje"
-
-#: pisi/cli/check.py:50
-msgid "Check installed packages under given component"
-msgstr "Sprawdź zainstalowane pakiety pod danym komponentem"
-
-#: pisi/cli/check.py:57
-msgid "Checks only changed config files of the packages"
-msgstr "Sprawdza tylko zmienione pliki konfiguracyjne pakietów"
-
-#: pisi/cli/check.py:73
-msgid "Checking all installed packages"
-msgstr "Sprawdzanie wszystkich zainstalowanych pakietów"
-
-#. Line prefix
-#: pisi/cli/check.py:82
-#, python-format
-msgid "Checking integrity of %s"
-msgstr "Weryfikacja integralności %s"
-
-#: pisi/cli/check.py:100
-msgid "Broken"
-msgstr "Uszkodzony"
-
-#: pisi/cli/check.py:105
-msgid "Unknown"
-msgstr "Nieznany"
-
-#: pisi/cli/check.py:107
-msgid "OK"
-msgstr "OK"
-
-#: pisi/cli/check.py:113
-#, python-format
-msgid "Missing file: /%s"
-msgstr "Brakujący plik: /%s"
-
-#: pisi/cli/check.py:118
-#, python-format
-msgid "Access denied: /%s"
-msgstr "Odmowa dostępu: /%s"
-
-#: pisi/cli/check.py:123
-#, python-format
-msgid "Corrupted file: /%s"
-msgstr "Uszkodzony plik: /%s"
-
-#: pisi/cli/check.py:129
-#, python-format
-msgid "Modified configuration file: /%s"
-msgstr "Zmodyfikowany plik konfiguracyjny: /%s"
-
-#. Package is not installed
-#: pisi/cli/check.py:136
-#, python-format
-msgid "Package %s not installed"
-msgstr "Pakiet %s nie jest zainstalowany"
-
-#: pisi/cli/check.py:142
-msgid ""
-"Pisi was unable to check the integrity of packages which contain files that you don't have read access.\n"
-"Running the check under a privileged user may help fixing this problem."
-msgstr ""
-"Pisi nie mógł sprawdzić integralności pakietów, które zawierają pliki, do których nie masz dostępu do odczytu.\n"
-" Uruchomienie sprawdzania jako użytkownik uprzywilejowany może pomóc w rozwiązaniu tego problemu."
-
 #: pisi/cli/clean.py:11
 msgid ""
 "Clean stale locks\n"
@@ -854,413 +770,6 @@ msgstr ""
 "\n"
 "Wyłączone repozytoria nie są brane pod uwagę w operacjach\n"
 
-#: pisi/cli/fetch.py:16
-msgid ""
-"Fetch a package\n"
-"\n"
-"Usage: fetch [<package1> <package2> ... <packagen>]\n"
-"\n"
-"<packagei>: package name\n"
-"\n"
-"Downloads the given pisi packages to working directory\n"
-msgstr ""
-"Pobierz pakiet\n"
-"\n"
-"Użycie: fetch [<package1> <package2> ... <packagen>]\n"
-"\n"
-"<packagei>: nazwa pakietu\n"
-"\n"
-"Pobiera podane pakiety pisi do katalogu roboczego\n"
-
-#: pisi/cli/fetch.py:32
-msgid "fetch options"
-msgstr "opcje pobierania"
-
-#: pisi/cli/fetch.py:42
-msgid "Output directory for the fetched packages"
-msgstr "Katalog wyjściowy dla pobranych pakietów"
-
-#: pisi/cli/history.py:18
-msgid "upgrade"
-msgstr "aktualizuj"
-
-#: pisi/cli/history.py:19
-msgid "remove"
-msgstr "usuń"
-
-#: pisi/cli/history.py:20
-msgid "emerge"
-msgstr ""
-
-#: pisi/cli/history.py:21
-msgid "install"
-msgstr "zainstaluj"
-
-#: pisi/cli/history.py:22
-msgid "snapshot"
-msgstr "zrzut"
-
-#: pisi/cli/history.py:23
-msgid "takeback"
-msgstr "odzyskiwanie"
-
-#: pisi/cli/history.py:24
-msgid "repository update"
-msgstr "aktualizuj repozytorium"
-
-#: pisi/cli/history.py:30
-msgid ""
-"History of pisi operations\n"
-"\n"
-"Usage: history\n"
-"\n"
-"Lists previous operations."
-msgstr ""
-"Historia operacji pisi\n"
-"\n"
-"Użycie: history\n"
-"\n"
-"Wyświetla poprzednie operacje."
-
-#: pisi/cli/history.py:44
-msgid "history options"
-msgstr "opcje historii"
-
-#: pisi/cli/history.py:55
-msgid "Output only the last n operations"
-msgstr "Wyświetl tylko ostatnie n operacji"
-
-#: pisi/cli/history.py:62
-msgid "Take snapshot of the current system"
-msgstr "Zrób migawkę obecnego systemu"
-
-#: pisi/cli/history.py:70
-msgid "Takeback to the state after the given operation finished"
-msgstr "Powróć do stanu po zakończeniu podanej operacji"
-
-#: pisi/cli/history.py:81
-#, python-format
-msgid "Operation #%d: %s"
-msgstr "Operacja #%d: %s"
-
-#: pisi/cli/history.py:82
-#, python-format
-msgid "Date: %s %s"
-msgstr "Data: %s %s"
-
-#: pisi/cli/history.py:87
-#, python-format
-msgid "    * There are %d packages in this snapshot."
-msgstr "    * W tej migawce znajduje się %d pakietów."
-
-#: pisi/cli/info.py:17
-msgid ""
-"Display package information\n"
-"\n"
-"Usage: info <package1> <package2> ... <packagen>\n"
-"\n"
-"<packagei> is either a package name or a .pisi file,\n"
-msgstr ""
-"Wyświetl informacje o pakiecie\n"
-"\n"
-"Użycie: info <package1> <package2> ... <packagen>\n"
-"\n"
-"<packagei> to nazwa pakietu lub plik .pisi,\n"
-
-#: pisi/cli/info.py:34
-msgid "info options"
-msgstr "opcje szczegółów"
-
-#: pisi/cli/info.py:44
-msgid "Show a list of package files."
-msgstr "Pokaż listę plików pakietu."
-
-#: pisi/cli/info.py:51
-msgid "Info about the given component"
-msgstr "Informacje o danym komponencie"
-
-#: pisi/cli/info.py:58
-msgid "Show only paths."
-msgstr "Pokaż tylko ścieżki."
-
-#: pisi/cli/info.py:65
-msgid "Do not show details"
-msgstr "Nie pokazuj szczegółów"
-
-#: pisi/cli/info.py:68
-msgid "Output in xml format"
-msgstr "Wynik w formacie XML"
-
-#: pisi/cli/info.py:138
-msgid "Reverse Dependencies:"
-msgstr "Zależności odwrotne:"
-
-#: pisi/cli/info.py:151
-#, python-format
-msgid "Package file: %s"
-msgstr "Plik pakietu: %s"
-
-#: pisi/cli/info.py:166
-msgid "[inst] "
-msgstr "[inst] "
-
-#: pisi/cli/info.py:168
-msgid "Installed package:"
-msgstr "Zainstalowany pakiet:"
-
-#: pisi/cli/info.py:172
-#, python-format
-msgid "%s package is not installed"
-msgstr "%s pakiet nie jest zainstalowany"
-
-#: pisi/cli/info.py:178
-msgid "[binary] "
-msgstr "[binarne] "
-
-#: pisi/cli/info.py:180
-#, python-format
-msgid "Package found in %s repository:"
-msgstr "Pakiet znaleziony w repozytorium  %s:"
-
-#: pisi/cli/info.py:183
-#, python-format
-msgid "%s package is not found in binary repositories"
-msgstr "%s pakiet nie został znaleziony w repozytoriach binarnych"
-
-#: pisi/cli/install.py:16
-msgid ""
-"Install eopkg packages\n"
-"\n"
-"Usage: install <package1> <package2> ... <packagen>\n"
-"\n"
-"You may use filenames, URI's or package names for packages. If you have\n"
-"specified a package name, it should exist in a specified repository.\n"
-"\n"
-"You can also specify components instead of package names, which will be\n"
-"expanded to package names.\n"
-msgstr ""
-"Instaluj pakiety eopkg\n"
-"\n"
-"Użycie: install <package1> <package2> ... <packagen>\n"
-"\n"
-"Możesz użyć nazw plików, URI lub nazw pakietów. Jeśli podałeś\n"
-"nazwę pakietu, powinien on istnieć w określonym repozytorium.\n"
-"\n"
-"Możesz również podać komponenty zamiast nazw pakietów, które będą\n"
-"rozszerzane do nazw pakietów.\n"
-
-#: pisi/cli/install.py:35
-msgid "install options"
-msgstr "opcje instalacji"
-
-#: pisi/cli/install.py:43
-msgid "Reinstall already installed packages"
-msgstr "Ponowna instalacja już zainstalowanych pakietów"
-
-#: pisi/cli/install.py:49
-msgid "Skip distribution release and architecture check"
-msgstr "Pomiń sprawdzanie wersji dystrybucji i architektury"
-
-#: pisi/cli/install.py:55 pisi/cli/upgrade.py:61
-msgid "Ignore file conflicts"
-msgstr "Ignoruj konflikty plików"
-
-#: pisi/cli/install.py:61 pisi/cli/upgrade.py:67
-msgid "Ignore package conflicts"
-msgstr "Ignoruj konflikty pakietów"
-
-#: pisi/cli/install.py:68
-msgid ""
-"Don't check for updates in reverse dependencies of runtime dependencies when"
-" updates are available"
-msgstr ""
-"Nie sprawdzaj aktualizacji w zależnościach odwrotnych zależności "
-"uruchomieniowych, gdy aktualizacje będą dostępne"
-
-#: pisi/cli/install.py:76
-msgid "Install component's and recursive components' packages"
-msgstr "Instaluj pakiety komponentów i pakiety komponentów rekurencyjnych"
-
-#: pisi/cli/install.py:84
-msgid "Name of the component's repository"
-msgstr "Nazwa repozytorium komponentu"
-
-#: pisi/cli/install.py:91 pisi/cli/upgrade.py:89
-msgid "Fetch upgrades but do not install."
-msgstr "Pobierz aktualizacje, ale ich nie instaluj."
-
-#: pisi/cli/install.py:99
-msgid ""
-"When installing packages, ignore packages and components whose basenames "
-"match pattern."
-msgstr ""
-"Podczas instalacji pakietów, ignoruj pakiety i komponenty, których nazwy "
-"podstawowe pasują do wzorca."
-
-#: pisi/cli/install.py:107
-msgid ""
-"When installing packages, ignore packages and components whose basenames "
-"match any pattern contained in file."
-msgstr ""
-"Podczas instalacji pakietów, ignoruj pakiety i komponenty, których nazwy "
-"podstawowe pasują do wzorców zawartych w pliku."
-
-#: pisi/cli/install.py:141
-#, python-format
-msgid "There is no component named %s"
-msgstr "Nie ma komponentu o nazwie %s"
-
-#: pisi/cli/install.py:159
-msgid ""
-"Updates available, checking reverse dependencies of runtime dependencies for"
-" safety."
-msgstr ""
-"Dostępne aktualizacje, sprawdzanie zależności odwrotnych zależności "
-"uruchomieniowych w celu zagwarantowania bezpieczeństwa."
-
-#: pisi/cli/listavailable.py:17
-msgid ""
-"List available packages in the repositories\n"
-"\n"
-"Usage: list-available [ <repo1> <repo2> ... repon ]\n"
-"\n"
-"Gives a brief list of eopkg packages published in the specified\n"
-"repositories. If no repository is specified, we list packages in\n"
-"all repositories.\n"
-msgstr ""
-
-#: pisi/cli/listavailable.py:35
-msgid "list-available options"
-msgstr "opcje listowania dostępnych"
-
-#: pisi/cli/listavailable.py:41 pisi/cli/listcomponents.py:37
-#: pisi/cli/listinstalled.py:51 pisi/cli/listupgrades.py:39
-#: pisi/cli/searchfile.py:35
-msgid "Show in long format"
-msgstr "Pokaż w formacie długim"
-
-#: pisi/cli/listavailable.py:48
-msgid "List available packages under given component"
-msgstr "Lista dostępnych pakietów w danym komponencie"
-
-#: pisi/cli/listavailable.py:55
-msgid "Show uninstalled packages only"
-msgstr "Pokaż tylko pakiety, które nie zostały zainstalowane"
-
-#: pisi/cli/listavailable.py:64
-msgid "Installed packages are shown in this color"
-msgstr "Zainstalowane pakiety są wyświetlane w tym kolorze"
-
-#: pisi/cli/listavailable.py:73
-#, python-format
-msgid "Repository : %s\n"
-msgstr "Repozytorium: %s\n"
-
-#: pisi/cli/listcomponents.py:15
-msgid ""
-"List available components\n"
-"\n"
-"Usage: list-components\n"
-"\n"
-"Gives a brief list of eopkg components published in the\n"
-"repositories.\n"
-msgstr ""
-"Lista dostępnych komponentów\n"
-"\n"
-"Użycie: list-components\n"
-"\n"
-"Podaje krótką listę komponentów eopkg opublikowanych w\n"
-"repozytoriach.\n"
-
-#: pisi/cli/listcomponents.py:31
-msgid "list-components options"
-msgstr "opcje listowania komponentów"
-
-#: pisi/cli/listcomponents.py:45 pisi/cli/search.py:49
-msgid "Name of the source or package repository"
-msgstr "Nazwa źródła lub repozytorium pakietów"
-
-#: pisi/cli/listinstalled.py:17
-msgid ""
-"Print the list of all installed packages\n"
-"\n"
-"Usage: list-installed\n"
-msgstr ""
-"Wyświetl listę wszystkich zainstalowanych pakietów\n"
-"\n"
-"Użycie: list-installed\n"
-
-#: pisi/cli/listinstalled.py:31
-msgid "list-installed options"
-msgstr "opcje listowania zainstalowanych"
-
-#: pisi/cli/listinstalled.py:37
-msgid "Show automatically installed packages and the parent dependency"
-msgstr "Pokaż automatycznie zainstalowane pakiety oraz zależność nadrzędną"
-
-#: pisi/cli/listinstalled.py:44
-msgid "Only list the installed packages built by the given host"
-msgstr "Pokaż tylko zainstalowane pakiety zbudowane przez dany host"
-
-#: pisi/cli/listinstalled.py:58
-msgid "List installed packages under given component"
-msgstr "Lista zainstalowanych pakietów w danym komponencie"
-
-#: pisi/cli/listinstalled.py:65 pisi/cli/listupgrades.py:53
-msgid "Show detailed install info"
-msgstr "Pokaż szczegółowe informacje o instalacji"
-
-#: pisi/cli/listinstalled.py:97 pisi/cli/listupgrades.py:83
-msgid ""
-"Package Name          |St|        Version|  Rel.|  Distro|             Date"
-msgstr ""
-"Nazwa pakietu        |St|        Wersja|  Wyd.|  Distro|             Data"
-
-#: pisi/cli/listinstalled.py:134
-msgid "Orphaned package"
-msgstr "Pakiet osierocony"
-
-#: pisi/cli/listnewest.py:16
-msgid ""
-"List newest packages in the repositories\n"
-"\n"
-"Usage: list-newest [ <repo1> <repo2> ... repon ]\n"
-"\n"
-"Gives a list of eopkg newly published packages in the specified\n"
-"repositories. If no repository is specified, we list the new\n"
-"packages from all repositories.\n"
-msgstr ""
-
-#: pisi/cli/listnewest.py:34
-msgid "list-newest options"
-msgstr "opcje listowania najnowszych"
-
-#: pisi/cli/listnewest.py:41
-msgid ""
-"List new packages added to repository after this given date formatted as "
-"yyyy-mm-dd"
-msgstr ""
-"Lista nowych pakietów dodanych do repozytorium po tej dacie w formacie yyyy-"
-"mm-dd"
-
-#: pisi/cli/listnewest.py:50
-msgid ""
-"List new packages added to repository after last nth previous repository "
-"update"
-msgstr ""
-"Lista nowych pakietów dodanych do repozytorium po ostatniej n-tej "
-"aktualizacji repozytorium"
-
-#: pisi/cli/listnewest.py:81
-#, python-format
-msgid "Packages added to %s since %s:\n"
-msgstr "Pakiety dodane do %s od %s:\n"
-
-#: pisi/cli/listnewest.py:83
-#, python-format
-msgid "Packages added to %s:"
-msgstr "Pakiety dodane do %s:"
-
 #: pisi/cli/listpending.py:13
 msgid ""
 "List pending packages\n"
@@ -1301,32 +810,6 @@ msgstr "nieaktywny"
 #, python-format
 msgid "%s [%s]"
 msgstr "%s [%s]"
-
-#: pisi/cli/listupgrades.py:17
-msgid ""
-"List packages to be upgraded\n"
-"\n"
-"Usage: list-upgrades\n"
-"\n"
-"Lists the packages that will be upgraded.\n"
-msgstr ""
-"Lista pakietów do zaktualizowania\n"
-"\n"
-"Użycie: list-upgrades\n"
-"\n"
-"Lista pakietów, które będą zaktualizowane.\n"
-
-#: pisi/cli/listupgrades.py:33
-msgid "list-upgrades options"
-msgstr "opcje listowania aktualizacji"
-
-#: pisi/cli/listupgrades.py:46
-msgid "List upgradable packages under given component"
-msgstr "Lista pakietów do aktualizacji w danym komponencie"
-
-#: pisi/cli/listupgrades.py:72 pisi/operations/upgrade.py:145
-msgid "No packages to upgrade."
-msgstr "Brak pakietów do zaktualizowania."
 
 #: pisi/cli/rebuilddb.py:15
 msgid ""
@@ -1428,89 +911,6 @@ msgstr ""
 "\n"
 "Usuń wszystkie informacje o repozytoriach z systemu.\n"
 
-#: pisi/cli/search.py:16
-msgid ""
-"Search packages\n"
-"\n"
-"Usage: search <term1> <term2> ... <termn>\n"
-"\n"
-"Finds a package containing specified search terms\n"
-"in summary, description, and package name fields.\n"
-"Default search is done in package database. Use\n"
-"options to search in install database or source\n"
-"database.\n"
-msgstr ""
-"Szukaj pakietów\n"
-"\n"
-"Użycie: search <termin1> <termin2> ... <terminn>\n"
-"\n"
-"Znajduje pakiet zawierający podane terminy wyszukiwania\n"
-"w polach podsumowania, opisu i nazwy pakietu.\n"
-"Domyślne wyszukiwanie odbywa się w bazie pakietów. Użyj\n"
-"opcji, aby przeszukiwać bazę instalacji lub bazę\n"
-"źródłową.\n"
-
-#: pisi/cli/search.py:34
-msgid "search options"
-msgstr "opcje wyszukiwania"
-
-#: pisi/cli/search.py:41
-msgid "Summary and description language"
-msgstr "Język podsumowania i opisu"
-
-#: pisi/cli/search.py:56
-msgid "Search in installdb"
-msgstr "Szukaj w bazie instalacji"
-
-#: pisi/cli/search.py:62
-msgid "Search in the package name"
-msgstr "Szukaj w nazwie pakietu"
-
-#: pisi/cli/search.py:68
-msgid "Search in the package summary"
-msgstr "Szukaj w podsumowaniu pakietu"
-
-#: pisi/cli/search.py:74
-msgid "Search in the package description"
-msgstr "Szukaj w opisie pakietu"
-
-#: pisi/cli/searchfile.py:15
-msgid ""
-"Search for a file\n"
-"\n"
-"Usage: search-file <path1> <path2> ... <pathn>\n"
-"\n"
-"Finds the installed package which contains the specified file.\n"
-msgstr ""
-"Szukaj pliku\n"
-"\n"
-"Użycie: search-file <ścieżka1> <ścieżka2> ... <ścieżkan>\n"
-"\n"
-"Znajduje zainstalowany pakiet, który zawiera określony plik.\n"
-
-#: pisi/cli/searchfile.py:29
-msgid "search-file options"
-msgstr "opcje wyszukiwania pliku"
-
-#: pisi/cli/searchfile.py:42
-msgid "Show only package name"
-msgstr "Pokaż tylko nazwę pakietu"
-
-#: pisi/cli/searchfile.py:50
-#, python-format
-msgid "Package %s has file /%s"
-msgstr "Pakiet %s zawiera plik /%s"
-
-#: pisi/cli/searchfile.py:53
-#, python-format
-msgid "Path '%s' does not belong to an installed package"
-msgstr "Ścieżka '%s' nie należy do zainstalowanego pakietu"
-
-#: pisi/cli/searchfile.py:65
-#, python-format
-msgid "Searching for %s"
-msgstr "Szukam: %s"
-
 #: pisi/cli/updaterepo.py:15
 msgid ""
 "Update repository databases\n"
@@ -1538,85 +938,6 @@ msgstr "opcje aktualizacji repozytoriów"
 #: pisi/cli/updaterepo.py:39
 msgid "Update database in any case"
 msgstr "Aktualizuj bazę danych w każdym przypadku"
-
-#: pisi/cli/upgrade.py:16
-msgid ""
-"Upgrade eopkg packages\n"
-"\n"
-"Usage: Upgrade [<package1> <package2> ... <packagen>]\n"
-"\n"
-"<packagei>: package name\n"
-"\n"
-"Upgrades the entire system if no package names are given\n"
-"\n"
-"You may use only package names to specify packages because\n"
-"the package upgrade operation is defined only with respect\n"
-"to repositories. If you have specified a package name, it\n"
-"should exist in the package repositories. If you just want to\n"
-"reinstall a package from a eopkg file, use the install command.\n"
-"\n"
-"You can also specify components instead of package names, which will be\n"
-"expanded to package names.\n"
-msgstr ""
-"Aktualizacja pakietów eopkg\n"
-"\n"
-"Użycie: Upgrade [<pakiet1> <pakiet2> ... <pakietn>]\n"
-"\n"
-"<pakieti>: nazwa pakietu\n"
-"\n"
-"Aktualizuje cały system, jeśli nie podano nazw pakietów\n"
-"\n"
-"Możesz używać tylko nazw pakietów, aby określić pakiety, ponieważ\n"
-"operacja aktualizacji pakietu jest definiowana tylko w kontekście\n"
-"repozytoriów. Jeśli podałeś nazwę pakietu, powinien on istnieć w repozytoriach pakietów.\n"
-"Jeśli chcesz tylko ponownie zainstalować pakiet z pliku eopkg, użyj polecenia install.\n"
-"\n"
-"Możesz również podać komponenty zamiast nazw pakietów, które zostaną\n"
-"rozszerzone do nazw pakietów.\n"
-
-#: pisi/cli/upgrade.py:41
-msgid "upgrade options"
-msgstr "opcje aktualizacji"
-
-#: pisi/cli/upgrade.py:48
-msgid "Security related package upgrades only"
-msgstr "Tylko aktualizacje pakietów związane z bezpieczeństwem"
-
-#: pisi/cli/upgrade.py:55
-msgid "Do not update repositories"
-msgstr "Nie aktualizuj repozytoriów"
-
-#: pisi/cli/upgrade.py:74
-msgid "Upgrade component's and recursive components' packages"
-msgstr "Aktualizuj pakiety komponentu i komponentów rekurencyjnych"
-
-#: pisi/cli/upgrade.py:82
-msgid "Name of the to be upgraded packages' repository"
-msgstr "Nazwa repozytorium pakietów do zaktualizowania"
-
-#: pisi/cli/upgrade.py:97
-msgid ""
-"When upgrading system, ignore packages and components whose basenames match "
-"pattern."
-msgstr ""
-"Podczas aktualizacji systemu zignoruj pakiety i komponenty, których nazwy "
-"pasują do wzorca."
-
-#: pisi/cli/upgrade.py:105
-msgid ""
-"When upgrading system, ignore packages and components whose basenames match "
-"any pattern contained in file."
-msgstr ""
-"Podczas aktualizacji systemu zignoruj pakiety i komponenty, których nazwy "
-"pasują do wzorca zawartego w pliku."
-
-#: pisi/cli/upgrade.py:120
-msgid "Updating repositories"
-msgstr "Aktualizowanie repozytoriów"
-
-#: pisi/cli/upgrade.py:124
-msgid "Will not update repositories"
-msgstr "Nie zostaną zaktualizowane repozytoria"
 
 #: pisi/cli/build.py:15
 msgid ""
@@ -1722,6 +1043,8 @@ msgid ""
 "Building packages is not supported when eopkg is compiled with nuitka. "
 "Please use eopkg.py3 instead."
 msgstr ""
+"Budowanie pakietów nie jest obsługiwane, gdy eopkg jest skompilowany z "
+"nuitka. Użyj zamiast tego eopkg.py3."
 
 #: pisi/cli/command.py:19
 msgid "Command lacks name"
@@ -1775,13 +1098,15 @@ msgstr "Wyłącza kolorowanie wyjścia eopkg"
 msgid ""
 "HTTP Basic-Auth is no longer supported. Please reconfigure your repository."
 msgstr ""
+"Uwierzytelnianie HTTP Basic-Auth nie jest już obsługiwane. Proszę "
+"skonfigurować ponownie repozytorium."
 
 #: pisi/cli/command.py:165
 #, python-format
 msgid "Destination directory %s does not exist. Creating directory.\n"
 msgstr "Katalog docelowy %s nie istnieje. Tworzenie katalogu. \n"
 
-#: pisi/cli/command.py:180 pisi/api.py:51
+#: pisi/cli/command.py:180 pisi/api.py:53
 msgid "You have to be root for this operation."
 msgstr "Musisz być zalogowany jako \"root\" by wykonać tą operacje."
 
@@ -1880,6 +1205,8 @@ msgid ""
 "Comma-separated compression types for index file. Valid options are \"xz\" "
 "and \"bz2\". Defaults to \"xz\"."
 msgstr ""
+"Typy kompresji dla pliku indeksu, oddzielone przecinkami. Ważne opcje to "
+"\"xz\" i \"bz2\". Domyślnie \"xz\"."
 
 #: pisi/cli/index.py:66
 msgid "Do not sign index."
@@ -1909,31 +1236,749 @@ msgstr ""
 
 #: pisi/cli/repopriority.py:44
 msgid "Priority needs to be a number"
-msgstr ""
+msgstr "Priorytet musi być liczbą"
 
 #: pisi/cli/repopriority.py:48
 #, python-format
 msgid "Unable to locate repository file, expected: %s"
-msgstr ""
+msgstr "Nie można znaleźć pliku repozytorium, oczekiwano: %s"
 
 #: pisi/cli/repopriority.py:62
 #, python-format
 msgid "Repository %s does not exist. Cannot reorder."
-msgstr ""
+msgstr "Repozytorium %snie istnieje. Nie można zmienić kolejności."
 
 #: pisi/cli/repopriority.py:71
 msgid "Failed to write to repository file"
-msgstr ""
+msgstr "Nie udało się zapisać do pliku repozytorium"
 
 #: pisi/cli/repopriority.py:73
 #, python-format
 msgid "Repo %s reordered to position %s."
+msgstr "Repozytorium %s przesunięto na pozycję %s."
+
+#: pisi/cli/check.py:16
+msgid ""
+"Verify installation\n"
+"\n"
+"Usage: check [<package1> <package2> ... <packagen>]\n"
+"       check -c <component>\n"
+"\n"
+"<packagei>: package name\n"
+"\n"
+"A cryptographic checksum is stored for each installed\n"
+"file. Check command uses the checksums to verify a package.\n"
+"Just give the names of packages.\n"
+"\n"
+"If no packages are given, checks all installed packages.\n"
+msgstr ""
+"Sprawdź instalację\n"
+"\n"
+"Użycie: zaznacz [<package1><package2> ... <packagen>]\n"
+"sprawdź -c <component>\n"
+"\n"
+"<packagei>: nazwa pakietu\n"
+"\n"
+"Suma kryptograficzna jest przechowywana dla każdego zainstalowanego\n"
+"pliku. Polecenie check używa sum kontrolnych do weryfikacji pakietu.\n"
+"Wystarczy podać nazwy pakietów.\n"
+"\n"
+"Jeśli nie podano żadnych pakietów, sprawdzane są wszystkie zainstalowane pakiety.\n"
+
+#: pisi/cli/check.py:43
+msgid "check options"
+msgstr "wybierz opcje"
+
+#: pisi/cli/check.py:50
+msgid "Check installed packages under given component"
+msgstr "Sprawdź zainstalowane pakiety pod danym komponentem"
+
+#: pisi/cli/check.py:57
+msgid "Checks only changed config files of the packages"
+msgstr "Sprawdza tylko zmienione pliki konfiguracyjne pakietów"
+
+#: pisi/cli/check.py:73
+msgid "Checking all installed packages"
+msgstr "Sprawdzanie wszystkich zainstalowanych pakietów"
+
+#. Line prefix
+#: pisi/cli/check.py:82
+#, python-format
+msgid "Checking integrity of %s"
+msgstr "Weryfikacja integralności %s"
+
+#: pisi/cli/check.py:100
+msgid "Broken"
+msgstr "Uszkodzony"
+
+#: pisi/cli/check.py:105
+msgid "Unknown"
+msgstr "Nieznany"
+
+#: pisi/cli/check.py:107
+msgid "OK"
+msgstr "OK"
+
+#: pisi/cli/check.py:113
+#, python-format
+msgid "Missing file: /%s"
+msgstr "Brakujący plik: /%s"
+
+#: pisi/cli/check.py:118
+#, python-format
+msgid "Access denied: /%s"
+msgstr "Odmowa dostępu: /%s"
+
+#: pisi/cli/check.py:123
+#, python-format
+msgid "Corrupted file: /%s"
+msgstr "Uszkodzony plik: /%s"
+
+#: pisi/cli/check.py:129
+#, python-format
+msgid "Modified configuration file: /%s"
+msgstr "Zmodyfikowany plik konfiguracyjny: /%s"
+
+#. Package is not installed
+#: pisi/cli/check.py:136
+#, python-format
+msgid "Package %s not installed"
+msgstr "Pakiet %s nie jest zainstalowany"
+
+#: pisi/cli/check.py:142
+msgid ""
+"Could not check the integrity of packages which contain files your user did not have permission to read.\n"
+"Running the check under a privileged user may help to fix this problem."
+msgstr ""
+"Nie można zweryfikować integralności pakietów, które zawierają pliki, do których użytkownik nie miał uprawnień do odczytu. \n"
+"Uruchomienie weryfikacji jako użytkownik z uprawnieniami może pomóc rozwiązać ten problem."
+
+#: pisi/cli/fetch.py:16
+msgid ""
+"Fetch a package\n"
+"\n"
+"Usage: fetch [<package1> <package2> ... <packagen>]\n"
+"\n"
+"<packagei>: package name\n"
+"\n"
+"Downloads the given pisi packages to working directory\n"
+msgstr ""
+"Pobierz pakiet\n"
+"\n"
+"Użycie: fetch [<package1> <package2> ... <packagen>]\n"
+"\n"
+"<packagei>: nazwa pakietu\n"
+"\n"
+"Pobiera podane pakiety pisi do katalogu roboczego\n"
+
+#: pisi/cli/fetch.py:32
+msgid "fetch options"
+msgstr "opcje pobierania"
+
+#: pisi/cli/fetch.py:42
+msgid "Output directory for the fetched packages"
+msgstr "Katalog wyjściowy dla pobranych pakietów"
+
+#: pisi/cli/fetch.py:53 pisi/cli/info.py:75 pisi/cli/install.py:121
+#: pisi/cli/listavailable.py:63 pisi/cli/listcomponents.py:53
+#: pisi/cli/listnewest.py:59 pisi/cli/listupgrades.py:61 pisi/cli/search.py:86
+#: pisi/cli/searchfile.py:63 pisi/cli/upgrade.py:120
+msgid "No active repositories found"
+msgstr "Nie znaleziono aktywnych repozytoriów"
+
+#: pisi/cli/info.py:17
+msgid ""
+"Display package information\n"
+"\n"
+"Usage: info <package1> <package2> ... <packagen>\n"
+"\n"
+"<packagei> is either a package name or a .pisi file,\n"
+msgstr ""
+"Wyświetl informacje o pakiecie\n"
+"\n"
+"Użycie: info <package1> <package2> ... <packagen>\n"
+"\n"
+"<packagei> to nazwa pakietu lub plik .pisi,\n"
+
+#: pisi/cli/info.py:34
+msgid "info options"
+msgstr "opcje szczegółów"
+
+#: pisi/cli/info.py:44
+msgid "Show a list of package files."
+msgstr "Pokaż listę plików pakietu."
+
+#: pisi/cli/info.py:51
+msgid "Info about the given component"
+msgstr "Informacje o danym komponencie"
+
+#: pisi/cli/info.py:58
+msgid "Show only paths."
+msgstr "Pokaż tylko ścieżki."
+
+#: pisi/cli/info.py:65
+msgid "Do not show details"
+msgstr "Nie pokazuj szczegółów"
+
+#: pisi/cli/info.py:68
+msgid "Output in xml format"
+msgstr "Wynik w formacie XML"
+
+#: pisi/cli/info.py:142
+msgid "Reverse Dependencies:"
+msgstr "Zależności odwrotne:"
+
+#: pisi/cli/info.py:155
+#, python-format
+msgid "Package file: %s"
+msgstr "Plik pakietu: %s"
+
+#: pisi/cli/info.py:170
+msgid "[inst] "
+msgstr "[inst] "
+
+#: pisi/cli/info.py:172
+msgid "Installed package:"
+msgstr "Zainstalowany pakiet:"
+
+#: pisi/cli/info.py:176
+#, python-format
+msgid "%s package is not installed"
+msgstr "%s pakiet nie jest zainstalowany"
+
+#: pisi/cli/info.py:182
+msgid "[binary] "
+msgstr "[binarne] "
+
+#: pisi/cli/info.py:184
+#, python-format
+msgid "Package found in %s repository:"
+msgstr "Pakiet znaleziony w repozytorium  %s:"
+
+#: pisi/cli/info.py:187
+#, python-format
+msgid "%s package is not found in binary repositories"
+msgstr "%s pakiet nie został znaleziony w repozytoriach binarnych"
+
+#: pisi/cli/install.py:16
+msgid ""
+"Install eopkg packages\n"
+"\n"
+"Usage: install <package1> <package2> ... <packagen>\n"
+"\n"
+"You may use filenames, URI's or package names for packages. If you have\n"
+"specified a package name, it should exist in a specified repository.\n"
+"\n"
+"You can also specify components instead of package names, which will be\n"
+"expanded to package names.\n"
+msgstr ""
+"Instaluj pakiety eopkg\n"
+"\n"
+"Użycie: install <package1> <package2> ... <packagen>\n"
+"\n"
+"Możesz użyć nazw plików, URI lub nazw pakietów. Jeśli podałeś\n"
+"nazwę pakietu, powinien on istnieć w określonym repozytorium.\n"
+"\n"
+"Możesz również podać komponenty zamiast nazw pakietów, które będą\n"
+"rozszerzane do nazw pakietów.\n"
+
+#: pisi/cli/install.py:35
+msgid "install options"
+msgstr "opcje instalacji"
+
+#: pisi/cli/install.py:43
+msgid "Reinstall already installed packages"
+msgstr "Ponowna instalacja już zainstalowanych pakietów"
+
+#: pisi/cli/install.py:49
+msgid "Skip distribution release and architecture check"
+msgstr "Pomiń sprawdzanie wersji dystrybucji i architektury"
+
+#: pisi/cli/install.py:55 pisi/cli/upgrade.py:61
+msgid "Ignore file conflicts"
+msgstr "Ignoruj konflikty plików"
+
+#: pisi/cli/install.py:61 pisi/cli/upgrade.py:67
+msgid "Ignore package conflicts"
+msgstr "Ignoruj konflikty pakietów"
+
+#: pisi/cli/install.py:68
+msgid ""
+"Don't check for updates in reverse dependencies of runtime dependencies when"
+" updates are available"
+msgstr ""
+"Nie sprawdzaj aktualizacji w zależnościach odwrotnych zależności "
+"uruchomieniowych, gdy aktualizacje będą dostępne"
+
+#: pisi/cli/install.py:76
+msgid "Install component's and recursive components' packages"
+msgstr "Instaluj pakiety komponentów i pakiety komponentów rekurencyjnych"
+
+#: pisi/cli/install.py:84
+msgid "Name of the component's repository"
+msgstr "Nazwa repozytorium komponentu"
+
+#: pisi/cli/install.py:91 pisi/cli/upgrade.py:89
+msgid "Fetch upgrades but do not install."
+msgstr "Pobierz aktualizacje, ale ich nie instaluj."
+
+#: pisi/cli/install.py:99
+msgid ""
+"When installing packages, ignore packages and components whose basenames "
+"match pattern."
+msgstr ""
+"Podczas instalacji pakietów, ignoruj pakiety i komponenty, których nazwy "
+"podstawowe pasują do wzorca."
+
+#: pisi/cli/install.py:107
+msgid ""
+"When installing packages, ignore packages and components whose basenames "
+"match any pattern contained in file."
+msgstr ""
+"Podczas instalacji pakietów, ignoruj pakiety i komponenty, których nazwy "
+"podstawowe pasują do wzorców zawartych w pliku."
+
+#: pisi/cli/install.py:145
+#, python-format
+msgid "There is no component named %s"
+msgstr "Nie ma komponentu o nazwie %s"
+
+#: pisi/cli/install.py:163
+msgid ""
+"Updates available, checking reverse dependencies of runtime dependencies for"
+" safety."
+msgstr ""
+"Dostępne aktualizacje, sprawdzanie zależności odwrotnych zależności "
+"uruchomieniowych w celu zagwarantowania bezpieczeństwa."
+
+#: pisi/cli/listavailable.py:17
+msgid ""
+"List available packages in the repositories\n"
+"\n"
+"Usage: list-available [ <repo1> <repo2> ... repon ]\n"
+"\n"
+"Gives a brief list of eopkg packages published in the specified\n"
+"repositories. If no repository is specified, we list packages in\n"
+"all repositories.\n"
+msgstr ""
+"Wyświetl listę dostępnych pakietów w repozytoriach\n"
+"\n"
+"Użycie: list-available [ <repo1><repo2> ... repon ]\n"
+"\n"
+"Podaje krótką listę pakietów eopkg opublikowanych w określonym\n"
+"repozytoria. Jeśli nie określono żadnego repozytorium, wyświetlamy pakiety w\n"
+"wszystkie repozytoria.\n"
+
+#: pisi/cli/listavailable.py:35
+msgid "list-available options"
+msgstr "opcje listowania dostępnych"
+
+#: pisi/cli/listavailable.py:41 pisi/cli/listcomponents.py:37
+#: pisi/cli/listupgrades.py:39 pisi/cli/searchfile.py:35
+#: pisi/cli/listinstalled.py:58
+msgid "Show in long format"
+msgstr "Pokaż w formacie długim"
+
+#: pisi/cli/listavailable.py:48
+msgid "List available packages under given component"
+msgstr "Lista dostępnych pakietów w danym komponencie"
+
+#: pisi/cli/listavailable.py:55
+msgid "Show uninstalled packages only"
+msgstr "Pokaż tylko pakiety, które nie zostały zainstalowane"
+
+#: pisi/cli/listavailable.py:68
+msgid "Installed packages are shown in this color"
+msgstr "Zainstalowane pakiety są wyświetlane w tym kolorze"
+
+#: pisi/cli/listavailable.py:77
+#, python-format
+msgid "Repository : %s\n"
+msgstr "Repozytorium: %s\n"
+
+#: pisi/cli/listcomponents.py:15
+msgid ""
+"List available components\n"
+"\n"
+"Usage: list-components\n"
+"\n"
+"Gives a brief list of eopkg components published in the\n"
+"repositories.\n"
+msgstr ""
+"Lista dostępnych komponentów\n"
+"\n"
+"Użycie: list-components\n"
+"\n"
+"Podaje krótką listę komponentów eopkg opublikowanych w\n"
+"repozytoriach.\n"
+
+#: pisi/cli/listcomponents.py:31
+msgid "list-components options"
+msgstr "opcje listowania komponentów"
+
+#: pisi/cli/listcomponents.py:45 pisi/cli/search.py:49
+msgid "Name of the source or package repository"
+msgstr "Nazwa źródła lub repozytorium pakietów"
+
+#: pisi/cli/listnewest.py:16
+msgid ""
+"List newest packages in the repositories\n"
+"\n"
+"Usage: list-newest [ <repo1> <repo2> ... repon ]\n"
+"\n"
+"Gives a list of eopkg newly published packages in the specified\n"
+"repositories. If no repository is specified, we list the new\n"
+"packages from all repositories.\n"
+msgstr ""
+"Wyświetl najnowsze pakiety w repozytoriach\n"
+"\n"
+"Użycie: lista-najnowszych [ <repo1><repo2> ... repon ]\n"
+"\n"
+"Podaje listę nowo opublikowanych pakietów eopkg w określonym\n"
+"repozytoria. Jeśli nie określono żadnego repozytorium, wyświetlamy nowe\n"
+"pakiety ze wszystkich repozytoriów.\n"
+
+#: pisi/cli/listnewest.py:34
+msgid "list-newest options"
+msgstr "opcje listowania najnowszych"
+
+#: pisi/cli/listnewest.py:41
+msgid ""
+"List new packages added to repository after this given date formatted as "
+"yyyy-mm-dd"
+msgstr ""
+"Lista nowych pakietów dodanych do repozytorium po tej dacie w formacie yyyy-"
+"mm-dd"
+
+#: pisi/cli/listnewest.py:50
+msgid ""
+"List new packages added to repository after last nth previous repository "
+"update"
+msgstr ""
+"Lista nowych pakietów dodanych do repozytorium po ostatniej n-tej "
+"aktualizacji repozytorium"
+
+#: pisi/cli/listnewest.py:85
+#, python-format
+msgid "Packages added to %s since %s:\n"
+msgstr "Pakiety dodane do %s od %s:\n"
+
+#: pisi/cli/listnewest.py:87
+#, python-format
+msgid "Packages added to %s:"
+msgstr "Pakiety dodane do %s:"
+
+#: pisi/cli/listupgrades.py:17
+msgid ""
+"List packages to be upgraded\n"
+"\n"
+"Usage: list-upgrades\n"
+"\n"
+"Lists the packages that will be upgraded.\n"
+msgstr ""
+"Lista pakietów do zaktualizowania\n"
+"\n"
+"Użycie: list-upgrades\n"
+"\n"
+"Lista pakietów, które będą zaktualizowane.\n"
+
+#: pisi/cli/listupgrades.py:33
+msgid "list-upgrades options"
+msgstr "opcje listowania aktualizacji"
+
+#: pisi/cli/listupgrades.py:46
+msgid "List upgradable packages under given component"
+msgstr "Lista pakietów do aktualizacji w danym komponencie"
+
+#: pisi/cli/listupgrades.py:53 pisi/cli/listinstalled.py:72
+msgid "Show detailed install info"
+msgstr "Pokaż szczegółowe informacje o instalacji"
+
+#: pisi/cli/listupgrades.py:77 pisi/operations/upgrade.py:156
+msgid "No packages to upgrade."
+msgstr "Brak pakietów do zaktualizowania."
+
+#: pisi/cli/listupgrades.py:88 pisi/cli/listinstalled.py:109
+msgid ""
+"Package Name          |St|        Version|  Rel.|  Distro|             Date"
+msgstr ""
+"Nazwa pakietu        |St|        Wersja|  Wyd.|  Distro|             Data"
+
+#: pisi/cli/search.py:16
+msgid ""
+"Search packages\n"
+"\n"
+"Usage: search <term1> <term2> ... <termn>\n"
+"\n"
+"Finds a package containing specified search terms\n"
+"in summary, description, and package name fields.\n"
+"Default search is done in package database. Use\n"
+"options to search in install database or source\n"
+"database.\n"
+msgstr ""
+"Szukaj pakietów\n"
+"\n"
+"Użycie: search <termin1> <termin2> ... <terminn>\n"
+"\n"
+"Znajduje pakiet zawierający podane terminy wyszukiwania\n"
+"w polach podsumowania, opisu i nazwy pakietu.\n"
+"Domyślne wyszukiwanie odbywa się w bazie pakietów. Użyj\n"
+"opcji, aby przeszukiwać bazę instalacji lub bazę\n"
+"źródłową.\n"
+
+#: pisi/cli/search.py:34
+msgid "search options"
+msgstr "opcje wyszukiwania"
+
+#: pisi/cli/search.py:41
+msgid "Summary and description language"
+msgstr "Język podsumowania i opisu"
+
+#: pisi/cli/search.py:56
+msgid "Search in installdb"
+msgstr "Szukaj w bazie instalacji"
+
+#: pisi/cli/search.py:62
+msgid "Search in the package name"
+msgstr "Szukaj w nazwie pakietu"
+
+#: pisi/cli/search.py:68
+msgid "Search in the package summary"
+msgstr "Szukaj w podsumowaniu pakietu"
+
+#: pisi/cli/search.py:74
+msgid "Search in the package description"
+msgstr "Szukaj w opisie pakietu"
+
+#: pisi/cli/searchfile.py:15
+msgid ""
+"Search for a file\n"
+"\n"
+"Usage: search-file <path1> <path2> ... <pathn>\n"
+"\n"
+"Finds the installed package which contains the specified file.\n"
+msgstr ""
+"Szukaj pliku\n"
+"\n"
+"Użycie: search-file <ścieżka1> <ścieżka2> ... <ścieżkan>\n"
+"\n"
+"Znajduje zainstalowany pakiet, który zawiera określony plik.\n"
+
+#: pisi/cli/searchfile.py:29
+msgid "search-file options"
+msgstr "opcje wyszukiwania pliku"
+
+#: pisi/cli/searchfile.py:42
+msgid "Show only package name"
+msgstr "Pokaż tylko nazwę pakietu"
+
+#: pisi/cli/searchfile.py:50
+#, python-format
+msgid "Package %s has file /%s"
+msgstr "Pakiet %s zawiera plik /%s"
+
+#: pisi/cli/searchfile.py:53
+#, python-format
+msgid "Path '%s' does not belong to an installed package"
+msgstr "Ścieżka '%s' nie należy do zainstalowanego pakietu"
+
+#: pisi/cli/searchfile.py:69
+#, python-format
+msgid "Searching for %s"
+msgstr "Szukam: %s"
+
+#: pisi/cli/upgrade.py:16
+msgid ""
+"Upgrade eopkg packages\n"
+"\n"
+"Usage: Upgrade [<package1> <package2> ... <packagen>]\n"
+"\n"
+"<packagei>: package name\n"
+"\n"
+"Upgrades the entire system if no package names are given\n"
+"\n"
+"You may use only package names to specify packages because\n"
+"the package upgrade operation is defined only with respect\n"
+"to repositories. If you have specified a package name, it\n"
+"should exist in the package repositories. If you just want to\n"
+"reinstall a package from a eopkg file, use the install command.\n"
+"\n"
+"You can also specify components instead of package names, which will be\n"
+"expanded to package names.\n"
+msgstr ""
+"Aktualizacja pakietów eopkg\n"
+"\n"
+"Użycie: Upgrade [<pakiet1> <pakiet2> ... <pakietn>]\n"
+"\n"
+"<pakieti>: nazwa pakietu\n"
+"\n"
+"Aktualizuje cały system, jeśli nie podano nazw pakietów\n"
+"\n"
+"Możesz używać tylko nazw pakietów, aby określić pakiety, ponieważ\n"
+"operacja aktualizacji pakietu jest definiowana tylko w kontekście\n"
+"repozytoriów. Jeśli podałeś nazwę pakietu, powinien on istnieć w repozytoriach pakietów.\n"
+"Jeśli chcesz tylko ponownie zainstalować pakiet z pliku eopkg, użyj polecenia install.\n"
+"\n"
+"Możesz również podać komponenty zamiast nazw pakietów, które zostaną\n"
+"rozszerzone do nazw pakietów.\n"
+
+#: pisi/cli/upgrade.py:41
+msgid "upgrade options"
+msgstr "opcje aktualizacji"
+
+#: pisi/cli/upgrade.py:48
+msgid "Security related package upgrades only"
+msgstr "Tylko aktualizacje pakietów związane z bezpieczeństwem"
+
+#: pisi/cli/upgrade.py:55
+msgid "Do not update repositories"
+msgstr "Nie aktualizuj repozytoriów"
+
+#: pisi/cli/upgrade.py:74
+msgid "Upgrade component's and recursive components' packages"
+msgstr "Aktualizuj pakiety komponentu i komponentów rekurencyjnych"
+
+#: pisi/cli/upgrade.py:82
+msgid "Name of the to be upgraded packages' repository"
+msgstr "Nazwa repozytorium pakietów do zaktualizowania"
+
+#: pisi/cli/upgrade.py:97
+msgid ""
+"When upgrading system, ignore packages and components whose basenames match "
+"pattern."
+msgstr ""
+"Podczas aktualizacji systemu zignoruj pakiety i komponenty, których nazwy "
+"pasują do wzorca."
+
+#: pisi/cli/upgrade.py:105
+msgid ""
+"When upgrading system, ignore packages and components whose basenames match "
+"any pattern contained in file."
+msgstr ""
+"Podczas aktualizacji systemu zignoruj pakiety i komponenty, których nazwy "
+"pasują do wzorca zawartego w pliku."
+
+#: pisi/cli/upgrade.py:124
+msgid "Updating repositories"
+msgstr "Aktualizowanie repozytoriów"
+
+#: pisi/cli/upgrade.py:128
+msgid "Will not update repositories"
+msgstr "Nie zostaną zaktualizowane repozytoria"
+
+#: pisi/cli/history.py:20
+msgid "upgrade"
+msgstr "aktualizuj"
+
+#: pisi/cli/history.py:21
+msgid "remove"
+msgstr "usuń"
+
+#: pisi/cli/history.py:22
+msgid "emerge"
 msgstr ""
 
-#: pisi/db/componentdb.py:85
+#: pisi/cli/history.py:23
+msgid "install"
+msgstr "zainstaluj"
+
+#: pisi/cli/history.py:24
+msgid "snapshot"
+msgstr "zrzut"
+
+#: pisi/cli/history.py:25
+msgid "takeback"
+msgstr "odzyskiwanie"
+
+#: pisi/cli/history.py:26
+msgid "repository update"
+msgstr "aktualizuj repozytorium"
+
+#: pisi/cli/history.py:32
+msgid ""
+"History of pisi operations\n"
+"\n"
+"Usage: history\n"
+"\n"
+"Lists previous operations."
+msgstr ""
+"Historia operacji pisi\n"
+"\n"
+"Użycie: history\n"
+"\n"
+"Wyświetla poprzednie operacje."
+
+#: pisi/cli/history.py:47
+msgid "history options"
+msgstr "opcje historii"
+
+#: pisi/cli/history.py:58
+msgid "Output only the last n operations"
+msgstr "Wyświetl tylko ostatnie n operacji"
+
+#: pisi/cli/history.py:65
+msgid "Take snapshot of the current system"
+msgstr "Zrób migawkę obecnego systemu"
+
+#: pisi/cli/history.py:73
+msgid "Takeback to the state after the given operation finished"
+msgstr "Powróć do stanu po zakończeniu podanej operacji"
+
+#: pisi/cli/history.py:84
 #, python-format
-msgid "Component %s not found"
-msgstr "Komponent %s nie znaleziony"
+msgid "Operation #%d: %s"
+msgstr "Operacja #%d: %s"
+
+#: pisi/cli/history.py:85
+#, python-format
+msgid "Date: %s %s"
+msgstr "Data: %s %s"
+
+#: pisi/cli/history.py:90
+#, python-format
+msgid "    * There are %d packages in this snapshot."
+msgstr "    * W tej migawce znajduje się %d pakietów."
+
+#: pisi/cli/listinstalled.py:17
+msgid ""
+"Print the list of all installed packages\n"
+"\n"
+"Usage: list-installed\n"
+msgstr ""
+"Wyświetl listę wszystkich zainstalowanych pakietów\n"
+"\n"
+"Użycie: list-installed\n"
+
+#: pisi/cli/listinstalled.py:31
+msgid "list-installed options"
+msgstr "opcje listowania zainstalowanych"
+
+#: pisi/cli/listinstalled.py:37
+msgid "Show automatically installed packages and the parent dependency"
+msgstr "Pokaż automatycznie zainstalowane pakiety oraz zależność nadrzędną"
+
+#: pisi/cli/listinstalled.py:44
+msgid "Show installed packages that were installed by a user"
+msgstr ""
+"Pokaż zainstalowane pakiety, które zostały zainstalowane przez użytkownika"
+
+#: pisi/cli/listinstalled.py:51
+msgid "Only list the installed packages built by the given host"
+msgstr "Pokaż tylko zainstalowane pakiety zbudowane przez dany host"
+
+#: pisi/cli/listinstalled.py:65
+msgid "List installed packages under given component"
+msgstr "Lista zainstalowanych pakietów w danym komponencie"
+
+#. TRANSLATORS: --explicit and --automatic are command line options and should
+#. not be translated.
+#: pisi/cli/listinstalled.py:82
+msgid "You cannot specify both --explicit and --automatic"
+msgstr "Nie można określić jednocześnie opcji --explicit i --automatic"
+
+#: pisi/cli/listinstalled.py:153
+msgid "Orphaned package"
+msgstr "Pakiet osierocony"
 
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
@@ -1976,47 +2021,10 @@ msgstr ""
 msgid "Package %s is not installed"
 msgstr "Pakiet %s nie jest zainstalowany"
 
-#: pisi/db/itembyrepo.py:30
+#: pisi/db/componentdb.py:87
 #, python-format
-msgid "%s not found in any repository."
-msgstr "%s nie znaleziono w żadnym repozytorium."
-
-#: pisi/db/itembyrepo.py:40
-#, python-format
-msgid "Repo item %s not found"
-msgstr "Element repozytorium %s nie znaleziony"
-
-#: pisi/db/itembyrepo.py:50 pisi/db/itembyrepo.py:61 pisi/db/itembyrepo.py:71
-#, python-format
-msgid "Repository %s does not exist."
-msgstr "Repozytorium %s nie istnieje."
-
-#: pisi/db/packagedb.py:199 pisi/db/packagedb.py:205
-#, python-format
-msgid "Package %s not found."
-msgstr "Pakiet %s nie znaleziony."
-
-#: pisi/db/repodb.py:197
-#, python-format
-msgid "%s repository needs to be updated"
-msgstr "Repozytorium %s wymaga aktualizacji"
-
-#: pisi/db/repodb.py:205
-msgid ""
-"Error parsing repository index information. Index file does not exist or is "
-"malformed."
-msgstr ""
-"Błąd podczas parsowania informacji o indeksie repozytorium. Plik indeksu nie"
-" istnieje lub jest uszkodzony."
-
-#: pisi/db/repodb.py:318
-#, python-format
-msgid ""
-"Repository '%s' is not compatible with your distribution. Repository is "
-"disabled."
-msgstr ""
-"Repozytorium '%s' nie jest kompatybilne z twoją dystrybucją. Repozytorium "
-"zostało wyłączone."
+msgid "Component %s not found"
+msgstr "Komponent %s nie znaleziony"
 
 #: pisi/db/filesdb.py:168
 #, python-format
@@ -2102,10 +2110,10 @@ msgstr "Do tej pory dodano: %s"
 #, python-format
 msgid ""
 "\n"
-"One package added in total."
+"%(num)d package added in total."
 msgid_plural ""
 "\n"
-"%s packages added in total."
+"%(num)d packages added in total."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -2117,6 +2125,53 @@ msgstr[3] ""
 #, python-format
 msgid "Done rebuilding FilesDB (version: %s)"
 msgstr "Zakończono odbudowę FilesDB (wersja: %s)"
+
+#: pisi/db/repodb.py:197
+#, python-format
+msgid "%s repository needs to be updated"
+msgstr "Repozytorium %s wymaga aktualizacji"
+
+#: pisi/db/repodb.py:205
+msgid ""
+"Error parsing repository index information. Index file does not exist or is "
+"malformed."
+msgstr ""
+"Błąd podczas parsowania informacji o indeksie repozytorium. Plik indeksu nie"
+" istnieje lub jest uszkodzony."
+
+#: pisi/db/repodb.py:318
+#, python-format
+msgid ""
+"Repository '%s' is not compatible with your distribution. Repository is "
+"disabled."
+msgstr ""
+"Repozytorium '%s' nie jest kompatybilne z twoją dystrybucją. Repozytorium "
+"zostało wyłączone."
+
+#: pisi/db/itembyrepo.py:30
+#, python-format
+msgid "%s not found in any repository."
+msgstr "%s nie znaleziono w żadnym repozytorium."
+
+#: pisi/db/itembyrepo.py:40
+#, python-format
+msgid "Repo item %s not found"
+msgstr "Element repozytorium %s nie znaleziony"
+
+#: pisi/db/itembyrepo.py:50 pisi/db/itembyrepo.py:61 pisi/db/itembyrepo.py:71
+#, python-format
+msgid "Repository %s does not exist."
+msgstr "Repozytorium %s nie istnieje."
+
+#: pisi/db/packagedb.py:124
+#, python-format
+msgid "Repo %s not found."
+msgstr "Repozytorium %s nie zostało znalezione."
+
+#: pisi/db/packagedb.py:213 pisi/db/packagedb.py:219
+#, python-format
+msgid "Package %s not found."
+msgstr "Pakiet %s nie znaleziony."
 
 #: pisi/operations/build.py:115
 #, python-format
@@ -2245,7 +2300,7 @@ msgstr "Pakiet źródłowy '%s' definiuje względny element 'Path': %s"
 msgid "Source package '%s' defines multiple 'Path' tags for %s"
 msgstr "Pakiet źródłowy '%s' definiuje wiele tagów 'Path' dla %s"
 
-#: pisi/operations/build.py:835 pisi/atomicoperations.py:199
+#: pisi/operations/build.py:835 pisi/atomicoperations.py:195
 #, python-format
 msgid "%s-%s is not a valid eopkg version format"
 msgstr "%s-%s nie jest to poprawna wersja formatu eopkg"
@@ -2476,13 +2531,13 @@ msgid "Following packages will be removed:\n"
 msgstr "Zostaną usunięte następujące pakiety:\n"
 
 #: pisi/operations/history.py:191 pisi/operations/history.py:215
-#: pisi/operations/install.py:264 pisi/operations/remove.py:106
-#: pisi/operations/upgrade.py:183
+#: pisi/operations/install.py:116 pisi/operations/install.py:282
+#: pisi/operations/remove.py:118 pisi/operations/upgrade.py:201
 msgid "Do you want to continue?"
 msgstr "Czy chcesz kontynuować?"
 
-#: pisi/operations/history.py:199 pisi/operations/install.py:117
-#: pisi/operations/upgrade.py:197
+#: pisi/operations/history.py:199 pisi/operations/install.py:126
+#: pisi/operations/upgrade.py:216
 #, python-format
 msgid "Downloading %d / %d"
 msgstr "Pobieranie %d / %d"
@@ -2495,110 +2550,125 @@ msgstr ""
 "\n"
 "Nie znaleziono następujących pakietów w repozytoriach, ani nie znajdują się one w pamięci podręcznej:\n"
 
-#: pisi/operations/install.py:56 pisi/operations/install.py:178
+#: pisi/operations/install.py:63 pisi/operations/install.py:196
 msgid ""
 "The following package(s) are already installed and are not going to be "
 "installed again:"
 msgstr ""
 "Następujące pakiety są już zainstalowane i nie będą instalowane ponownie:"
 
-#: pisi/operations/install.py:64 pisi/operations/install.py:277
+#: pisi/operations/install.py:71 pisi/operations/install.py:295
 msgid "No packages to install."
 msgstr "Brak pakietów do zainstalowania."
 
-#: pisi/operations/install.py:83
-msgid "Following packages will be installed:"
+#: pisi/operations/install.py:92 pisi/operations/upgrade.py:175
+msgid "The following packages will be downloaded:"
+msgstr "Zostaną pobrane następujące pakiety:"
+
+#: pisi/operations/install.py:94
+msgid "The following packages will be installed:"
 msgstr "Zostaną zainstalowane następujące pakiety:"
 
-#: pisi/operations/install.py:91 pisi/operations/upgrade.py:169
+#: pisi/operations/install.py:103 pisi/operations/upgrade.py:186
 #, python-format
 msgid "Total size of package(s): %.2f %s"
 msgstr "Całkowity rozmiar pakietu(ów): %.2f %s"
 
-#: pisi/operations/install.py:100
-msgid "There are extra packages due to dependencies. Do you want to continue?"
-msgstr ""
-"Są dodatkowe pakiety wymagane przez zależności. Czy chcesz kontynuować?"
+#: pisi/operations/install.py:113 pisi/operations/upgrade.py:198
+msgid "There are extra packages due to dependencies."
+msgstr "Istnieją dodatkowe pakiety z powodu zależności."
 
-#: pisi/operations/install.py:134 pisi/operations/upgrade.py:216
+#: pisi/operations/install.py:132 pisi/operations/upgrade.py:222
+msgid "Finished downloading package upgrades."
+msgstr "Zakończono pobieranie pakietów uaktualnień."
+
+#. Install all the packages
+#. Remove the packages.
+#. Install all the packages
+#: pisi/operations/install.py:146 pisi/operations/remove.py:125
+#: pisi/operations/upgrade.py:235 pisi/api.py:893 pisi/api.py:933
+msgid "Disabling keyboard interrupts for file operations."
+msgstr "Wyłączanie przerwań klawiatury dla operacji na plikach."
+
+#: pisi/operations/install.py:153 pisi/operations/upgrade.py:242
 #, python-format
 msgid "Installing %d / %d"
 msgstr "Instalowanie %d / %d"
 
-#: pisi/operations/install.py:159
+#: pisi/operations/install.py:177
 msgid "Mixing file names and package names not supported yet."
 msgstr "Mieszanie nazw plików i nazw pakietów nie jest jeszcze obsługiwane."
 
-#: pisi/operations/install.py:216
+#: pisi/operations/install.py:234
 #, python-format
 msgid "Package %s is not compatible with your distribution release %s %s."
 msgstr "Pakiet %s jest niekompatybilny z Twoją wersją dystrybucji %s %s."
 
-#: pisi/operations/install.py:226
+#: pisi/operations/install.py:244
 #, python-format
 msgid "Package %s (%s) is not compatible with your %s architecture."
 msgstr "Pakiet %s (%s) jest niekompatybilny z Twoją architekturą %s."
 
-#: pisi/operations/install.py:252
+#: pisi/operations/install.py:270
 #, python-format
 msgid "External dependencies not satisfied: %s"
 msgstr "Niezaspokojone zależności zewnętrzne: %s"
 
-#: pisi/operations/install.py:259
+#: pisi/operations/install.py:277
 msgid ""
 "The following packages will be installed in order to satisfy dependencies:"
 msgstr ""
 "Zostaną zainstalowane następujące pakiety w celu zaspokojenia zależności:"
 
-#: pisi/operations/install.py:265
+#: pisi/operations/install.py:283
 msgid "External dependencies not satisfied"
 msgstr "Niezaspokojone zależności zewnętrzne"
 
-#: pisi/operations/install.py:309
+#: pisi/operations/install.py:327
 msgid "Installation order: "
 msgstr "Kolejność instalacji: "
 
-#: pisi/operations/install.py:361 pisi/specfile.py:301
+#: pisi/operations/install.py:379 pisi/specfile.py:301
 #, python-format
 msgid "%s dependency of package %s is not satisfied"
-msgstr ""
+msgstr "%s zależność pakietu %s nie jest spełniona"
 
-#: pisi/operations/install.py:383
+#: pisi/operations/install.py:401
 #, python-format
 msgid "topological_sort() order: %s"
 msgstr "kolejność topologiczna sortowania: %s"
 
-#: pisi/operations/install.py:386
+#: pisi/operations/install.py:404
 #, python-format
 msgid "deterministic order: %s"
 msgstr "określona kolejność: %s"
 
-#: pisi/operations/install.py:389
+#: pisi/operations/install.py:407
 #, python-format
 msgid "final order.reverse(): %s"
 msgstr "ostateczna kolejność (odwrócona): %s"
 
-#: pisi/operations/remove.py:40 pisi/operations/remove.py:79
+#: pisi/operations/remove.py:50 pisi/operations/remove.py:84
 msgid "Safety switch prevents the removal of following packages:\n"
 msgstr ""
 "Włączony przełącznik bezpieczeństwa uniemożliwia usunięcie następujących "
 "pakietów:\n"
 
-#: pisi/operations/remove.py:46 pisi/operations/remove.py:88
-#: pisi/operations/upgrade.py:422
+#: pisi/operations/remove.py:55 pisi/operations/remove.py:91
+#: pisi/operations/upgrade.py:450
 msgid "Safety switch: The component system.base cannot be found."
 msgstr "Przełącznik bezpieczeństwa: Nie można znaleźć komponentu system.base."
 
-#: pisi/operations/remove.py:54
+#: pisi/operations/remove.py:63
 #, python-format
 msgid "Package %s does not exist. Cannot remove."
 msgstr "Pakiet %s nie istnieje. Nie można go usunąć."
 
-#: pisi/operations/remove.py:58
+#: pisi/operations/remove.py:67
 msgid "No packages to remove."
 msgstr "Brak pakietów do usunięcia."
 
-#: pisi/operations/remove.py:99
+#: pisi/operations/remove.py:102
 msgid ""
 "The following list of packages will be removed\n"
 "in the respective order to satisfy dependencies:\n"
@@ -2606,85 +2676,81 @@ msgstr ""
 "Zostaną usunięte następujące pakiety\n"
 "w odpowiedniej kolejności, aby zaspokoić zależności:\n"
 
-#: pisi/operations/remove.py:107
+#: pisi/operations/remove.py:119
 msgid "Package removal declined"
 msgstr "Usunięcie pakietu zostało odrzucone"
 
-#: pisi/operations/remove.py:120
+#: pisi/operations/remove.py:133
 #, python-format
 msgid "Package %s is not installed. Cannot remove."
 msgstr "Pakiet %s nie jest zainstalowany. Nie można go usunąć."
 
-#: pisi/operations/remove.py:282
+#: pisi/operations/remove.py:297
 msgid "Conflicts remain"
 msgstr "Pozostaw konflikty"
 
-#: pisi/operations/remove.py:291
+#: pisi/operations/remove.py:306
 msgid "Obsoleted packages remaining"
 msgstr "Pozostawianie przestarzałych pakietów"
 
-#: pisi/operations/remove.py:296
+#: pisi/operations/remove.py:311
 msgid "Replaced package remains"
 msgstr "Pozostawianie zastąpionych pakietów"
 
-#: pisi/operations/upgrade.py:45
+#: pisi/operations/upgrade.py:47
 msgid ""
 "You must restart your system for the updates in the following package(s) to "
 "take effect:"
 msgstr ""
 "Musisz ponownie uruchomić komputer by następujące aktualizacje miały efekt:"
 
-#: pisi/operations/upgrade.py:69
+#: pisi/operations/upgrade.py:71
 msgid "Warning: package *name* ends with '.pisi'"
 msgstr "Ostrzeżenie: Pakiet *nazwa* kończy się '.pisi'"
 
-#: pisi/operations/upgrade.py:72
+#: pisi/operations/upgrade.py:74
 #, python-format
 msgid "Package %s is not installed."
 msgstr "Pakiet %s nie jest zainstalowany."
 
-#: pisi/operations/upgrade.py:76
+#: pisi/operations/upgrade.py:78
 #, python-format
 msgid "Package %s is not available in repositories."
 msgstr "Pakiet %s nie jest dostępny w repozytoriach."
 
-#: pisi/operations/upgrade.py:101
+#: pisi/operations/upgrade.py:103
 #, python-format
 msgid "Package %s is already at the latest release %s."
 msgstr "Pakiet %s jest już na najnowszej wersji %s."
 
-#: pisi/operations/upgrade.py:162
+#: pisi/operations/upgrade.py:177
 msgid "The following packages will be upgraded:"
 msgstr "Następujące pakiety będą zaktualizowane:"
 
-#: pisi/operations/upgrade.py:177
-msgid "There are extra packages due to dependencies."
-msgstr "Istnieją dodatkowe pakiety z powodu zależności."
-
-#: pisi/operations/upgrade.py:275
+#: pisi/operations/upgrade.py:303
 #, python-format
 msgid "Dependency %s of %s cannot be satisfied"
 msgstr "Zależność %s pakietu %s nie może zostać spełniona"
 
-#: pisi/operations/upgrade.py:277
+#: pisi/operations/upgrade.py:305
 msgid "Upgrade is not possible."
 msgstr "Aktualizacja nie jest możliwa."
 
-#: pisi/operations/upgrade.py:380
+#: pisi/operations/upgrade.py:408
 msgid "Safety switch forces the installation of following packages:"
 msgstr "Przełącznik bezpieczeństwa wymusza instalację następujących pakietów:"
 
-#: pisi/operations/upgrade.py:407
+#: pisi/operations/upgrade.py:435
 msgid "Safety switch forces the upgrade of following packages:"
 msgstr ""
 "Przełącznik bezpieczeństwa wymusza aktualizację następujących pakietów:"
 
-#: pisi/operations/upgrade.py:415
+#: pisi/operations/upgrade.py:443
 #, python-format
 msgid "installs and upgrades (unordered): %s"
 msgstr "instalacje i aktualizacje (nieuporządkowane): %s"
 
-#: pisi/operations/upgrade.py:418
+#: pisi/operations/upgrade.py:446
 #, python-format
 msgid "installs and upgrades (deterministic order): %s"
 msgstr "instalacje i aktualizacje (określona kolejność): %s"
@@ -2813,108 +2879,6 @@ msgstr "Repozytorium już zawiera pakiet o nazwie %s."
 msgid "Repo does not have package named %s."
 msgstr "Repozytorium nie zawiera pakietu o nazwie %s."
 
-#: pisi/api.py:61
-msgid "Another instance of eopkg is running. Only one instance is allowed."
-msgstr ""
-"Inny proces eopkg jest już uruchomiony. Dozwolony jest tylko jeden "
-"uruchomiony proces eopkg."
-
-#: pisi/api.py:413
-#, python-format
-msgid "%s package found in %s repository"
-msgstr "Pakiet %s znaleziono w repozytorium %s"
-
-#: pisi/api.py:419
-#, python-format
-msgid "%s package already fetched"
-msgstr "Pakiet %s jest już pobrany"
-
-#: pisi/api.py:552
-#, python-format
-msgid "Cleaning package cache %s..."
-msgstr "Czyszczenie pamięci podręcznej pakietu %s..."
-
-#: pisi/api.py:554
-#, python-format
-msgid "Cleaning source archive cache %s..."
-msgstr "Czyszczenie pamięci podręcznej archiwum źródłowego %s..."
-
-#: pisi/api.py:556
-#, python-format
-msgid "Cleaning temporary directory %s..."
-msgstr "Czyszczenie katalogu tymczasowego %s..."
-
-#: pisi/api.py:562
-#, python-format
-msgid "Removing cache file %s..."
-msgstr "Usuwanie pliku z pamięci podręcznej %s..."
-
-#: pisi/api.py:595
-msgid "Taking snapshot of the system"
-msgstr "Tworzenie migawki systemu"
-
-#: pisi/api.py:766
-#, python-format
-msgid "File %s not found"
-msgstr "Plik %s nie został znaleziony"
-
-#: pisi/api.py:807
-#, python-format
-msgid "Building index of eopkg files under %s"
-msgstr "Tworzenie indeksu plików eopkg w katalogu %s"
-
-#: pisi/api.py:812
-msgid "Index file written"
-msgstr "Plik indeksu zapisany"
-
-#: pisi/api.py:818
-msgid "Not a valid repo name."
-msgstr "Niepoprawna nazwa repozytorium."
-
-#: pisi/api.py:826
-#, python-format
-msgid "Repo already present with name %s and same URL. Removing first."
-msgstr ""
-"Repozytorium o nazwie %s i tym samym URL jest już obecne. Usuwam najpierw."
-
-#: pisi/api.py:839
-#, python-format
-msgid "Repo %s added to system."
-msgstr "Repozytorium %s zostało dodane do systemu."
-
-#: pisi/api.py:848
-#, python-format
-msgid "Repo %s removed from system."
-msgstr "Repozytorium %s zostało usunięte z systemu."
-
-#: pisi/api.py:850
-#, python-format
-msgid "Repository %s does not exist. Cannot remove."
-msgstr "Repozytorium %s nie istnieje. Nie można usunąć."
-
-#: pisi/api.py:874
-#, python-format
-msgid "Updating repository: %s"
-msgstr "Aktualizacja repozytorium: %s"
-
-#: pisi/api.py:883
-#, python-format
-msgid "%s repository information is up-to-date."
-msgstr "Informacje o repozytorium %s są zaktualizowane."
-
-#: pisi/api.py:885
-msgid "Updating database at any rate as requested"
-msgstr "Aktualizacja bazy w każdym przypadku jak zarządano"
-
-#: pisi/api.py:892
-msgid "Package database updated."
-msgstr "Baza danych pakietów została zaktualizowana."
-
-#: pisi/api.py:894
-#, python-format
-msgid "No repository named %s found."
-msgstr "Nie znaleziono repozytoriów o nazwie %s."
-
 #: pisi/archive.py:530
 #, python-format
 msgid "Problem occured while uncompressing %s.Z file"
@@ -3031,14 +2995,6 @@ msgstr "Nie można ponownie przypisać stałej: %s"
 #, python-format
 msgid "Can't unbind constant: %s"
 msgstr "Nie można odwiązać stałej: %s"
-
-#: pisi/context.py:79
-msgid "usysconf not installed. Please upgrade!"
-msgstr "usysconf nie jest zainstalowane. Proszę zaktualizować!"
-
-#: pisi/context.py:92
-msgid "Failed to configure system"
-msgstr "Nie udało się skonfigurować systemu"
 
 #: pisi/file.py:27
 #, python-format
@@ -3183,7 +3139,7 @@ msgstr "Przerwanie z klawiatury: Wychodzę..."
 msgid "Program terminated."
 msgstr "Program Zakończony."
 
-#: pisi/scripts/eopkg.py:41
+#: pisi/scripts/eopkg.py:42
 msgid ""
 "Unhandled internal exception.\n"
 "Please file a bug report to <https://github.com/getsolus/package-management/>."
@@ -3191,15 +3147,15 @@ msgstr ""
 "Nie obsługiwany wewnętrzny błąd.\n"
 " Prosimy zgłosić ten błąd. <https://github.com/getsolus/package-management/>."
 
-#: pisi/scripts/eopkg.py:52
+#: pisi/scripts/eopkg.py:53
 msgid "System error. Program terminated."
 msgstr "Błąd Systemu. Program Zakończony."
 
-#: pisi/scripts/eopkg.py:61
+#: pisi/scripts/eopkg.py:62
 msgid "Please use 'eopkg help' for general help."
 msgstr "Proszę użyć 'eopkg help' w celu uzyskania pomocy."
 
-#: pisi/scripts/eopkg.py:64
+#: pisi/scripts/eopkg.py:65
 msgid ""
 "\n"
 "Traceback:"
@@ -3207,7 +3163,7 @@ msgstr ""
 "\n"
 " Prześledź ponownie:"
 
-#: pisi/scripts/eopkg.py:67
+#: pisi/scripts/eopkg.py:68
 msgid "Use --debug to see a traceback."
 msgstr "Użyj --debug aby zobaczyć informacje traceback."
 
@@ -3296,6 +3252,43 @@ msgstr "plik translations.xml jest źle sformatowany."
 msgid "Build Dependencies: "
 msgstr "Zależności budowania: "
 
+#: pisi/version.py:72
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr "Nieprawidłowy ciąg wersji: '%s'"
+
+#: pisi/configfile.py:135
+#, python-format
+msgid "No section by name '%s'"
+msgstr "Brak sekcji o nazwie '%s'"
+
+#: pisi/index.py:151
+msgid "Adding packages to index:"
+msgstr "Dodawanie pakietów do indeksu:"
+
+#: pisi/index.py:172
+#, python-format
+msgid "Adding package to index: %s"
+msgstr "Dodawanie pakietu do indeksu: %s"
+
+#: pisi/index.py:190
+#, python-format
+msgid "Package %s: metadata corrupt, skipping..."
+msgstr "Pakiet %s: metadane uszkodzone, pomijam..."
+
+#: pisi/index.py:244
+msgid "Adding groups.xml to index"
+msgstr "Dodawanie groups.xml do indeksu"
+
+#: pisi/index.py:251
+msgid "Adding components.xml to index"
+msgstr "Dodawanie components.xml do indeksu"
+
+#: pisi/index.py:285
+#, python-format
+msgid "Adding %s to source index"
+msgstr "Dodawanie %s do indeksu źródłowego"
+
 #: pisi/util.py:199 pisi/util.py:213
 msgid "Running "
 msgstr "Uruchomiony "
@@ -3381,10 +3374,179 @@ msgstr "Niepoprawna nazwa pakietu: %s"
 msgid "Invalid delta package name: %s"
 msgstr "Nieprawidłowa nazwa pakietu delta: %s"
 
-#: pisi/version.py:72
+#: pisi/util.py:985
 #, python-format
-msgid "Invalid version string: '%s'"
-msgstr "Nieprawidłowy ciąg wersji: '%s'"
+msgid "Failed to acquire inhibit lock %s"
+msgstr "Nie udało się uzyskać blokady inhibit %s"
+
+#: pisi/util.py:994
+#, python-format
+msgid "D-Bus call failed: %s"
+msgstr "Nieudane połączenie D-Bus: %s"
+
+#: pisi/fetcher.py:129
+msgid "Filename error"
+msgstr "Błąd nazwy pliku"
+
+#: pisi/fetcher.py:133
+#, python-format
+msgid "Access denied to write to destination directory: \"%s\""
+msgstr "Odmowa dostępu do zapisu w katalogu docelowym: \"%s\""
+
+#: pisi/fetcher.py:141
+#, python-format
+msgid "Access denied to destination file: \"%s\""
+msgstr "Odmowa dostępu do pliku docelowego: \"%s\""
+
+#: pisi/fetcher.py:203
+#, python-format
+msgid "Hit max retry count when downloading: \"%s\""
+msgstr "Osiągnięto maksymalną liczbę prób przy pobieraniu: \"%s\""
+
+#: pisi/fetcher.py:207
+#, python-format
+msgid ""
+"\n"
+"Failed to fetch file, retrying %d out of %d \"%s\": %s"
+msgstr ""
+"\n"
+"Nie udało się pobrać pliku, ponawianie próby %d z %d \"%s\": %s"
+
+#: pisi/fetcher.py:216
+msgid ""
+"A problem occurred. Please check the archive address and/or permissions "
+"again."
+msgstr ""
+"Wystąpił problem. Proszę ponownie sprawdzić adres archiwum i/lub "
+"uprawnienia."
+
+#: pisi/fetcher.py:249
+#, python-format
+msgid "Proxy configuration has been found for '%s' protocol"
+msgstr "Znaleziono konfigurację proxy dla protokołu '%s'"
+
+#: pisi/fetcher.py:261
+#, python-format
+msgid "Bandwidth usage is limited to %s KB/s"
+msgstr "Zużycie pasma jest ograniczone do %s KB/s"
+
+#: pisi/fetcher.py:287
+msgid ""
+"Remote file can not be reached. Previously downloaded part of the file will "
+"be removed."
+msgstr ""
+"Plik zdalny jest niedostępny. Poprzednia część pobranego pliku zostanie "
+"usunięta."
+
+#: pisi/fetcher.py:300
+msgid ""
+"Server doesn't support partial downloads. Previously downloaded part of the "
+"file will be over-written."
+msgstr ""
+"Serwer nie obsługuje pobierania częściowych. Poprzednia część pobranego "
+"pliku zostanie nadpisana."
+
+#: pisi/api.py:63
+msgid "Another instance of eopkg is running. Only one instance is allowed."
+msgstr ""
+"Inny proces eopkg jest już uruchomiony. Dozwolony jest tylko jeden "
+"uruchomiony proces eopkg."
+
+#: pisi/api.py:428
+#, python-format
+msgid "%s package found in %s repository"
+msgstr "Pakiet %s znaleziono w repozytorium %s"
+
+#: pisi/api.py:434
+#, python-format
+msgid "%s package already fetched"
+msgstr "Pakiet %s jest już pobrany"
+
+#: pisi/api.py:567
+#, python-format
+msgid "Cleaning package cache %s..."
+msgstr "Czyszczenie pamięci podręcznej pakietu %s..."
+
+#: pisi/api.py:569
+#, python-format
+msgid "Cleaning source archive cache %s..."
+msgstr "Czyszczenie pamięci podręcznej archiwum źródłowego %s..."
+
+#: pisi/api.py:571
+#, python-format
+msgid "Cleaning temporary directory %s..."
+msgstr "Czyszczenie katalogu tymczasowego %s..."
+
+#: pisi/api.py:577
+#, python-format
+msgid "Removing cache file %s..."
+msgstr "Usuwanie pliku z pamięci podręcznej %s..."
+
+#: pisi/api.py:610
+msgid "Taking snapshot of the system"
+msgstr "Tworzenie migawki systemu"
+
+#: pisi/api.py:781
+#, python-format
+msgid "File %s not found"
+msgstr "Plik %s nie został znaleziony"
+
+#: pisi/api.py:822
+#, python-format
+msgid "Building index of eopkg files under %s"
+msgstr "Tworzenie indeksu plików eopkg w katalogu %s"
+
+#: pisi/api.py:827
+msgid "Index file written"
+msgstr "Plik indeksu zapisany"
+
+#: pisi/api.py:833
+msgid "Not a valid repo name."
+msgstr "Niepoprawna nazwa repozytorium."
+
+#: pisi/api.py:841
+#, python-format
+msgid "Repo already present with name %s and same URL. Removing first."
+msgstr ""
+"Repozytorium o nazwie %s i tym samym URL jest już obecne. Usuwam najpierw."
+
+#: pisi/api.py:854
+#, python-format
+msgid "Repo %s added to system."
+msgstr "Repozytorium %s zostało dodane do systemu."
+
+#: pisi/api.py:863
+#, python-format
+msgid "Repo %s removed from system."
+msgstr "Repozytorium %s zostało usunięte z systemu."
+
+#: pisi/api.py:865
+#, python-format
+msgid "Repository %s does not exist. Cannot remove."
+msgstr "Repozytorium %s nie istnieje. Nie można usunąć."
+
+#: pisi/api.py:891
+#, python-format
+msgid "Updating repository: %s"
+msgstr "Aktualizacja repozytorium: %s"
+
+#: pisi/api.py:903
+#, python-format
+msgid "%s repository information is up-to-date."
+msgstr "Informacje o repozytorium %s są zaktualizowane."
+
+#: pisi/api.py:905
+msgid "Updating database at any rate as requested"
+msgstr "Aktualizacja bazy w każdym przypadku jak zarządano"
+
+#: pisi/api.py:912
+msgid "Package database updated."
+msgstr "Baza danych pakietów została zaktualizowana."
+
+#: pisi/api.py:914
+#, python-format
+msgid "No repository named %s found."
+msgstr "Nie znaleziono repozytoriów o nazwie %s."
 
 #: pisi/atomicoperations.py:114
 #, python-format
@@ -3405,24 +3567,24 @@ msgstr "Pakiet %s nie została znaleziona w żadnym z aktywnym repozytoriów."
 msgid "Installing %s, version %s, release %s"
 msgstr "Instalowanie %s, wersja %s, wydanie %s"
 
-#: pisi/atomicoperations.py:208
+#: pisi/atomicoperations.py:204
 #, python-format
 msgid "%s package cannot be installed unless the dependencies are satisfied"
 msgstr ""
 "%s pakiet nie może zostać zainstalowany, dopóki nie zostaną spełnione "
 "zależności"
 
-#: pisi/atomicoperations.py:247
+#: pisi/atomicoperations.py:243
 #, python-format
 msgid "/%s from %s gets replaced by %s package\n"
 msgstr "/%s z %s zostaje zastąpione przez pakiet %s\n"
 
-#: pisi/atomicoperations.py:251 pisi/atomicoperations.py:256
+#: pisi/atomicoperations.py:247 pisi/atomicoperations.py:252
 #, python-format
 msgid "/%s from %s package\n"
 msgstr "/%s z pakietu %s \n"
 
-#: pisi/atomicoperations.py:260
+#: pisi/atomicoperations.py:256
 #, python-format
 msgid ""
 "File conflicts:\n"
@@ -3431,27 +3593,27 @@ msgstr ""
 "Konflikt plików:\n"
 "%s"
 
-#: pisi/atomicoperations.py:277
+#: pisi/atomicoperations.py:273
 msgid "Re-install same distribution release of package?"
-msgstr ""
+msgstr "Czy zainstalować ponownie tę samą wersję dystrybucyjną pakietu?"
 
-#: pisi/atomicoperations.py:278
+#: pisi/atomicoperations.py:274
 msgid "Package re-install declined"
 msgstr "Reinstalowanie pakietu anulowane"
 
-#: pisi/atomicoperations.py:286
+#: pisi/atomicoperations.py:282
 msgid "Upgrading to new distribution release"
 msgstr "Aktualizacja do nowego wydania dystrybucji"
 
-#: pisi/atomicoperations.py:292
+#: pisi/atomicoperations.py:288
 msgid "Downgrade to old distribution release?"
 msgstr "Aktualizować do starszego wydania dystrybucji?"
 
-#: pisi/atomicoperations.py:296
+#: pisi/atomicoperations.py:292
 msgid "Package downgrade declined"
 msgstr "Aktualizacja pakietu do starszej wersji anulowana"
 
-#: pisi/atomicoperations.py:402
+#: pisi/atomicoperations.py:398
 msgid ""
 "Unable to relocate following files. Reinstallation of this package is "
 "strongly recommended."
@@ -3461,33 +3623,42 @@ msgstr ""
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
-#: pisi/atomicoperations.py:508 pisi/atomicoperations.py:511
-#: pisi/atomicoperations.py:518
+#: pisi/atomicoperations.py:504 pisi/atomicoperations.py:507
+#: pisi/atomicoperations.py:514
 #, python-format
 msgid "Storing %s"
 msgstr "Gromadzenie %s"
 
-#: pisi/atomicoperations.py:598
+#: pisi/atomicoperations.py:594
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr ""
 "Nie można przeczytać listy plików dla pakietu %s, kontynuuje usuwanie."
 
-#: pisi/atomicoperations.py:606
+#: pisi/atomicoperations.py:602
 #, python-format
 msgid "Removing package %s"
 msgstr "Usuwanie pakietu %s"
 
-#: pisi/atomicoperations.py:610
+#: pisi/atomicoperations.py:606
 msgid "Trying to remove nonexistent package "
 msgstr "Próba usunięcia nieistniejącego pakietu "
 
-#: pisi/atomicoperations.py:651
+#: pisi/atomicoperations.py:648
 #, python-format
 msgid "Not removing conflicted file : %s"
 msgstr "Nie usuwam kolidującego pliku : %s"
 
-#: pisi/atomicoperations.py:681
+#: pisi/atomicoperations.py:673
+#, python-format
+msgid ""
+"Installed config file %s does not exist on system [Probably you manually "
+"deleted]"
+msgstr ""
+"Zainstalowany plik konfiguracyjny %s nie istnieje w systemie [Prawdopodobnie"
+" został ręcznie usunięty]"
+
+#: pisi/atomicoperations.py:685
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
@@ -3495,92 +3666,10 @@ msgstr ""
 "Zainstalowany plik %s nie istnieje w systemie [Prawdopodobnie został "
 "usunięty ręcznie]"
 
-#: pisi/configfile.py:135
-#, python-format
-msgid "No section by name '%s'"
-msgstr "Brak sekcji o nazwie '%s'"
+#: pisi/context.py:63
+msgid "usysconf not installed. Please upgrade!"
+msgstr "usysconf nie jest zainstalowane. Proszę zaktualizować!"
 
-#: pisi/fetcher.py:128
-msgid "Filename error"
-msgstr "Błąd nazwy pliku"
-
-#: pisi/fetcher.py:132
-#, python-format
-msgid "Access denied to write to destination directory: \"%s\""
-msgstr "Odmowa dostępu do zapisu w katalogu docelowym: \"%s\""
-
-#: pisi/fetcher.py:140
-#, python-format
-msgid "Access denied to destination file: \"%s\""
-msgstr "Odmowa dostępu do pliku docelowego: \"%s\""
-
-#: pisi/fetcher.py:202
-#, python-format
-msgid "Hit max retry count when downloading: \"%s\""
-msgstr "Osiągnięto maksymalną liczbę prób przy pobieraniu: \"%s\""
-
-#: pisi/fetcher.py:206
-#, python-format
-msgid ""
-"\n"
-"Failed to fetch file, retrying %d out of %d \"%s\": %s"
-msgstr ""
-"\n"
-"Nie udało się pobrać pliku, ponawianie próby %d z %d \"%s\": %s"
-
-#: pisi/fetcher.py:215
-msgid ""
-"A problem occurred. Please check the archive address and/or permissions "
-"again."
-msgstr ""
-"Wystąpił problem. Proszę ponownie sprawdzić adres archiwum i/lub "
-"uprawnienia."
-
-#: pisi/fetcher.py:248
-#, python-format
-msgid "Proxy configuration has been found for '%s' protocol"
-msgstr "Znaleziono konfigurację proxy dla protokołu '%s'"
-
-#: pisi/fetcher.py:260
-#, python-format
-msgid "Bandwidth usage is limited to %s KB/s"
-msgstr "Zużycie pasma jest ograniczone do %s KB/s"
-
-#: pisi/fetcher.py:286
-msgid ""
-"Remote file can not be reached. Previously downloaded part of the file will "
-"be removed."
-msgstr ""
-"Plik zdalny jest niedostępny. Poprzednia część pobranego pliku zostanie "
-"usunięta."
-
-#: pisi/fetcher.py:299
-msgid ""
-"Server doesn't support partial downloads. Previously downloaded part of the "
-"file will be over-written."
-msgstr ""
-"Serwer nie obsługuje pobierania częściowych. Poprzednia część pobranego "
-"pliku zostanie nadpisana."
-
-#. Add binary packages to index using a process pool
-#: pisi/index.py:150
-msgid "Adding packages to index:"
-msgstr "Dodawanie pakietów do indeksu:"
-
-#: pisi/index.py:183
-#, python-format
-msgid "Package %s: metadata corrupt, skipping..."
-msgstr "Pakiet %s: metadane uszkodzone, pomijam..."
-
-#: pisi/index.py:237
-msgid "Adding groups.xml to index"
-msgstr "Dodawanie groups.xml do indeksu"
-
-#: pisi/index.py:244
-msgid "Adding components.xml to index"
-msgstr "Dodawanie components.xml do indeksu"
-
-#: pisi/index.py:278
-#, python-format
-msgid "Adding %s to source index"
-msgstr "Dodawanie %s do indeksu źródłowego"
+#: pisi/context.py:76
+msgid "Failed to configure system"
+msgstr "Nie udało się skonfigurować systemu"
