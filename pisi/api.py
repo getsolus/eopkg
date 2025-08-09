@@ -70,6 +70,10 @@ def locked(func):
         inhibit_fd = None
         inhibit_file = None
         conn, inhibit_fd = pisi.util.systemd_inhibit(reason)
+        print('API wrapper: conn and inhibit_fd contents, then types.')
+        print(conn, inhibit_fd)
+        print('API wrapper: conn and inhibit_fd types.')
+        print(type(conn), type(inhibit_fd))
         if inhibit_fd is not None:
             inhibit_file = inhibit_fd.to_file("wb")
 
