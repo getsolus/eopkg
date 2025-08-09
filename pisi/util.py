@@ -18,6 +18,8 @@ import operator
 import subprocess
 import unicodedata
 
+from jeepney import MessageType
+
 from pisi import translate as _
 from functools import reduce
 
@@ -981,8 +983,8 @@ def systemd_inhibit(reason: str):
         # Call and receive the file descriptor
         reply = conn.send_and_get_reply(msg)
 
-        if isinstance(reply, DBusErrorResponse):
-            ctx.ui.warning(_("Failed to acquire inhibit lock %s" % reply.error_name))
+        if reply.header.message_type != MessageType.method_return:
+            ctx.ui.warning(_("Failed to acquire inhibit lock: %s" % reply.body))
             return None, None
 
         # Extract the file descriptor
