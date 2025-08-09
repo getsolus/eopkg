@@ -18,8 +18,6 @@ import operator
 import subprocess
 import unicodedata
 
-from jeepney import MessageType
-
 from pisi import translate as _
 from functools import reduce
 
@@ -961,7 +959,7 @@ def letters():
 
 # https://www.freedesktop.org/software/systemd/man/latest/systemd-inhibit.html
 def systemd_inhibit(reason: str):
-    from jeepney import DBusAddress, DBusErrorResponse, new_method_call
+    from jeepney import DBusAddress, MessageType, new_method_call
     from jeepney.io.blocking import open_dbus_connection
 
     try:
