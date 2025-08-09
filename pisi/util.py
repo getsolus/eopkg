@@ -980,6 +980,8 @@ def systemd_inhibit(reason: str):
 
         # Call and receive the file descriptor
         reply = conn.send_and_get_reply(msg)
+        print('Message Type!!')
+        print(reply.header.message_type)
 
         if isinstance(reply, DBusErrorResponse):
             ctx.ui.warning(_("Failed to acquire inhibit lock %s" % reply.error_name))
