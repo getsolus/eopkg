@@ -136,7 +136,11 @@ in the respective order to satisfy dependencies:
     finally:
         ctx.exec_usysconf()
 
-    return True
+    # Prior to 2c63650, this function had no return statement at all on the "complete" codepath.
+    # 2c63650 added a "return True". Unfortunately, it appears that "False" means "Ask the user for confirmation",
+    # "True" means "the operation failed", and "None" means "Success". Why? No idea! But removing the return statement
+    # or returning None fixes #173, so... do what works, I guess.
+    return None
 
 
 def remove_orphans(ignore_dep=False, ignore_safety=False):
