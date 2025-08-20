@@ -84,6 +84,8 @@ class Check(command.Command, metaclass=command.autocommand):
         # Determine maximum length of messages for proper formatting
         maxpkglen = max([len(_p) for _p in pkgs])
 
+        broken_pkgs = []
+
         for pkg in pkgs:
             if self.installdb.has_package(pkg):
                 check_results = pisi.api.check(pkg, check_config)
@@ -98,6 +100,7 @@ class Check(command.Command, metaclass=command.autocommand):
                     or check_results["config"]
                 ):
                     ctx.ui.info(util.colorize(_("Broken"), "brightred"))
+                    broken_pkgs.append(pkg)
                 elif check_results["denied"]:
                     # We can't deduce a result when some files
                     # can't be accessed
@@ -134,6 +137,27 @@ class Check(command.Command, metaclass=command.autocommand):
             else:
                 # Package is not installed
                 ctx.ui.info(_("Package %s not installed") % pkg)
+
+        # Filter broken packages that are not in a repository
+        pkgdb = pisi.db.packagedb.PackageDB()
+        custom_pkgs = [pkg for pkg in broken_pkgs if not pkgdb.has_package(pkg)]
+        broken_pkgs = [pkg for pkg in broken_pkgs if pkgdb.has_package(pkg)]
+
+        if custom_pkgs:
+            ctx.ui.warning(_("These packages are broken but are not found in a repository, they must be reinstalled manually:"))
+            ctx.ui.info(util.format_by_columns(sorted(custom_pkgs)))
+
+        if broken_pkgs:
+            ctx.ui.info("")
+            ctx.ui.warning(_("The following packages are broken:"))
+            ctx.ui.info(util.format_by_columns(sorted(broken_pkgs)))
+            if ctx.ui.confirm(_("Reinstall the broken packages?")):
+                try:
+                    pisi.api.install(broken_pkgs, reinstall=True)
+                except Exception as e:
+                    raise e
+            else:
+                ctx.ui.info(_("Broken packages were not reinstalled."))
 
         if not necessary_permissions:
             ctx.ui.info("")
