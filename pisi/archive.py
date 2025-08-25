@@ -385,6 +385,11 @@ class ArchiveTar(ArchiveBase):
                         # If fails, try to remove it
                         shutil.rmtree(tarinfo.name)
 
+            elif os.path.isdir(tarinfo.name) and tarinfo.isfile():
+                # If we get past all of the above and the destination is still a directory and the new package is
+                # installing a regular file there, remove the directory first. The tarfile module cannot handle this.
+                shutil.rmtree(tarinfo.name)
+
             try:
                 self.tar.extract(tarinfo)
             except (IOError, OSError) as e:
