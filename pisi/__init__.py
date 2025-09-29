@@ -16,7 +16,11 @@ from importlib.resources import files
 import pisi.signalhandler as signalhandler
 
 
-locale.setlocale(locale.LC_ALL, "")
+try:
+    locale.setlocale(locale.LC_ALL, "")
+except locale.Error as e:
+    print(f"Unable to set locale: {e}")
+    print("")
 
 _localeres = files("pisi.data").joinpath("locale")
 if _localeres.is_dir():
@@ -24,7 +28,7 @@ if _localeres.is_dir():
 else:
     _localedir = None  # Use the system one.
 
-lang_code = [locale.getlocale()[0] or 'en_US']
+lang_code = [locale.getlocale()[0] or "en_US"]
 lang = gettext.translation(
     "pisi", localedir=_localedir, fallback=True, languages=lang_code
 )
