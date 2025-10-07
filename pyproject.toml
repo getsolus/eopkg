@@ -7,7 +7,7 @@ authors = [{ name = "Solus Project", email = "releng@getsol.us" }]
 keywords = ["package", "manager", "management", "solus"]
 classifiers = ["Programming Language :: Python :: 3 :: Only"]
 requires-python = ">=3.8.0"
-dependencies = ["iksemel>=1.6.1", "python-magic>=0.4.27", "xattr>= 1.1.0"]
+dependencies = ["iksemel>=1.6.1", "ordered_set>=4.1.0,<=4.2.0", "python-magic>=0.4.27", "xattr>= 1.1.0"]
 dynamic = ["version"]
 
 [project.urls]
