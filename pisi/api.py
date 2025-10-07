@@ -829,7 +829,7 @@ def index(dirs=None, output="eopkg-index.xml", skip_signing=False, compression=0
 
 @locked
 def add_repo(name, indexuri, at=None):
-    if not re.match("^[0-9%s\-\\_\\.\s]*$" % str(pisi.util.letters()), name):
+    if not re.match(r"^[0-9%s\-\\_\\.\s]*$" % str(pisi.util.letters()), name):
         raise pisi.Error(_("Not a valid repo name."))
     repodb = pisi.db.repodb.RepoDB()
 
