@@ -169,7 +169,7 @@ class RepoDB(lazydb.LazyDB):
 
         if len(self.repoorder.repos) == 0:
             repo = pisi.db.repodb.Repo(
-                pisi.uri.URI("https://cdn.getsol.us/repo/shannon/eopkg-index.xml.xz")
+                pisi.uri.URI("https://cdn.getsol.us/repo/polaris/eopkg-index.xml.xz")
             )
             ctx.ui.warning("No repository found. Automatically adding Solus stable.")
             self.add_repo("Solus", repo, ctx.get_option("at"))
