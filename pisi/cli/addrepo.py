@@ -81,10 +81,8 @@ NB: We support only local files (e.g., /a/b/c) and http:// URIs at the moment
                 try:
                     pisi.api.update_repo(name)
                 except (pisi.Error, IOError):
-                    warning = _(
-                        "%s repository could not be reached. Removing %s from system."
-                    ) % (name, name)
-                    self.warn_and_remove(warning, name)
+                    pisi.api.remove_repo(name)
+                    raise pisi.cli.Error(_(f"{name} repository could not be reached. Removing {name} from system."))
         else:
             self.help()
             return
