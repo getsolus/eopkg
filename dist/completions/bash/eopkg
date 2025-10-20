@@ -1,3 +1,15 @@
+get_pdb_package_list() {
+  if `ls /var/lib/eopkg/index/* &>/dev/null`; then
+    echo `grep -P "<Name>[^\s]*</Name>" /var/lib/eopkg/index/*/eopkg-index.xml | gawk -F '[<|>]' '{print $3}' | sort | uniq | tr "\n" " "`
+  fi
+}
+
+get_idb_package_list() {
+  if `ls /var/lib/eopkg/index/* &>/dev/null`; then
+    echo `grep -P "<Name>[^\s]*</Name>" /var/lib/eopkg/package/*/metadata.xml | gawk -F '[<|>]' '{print $3}' | sort | uniq | tr "\n" " "`
+  fi
+}
+
 _eopkg()
 {
   local cur command commands options packages files
@@ -163,24 +175,17 @@ _eopkg()
       return 0;
     else
       case $command in
-        @(install|it))
-          if [ `ls *.eopkg 2> /dev/null | wc -l` -gt 0 ]; then
-            packages=""
-          else
-            if `ls /var/lib/eopkg/index/* &>/dev/null`; then
-              packages=`grep -P "<Name>[^\s]*</Name>" /var/lib/eopkg/index/*/eopkg-index.xml | gawk -F '[<|>]' '{print $3}' | sort | uniq | tr "\n" " "`
-            fi
+        @(install|it|info))
+          if [ -z "$_eopkg_pdb_list" ]; then
+            _eopkg_pdb_list=$(get_pdb_package_list)
           fi
-          ;;
-        @(info))
-          if `ls /var/lib/eopkg/index/* &>/dev/null`; then
-            packages=`grep -P "<Name>[^\s]*</Name>" /var/lib/eopkg/index/*/eopkg-index.xml | gawk -F '[<|>]' '{print $3}' | sort | uniq | tr "\n" " "`
-          fi
+          packages="${_eopkg_pdb_list}"
           ;;
         @(autoremove|upgrade|up|remove|rm|rmf))
-          if `ls /var/lib/eopkg/index/* &>/dev/null`; then
-            packages=`grep -P "<Name>[^\s]*</Name>" /var/lib/eopkg/package/*/metadata.xml | gawk -F '[<|>]' '{print $3}' | sort | uniq | tr "\n" " "`
+          if [ -z "$_eopkg_idb_list" ]; then
+            _eopkg_idb_list=$(get_idb_package_list)
           fi
+          packages="${_eopkg_idb_list}"
           ;;
       esac
       COMPREPLY=($(compgen -f -W "$packages" -- $cur))
@@ -253,4 +258,3 @@ _hav()
   fi
 }
 complete -F _hav hav
-
