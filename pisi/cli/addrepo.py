@@ -54,10 +54,6 @@ NB: We support only local files (e.g., /a/b/c) and http:// URIs at the moment
         )
         self.parser.add_option_group(group)
 
-    def warn_and_remove(self, message, repo):
-        ctx.ui.warning(message)
-        pisi.api.remove_repo(repo)
-
     def run(self):
         if len(self.args) == 2:
             self.init()
