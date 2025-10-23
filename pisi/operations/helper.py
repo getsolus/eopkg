@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import os
+import re
 
 from ordered_set import OrderedSet as set
 
@@ -13,6 +14,9 @@ import pisi.ui as ui
 import pisi.util as util
 from pisi import Error
 from pisi import translate as _
+
+PKGCONFIG_RE = re.compile(r"^pkgconfig\((.+)\)$")
+PKGCONFIG32_RE = re.compile(r"^pkgconfig32\((.+)\)$")
 
 
 def reorder_base_packages_old(order):
@@ -177,3 +181,29 @@ def fetch_packages(order):
 
         fetcher = Fetcher()
         fetcher.fetch_multi(items_to_fetch)
+
+
+def resolve_provider_matches(packages: set[str]) -> set[str]:
+    """Resolve pkgconfig() and pkgconfig32() virtual dependencies."""
+
+    pc, pc32 = pisi.db.packagedb.PackageDB().get_pkgconfig_providers()
+
+    resolved: set[str] = set()
+
+    for pkg in packages:
+        if m := PKGCONFIG_RE.match(pkg):
+            try:
+                resolved.add(pc[m.group(1)])
+            except KeyError:
+                raise Error(_("Repo item %s not found") % pkg)
+
+        elif m := PKGCONFIG32_RE.match(pkg):
+            try:
+                resolved.add(pc32[m.group(1)])
+            except KeyError:
+                raise Error(_("Repo item %s not found") % pkg)
+
+        else:
+            resolved.add(pkg)
+
+    return resolved

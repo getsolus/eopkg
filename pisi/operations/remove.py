@@ -4,21 +4,27 @@
 import signal
 import sys
 
-from pisi import translate as _
-from pisi import Error
+from ordered_set import OrderedSet as set
 
 import pisi
-import pisi.context as ctx
 import pisi.atomicoperations as atomicoperations
+import pisi.context as ctx
+import pisi.db
 import pisi.pgraph as pgraph
 import pisi.signalhandler as signalhandler
-import pisi.util as util
 import pisi.ui as ui
-import pisi.db
+import pisi.util as util
+from pisi import Error
+from pisi import translate as _
+from pisi.operations import helper
 
 
 def remove(
-    packages, ignore_dep=False, ignore_safety=False, autoremove=False, force_prompt=False
+    packages,
+    ignore_dep=False,
+    ignore_safety=False,
+    autoremove=False,
+    force_prompt=False,
 ):
     """Remove a set of packages from the system.
     Parameters:
@@ -33,14 +39,18 @@ def remove(
     installdb = pisi.db.installdb.InstallDB()
     signal_handler = signalhandler.SignalHandler()
 
-    should_ignore_safety = (not ctx.get_option("ignore_safety")
-                            and not ctx.config.values.general.ignore_safety
-                            and not ignore_safety)
+    should_ignore_safety = (
+        not ctx.get_option("ignore_safety")
+        and not ctx.config.values.general.ignore_safety
+        and not ignore_safety
+    )
 
     packages = [str(package) for package in packages]
 
     # filter packages that are not installed
     filtered = packages = set(packages)
+
+    packages = helper.resolve_provider_matches(packages)
 
     if should_ignore_safety:
         if componentdb.has_component("system.base"):
@@ -48,7 +58,7 @@ def remove(
             refused = packages.intersection(systembase)
             if refused:
                 raise pisi.Error(
-                    _("Safety switch prevents the removal of " "following packages:\n")
+                    _("Safety switch prevents the removal of following packages:\n")
                     + util.format_by_columns(sorted(refused))
                 )
         else:
