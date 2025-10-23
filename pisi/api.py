@@ -511,11 +511,43 @@ def install(
     if not ctx.get_option("ignore_package_conflicts"):
         ctx.set_option("ignore_package_conflicts", ignore_package_conflicts)
 
+    # Known providers
+    providers_map = {
+        "pkgconfig32_dep": re.compile(r"^pkgconfig32\((.*)\)$"),
+        "pkgconfig_dep": re.compile(r"^pkgconfig\((.*)\)$"),
+    }
+
+    matches = {}
+    filtered = []
+
+    # Find provider matches and add them to matches
+    for pkg in packages:
+        for key, regex in providers_map.items():
+            m = regex.match(pkg)
+            if m:
+                inner = m.group(1)  # Extract the 'foo' part
+                matches[pkg] = inner
+
+    # TODO: apparently modifying lists in-place is fucky-wucky?
+    filtered = [
+        item
+        for item in packages
+        if not any(regex.match(item) for regex in providers_map.values())
+    ]
+
+    if matches is not None:
+        # Get known pkgconfig providers in the packagedb
+        pc, pc32 = pisi.db.packagedb.PackageDB().get_pkgconfig_providers()
+
+        for val in matches.values():
+            if val in pc or val in pc32:
+                filtered.append(pc[val])
+
     # Install pisi package files or pisi packages from a repository
     if packages and packages[0].endswith(ctx.const.package_suffix):
-        return pisi.operations.install.install_pkg_files(packages, reinstall)
+        return pisi.operations.install.install_pkg_files(filtered, reinstall)
     else:
-        return pisi.operations.install.install_pkg_names(packages, reinstall)
+        return pisi.operations.install.install_pkg_names(filtered, reinstall)
 
 
 @locked
