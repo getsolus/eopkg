@@ -58,6 +58,10 @@ def install_pkg_names(packages, reinstall=False):
 
     deduped_packages = packages = set(packages)
 
+    # The user may have passed providers e.g. 'pkgconfig(foo)'
+    # Ensure these get resolved to the underlying package name
+    packages = operations.helper.resolve_provider_matches(packages)
+
     # filter packages that are already installed
     if not reinstall:
         not_installed = set(
