@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import os
+import re
 
 from ordered_set import OrderedSet as set
 
@@ -13,6 +14,9 @@ import pisi.ui as ui
 import pisi.util as util
 from pisi import Error
 from pisi import translate as _
+
+PKGCONFIG_RE = re.compile(r"^pkgconfig\((.+)\)$")
+PKGCONFIG32_RE = re.compile(r"^pkgconfig32\((.+)\)$")
 
 
 def reorder_base_packages_old(order):
@@ -35,18 +39,20 @@ def reorder_base_packages_old(order):
         ctx.ui.info(_("install_order: %s" % install_order))
     return install_order
 
+
 def reorder_base_packages(order):
     """Dummy function that doesn't actually re-order system.base in front.
 
-       We now use OrderedSets, which keep the original topological sort,
-       so this shouldn't actually be necessary now.
+    We now use OrderedSets, which keep the original topological sort,
+    so this shouldn't actually be necessary now.
 
-       This also implies that the only function of system.base is for the
-       packages in it to be un-removable.
+    This also implies that the only function of system.base is for the
+    packages in it to be un-removable.
     """
     if len(order) > 1 and ctx.config.get_option("debug"):
         ctx.ui.info(_("order: %s" % order))
     return order
+
 
 def check_conflicts(order, packagedb):
     """check if upgrading to the latest versions will cause havoc
@@ -131,3 +137,29 @@ def calculate_download_sizes(order):
 
     ctx.ui.notify(ui.cached, total=total_size, cached=cached_size)
     return total_size, cached_size
+
+
+def resolve_provider_matches(packages: set[str]) -> set[str]:
+    """Resolve pkgconfig() and pkgconfig32() virtual dependencies."""
+
+    pc, pc32 = pisi.db.packagedb.PackageDB().get_pkgconfig_providers()
+
+    resolved: set[str] = set()
+
+    for pkg in packages:
+        if m := PKGCONFIG_RE.match(pkg):
+            try:
+                resolved.add(pc[m.group(1)])
+            except KeyError:
+                raise Error(_("Repo item %s not found") % pkg)
+
+        elif m := PKGCONFIG32_RE.match(pkg):
+            try:
+                resolved.add(pc32[m.group(1)])
+            except KeyError:
+                raise Error(_("Repo item %s not found") % pkg)
+
+        else:
+            resolved.add(pkg)
+
+    return resolved
