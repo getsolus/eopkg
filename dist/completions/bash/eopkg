@@ -20,8 +20,8 @@ _eopkg()
   commands="add-repo autoremove build check clean configure-pending delete-cache delta \
             emerge graph help history index info install list-available \
             list-components list-installed list-newest list-pending list-repo \
-            list-sources list-upgrades rebuild-db remove remove-orphans remove-repo search \
-            search-file update-repo upgrade"
+            list-sources list-upgrades rebuild-db remove remove-orphans remove-repo repo-priority \
+            search search-file update-repo upgrade"
 
   options="--destdir --yes-all --username --password --bandwidth-limit --verbose \
            --debug --no-color --retry-attempts"
@@ -151,6 +151,9 @@ _eopkg()
                    --short --xml"
           ;;
         @(remove-repo|rr))
+          options="${options}"
+          ;;
+        @(repo-priority|rp))
           options="${options}"
           ;;
         @(search|sr))
