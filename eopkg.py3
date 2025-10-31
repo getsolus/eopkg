@@ -35,6 +35,9 @@ def handle_exception(exception, value, tb):
         exit()
     elif isinstance(value, pisi.Error):
         ui.error(_("Program terminated."))
+        msg = str(value)
+        if msg:
+            ui.error(msg)
         show_traceback = ctx.get_option("debug")
     elif isinstance(value, pisi.graph.CycleException):
         ui.error(_(f"Cyclic dependency detected. The following packages cannot be installed:"))
