@@ -13,6 +13,7 @@ import pisi.context as ctx
 import pisi.cli.pisicli as pisicli
 
 from pisi import translate as _
+from pisi.graph import CycleException
 
 
 def sig_handler(sig, frame):
@@ -35,6 +36,12 @@ def handle_exception(exception, value, tb):
     elif isinstance(value, pisi.Error):
         ui.error(_("Program terminated."))
         show_traceback = ctx.get_option("debug")
+    elif isinstance(value, pisi.graph.CycleException):
+        ui.error(_(f"Cyclic dependency detected. The following packages cannot be installed:"))
+        for package in value.cycle:
+            ui.info(package)
+        ui.error(_("This is a packaging error."))
+        show_traceback = ctx.get_option("debug")
     elif isinstance(value, pisi.Exception):
         show_traceback = True
         ui.error(
@@ -54,10 +61,6 @@ def handle_exception(exception, value, tb):
 
     if show_traceback:
         ui.error("%s: %s" % (exception, str(value)))
-    else:
-        msg = str(value)
-        if msg:
-            ui.error(msg)
 
     ui.info(_("Please use 'eopkg help' for general help."))
 
