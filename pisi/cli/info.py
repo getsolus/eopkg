@@ -27,6 +27,7 @@ Usage: info <package1> <package2> ... <packagen>
         self.installdb = pisi.db.installdb.InstallDB()
         self.componentdb = pisi.db.componentdb.ComponentDB()
         self.packagedb = pisi.db.packagedb.PackageDB()
+        self.repodb = pisi.db.repodb.RepoDB()
 
     name = ("info", None)
 
@@ -56,6 +57,13 @@ Usage: info <package1> <package2> ... <packagen>
             action="store_true",
             default=False,
             help=_("Show only paths."),
+        )
+        group.add_option(
+            "-r",
+            "--repo",
+            action="store",
+            default=None,
+            help=_("Resolve package against specified repository")
         )
         group.add_option(
             "-s",
@@ -117,8 +125,12 @@ Usage: info <package1> <package2> ... <packagen>
             self.pisifile_info(arg)
             return
 
+        if self.options.repo and not self.repodb.has_repo(self.options.repo):
+            ctx.ui.error(_("Unable to resolve repository: %s") % self.options.repo)
+            return
+
         self.installdb_info(arg)
-        self.packagedb_info(arg)
+        self.packagedb_info(arg, self.options.repo)
 
     def print_files(self, files):
         files.list.sort(key=lambda x: x.path)
@@ -175,9 +187,9 @@ Usage: info <package1> <package2> ... <packagen>
         else:
             ctx.ui.info(_("%s package is not installed") % package)
 
-    def packagedb_info(self, package):
-        if self.packagedb.has_package(package):
-            metadata, files, repo = pisi.api.info_name(package, False)
+    def packagedb_info(self, package, repo):
+        if self.packagedb.has_package(package, repo):
+            metadata, files, repo = pisi.api.info_name(package, False, repo)
             if self.options.short:
                 ctx.ui.formatted_output(_("[binary] "), noln=True, column=" ")
             else:

@@ -785,7 +785,7 @@ def info_file(package_fn):
     return package.metadata, package.files
 
 
-def info_name(package_name, useinstalldb=False):
+def info_name(package_name, useinstalldb=False, repo=None):
     """Fetch package information for the given package."""
 
     installdb = pisi.db.installdb.InstallDB()
@@ -794,7 +794,7 @@ def info_name(package_name, useinstalldb=False):
         package = installdb.get_package(package_name)
         repo = None
     else:
-        package, repo = packagedb.get_package_repo(package_name)
+        package, repo = packagedb.get_package_repo(package_name, repo)
 
     metadata = pisi.metadata.MetaData()
     metadata.package = package
