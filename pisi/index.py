@@ -20,6 +20,7 @@ import pisi.file
 import pisi.pxml.autoxml as autoxml
 import pisi.component as component
 import pisi.group as group
+import pisi.appstream as appstream
 import pisi.operations.build
 
 
@@ -36,6 +37,7 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     # t_Metadatas = [ [metadata.MetaData], autoxml.optional, "MetaData"]
     t_Components = [[component.Component], autoxml.OPTIONAL, "Component"]
     t_Groups = [[group.Group], autoxml.OPTIONAL, "Group"]
+    t_Appstreams = [[appstream.AppstreamCatalog], autoxml.OPTIONAL, "AppstreamCatalog"]
 
     def read_uri(self, uri, tmpdir, force=False):
         return self.read(
@@ -97,6 +99,8 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
                 elif fn.endswith(ctx.const.package_suffix):
                     packages.append(os.path.join(root, fn))
 
+                if fn == "appstream.xml":
+                    self.appstreams.extend(add_appstreams(os.path.join(root, fn)))
                 if fn == "components.xml":
                     self.components.extend(add_components(os.path.join(root, fn)))
                 if fn == "distribution.xml":
@@ -238,6 +242,13 @@ def add_package(params):
         # KeyboardInterrupt exception as an Exception.
 
         raise Exception
+
+
+def add_appstreams(path):
+    ctx.ui.info("Adding appstream.xml to index")
+    appstreams_xml = appstream.AppstreamCatalogs()
+    appstreams_xml.read(path)
+    return appstreams_xml.appstreams
 
 
 def add_groups(path):
