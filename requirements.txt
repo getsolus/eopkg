@@ -3,4 +3,6 @@ iksemel
 jeepney
 ordered_set
 python-magic
+requests
+tqdm
 xattr

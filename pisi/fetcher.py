@@ -10,10 +10,13 @@ knows what."""
 import base64
 import contextlib
 import os
+import requests
 import shutil
 import time
 import urllib.request, urllib.error, urllib.parse
 from urllib.error import URLError
+
+from tqdm import tqdm
 
 from pisi import translate as _
 
@@ -22,6 +25,36 @@ import pisi
 import pisi.util as util
 import pisi.context as ctx
 import pisi.uri
+
+
+def fetch(url: str, dest_dir: str, file_name: str = None):
+    local_filename = url.split("/")[-1]
+
+    if file_name is not None:
+        local_filename = file_name
+
+    dest = os.path.join(dest_dir, local_filename)
+
+    with requests.get(
+        url, headers={"User-Agent": f"eopkg Fetcher/{pisi.__version__}"}, stream=True
+    ) as resp:
+        resp.raise_for_status()
+
+        total = int(resp.headers.get("Content-Length", 0))
+
+        with (
+            open(dest, "wb") as f,
+            tqdm(
+                desc=dest,
+                total=total,
+                unit="iB",
+                unit_scale=True,
+                unit_divisor=1024,
+            ) as bar,
+        ):
+            for chunk in resp.iter_content(chunk_size=8192):
+                size = f.write(chunk)
+                bar.update(size)
 
 
 class FetchError(pisi.Error):
@@ -305,7 +338,7 @@ class Fetcher:
 
 
 # helper function
-def fetch_url(url, destdir, progress=None, destfile=None):
+def fetch_url(url, destdir, progress, destfile=None):
     fetch = Fetcher(url, destdir, destfile)
     fetch.progress = progress
     fetch.fetch()
