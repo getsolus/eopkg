@@ -13,7 +13,7 @@ import zipfile
 import lzma
 
 from pisi import translate as _
-from pisi.usr_merge import is_usr_merged_duplicate
+from pisi.path import is_usr_merged_duplicate, normpath
 
 # eopkg modules
 import pisi
@@ -302,6 +302,8 @@ class ArchiveTar(ArchiveBase):
         gid = os.getgid()
 
         for tarinfo in self.tar:
+            tarinfo.path = normpath(tarinfo.path)
+
             if is_usr_merged_duplicate(files, tarinfo.path):
                 ctx.ui.debug("Skipping merged file %s" % tarinfo.path)
                 continue
@@ -498,7 +500,7 @@ class ArchiveTar(ArchiveBase):
 
     def _tar_file_list(self):
         with self._open_tar() as tar:
-            paths = [tarinfo.path for tarinfo in tar]
+            paths = [normpath(tarinfo.path) for tarinfo in tar]
 
         if self.fileobj is not None:
             self.fileobj.seek(0)
