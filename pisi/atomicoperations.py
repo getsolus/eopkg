@@ -4,7 +4,7 @@
 """Atomic package operations such as install/remove/upgrade"""
 
 from pisi import translate as _
-from pisi.usr_merge import is_usr_merged_duplicate
+from pisi.path import is_usr_merged_duplicate
 
 import os
 import shutil
