@@ -42,6 +42,7 @@ def main():
 
     target = "." if len(sys.argv) == 2 else sys.argv[2]
 
+    package.read()
     package.extract_pisi_files(target)
     package.extract_dir("comar", target)
     if not os.path.exists(os.path.join(target, "install")):
