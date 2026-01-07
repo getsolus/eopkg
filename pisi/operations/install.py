@@ -129,7 +129,7 @@ def install_pkg_names(packages, reinstall=False):
         install_op = atomicoperations.Install.from_name(package)
         paths.append(install_op.package_fname)
 
-    ctx.ui.status(_("Finished downloading package upgrades."))
+    ctx.ui.status(_("Finished downloading packages."))
 
     # Don't actually install if --fetch-only was set
     if ctx.get_option("fetch_only"):
