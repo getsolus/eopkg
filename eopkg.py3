@@ -59,7 +59,7 @@ def handle_exception(exception, value, tb):
     else:
         # For any other exception (possibly Python exceptions) show
         # the traceback!
-        show_traceback = ctx.get_option("debug")
+        show_traceback = True
         ui.error(_("System error. Program terminated."))
 
     if show_traceback:

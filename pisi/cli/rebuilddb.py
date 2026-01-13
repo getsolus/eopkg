@@ -9,6 +9,8 @@ import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.api
 
+from pisi.db import monodb
+
 
 class RebuildDb(command.Command, metaclass=command.autocommand):
     __doc__ = _(
@@ -42,6 +44,7 @@ dirs under /var/lib/eopkg
         self.parser.add_option_group(group)
 
     def run(self):
-        self.init(database=True)
-        if ctx.ui.confirm(_("Rebuild eopkg databases?")):
-            pisi.api.rebuild_db(ctx.get_option("files"))
+        monodb.build_db()
+        # self.init(database=True)
+        # if ctx.ui.confirm(_("Rebuild eopkg databases?")):
+        #     pisi.api.rebuild_db(ctx.get_option("files"))
