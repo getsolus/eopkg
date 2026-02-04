@@ -44,6 +44,10 @@ def locked(func):
     """
 
     def wrapper(*__args, **__kw):
+        # Don't lock operations if we're doing a dry run
+        if ctx.get_option("dry_run"):
+            return func(*__args, **__kw)
+
         try:
             lock = open(
                 pisi.util.join_path(pisi.context.config.lock_dir(), "pisi"), "w"
