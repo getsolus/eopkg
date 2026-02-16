@@ -6,6 +6,7 @@ import time
 from functools import cmp_to_key
 
 from pisi import context as ctx
+from pisi import Error
 from pisi import translate as _
 from pisi.pxml import autoxml, xmlfile
 
@@ -105,7 +106,7 @@ class History(xmlfile.XmlFile, metaclass=autoxml.autoxml):
             "takeback",
             "repoupdate",
         ]:
-            raise Exception(_("Unknown package operation"))
+            raise Error(_("Unknown package operation"))
 
         opno = self._get_latest()
         self.histfile = "%s_%s.xml" % (opno, operation)
@@ -133,7 +134,7 @@ class History(xmlfile.XmlFile, metaclass=autoxml.autoxml):
             "downgrade",
             "snapshot",
         ]:
-            raise Exception(_("Unknown package operation"))
+            raise Error(_("Unknown package operation"))
 
         package = Package()
         package.operation = operation

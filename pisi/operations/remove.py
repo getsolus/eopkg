@@ -5,6 +5,7 @@ import signal
 import sys
 
 from pisi import translate as _
+from pisi import Error
 
 import pisi
 import pisi.context as ctx
@@ -298,7 +299,7 @@ def list_orphans():
 
 def remove_conflicting_packages(conflicts):
     if remove(conflicts, ignore_dep=True, ignore_safety=True):
-        raise Exception(_("Conflicts remain"))
+        raise Error(_("Conflicts remain"))
 
 
 def remove_obsoleted_packages():
@@ -307,9 +308,9 @@ def remove_obsoleted_packages():
     obsoletes = list(filter(installdb.has_package, packagedb.get_obsoletes()))
     if obsoletes:
         if remove(obsoletes, ignore_dep=True, ignore_safety=True):
-            raise Exception(_("Obsoleted packages remaining"))
+            raise Error(_("Obsoleted packages remaining"))
 
 
 def remove_replaced_packages(replaced):
     if remove(replaced, ignore_dep=True, ignore_safety=True):
-        raise Exception(_("Replaced package remains"))
+        raise Error(_("Replaced package remains"))

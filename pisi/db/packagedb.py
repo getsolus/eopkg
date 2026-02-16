@@ -18,6 +18,7 @@ import pisi.dependency
 import pisi.db.itembyrepo
 import pisi.db.lazydb as lazydb
 from pisi import translate as _
+from pisi import Error
 
 
 class PackageDB(lazydb.LazyDB):
@@ -125,7 +126,7 @@ class PackageDB(lazydb.LazyDB):
                         doc, pkgConfigs, pkgConfigs32)
         else:
             if repo not in repodb.list_repos(only_active=False):
-                raise Exception(_("Repo %s not found.") % repo)
+                raise Error(_("Repo %s not found.") % repo)
             doc = repodb.get_repo_doc(repo)
             pkgConfig, pkgConfigs32 = map_providers(
                         doc, pkgConfigs, pkgConfigs32)
@@ -214,13 +215,13 @@ class PackageDB(lazydb.LazyDB):
 
     def get_version_and_distro_release(self, name, repo):
         if not self.has_package(name, repo):
-            raise Exception(_("Package %s not found.") % name)
+            raise Error(_("Package %s not found.") % name)
         pkg_doc = iksemel.parseString(self.pdb.get_item(name, repo).decode())
         return self.__get_version(pkg_doc) + self.__get_distro_release(pkg_doc)
 
     def get_version(self, name, repo):
         if not self.has_package(name, repo):
-            raise Exception(_("Package %s not found.") % name)
+            raise Error(_("Package %s not found.") % name)
 
         pkg_doc = iksemel.parseString(self.pdb.get_item(name, repo).decode())
         return self.__get_version(pkg_doc)

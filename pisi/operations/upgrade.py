@@ -6,6 +6,7 @@ import sys
 
 from ordered_set import OrderedSet as set
 from pisi import translate as _
+from pisi import Error
 
 import pisi
 import pisi.ui as ui
@@ -306,7 +307,7 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
                 ctx.ui.error(
                     _("Dependency %s of %s cannot be satisfied") % (dep, pkg.name)
                 )
-                raise Exception(_("Upgrade is not possible."))
+                raise Error(_("Upgrade is not possible."))
 
     def add_resolvable_conflicts(pkg, Bp):
         """Try to resolve conflicts by upgrading

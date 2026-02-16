@@ -3,6 +3,7 @@
 
 import zlib
 from pisi import translate as _
+from pisi import Error
 
 import pisi.db
 
@@ -27,7 +28,7 @@ class ItemByRepo:
             if r in self.dbobj and item in self.dbobj[r]:
                 return r
 
-        raise Exception(_("%s not found in any repository.") % str(item))
+        raise Error(_("%s not found in any repository.") % str(item))
 
     def get_item_repo(self, item, repo=None):
         for r in self.item_repos(repo):
@@ -37,7 +38,7 @@ class ItemByRepo:
                 else:
                     return self.dbobj[r][item], r
 
-        raise Exception(_("Repo item %s not found") % str(item))
+        raise Error(_("Repo item %s not found") % str(item))
 
     def get_item(self, item, repo=None):
         item, repo = self.get_item_repo(item, repo)
@@ -47,7 +48,7 @@ class ItemByRepo:
         items = []
         for r in self.item_repos(repo):
             if not self.has_repo(r):
-                raise Exception(_("Repository %s does not exist.") % repo)
+                raise Error(_("Repository %s does not exist.") % repo)
 
             if r in self.dbobj:
                 items.extend(list(self.dbobj[r].keys()))
@@ -58,7 +59,7 @@ class ItemByRepo:
         items = []
         for r in self.item_repos(repo):
             if not self.has_repo(r):
-                raise Exception(_("Repository %s does not exist.") % repo)
+                raise Error(_("Repository %s does not exist.") % repo)
 
             if r in self.dbobj:
                 items.extend(self.dbobj[r])
@@ -68,7 +69,7 @@ class ItemByRepo:
     def get_items_iter(self, repo=None):
         for r in self.item_repos(repo):
             if not self.has_repo(r):
-                raise Exception(_("Repository %s does not exist.") % repo)
+                raise Error(_("Repository %s does not exist.") % repo)
 
             for item, data in self.dbobj[r].items():
                 yield item, zlib.decompress(data) if self.compressed else data
