@@ -7,6 +7,7 @@
 import os
 import re
 from pisi import translate as _
+from pisi import Error
 
 import iksemel
 
@@ -374,4 +375,4 @@ class InstallDB(lazydb.LazyDB):
                 "%s-%s" % (package, self.installed_db[package]),
             )
 
-        raise Exception(_("Package %s is not installed") % package)
+        raise Error(_("Package %s is not installed") % package)

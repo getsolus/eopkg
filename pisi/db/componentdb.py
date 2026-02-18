@@ -3,6 +3,7 @@
 
 import re
 from pisi import translate as _
+from pisi import Error
 
 import pisi
 import pisi.db.repodb
@@ -84,7 +85,7 @@ class ComponentDB(lazydb.LazyDB):
     # Returns the component in given repo or first found component in repo order if repo is None
     def get_component(self, component_name, repo=None):
         if not self.has_component(component_name, repo):
-            raise Exception(_("Component %s not found") % component_name)
+            raise Error(_("Component %s not found") % component_name)
 
         try:
             component = pisi.component.Component()

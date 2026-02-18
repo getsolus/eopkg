@@ -5,6 +5,7 @@ import os
 
 from ordered_set import OrderedSet as set
 from pisi import translate as _
+from pisi import Error
 
 import pisi
 import pisi.context as ctx
@@ -55,7 +56,7 @@ def check_conflicts(order, packagedb):
     (C, D, pkg_conflicts) = pisi.conflict.calculate_conflicts(order, packagedb)
 
     if D:
-        raise Exception(
+        raise Error(
             _("Selected packages [%s] are in conflict with each other.")
             % util.strlist(list(D))
         )
@@ -71,7 +72,7 @@ def check_conflicts(order, packagedb):
         ctx.ui.info(_("The following packages have conflicts:\n%s") % conflicts)
 
         if not ctx.ui.confirm(_("Remove the following conflicting packages?")):
-            raise Exception(_("Conflicting packages should be removed to continue"))
+            raise Error(_("Conflicting packages should be removed to continue"))
 
     return list(C)
 
