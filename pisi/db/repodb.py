@@ -36,6 +36,7 @@ class RepoOrder:
     def __init__(self):
         self._doc = None
         self.legacy_repo_used = None
+        self._repos_cache = {}
         self.repos = self._get_repos()
 
     def add(self, repo_name, repo_url, repo_type="remote"):
@@ -70,6 +71,7 @@ class RepoOrder:
     def set_status(self, repo_name, status):
         repo_doc = self._get_doc()
 
+        found = False
         for r in repo_doc.tags("Repo"):
             if r.getTagData("Name") == repo_name:
                 status_node = r.getTag("Status")
@@ -79,37 +81,16 @@ class RepoOrder:
                 else:
                     status_node = r.insertTag("Status")
                     status_node.insertData(status)
+                found = True
 
-        self._update(repo_doc)
+        if found:
+            self._update(repo_doc)
 
     def get_status(self, repo_name):
-        repo_doc = self._get_doc()
-        for r in repo_doc.tags("Repo"):
-            if r.getTagData("Name") == repo_name:
-                status_node = r.getTag("Status")
-                if status_node:
-                    status = status_node.firstChild().data()
-                    if status in ["active", "inactive"]:
-                        return status
-        return "inactive"
+        return self._repos_cache.get(repo_name, {}).get("status", "inactive")
 
     def get_uri(self, repo_name):
-        repo_doc = self._get_doc()
-        url = ""
-
-        for r in repo_doc.tags("Repo"):
-            name = r.getTagData("Name")
-            uri = r.getTagData("Url")
-
-            if name == repo_name:
-                url = pisi.urlcheck.switch_from_legacy(uri)
-
-                if url != uri:
-                    self.legacy_repo_used = True
-
-                break
-
-        return url.rstrip()
+        return self._repos_cache.get(repo_name, {}).get("url", "")
 
     def remove(self, repo_name):
         repo_doc = self._get_doc()
@@ -151,14 +132,24 @@ class RepoOrder:
     def _get_repos(self):
         repo_doc = self._get_doc()
         order = {}
+        self._repos_cache = {}
 
         for r in repo_doc.tags("Repo"):
             media = r.getTagData("Media")
             name = r.getTagData("Name")
             status = r.getTagData("Status")
             old_url = r.getTagData("Url")
+
             url = pisi.urlcheck.switch_from_legacy(old_url)
+            if url != old_url:
+                self.legacy_repo_used = True
+
             order.setdefault(media, []).append(name)
+            self._repos_cache[name] = {
+                "media": media,
+                "status": status if status in ["active", "inactive"] else "inactive",
+                "url": url.rstrip(),
+            }
 
         return order
 
