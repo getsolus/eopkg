@@ -165,8 +165,10 @@ class History(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         if not files:
             return "001"
 
-        files.sort(
-            key=cmp_to_key(lambda x, y: int(x.split("_")[0]) - int(y.split("_")[0]))
-        )
+        def extract_prefix(s):
+            i = s.find("_")
+            return int(s[:i]) if i != -1 else int(s)
+
+        files.sort(key=extract_prefix)
         no, opxml = files[-1].split("_")
         return "%03d" % (int(no) + 1)
