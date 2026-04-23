@@ -952,6 +952,19 @@ def letters():
             start = None
     return "".join(result)
 
+
+def parse_jobs(jobs):
+    """Returns an integer representing the number of jobs/threads."""
+    if jobs == "auto":
+        return 0
+    try:
+        if isinstance(jobs, str):
+            return int(jobs.replace("-j", ""))
+        return int(jobs)
+    except (ValueError, TypeError):
+        return 0
+
+
 ########################################
 # DBus Related Functions               #
 ########################################

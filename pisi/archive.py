@@ -4,21 +4,21 @@
 """Archive module provides access to regular archive file types."""
 
 # standard library modules
-import os
-import stat
 import errno
+import os
 import shutil
+import stat
 import tarfile
 import zipfile
-import lzma
 
-from pisi import translate as _
-from pisi.path import is_usr_merged_duplicate, normpath
+import lzma_mt
 
 # eopkg modules
 import pisi
-import pisi.util as util
 import pisi.context as ctx
+import pisi.util as util
+from pisi import translate as _
+from pisi.path import is_usr_merged_duplicate, normpath
 
 
 class UnknownArchiveType(Exception):
@@ -29,70 +29,6 @@ class ArchiveHandlerNotInstalled(Exception):
     pass
 
 
-# Proxy class inspired from tarfile._BZ2Proxy
-class _LZMAProxy(object):
-    blocksize = 16 * 1024
-
-    def __init__(self, fileobj, mode):
-        self.fileobj = fileobj
-        self.mode = mode
-        self.name = getattr(self.fileobj, "name", None)
-        self.init()
-
-    def init(self):
-        import lzma
-
-        self.pos = 0
-        if self.mode == "r":
-            self.lzmaobj = lzma.LZMADecompressor()
-            # Seeking here can cause problems with Python 2.7
-            # if hasattr(self.fileobj, "seek"):
-            #     self.fileobj.seek(0)
-            self.buf = b""
-        else:
-            self.lzmaobj = lzma.LZMACompressor()
-
-    def read(self, size):
-        b = [self.buf]
-        x = len(self.buf)
-        while x < size:
-            raw = self.fileobj.read(self.blocksize)
-            if not raw:
-                break
-            try:
-                data = self.lzmaobj.decompress(raw)
-            except EOFError:
-                break
-            b.append(data)
-            x += len(data)
-        self.buf = b"".join(
-            [b_item if type(b_item) == bytes else b_item.encode() for b_item in b]
-        )
-
-        buf = self.buf[:size]
-        self.buf = self.buf[size:]
-        self.pos += len(buf)
-        return buf
-
-    def seek(self, pos):
-        if pos < self.pos:
-            self.init()
-        self.read(pos - self.pos)
-
-    def tell(self):
-        return self.pos
-
-    def write(self, data):
-        self.pos += len(data)
-        raw = self.lzmaobj.compress(data)
-        self.fileobj.write(raw)
-
-    def close(self):
-        if self.mode == "w":
-            raw = self.lzmaobj.flush()
-            self.fileobj.write(raw)
-
-
 class TarFile(tarfile.TarFile):
     @classmethod
     def lzmaopen(
@@ -100,7 +36,7 @@ class TarFile(tarfile.TarFile):
         name=None,
         mode="r",
         fileobj=None,
-        compressformat=lzma.FORMAT_XZ,
+        compressformat=lzma_mt.FORMAT_XZ,
         compresslevel=9,
         **kwargs,
     ):
@@ -112,17 +48,19 @@ class TarFile(tarfile.TarFile):
             raise ValueError("mode must be 'r' or 'w'.")
 
         try:
-            import lzma
+            import lzma_mt
         except ImportError:
             raise tarfile.CompressionError("lzma module is not available")
 
-        if fileobj is not None:
-            fileobj = _LZMAProxy(fileobj, mode)
-        else:
-            if mode == "r":
-                compresslevel = None
+        threads = util.parse_jobs(ctx.config.values.build.jobs)
 
-            fileobj = lzma.LZMAFile(name, mode, format=1, preset=compresslevel)
+        fileobj = lzma_mt.LZMAFile(
+            fileobj or name,
+            mode,
+            format=compressformat if mode == "w" else lzma_mt.FORMAT_AUTO,
+            preset=compresslevel if mode == "w" else None,
+            threads=threads,
+        )
 
         try:
             t = cls.taropen(name, mode, fileobj, **kwargs)
@@ -236,9 +174,11 @@ class ArchiveLzma(ArchiveBase):
         if output_path.endswith(ext):
             output_path = output_path[: -len(ext)]
 
-        import lzma
+        import lzma_mt
 
-        lzma_file = lzma.LZMAFile(self.file_path, "r")
+        threads = util.parse_jobs(ctx.config.values.build.jobs)
+
+        lzma_file = lzma_mt.LZMAFile(self.file_path, "r", threads=threads)
         output = open(output_path, "w")
         output.write(lzma_file.read().decode())
         output.close()
@@ -304,11 +244,13 @@ class ArchiveTar(ArchiveBase):
         for tarinfo in self.tar:
             tarinfo.path = normpath(tarinfo.path)
             if tarinfo.path not in files:
-                ctx.ui.warning("Ignoring unknown file in archive: %s" % repr(tarinfo.path))
+                ctx.ui.warning(
+                    _("Ignoring unknown file in archive: %s" % repr(tarinfo.path))
+                )
                 continue
 
             if is_usr_merged_duplicate(files, tarinfo.path):
-                ctx.ui.debug("Skipping merged file %s" % tarinfo.path)
+                ctx.ui.debug(_("Skipping merged file %s" % tarinfo.path))
                 continue
 
             if callback:
@@ -467,7 +409,9 @@ class ArchiveTar(ArchiveBase):
             elif self.type == "tarbz2":
                 wmode = "w:bz2"
             elif self.type in ("tarlzma", "tarxz"):
-                format = "xz" if self.type == "tarxz" else "alone"
+                format = (
+                    lzma_mt.FORMAT_XZ if self.type == "tarxz" else lzma_mt.FORMAT_ALONE
+                )
                 level = int(ctx.config.values.build.compressionlevel)
                 self.tar = TarFile.lzmaopen(
                     self.file_path,
