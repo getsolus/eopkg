@@ -245,12 +245,12 @@ class ArchiveTar(ArchiveBase):
             tarinfo.path = normpath(tarinfo.path)
             if tarinfo.path not in files:
                 ctx.ui.warning(
-                    "Ignoring unknown file in archive: %s" % repr(tarinfo.path)
+                    _("Ignoring unknown file in archive: %s" % repr(tarinfo.path))
                 )
                 continue
 
             if is_usr_merged_duplicate(files, tarinfo.path):
-                ctx.ui.debug("Skipping merged file %s" % tarinfo.path)
+                ctx.ui.debug(_("Skipping merged file %s" % tarinfo.path))
                 continue
 
             if callback:
