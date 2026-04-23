@@ -88,22 +88,21 @@ def getNode(node, tagpath):
     if tagpath == "":
         return node
 
-    assert type(tagpath) == str
+    assert type(tagpath) is str
     tags = tagpath.split("/")
     assert len(tags) > 0
 
     # iterative code to search for the path
     for tag in tags:
-        currentNode = None
-        for child in node.tags():
-            if child.name() == tag:
-                currentNode = child
-                break
-        if not currentNode:
+        found = False
+        for child in node.tags(tag):
+            node = child
+            found = True
+            break
+        if not found:
             return None
-        else:
-            node = currentNode
-    return currentNode
+
+    return node
 
 
 def createTagPath(node, tags):
