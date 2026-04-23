@@ -90,12 +90,12 @@ class File:
         compress = File.choose_method(localfile, compress)
         if compress == File.COMPRESSION_TYPE_XZ:
             threads = pisi.util.parse_jobs(ctx.config.values.build.jobs)
-            open(localfile[:-3], "wb").write(
-                lzma_mt.LZMAFile(localfile, threads=threads).read()
-            )
+            with open(localfile[:-3], "wb") as f:
+                f.write(lzma_mt.LZMAFile(localfile, threads=threads).read())
             localfile = localfile[:-3]
         elif compress == File.COMPRESSION_TYPE_BZ2:
-            open(localfile[:-4], "w").write(bz2.BZ2File(localfile).read())
+            with open(localfile[:-4], "wb") as f:
+                f.write(bz2.BZ2File(localfile).read())
             localfile = localfile[:-4]
         return localfile
 
