@@ -1,6 +1,7 @@
 PyYaml
 iksemel
 jeepney
+lzma_mt
 ordered_set
 python-magic
 xattr

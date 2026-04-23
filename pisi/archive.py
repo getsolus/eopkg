@@ -4,21 +4,21 @@
 """Archive module provides access to regular archive file types."""
 
 # standard library modules
-import os
-import stat
 import errno
+import os
 import shutil
+import stat
 import tarfile
 import zipfile
-import lzma
 
-from pisi import translate as _
-from pisi.path import is_usr_merged_duplicate, normpath
+import lzma_mt
 
 # eopkg modules
 import pisi
-import pisi.util as util
 import pisi.context as ctx
+import pisi.util as util
+from pisi import translate as _
+from pisi.path import is_usr_merged_duplicate, normpath
 
 
 class UnknownArchiveType(Exception):
@@ -40,17 +40,17 @@ class _LZMAProxy(object):
         self.init()
 
     def init(self):
-        import lzma
+        import lzma_mt
 
         self.pos = 0
         if self.mode == "r":
-            self.lzmaobj = lzma.LZMADecompressor()
+            self.lzmaobj = lzma_mt.LZMADecompressor(threads=0)
             # Seeking here can cause problems with Python 2.7
             # if hasattr(self.fileobj, "seek"):
             #     self.fileobj.seek(0)
             self.buf = b""
         else:
-            self.lzmaobj = lzma.LZMACompressor()
+            self.lzmaobj = lzma_mt.LZMACompressor(threads=0)
 
     def read(self, size):
         b = [self.buf]
@@ -100,7 +100,7 @@ class TarFile(tarfile.TarFile):
         name=None,
         mode="r",
         fileobj=None,
-        compressformat=lzma.FORMAT_XZ,
+        compressformat=lzma_mt.FORMAT_XZ,
         compresslevel=9,
         **kwargs,
     ):
@@ -112,7 +112,7 @@ class TarFile(tarfile.TarFile):
             raise ValueError("mode must be 'r' or 'w'.")
 
         try:
-            import lzma
+            import lzma_mt
         except ImportError:
             raise tarfile.CompressionError("lzma module is not available")
 
@@ -122,7 +122,9 @@ class TarFile(tarfile.TarFile):
             if mode == "r":
                 compresslevel = None
 
-            fileobj = lzma.LZMAFile(name, mode, format=1, preset=compresslevel)
+            fileobj = lzma_mt.LZMAFile(
+                name, mode, format=1, preset=compresslevel, threads=0
+            )
 
         try:
             t = cls.taropen(name, mode, fileobj, **kwargs)
@@ -236,9 +238,9 @@ class ArchiveLzma(ArchiveBase):
         if output_path.endswith(ext):
             output_path = output_path[: -len(ext)]
 
-        import lzma
+        import lzma_mt
 
-        lzma_file = lzma.LZMAFile(self.file_path, "r")
+        lzma_file = lzma_mt.LZMAFile(self.file_path, "r", threads=0)
         output = open(output_path, "w")
         output.write(lzma_file.read().decode())
         output.close()
@@ -304,7 +306,9 @@ class ArchiveTar(ArchiveBase):
         for tarinfo in self.tar:
             tarinfo.path = normpath(tarinfo.path)
             if tarinfo.path not in files:
-                ctx.ui.warning("Ignoring unknown file in archive: %s" % repr(tarinfo.path))
+                ctx.ui.warning(
+                    "Ignoring unknown file in archive: %s" % repr(tarinfo.path)
+                )
                 continue
 
             if is_usr_merged_duplicate(files, tarinfo.path):
@@ -467,7 +471,9 @@ class ArchiveTar(ArchiveBase):
             elif self.type == "tarbz2":
                 wmode = "w:bz2"
             elif self.type in ("tarlzma", "tarxz"):
-                format = "xz" if self.type == "tarxz" else "alone"
+                format = (
+                    lzma_mt.FORMAT_XZ if self.type == "tarxz" else lzma_mt.FORMAT_ALONE
+                )
                 level = int(ctx.config.values.build.compressionlevel)
                 self.tar = TarFile.lzmaopen(
                     self.file_path,
