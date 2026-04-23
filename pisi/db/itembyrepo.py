@@ -12,7 +12,6 @@ class ItemByRepo:
     def __init__(self, dbobj, compressed=False):
         self.dbobj = dbobj
         self.compressed = compressed
-        self.repodb = pisi.db.repodb.RepoDB()
 
     def has_repo(self, repo):
         return repo in self.dbobj
@@ -25,7 +24,7 @@ class ItemByRepo:
         return False
 
     def which_repo(self, item):
-        for r in self.repodb.list_repos():
+        for r in pisi.db.repodb.RepoDB().list_repos():
             if r in self.dbobj and item in self.dbobj[r]:
                 return r
 
