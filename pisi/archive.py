@@ -29,70 +29,6 @@ class ArchiveHandlerNotInstalled(Exception):
     pass
 
 
-# Proxy class inspired from tarfile._BZ2Proxy
-class _LZMAProxy(object):
-    blocksize = 16 * 1024
-
-    def __init__(self, fileobj, mode):
-        self.fileobj = fileobj
-        self.mode = mode
-        self.name = getattr(self.fileobj, "name", None)
-        self.init()
-
-    def init(self):
-        import lzma_mt
-
-        self.pos = 0
-        if self.mode == "r":
-            self.lzmaobj = lzma_mt.LZMADecompressor(threads=0)
-            # Seeking here can cause problems with Python 2.7
-            # if hasattr(self.fileobj, "seek"):
-            #     self.fileobj.seek(0)
-            self.buf = b""
-        else:
-            self.lzmaobj = lzma_mt.LZMACompressor(threads=0)
-
-    def read(self, size):
-        b = [self.buf]
-        x = len(self.buf)
-        while x < size:
-            raw = self.fileobj.read(self.blocksize)
-            if not raw:
-                break
-            try:
-                data = self.lzmaobj.decompress(raw)
-            except EOFError:
-                break
-            b.append(data)
-            x += len(data)
-        self.buf = b"".join(
-            [b_item if type(b_item) == bytes else b_item.encode() for b_item in b]
-        )
-
-        buf = self.buf[:size]
-        self.buf = self.buf[size:]
-        self.pos += len(buf)
-        return buf
-
-    def seek(self, pos):
-        if pos < self.pos:
-            self.init()
-        self.read(pos - self.pos)
-
-    def tell(self):
-        return self.pos
-
-    def write(self, data):
-        self.pos += len(data)
-        raw = self.lzmaobj.compress(data)
-        self.fileobj.write(raw)
-
-    def close(self):
-        if self.mode == "w":
-            raw = self.lzmaobj.flush()
-            self.fileobj.write(raw)
-
-
 class TarFile(tarfile.TarFile):
     @classmethod
     def lzmaopen(
@@ -116,15 +52,13 @@ class TarFile(tarfile.TarFile):
         except ImportError:
             raise tarfile.CompressionError("lzma module is not available")
 
-        if fileobj is not None:
-            fileobj = _LZMAProxy(fileobj, mode)
-        else:
-            if mode == "r":
-                compresslevel = None
-
-            fileobj = lzma_mt.LZMAFile(
-                name, mode, format=1, preset=compresslevel, threads=0
-            )
+        fileobj = lzma_mt.LZMAFile(
+            fileobj or name,
+            mode,
+            format=compressformat if mode == "w" else lzma_mt.FORMAT_AUTO,
+            preset=compresslevel if mode == "w" else None,
+            threads=0,
+        )
 
         try:
             t = cls.taropen(name, mode, fileobj, **kwargs)
