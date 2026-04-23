@@ -89,8 +89,9 @@ class File:
     def decompress(localfile, compress):
         compress = File.choose_method(localfile, compress)
         if compress == File.COMPRESSION_TYPE_XZ:
+            threads = pisi.util.parse_jobs(ctx.config.values.build.jobs)
             open(localfile[:-3], "wb").write(
-                lzma_mt.LZMAFile(localfile, threads=0).read()
+                lzma_mt.LZMAFile(localfile, threads=threads).read()
             )
             localfile = localfile[:-3]
         elif compress == File.COMPRESSION_TYPE_BZ2:

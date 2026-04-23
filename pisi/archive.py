@@ -52,12 +52,14 @@ class TarFile(tarfile.TarFile):
         except ImportError:
             raise tarfile.CompressionError("lzma module is not available")
 
+        threads = util.parse_jobs(ctx.config.values.build.jobs)
+
         fileobj = lzma_mt.LZMAFile(
             fileobj or name,
             mode,
             format=compressformat if mode == "w" else lzma_mt.FORMAT_AUTO,
             preset=compresslevel if mode == "w" else None,
-            threads=0,
+            threads=threads,
         )
 
         try:
@@ -174,7 +176,9 @@ class ArchiveLzma(ArchiveBase):
 
         import lzma_mt
 
-        lzma_file = lzma_mt.LZMAFile(self.file_path, "r", threads=0)
+        threads = util.parse_jobs(ctx.config.values.build.jobs)
+
+        lzma_file = lzma_mt.LZMAFile(self.file_path, "r", threads=threads)
         output = open(output_path, "w")
         output.write(lzma_file.read().decode())
         output.close()
