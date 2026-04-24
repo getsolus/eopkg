@@ -4,6 +4,9 @@
 # python standard library
 
 import os
+
+from requests import HTTPError
+
 from pisi import translate as _
 
 # pisi modules
@@ -12,8 +15,8 @@ import pisi.util as util
 import pisi.context as ctx
 import pisi.archive
 import pisi.uri
-import pisi.fetcher
 import pisi.mirrors
+from pisi.fetcher import Fetcher
 
 
 class Error(pisi.Error):
@@ -68,11 +71,13 @@ class SourceArchive:
                 % (ctx.config.archives_dir(), self.url.filename())
             )
 
+    # TODO(Evan): WTF
     def fetch_from_mirror(self):
         uri = self.url.get_uri()
         sep = uri[len("mirrors://") :].split("/")
         name = sep.pop(0)
         archive = "/".join(sep)
+        fetcher = Fetcher()
 
         mirrors = pisi.mirrors.Mirrors().get_mirrors(name)
         if not mirrors:
@@ -82,14 +87,12 @@ class SourceArchive:
             try:
                 url = os.path.join(mirror, archive)
                 ctx.ui.warning(_("Fetching source from mirror: %s") % url)
-                pisi.fetcher.fetch_url(url, ctx.config.archives_dir(), self.progress)
+                fetcher.fetch(url, ctx.config.archives_dir())
                 return
-            except pisi.fetcher.FetchError:
+            except HTTPError | IOError | ValueError:
                 pass
 
-        raise pisi.fetcher.FetchError(
-            _("Could not fetch source from %s mirrors.") % name
-        )
+        raise Error(_(f"Could not fetch source from {name} mirrors."))
 
     def is_cached(self, interactive=True):
         if not os.access(self.archiveFile, os.R_OK):

@@ -12,6 +12,8 @@ import pwd
 import grp
 import fnmatch
 
+from requests import HTTPError
+
 from pisi import translate as _
 
 import pisi
@@ -23,14 +25,13 @@ import pisi.dependency as dependency
 import pisi.api
 import pisi.sourcearchive
 import pisi.files
-import pisi.fetcher
 import pisi.uri
 import pisi.metadata
 import pisi.package
 import pisi.component as component
-import pisi.archive as archive
 import pisi.actionsapi.variables
 import pisi.db
+from pisi.fetcher import Fetcher
 
 import magic
 
@@ -382,10 +383,7 @@ class Builder:
                 ctx.ui.info(_("ccache detected..."))
             if self.has_icecream:
                 ctx.ui.info(
-                    _(
-                        "IceCream detected. Make sure your daemon "
-                        "is up and running..."
-                    )
+                    _("IceCream detected. Make sure your daemon is up and running...")
                 )
 
             self.run_setup_action()
@@ -530,11 +528,14 @@ class Builder:
         diruri = util.parenturi(self.specuri.get_uri())
         parentdir = util.parenturi(diruri)
         url = util.join_path(parentdir, "component.xml")
-        progress = ctx.ui.Progress
+
         if pisi.uri.URI(url).is_remote_file():
+            fetcher = Fetcher()
+
+            # TODO(Evan): wat
             try:
-                pisi.fetcher.fetch_url(url, self.pkg_work_dir(), progress)
-            except pisi.fetcher.FetchError:
+                fetcher.fetch(url, self.pkg_work_dir())
+            except HTTPError | IOError | ValueError:
                 ctx.ui.warning(
                     _(
                         "Cannot find component.xml in remote "
@@ -811,16 +812,13 @@ class Builder:
 
                 if not path.startswith("/"):
                     raise Error(
-                        _(
-                            "Source package '%s' defines a relative 'Path' element: "
-                            "%s"
-                        )
+                        _("Source package '%s' defines a relative 'Path' element: %s")
                         % (self.spec.source.name, path_info.path)
                     )
 
                 if path in paths:
                     raise Error(
-                        _("Source package '%s' defines multiple 'Path' tags " "for %s")
+                        _("Source package '%s' defines multiple 'Path' tags for %s")
                         % (self.spec.source.name, path_info.path)
                     )
 
@@ -1562,15 +1560,14 @@ class Builder:
                         os.chown(dest, pwd.getpwnam(afile.owner)[2], -1)
                     except KeyError:
                         ctx.ui.warning(
-                            _("No user named '%s' found " "on the system") % afile.owner
+                            _("No user named '%s' found on the system") % afile.owner
                         )
                 if afile.group:
                     try:
                         os.chown(dest, -1, grp.getgrnam(afile.group)[2])
                     except KeyError:
                         ctx.ui.warning(
-                            _("No group named '%s' found " "on the system")
-                            % afile.group
+                            _("No group named '%s' found on the system") % afile.group
                         )
         os.chdir(c)
 
@@ -1578,8 +1575,7 @@ class Builder:
         abandoned_files = self.get_abandoned_files()
         if abandoned_files:
             ctx.ui.error(
-                _("There are abandoned files " "under the install dir (%s):")
-                % install_dir
+                _("There are abandoned files under the install dir (%s):") % install_dir
             )
 
             for f in abandoned_files:

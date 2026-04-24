@@ -15,11 +15,11 @@ import shutil
 import lzma_mt
 
 import pisi
-import pisi.fetcher
 import pisi.uri
 import pisi.util
 from pisi import context as ctx
 from pisi import translate as _
+from pisi.fetcher import Fetcher
 
 
 class AlreadyHaveException(pisi.Exception):
@@ -139,8 +139,10 @@ class File:
                     raise AlreadyHaveException(uri, origfile)
 
             if uri.is_remote_file():
-                ctx.ui.info(_("Fetching %s") % uri.get_uri(), verbose=True)
-                pisi.fetcher.fetch_url(uri, transfer_dir, ctx.ui.Progress, tmpfile)
+                ctx.ui.info(_(f"Fetching {uri.get_uri}"), verbose=True)
+                fetcher = Fetcher()
+                # TODO(Evan): Error handling
+                fetcher.fetch(uri, transfer_dir, tmpfile)
             else:
                 # copy to transfer dir
                 ctx.ui.info(

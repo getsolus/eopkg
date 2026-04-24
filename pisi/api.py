@@ -5,7 +5,6 @@ import fcntl
 import os
 import signal
 import re
-from . import fetcher
 
 from pisi import translate as _
 
@@ -36,6 +35,7 @@ import pisi.operations.check
 import pisi.operations.build
 import pisi.signalhandler as signalhandler
 import pisi.errors
+from pisi.fetcher import Fetcher
 
 
 def locked(func):
@@ -427,6 +427,8 @@ def fetch(packages=[], path=os.path.curdir):
     """
     packagedb = pisi.db.packagedb.PackageDB()
     repodb = pisi.db.repodb.RepoDB()
+    fetcher = Fetcher()
+
     for name in packages:
         package, repo = packagedb.get_package_repo(name)
         ctx.ui.info(_("%s package found in %s repository") % (package.name, repo))
@@ -444,7 +446,8 @@ def fetch(packages=[], path=os.path.curdir):
                 os.path.dirname(repodb.get_repo_url(repo)), str(uri.path())
             )
 
-        fetcher.fetch_url(url, path, ctx.ui.Progress)
+        # TODO(Evan): Error handling
+        fetcher.fetch(url, path)
 
 
 @locked
@@ -467,7 +470,9 @@ def remove(packages, ignore_dependency=False, ignore_safety=False):
     @param ignore_safety: system.base packages can also be removed if True
     """
     pisi.db.historydb.HistoryDB().create_history("remove")
-    return pisi.operations.remove.remove(packages, ignore_dependency, ignore_safety, force_prompt=True)
+    return pisi.operations.remove.remove(
+        packages, ignore_dependency, ignore_safety, force_prompt=True
+    )
 
 
 @locked
@@ -939,6 +944,7 @@ def rebuild_db(files=False):
 
     filesdb = pisi.db.filesdb.FilesDB()
     filesdb.init(force_rebuild=True)
+
 
 ############# FIXME: this was a quick fix. ##############################
 
