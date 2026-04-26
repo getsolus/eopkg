@@ -3,9 +3,8 @@
 
 """version structure"""
 
-from pisi import translate as _
-
 import pisi
+from pisi import translate as _
 
 # Basic rule is:
 # p > (no suffix) > m > rc > pre > beta > alpha
@@ -39,6 +38,8 @@ def __make_version_item(v):
 
 def make_version(version):
     ver, sep, suffix = version.partition("_")
+    ver_parts = ver.split(".")
+    ver_items = [__make_version_item(x) for x in ver_parts]
     try:
         if sep:
             # "s" is a string greater than the greatest keyword "rc"
@@ -46,14 +47,12 @@ def make_version(version):
                 for keyword, value in __keywords:
                     if suffix.startswith(keyword):
                         return (
-                            list(map(__make_version_item, ver.split("."))),
+                            ver_items,
                             value,
-                            list(
-                                map(
-                                    __make_version_item,
-                                    suffix[len(keyword) :].split("."),
-                                )
-                            ),
+                            [
+                                __make_version_item(x)
+                                for x in suffix[len(keyword) :].split(".")
+                            ],
                         )
                 else:
                     # Probably an invalid version string. Reset ver string
@@ -61,12 +60,12 @@ def make_version(version):
                     ver = ""
             else:
                 return (
-                    list(map(__make_version_item, ver.split("."))),
+                    ver_items,
                     0,
-                    list(map(__make_version_item, suffix.split("."))),
+                    [__make_version_item(x) for x in suffix.split(".")],
                 )
 
-        return list(map(__make_version_item, ver.split("."))), 0, [(0, None)]
+        return ver_items, 0, [(0, None)]
 
     except ValueError:
         raise InvalidVersionError(_("Invalid version string: '%s'") % version)
