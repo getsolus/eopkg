@@ -257,10 +257,13 @@ def list_upgradable():
     Return a list of packages that are upgraded in the repository -> list_of_strings
     """
     installdb = pisi.db.installdb.InstallDB()
+    packagedb = pisi.db.packagedb.PackageDB()
     is_upgradable = pisi.operations.upgrade.is_upgradable
     installed = installdb.list_installed()
 
-    upgradable = [name for name in installed if is_upgradable(name)]
+    upgradable = [
+        name for name in installed if is_upgradable(name, installdb, packagedb)
+    ]
     # replaced packages can not pass is_upgradable test, so we add them manually
     upgradable.extend(list_replaces())
 
