@@ -2,28 +2,29 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
- Specfile module is our handler for PSPEC files. PSPEC (eopkg SPEC)
- files are specification files for eopkg source packages. This module
- provides read and write routines for PSPEC files.
+Specfile module is our handler for PSPEC files. PSPEC (eopkg SPEC)
+files are specification files for eopkg source packages. This module
+provides read and write routines for PSPEC files.
 """
-
-from pisi import translate as _
 
 # standard python modules
 import os.path
+
 import iksemel
+
+import pisi.component as component
+import pisi.conflict
+import pisi.context as ctx
+import pisi.db
+import pisi.dependency
+import pisi.group as group
+import pisi.pxml.autoxml as autoxml
 
 # pisi modules
 import pisi.pxml.xmlfile as xmlfile
-import pisi.pxml.autoxml as autoxml
-import pisi.context as ctx
-import pisi.dependency
 import pisi.replace
-import pisi.conflict
-import pisi.component as component
-import pisi.group as group
 import pisi.util as util
-import pisi.db
+from pisi import translate as _
 
 
 class Error(pisi.Error):
@@ -294,18 +295,20 @@ class Package(metaclass=autoxml.autoxml):
 
         return util.join_path(ctx.config.packages_dir(), packageDir)
 
-    def satisfies_runtime_dependencies(self):
+    def satisfies_runtime_dependencies(self, planned=None):
         for dep in self.runtimeDependencies():
             if not dep.satisfied_by_installed():
+                if planned and dep.package in planned:
+                    continue
                 ctx.ui.error(
                     _("%s dependency of package %s is not satisfied") % (dep, self.name)
                 )
                 return False
         return True
 
-    def installable(self):
+    def installable(self, planned=None):
         """calculate if pkg is installable currently"""
-        return self.satisfies_runtime_dependencies()
+        return self.satisfies_runtime_dependencies(planned)
 
     def get_update_types(self, old_release):
         """Returns update types for the releases greater than old_release.

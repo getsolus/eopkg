@@ -1,27 +1,64 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+import multiprocessing
 import os
 import signal
 import sys
 import zipfile
 
 from ordered_set import OrderedSet as set
-from pisi import translate as _
-from pisi import Error
 
 import pisi
-import pisi.context as ctx
-import pisi.util as util
 import pisi.atomicoperations as atomicoperations
+import pisi.context as ctx
+import pisi.db
 import pisi.operations as operations
 import pisi.pgraph as pgraph
 import pisi.signalhandler as signalhandler
 import pisi.ui as ui
-import pisi.db
+import pisi.util as util
+from pisi import Error
+from pisi import translate as _
 
-BASELAYOUT_PKG = 'baselayout'
-EOPKG_PKG = 'eopkg'
+BASELAYOUT_PKG = "baselayout"
+EOPKG_PKG = "eopkg"
+
+
+def install_pkg_worker(args):
+    path, automatic, planned = args
+    # Workers only need read access to FilesDB for conflict checks.
+    ctx.set_option("read_only_filesdb", True)
+    try:
+        install_op = atomicoperations.Install(path, planned=planned)
+        if install_op.pkginfo.name in automatic:
+            install_op.automatic = True
+        install_op.install(False, update_db=False)
+    except Exception as e:
+        # Re-raise to be caught by the pool
+        raise e
+
+
+def install_file_worker(args):
+    path, planned, reinstall = args
+    # Workers only need read access to FilesDB for conflict checks.
+    ctx.set_option("read_only_filesdb", True)
+    try:
+        # We need to pass update_db=False but install_single_file doesn't take it yet.
+        # Let's modify the worker to do it manually.
+        install_op = atomicoperations.Install(path, planned=planned)
+        install_op.install(not reinstall, update_db=False)
+    except Exception as e:
+        raise e
+
+
+def download_worker(package):
+    try:
+        install_op = atomicoperations.Install.from_name(package)
+        return install_op.package_fname
+    except Exception as e:
+        raise e
+
 
 def plan_deterministic_install_order(order):
     """Ensure that baselayout is put at the end of any topological sort that includes it."""
@@ -37,6 +74,7 @@ def plan_deterministic_install_order(order):
 
     return order
 
+
 def install_pkg_names(packages, reinstall=False):
     """
     Installs packages from the repository.
@@ -50,13 +88,17 @@ def install_pkg_names(packages, reinstall=False):
     packagedb = pisi.db.packagedb.PackageDB()
     signal_handler = signalhandler.SignalHandler()
 
-    packages = [str(package) for package in packages]  # FIXME: why do we still get unicode input here? :/ -- exa
+    packages = [
+        str(package) for package in packages
+    ]  # FIXME: why do we still get unicode input here? :/ -- exa
 
     deduped_packages = packages = set(packages)
 
     # filter packages that are already installed
     if not reinstall:
-        not_installed = set([package for package in packages if not installdb.has_package(package)])
+        not_installed = set(
+            [package for package in packages if not installdb.has_package(package)]
+        )
         diff = packages - not_installed
         if len(diff) > 0:
             ctx.ui.warning(
@@ -121,14 +163,25 @@ def install_pkg_names(packages, reinstall=False):
 
     automatic = operations.helper.extract_automatic(packages, order)
     paths = []
-    for package in order:
-        ctx.ui.info(
-            util.colorize(
-                _("Downloading %d / %d") % (order.index(package) + 1, len(order)), "yellow"
+    if len(order) > 1:
+        ctx.ui.info(util.colorize(_("Downloading packages in parallel..."), "yellow"))
+        with multiprocessing.Pool() as pool:
+            try:
+                paths = pool.map(download_worker, order)
+            except:
+                pool.terminate()
+                pool.join()
+                raise
+    else:
+        for package in order:
+            ctx.ui.info(
+                util.colorize(
+                    _("Downloading %d / %d") % (order.index(package) + 1, len(order)),
+                    "yellow",
+                )
             )
-        )
-        install_op = atomicoperations.Install.from_name(package)
-        paths.append(install_op.package_fname)
+            install_op = atomicoperations.Install.from_name(package)
+            paths.append(install_op.package_fname)
 
     ctx.ui.status(_("Finished downloading packages."))
 
@@ -147,21 +200,49 @@ def install_pkg_names(packages, reinstall=False):
     ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     signal_handler.disable_signal(signal.SIGINT)
 
+    planned = list(order)
+
+    # Inhibit cache saving in worker processes as they would overwrite each other.
+    # We will update caches in the main process after all installations are done.
+    old_idb_cacheable = pisi.db.installdb.InstallDB().cacheable
+    old_fdb_cacheable = pisi.db.filesdb.FilesDB().cacheable
+    pisi.db.installdb.InstallDB().cacheable = False
+    pisi.db.filesdb.FilesDB().cacheable = False
+
     try:
-        for path in paths:
-            ctx.ui.info(
-                util.colorize(
-                    _("Installing %d / %d") % (paths.index(path) + 1, len(paths)),
-                    "yellow",
+        if len(paths) > 1:
+            arg_list = [(path, automatic, planned) for path in paths]
+            with multiprocessing.Pool() as pool:
+                try:
+                    pool.map(install_pkg_worker, arg_list)
+                except:
+                    pool.terminate()
+                    pool.join()
+                    raise
+
+            # After all packages are extracted in parallel, update databases sequentially in main process.
+            ctx.ui.info(util.colorize(_("Updating databases..."), "yellow"))
+            for path in paths:
+                install_op = atomicoperations.Install(path, planned=planned)
+                if install_op.pkginfo.name in automatic:
+                    install_op.automatic = True
+                install_op.ask_reinstall = False
+                install_op.check_versioning(
+                    install_op.pkginfo.version, install_op.pkginfo.release
                 )
-            )
-            install_op = atomicoperations.Install(path)
-            if install_op.pkginfo.name in automatic:
-                install_op.automatic = True
-            install_op.install(False)
+                install_op.check_operation()
+                install_op.update_databases()
+        else:
+            for path in paths:
+                install_op = atomicoperations.Install(path, planned=planned)
+                if install_op.pkginfo.name in automatic:
+                    install_op.automatic = True
+                install_op.install(False)
     except Exception as e:
         raise e
     finally:
+        pisi.db.installdb.InstallDB().cacheable = old_idb_cacheable
+        pisi.db.filesdb.FilesDB().cacheable = old_fdb_cacheable
         ctx.exec_usysconf()
 
     return True
@@ -332,13 +413,45 @@ def install_pkg_files(package_URIs, reinstall=False):
 
     ctx.ui.notify(ui.packagestogo, order=order)
 
+    planned = list(order)
+
+    # Inhibit cache saving in worker processes as they would overwrite each other.
+    # We will update caches in the main process after all installations are done.
+    old_idb_cacheable = pisi.db.installdb.InstallDB().cacheable
+    old_fdb_cacheable = pisi.db.filesdb.FilesDB().cacheable
+    pisi.db.installdb.InstallDB().cacheable = False
+    pisi.db.filesdb.FilesDB().cacheable = False
+
     try:
-        for x in order:
-            atomicoperations.install_single_file(dfn[x], reinstall)
+        if len(order) > 1:
+            arg_list = [(dfn[x], planned, reinstall) for x in order]
+            with multiprocessing.Pool() as pool:
+                try:
+                    pool.map(install_file_worker, arg_list)
+                except:
+                    pool.terminate()
+                    pool.join()
+                    raise
+
+            # After all packages are extracted in parallel, update databases sequentially in main process.
+            ctx.ui.info(util.colorize(_("Updating databases..."), "yellow"))
+            for x in order:
+                install_op = atomicoperations.Install(dfn[x], planned=planned)
+                install_op.ask_reinstall = False
+                # Re-run check_versioning to set self.operation correctly for update_databases
+                install_op.check_versioning(
+                    install_op.pkginfo.version, install_op.pkginfo.release
+                )
+                install_op.check_operation()
+                install_op.update_databases()
+        else:
+            for x in order:
+                atomicoperations.install_single_file(dfn[x], reinstall, planned=planned)
     except Exception as e:
         raise e
-        return False
     finally:
+        pisi.db.installdb.InstallDB().cacheable = old_idb_cacheable
+        pisi.db.filesdb.FilesDB().cacheable = old_fdb_cacheable
         ctx.exec_usysconf()
 
     return True

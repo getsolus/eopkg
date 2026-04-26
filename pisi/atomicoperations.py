@@ -3,24 +3,23 @@
 
 """Atomic package operations such as install/remove/upgrade"""
 
-from pisi import translate as _
-from pisi.path import is_usr_merged_duplicate
-
+import base64
 import os
 import shutil
 import zipfile
 
 import pisi
 import pisi.context as ctx
-import pisi.util as util
-import pisi.metadata
-import pisi.files
-import pisi.uri
-import pisi.ui
-import pisi.version
-import pisi.operations.delta
 import pisi.db
-import base64
+import pisi.files
+import pisi.metadata
+import pisi.operations.delta
+import pisi.ui
+import pisi.uri
+import pisi.util as util
+import pisi.version
+from pisi import translate as _
+from pisi.path import is_usr_merged_duplicate
 
 
 class Error(pisi.Error):
@@ -67,7 +66,7 @@ class Install(AtomicOperation):
     automatic = False
 
     @staticmethod
-    def from_name(name, ignore_dep=None):
+    def from_name(name, ignore_dep=None, planned=None):
         packagedb = pisi.db.packagedb.PackageDB()
         # download package and return an installer object
         # find package in repository
@@ -119,7 +118,7 @@ class Install(AtomicOperation):
                 os.unlink(cached_file)
                 cached_file = None
 
-            install_op = Install(pkg_path, ignore_dep)
+            install_op = Install(pkg_path, ignore_dep, planned=planned)
 
             # Bug 4113
             if not cached_file:
@@ -135,13 +134,16 @@ class Install(AtomicOperation):
         else:
             raise Error(_("Package %s not found in any active repository.") % name)
 
-    def __init__(self, package_fname, ignore_dep=None, ignore_file_conflicts=None):
+    def __init__(
+        self, package_fname, ignore_dep=None, ignore_file_conflicts=None, planned=None
+    ):
         "initialize from a file name"
         super(Install, self).__init__(ignore_dep)
         if not ignore_file_conflicts:
             ignore_file_conflicts = ctx.get_option("ignore_file_conflicts")
         self.ignore_file_conflicts = ignore_file_conflicts
         self.package_fname = package_fname
+        self.planned = planned
         try:
             self.package = pisi.package.Package(package_fname)
             self.package.read()
@@ -155,7 +157,7 @@ class Install(AtomicOperation):
         self.operation = INSTALL
         self.automatic = False
 
-    def install(self, ask_reinstall=True):
+    def install(self, ask_reinstall=True, update_db=True):
         # Any package should remove the package it replaces before
         self.check_replaces()
 
@@ -177,7 +179,9 @@ class Install(AtomicOperation):
 
         self.extract_install()
         self.store_pisi_files()
-        self.update_databases()
+
+        if update_db:
+            self.update_databases()
 
         ctx.ui.close()
         if self.operation == UPGRADE:
@@ -203,7 +207,7 @@ class Install(AtomicOperation):
     def check_relations(self):
         # check dependencies
         if not ctx.config.get_option("ignore_dependency"):
-            if not self.pkginfo.installable():
+            if not self.pkginfo.installable(self.planned):
                 raise Error(
                     _(
                         "%s package cannot be installed unless the dependencies are satisfied"
@@ -275,7 +279,9 @@ class Install(AtomicOperation):
             # determine if same distribution release
             if pkg.release == irelease_s:
                 if self.ask_reinstall:
-                    if not ctx.ui.confirm(_("Re-install same distribution release of package?")):
+                    if not ctx.ui.confirm(
+                        _("Re-install same distribution release of package?")
+                    ):
                         raise Error(_("Package re-install declined"))
                 self.operation = REINSTALL
             else:
@@ -559,27 +565,27 @@ class Install(AtomicOperation):
         )
 
 
-def install_single(pkg, upgrade=False):
+def install_single(pkg, upgrade=False, planned=None):
     """install a single package from URI or ID"""
     url = pisi.uri.URI(pkg)
     # Check if we are dealing with a remote file or a real path of
     # package filename. Otherwise we'll try installing a package from
     # the package repository.
     if url.is_remote_file() or os.path.exists(url.uri):
-        install_single_file(pkg, upgrade)
+        install_single_file(pkg, upgrade, planned=planned)
     else:
-        install_single_name(pkg, upgrade)
+        install_single_name(pkg, upgrade, planned=planned)
 
 
 # FIXME: Here and elsewhere pkg_location must be a URI
-def install_single_file(pkg_location, upgrade=False):
+def install_single_file(pkg_location, upgrade=False, planned=None):
     """install a package file"""
-    Install(pkg_location).install(not upgrade)
+    Install(pkg_location, planned=planned).install(not upgrade)
 
 
-def install_single_name(name, upgrade=False):
+def install_single_name(name, upgrade=False, planned=None):
     """install a single package from ID"""
-    install = Install.from_name(name)
+    install = Install.from_name(name, planned=planned)
     install.install(not upgrade)
 
 
@@ -607,9 +613,7 @@ class Remove(AtomicOperation):
         ctx.ui.status(_("Removing package %s") % self.package_name)
         ctx.ui.notify(pisi.ui.removing, package=self.package, files=self.files)
         if not self.installdb.has_package(self.package_name):
-            raise Error(
-                _("Trying to remove nonexistent package ") + self.package_name
-            )
+            raise Error(_("Trying to remove nonexistent package ") + self.package_name)
 
         self.check_dependencies()
 
