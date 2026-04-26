@@ -258,8 +258,9 @@ def list_upgradable():
     """
     installdb = pisi.db.installdb.InstallDB()
     is_upgradable = pisi.operations.upgrade.is_upgradable
+    installed = installdb.list_installed()
 
-    upgradable = list(filter(is_upgradable, installdb.list_installed()))
+    upgradable = [name for name in installed if is_upgradable(name)]
     # replaced packages can not pass is_upgradable test, so we add them manually
     upgradable.extend(list_replaces())
 
