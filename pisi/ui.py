@@ -15,10 +15,11 @@
     downloading,
     packagestogo,
     updatingrepo,
+    upgrading,
     cached,
     desktopfile,
     systemconf,
-) = list(range(14))
+) = list(range(15))
 
 
 class UI(object):
