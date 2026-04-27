@@ -352,10 +352,8 @@ def plan_install_pkg_names(A):
     installdb = pisi.db.installdb.InstallDB()
 
     # Check if updates are available to opt into the slow path
-    available_updates = list()
-    if len(pisi.api.list_upgradable()) != 0 and not ctx.get_option(
-        "ignore_revdeps_of_deps_check"
-    ):
+    available_updates = []
+    if not ctx.get_option("ignore_revdeps_of_deps_check"):
         available_updates = pisi.api.list_upgradable()
 
     G_f = pgraph.PGraph(packagedb)  # construct G_f
