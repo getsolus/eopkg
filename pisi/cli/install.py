@@ -155,8 +155,9 @@ expanded to package names.
             packages = pisi.blacklist.exclude(packages, ctx.get_option("exclude"))
 
         # See operations.install.plan_install_pkgs
-        if len(pisi.api.list_upgradable()) != 0 and not ctx.get_option(
-            "ignore_revdeps_of_deps_check"
+        if (
+            not ctx.get_option("ignore_revdeps_of_deps_check")
+            and pisi.api.list_upgradable()
         ):
             ctx.ui.warning(
                 _(
