@@ -6,18 +6,18 @@
 
 import os
 import re
-from pisi import translate as _
-from pisi import Error
 
 import iksemel
 
 # eopkg
 import pisi
 import pisi.context as ctx
+import pisi.db.lazydb as lazydb
 import pisi.dependency
 import pisi.files
 import pisi.util
-import pisi.db.lazydb as lazydb
+from pisi import Error
+from pisi import translate as _
 
 
 class InstallDBError(pisi.Error):
@@ -62,18 +62,77 @@ class InstallInfo:
 
 class InstallDB(lazydb.LazyDB):
     def __init__(self):
-        lazydb.LazyDB.__init__(self, cacheable=True, cachedir=ctx.config.packages_dir())
+        lazydb.LazyDB.__init__(
+            self, cacheable=False, cachedir=ctx.config.packages_dir()
+        )
+
+    @property
+    def lmdb_mappings(self):
+        return [self.installed_db, self.rev_deps_db, self.xmls_db]
 
     def init(self):
-        self.installed_db = self.__generate_installed_pkgs()
-        self.rev_deps_db = self.__generate_revdeps()
+        self.installed_db = self.lmdb_store.get_mapping("installed_db")
+        self.rev_deps_db = self.lmdb_store.get_mapping("rev_deps_db")
+        self.xmls_db = self.lmdb_store.get_mapping("installed_xmls_db")
+
+        meta = self.lmdb_store.get_mapping("meta")
+        packages_dir = ctx.config.packages_dir()
+
+        mtime = os.path.getmtime(packages_dir) if os.path.exists(packages_dir) else 0
+        cached_mtime = meta.get("mtime_idb")
+
+        if (
+            len(self.installed_db) == 0
+            or len(self.xmls_db) == 0
+            or cached_mtime != mtime
+        ):
+            if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
+                from pisi.db.lmdbstore import MemoryMapping
+
+                self.installed_db = MemoryMapping()
+                self.rev_deps_db = MemoryMapping()
+                self.xmls_db = MemoryMapping()
+
+            # Initial population or staleness detected
+            self.installed_db.clear()
+            self.rev_deps_db.clear()
+            self.xmls_db.clear()
+
+            installed_pkgs = self.__generate_installed_pkgs()
+            self.installed_db.update_bulk(installed_pkgs)
+            self.rev_deps_db.update_bulk(self.__generate_revdeps())
+            self.xmls_db.update_bulk(self.__generate_xmls(installed_pkgs))
+
+            if not self.lmdb_store.readonly:
+                meta["mtime_idb"] = mtime
+
+    def __generate_xmls(self, installed_pkgs):
+        import gzip
+
+        xmls = {}
+        for package, ver_rel in installed_pkgs.items():
+            pkg_path = os.path.join(ctx.config.packages_dir(), f"{package}-{ver_rel}")
+            metadata_xml = os.path.join(pkg_path, ctx.const.metadata_xml)
+            if os.path.exists(metadata_xml):
+                with open(metadata_xml, "rb") as f:
+                    xmls[package] = gzip.zlib.compress(f.read())
+        return xmls
 
     def __generate_installed_pkgs(self):
         def split_name(dirname):
-            name, version, release = dirname.rsplit("-", 2)
-            return name, version + "-" + release
+            try:
+                name, version, release = dirname.rsplit("-", 2)
+                return name, version + "-" + release
+            except ValueError:
+                return None
 
-        return dict(list(map(split_name, os.listdir(ctx.config.packages_dir()))))
+        dirs = os.listdir(ctx.config.packages_dir())
+        pkgs = {}
+        for d in dirs:
+            res = split_name(d)
+            if res:
+                pkgs[res[0]] = res[1]
+        return pkgs
 
     def __get_marked_packages(self, _type):
         info_path = os.path.join(ctx.config.info_dir(), _type)
@@ -98,18 +157,23 @@ class InstallDB(lazydb.LazyDB):
                 )
                 % package
             )
-            del self.installed_db[package]
+            if package in self.installed_db:
+                del self.installed_db[package]
             return
 
         deps = pkg.getTag("RuntimeDependencies")
         if deps:
             for dep in deps.tags("Dependency"):
-                revdep = revdeps.setdefault(dep.firstChild().data(), {})
+                dep_name = dep.firstChild().data()
+                revdep = revdeps.get(dep_name, {})
                 revdep[package] = dep.toString()
+                revdeps[dep_name] = revdep
             for anydep in deps.tags("AnyDependency"):
                 for dep in anydep.tags("Dependency"):
-                    revdep = revdeps.setdefault(dep.firstChild().data(), {})
+                    dep_name = dep.firstChild().data()
+                    revdep = revdeps.get(dep_name, {})
                     revdep[package] = anydep.toString()
+                    revdeps[dep_name] = revdep
 
     def __generate_revdeps(self):
         revdeps = {}
@@ -127,10 +191,20 @@ class InstallDB(lazydb.LazyDB):
         build_host_re = re.compile("<BuildHost>(.*?)</BuildHost>")
         found = []
         for name in self.list_installed():
-            xml = open(
-                os.path.join(self.package_path(name), ctx.const.metadata_xml)
-            ).read()
-            matched = build_host_re.search(xml)
+            xml = self.xmls_db.get(name)
+            if xml:
+                import gzip
+
+                xml_data = gzip.zlib.decompress(xml).decode()
+            else:
+                try:
+                    xml_data = open(
+                        os.path.join(self.package_path(name), ctx.const.metadata_xml)
+                    ).read()
+                except Exception:
+                    continue
+
+            matched = build_host_re.search(xml_data)
             if matched:
                 if build_host != matched.groups()[0]:
                     continue
@@ -155,14 +229,24 @@ class InstallDB(lazydb.LazyDB):
 
         return distro, release
 
+    def __get_meta_doc(self, package):
+        xml = self.xmls_db.get(package)
+        if xml:
+            import gzip
+
+            return iksemel.parseString(gzip.zlib.decompress(xml).decode())
+        else:
+            metadata_xml = os.path.join(
+                self.package_path(package), ctx.const.metadata_xml
+            )
+            return iksemel.parse(metadata_xml)
+
     def get_version_and_distro_release(self, package):
-        metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
-        meta_doc = iksemel.parse(metadata_xml)
+        meta_doc = self.__get_meta_doc(package)
         return self.__get_version(meta_doc) + self.__get_distro_release(meta_doc)
 
     def get_version(self, package):
-        metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
-        meta_doc = iksemel.parse(metadata_xml)
+        meta_doc = self.__get_meta_doc(package)
         return self.__get_version(meta_doc)
 
     def get_files(self, package):
@@ -193,20 +277,30 @@ class InstallDB(lazydb.LazyDB):
             lang = pisi.pxml.autoxml.LocalText.get_lang()
         found = []
         for name in self.list_installed():
-            xml = open(
-                os.path.join(self.package_path(name), ctx.const.metadata_xml)
-            ).read()
+            xml = self.xmls_db.get(name)
+            if xml:
+                import gzip
+
+                xml_data = gzip.zlib.decompress(xml).decode()
+            else:
+                try:
+                    xml_data = open(
+                        os.path.join(self.package_path(name), ctx.const.metadata_xml)
+                    ).read()
+                except Exception:
+                    continue
+
             if terms == [
                 term
                 for term in terms
                 if (fields["name"] and re.compile(term, re.I).search(name))
                 or (
                     fields["summary"]
-                    and re.compile(resum % (lang, term), re.I).search(xml)
+                    and re.compile(resum % (lang, term), re.I).search(xml_data)
                 )
                 or (
                     fields["desc"]
-                    and re.compile(redesc % (lang, term), re.I).search(xml)
+                    and re.compile(redesc % (lang, term), re.I).search(xml_data)
                 )
             ]:
                 found.append(name)
@@ -216,10 +310,20 @@ class InstallDB(lazydb.LazyDB):
         risa = "<IsA>%s</IsA>" % isa
         packages = []
         for name in self.list_installed():
-            xml = open(
-                os.path.join(self.package_path(name), ctx.const.metadata_xml)
-            ).read()
-            if re.compile(risa).search(xml):
+            xml = self.xmls_db.get(name)
+            if xml:
+                import gzip
+
+                xml_data = gzip.zlib.decompress(xml).decode()
+            else:
+                try:
+                    xml_data = open(
+                        os.path.join(self.package_path(name), ctx.const.metadata_xml)
+                    ).read()
+                except Exception:
+                    continue
+
+            if re.compile(risa).search(xml_data):
                 packages.append(name)
         return packages
 
@@ -310,21 +414,74 @@ class InstallDB(lazydb.LazyDB):
 
     def add_package(self, pkginfo):
         # Cleanup old revdep info
-        for revdep_info in list(self.rev_deps_db.values()):
-            if pkginfo.name in revdep_info:
-                del revdep_info[pkginfo.name]
+        if pkginfo.name in self.installed_db:
+            self.remove_package(pkginfo.name)
 
         self.installed_db[pkginfo.name] = "%s-%s" % (pkginfo.version, pkginfo.release)
         self.__add_to_revdeps(pkginfo.name, self.rev_deps_db)
 
+        # Cache metadata XML
+        pkg_path = self.package_path(pkginfo.name)
+        metadata_xml = os.path.join(pkg_path, ctx.const.metadata_xml)
+        if os.path.exists(metadata_xml):
+            import gzip
+
+            with open(metadata_xml, "rb") as f:
+                self.xmls_db[pkginfo.name] = gzip.zlib.compress(f.read())
+
+        # Update mtime in meta
+        meta = self.lmdb_store.get_mapping("meta")
+        packages_dir = ctx.config.packages_dir()
+        if os.path.exists(packages_dir):
+            meta["mtime_idb"] = os.path.getmtime(packages_dir)
+
     def remove_package(self, package_name):
         if package_name in self.installed_db:
-            del self.installed_db[package_name]
+            # Cleanup revdep info efficiently by only looking at the package's own dependencies
+            try:
+                metadata_xml = os.path.join(
+                    self.package_path(package_name), ctx.const.metadata_xml
+                )
+                meta_doc = iksemel.parse(metadata_xml)
+                pkg = meta_doc.getTag("Package")
+                deps = pkg.getTag("RuntimeDependencies")
+                if deps:
+                    all_deps = []
+                    for dep in deps.tags("Dependency"):
+                        all_deps.append(dep.firstChild().data())
+                    for anydep in deps.tags("AnyDependency"):
+                        for dep in anydep.tags("Dependency"):
+                            all_deps.append(dep.firstChild().data())
 
-        # Cleanup revdep info
-        for revdep_info in list(self.rev_deps_db.values()):
-            if package_name in revdep_info:
-                del revdep_info[package_name]
+                    for dep_name in set(all_deps):
+                        if dep_name in self.rev_deps_db:
+                            revdep_info = self.rev_deps_db[dep_name]
+                            if package_name in revdep_info:
+                                del revdep_info[package_name]
+                                if not revdep_info:
+                                    del self.rev_deps_db[dep_name]
+                                else:
+                                    self.rev_deps_db[dep_name] = revdep_info
+            except Exception:
+                # Fallback to slow cleanup if metadata is broken or not found
+                for dep_name in list(self.rev_deps_db.keys()):
+                    revdep_info = self.rev_deps_db[dep_name]
+                    if package_name in revdep_info:
+                        del revdep_info[package_name]
+                        if not revdep_info:
+                            del self.rev_deps_db[dep_name]
+                        else:
+                            self.rev_deps_db[dep_name] = revdep_info
+
+            del self.installed_db[package_name]
+            if package_name in self.xmls_db:
+                del self.xmls_db[package_name]
+
+            # Update mtime in meta
+            meta = self.lmdb_store.get_mapping("meta")
+            packages_dir = ctx.config.packages_dir()
+            if os.path.exists(packages_dir):
+                meta["mtime_idb"] = os.path.getmtime(packages_dir)
 
         self.clear_pending(package_name)
 

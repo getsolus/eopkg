@@ -1,18 +1,17 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from pisi import translate as _
-
 import os
 
 import iksemel
 
 import pisi
-import pisi.uri
-import pisi.util
 import pisi.context as ctx
 import pisi.db.lazydb as lazydb
+import pisi.uri
 import pisi.urlcheck
+import pisi.util
+from pisi import translate as _
 from pisi.file import File
 
 
@@ -33,10 +32,14 @@ medias = (cd, usb, remote, local) = list(range(4))
 
 
 class RepoOrder:
-    def __init__(self):
+    def __init__(self, lmdb_store=None):
         self._doc = None
         self.legacy_repo_used = None
         self._repos_cache = {}
+        self._lmdb_store = lmdb_store
+        self._mapping = None
+        if self._lmdb_store:
+            self._mapping = self._lmdb_store.get_mapping("repo_config")
         self.repos = self._get_repos()
 
     def add(self, repo_name, repo_url, repo_type="remote"):
@@ -119,6 +122,11 @@ class RepoOrder:
         self._doc = None
         self.repos = self._get_repos()
 
+        # Invalidate LMDB cache
+        if self._lmdb_store and not self._lmdb_store.readonly:
+            meta = self._lmdb_store.get_mapping("meta")
+            meta["mtime_repos_xml"] = 0
+
     def _get_doc(self):
         if self._doc is None:
             repos_file = os.path.join(ctx.config.info_dir(), ctx.const.repos)
@@ -130,6 +138,17 @@ class RepoOrder:
         return self._doc
 
     def _get_repos(self):
+        repos_file = os.path.join(ctx.config.info_dir(), ctx.const.repos)
+        mtime = os.path.getmtime(repos_file) if os.path.exists(repos_file) else 0
+
+        if self._mapping is not None:
+            meta = self._lmdb_store.get_mapping("meta")
+            cached_mtime = meta.get("mtime_repos_xml")
+            if cached_mtime == mtime and len(self._mapping) > 0:
+                self.repos = self._mapping.get("_order", {})
+                self._repos_cache = self._mapping.get("_cache", {})
+                return self.repos
+
         repo_doc = self._get_doc()
         order = {}
         self._repos_cache = {}
@@ -151,12 +170,27 @@ class RepoOrder:
                 "url": url.rstrip(),
             }
 
+        if self._mapping is not None and not self._lmdb_store.readonly:
+            self._mapping["_order"] = order
+            self._mapping["_cache"] = self._repos_cache
+            meta = self._lmdb_store.get_mapping("meta")
+            meta["mtime_repos_xml"] = mtime
+
         return order
 
 
 class RepoDB(lazydb.LazyDB):
+    def __init__(self):
+        lazydb.LazyDB.__init__(self, cacheable=False)
+
+    @property
+    def lmdb_mappings(self):
+        return [self.repo_docs_db]
+
     def init(self):
-        self.repoorder = RepoOrder()
+        self.repo_docs_db = self.lmdb_store.get_mapping("repo_docs_db")
+        self.repoorder = RepoOrder(self.lmdb_store)
+        meta = self.lmdb_store.get_mapping("meta")
 
         if len(self.repoorder.repos) == 0:
             repo = pisi.db.repodb.Repo(
@@ -165,18 +199,49 @@ class RepoDB(lazydb.LazyDB):
             ctx.ui.warning("No repository found. Automatically adding Solus stable.")
             self.add_repo("Solus", repo, ctx.get_option("at"))
 
+        for repo in self.list_repos(only_active=False):
+            index_path = self.get_index_path(repo)
+            if not os.path.exists(index_path):
+                continue
+
+            mtime = os.path.getmtime(index_path)
+            cached_mtime = meta.get(f"mtime_rdb_{repo}")
+
+            if cached_mtime != mtime or repo not in self.repo_docs_db:
+                if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
+                    from pisi.db.lmdbstore import MemoryMapping
+
+                    if not isinstance(self.repo_docs_db, MemoryMapping):
+                        # Switch the whole mapping to memory for this session if it's stale
+                        # but we can't write to LMDB.
+                        new_mapping = MemoryMapping()
+                        # Copy existing items if any
+                        for k in self.repo_docs_db:
+                            try:
+                                new_mapping[k] = self.repo_docs_db[k]
+                            except KeyError:
+                                pass
+                        self.repo_docs_db = new_mapping
+
+                # Cache the XML document
+                import gzip
+
+                with open(index_path, "rb") as f:
+                    self.repo_docs_db[repo] = gzip.zlib.compress(f.read())
+                if not self.lmdb_store.readonly:
+                    meta[f"mtime_rdb_{repo}"] = mtime
+
     def has_repo(self, name):
         return name in self.list_repos(only_active=False)
 
     def has_repo_url(self, url, only_active=True):
         return url in self.list_repo_urls(only_active)
 
-    def get_repo_doc(self, repo_name):
+    def get_index_path(self, repo_name):
         repo = self.get_repo(repo_name)
 
         index_path = repo.indexuri.get_uri()
 
-        # FIXME Local index files should also be cached.
         if File.is_compressed(index_path) or repo.indexuri.is_remote_file():
             index = os.path.basename(index_path)
             index_path = pisi.util.join_path(ctx.config.index_dir(), repo_name, index)
@@ -184,12 +249,29 @@ class RepoDB(lazydb.LazyDB):
             if File.is_compressed(index_path):
                 index_path = os.path.splitext(index_path)[0]
 
+        return index_path
+
+    def get_repo_doc(self, repo_name):
+        xml = self.repo_docs_db.get(repo_name)
+        if xml:
+            import gzip
+
+            return iksemel.parseString(gzip.zlib.decompress(xml).decode())
+
+        index_path = self.get_index_path(repo_name)
+
         if not os.path.exists(index_path):
             ctx.ui.warning(_("%s repository needs to be updated") % repo_name)
             return iksemel.newDocument("PISI")
 
         try:
-            return iksemel.parse(index_path)
+            doc = iksemel.parse(index_path)
+            if not self.lmdb_store.readonly:
+                import gzip
+
+                with open(index_path, "rb") as f:
+                    self.repo_docs_db[repo_name] = gzip.zlib.compress(f.read())
+            return doc
         except Exception as e:
             raise RepoError(
                 _(

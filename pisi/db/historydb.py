@@ -9,16 +9,70 @@ from pisi.db import lazydb
 
 
 class HistoryDB(lazydb.LazyDB):
+    def __init__(self):
+        # Set cacheable=False because we use LMDB now
+        lazydb.LazyDB.__init__(self, cacheable=False)
+
+    @property
+    def lmdb_mappings(self):
+        return [self.__history_ops, self.__history_files]
+
     def init(self):
-        self.__logs = self.__generate_history()
+        self.__history_ops = self.lmdb_store.get_mapping("history_ops")
+        self.__history_files = self.lmdb_store.get_mapping("history_files")
+        meta = self.lmdb_store.get_mapping("meta")
+
+        history_dir = ctx.config.history_dir()
+        if not os.path.exists(history_dir):
+            os.makedirs(history_dir, exist_ok=True)
+
+        mtime = os.path.getmtime(history_dir)
+        cached_mtime = meta.get("mtime_history")
+
+        if len(self.__history_ops) == 0 or cached_mtime != mtime:
+            if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
+                # Stale but we can't write to LMDB. Use memory for this session.
+                from pisi.db.lmdbstore import MemoryMapping
+
+                self.__history_ops = MemoryMapping()
+                self.__history_files = MemoryMapping()
+
+            self.__repopulate(history_dir)
+
+            if not self.lmdb_store.readonly:
+                meta["mtime_history"] = mtime
+
+        # For compatibility with existing code that uses self.__logs
+        self.__logs = sorted(
+            self.__history_files.keys(),
+            key=lambda x: int(x.split("_")[0].replace("0o", "0")),
+            reverse=True,
+        )
         self.history = history.History()
 
-    def __generate_history(self):
-        logs = [x for x in os.listdir(ctx.config.history_dir()) if x.endswith(".xml")]
-        # logs.sort(key=lambda x,y:int(x.split("_")[0]) - int(y.split("_")[0]))
-        logs.sort(key=lambda x: int(x.split("_")[0].replace("0o", "0")))
-        logs.reverse()
-        return logs
+    def __repopulate(self, history_dir):
+        logs = [x for x in os.listdir(history_dir) if x.endswith(".xml")]
+
+        # We only need to parse what we don't have or if we are doing a full refresh
+        # To keep it simple, we clear and re-parse if mtime changed,
+        # but we could be more surgical.
+        self.__history_ops.clear()
+        self.__history_files.clear()
+
+        ops = {}
+        files = {}
+        for log in logs:
+            try:
+                hist = history.History(os.path.join(history_dir, log))
+                op_no = log.split("_")[0]
+                hist.operation.no = int(op_no)
+                ops[op_no] = hist.operation
+                files[log] = op_no
+            except Exception as e:
+                ctx.ui.warning(_("Failed to parse history file %s: %s") % (log, str(e)))
+
+        self.__history_ops.update_bulk(ops)
+        self.__history_files.update_bulk(files)
 
     def create_history(self, operation):
         self.history.create(operation)
@@ -54,13 +108,21 @@ class HistoryDB(lazydb.LazyDB):
 
     def update_history(self):
         self.history.update()
+        # Invalidate cache so it's re-read next time
+        meta = self.lmdb_store.get_mapping("meta")
+        if not self.lmdb_store.readonly:
+            meta["mtime_history"] = 0
 
     def get_operation(self, operation):
-        for log in self.__logs:
-            if log.startswith("%03d_" % operation):
-                hist = history.History(os.path.join(ctx.config.history_dir(), log))
-                hist.operation.no = int(log.split("_")[0])
-                return hist.operation
+        op_no = "%03d" % operation
+        # Try finding by exact op_no first
+        if op_no in self.__history_ops:
+            return self.__history_ops[op_no]
+
+        # Fallback for non-padded or different naming if any
+        for log, log_op_no in self.__history_files.items():
+            if int(log_op_no) == operation:
+                return self.__history_ops[log_op_no]
         return None
 
     def get_package_config_files(self, operation, package):
@@ -90,34 +152,54 @@ class HistoryDB(lazydb.LazyDB):
         return allconfigs
 
     def get_till_operation(self, operation):
-        if not [x for x in self.__logs if x.startswith("%03d_" % operation)]:
+        target_op_no = "%03d" % operation
+
+        # Sort logs descending
+        logs = sorted(
+            self.__history_files.keys(),
+            key=lambda x: int(x.split("_")[0].replace("0o", "0")),
+            reverse=True,
+        )
+
+        found = False
+        for log in logs:
+            op_no = self.__history_files[log]
+            if op_no == target_op_no:
+                found = True
+                break
+
+        if not found:
             return
 
-        for log in self.__logs:
-            if log.startswith("%03d_" % operation):
+        for log in logs:
+            op_no = self.__history_files[log]
+            if op_no == target_op_no:
                 return
-
-            hist = history.History(os.path.join(ctx.config.history_dir(), log))
-            hist.operation.no = int(log.split("_")[0])
-            yield hist.operation
+            yield self.__history_ops[op_no]
 
     def get_last(self, count=0):
-        count = count or len(self.__logs)
-        for log in self.__logs[:count]:
-            hist = history.History(os.path.join(ctx.config.history_dir(), log))
-            hist.operation.no = int(log.split("_")[0])
-            yield hist.operation
+        logs = sorted(
+            self.__history_files.keys(),
+            key=lambda x: int(x.split("_")[0].replace("0o", "0")),
+            reverse=True,
+        )
+
+        count = count or len(logs)
+        for log in logs[:count]:
+            op_no = self.__history_files[log]
+            yield self.__history_ops[op_no]
 
     def get_last_repo_update(self, last=1):
-        repoupdates = [l for l in self.__logs if l.endswith("repoupdate.xml")]
-        repoupdates.reverse()
+        repoupdates = [
+            l for l in self.__history_files.keys() if l.endswith("repoupdate.xml")
+        ]
+        repoupdates.sort(key=lambda x: int(x.split("_")[0].replace("0o", "0")))
+
         if not len(repoupdates) >= 2:
             return None
 
         if last != 1 and len(repoupdates) <= last:
             return None
 
-        hist = history.History(
-            os.path.join(ctx.config.history_dir(), repoupdates[-last])
-        )
-        return hist.operation.date
+        op_no = self.__history_files[repoupdates[-last]]
+        return self.__history_ops[op_no].date

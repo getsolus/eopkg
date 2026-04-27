@@ -45,6 +45,16 @@ class LazyDB(Singleton):
             self.initialized = False
         self.cacheable = cacheable
         self.cachedir = cachedir
+        self._lmdb_store = None
+
+    @property
+    def lmdb_store(self):
+        from pisi.db.lmdbstore import LMDBStore
+
+        path = util.join_path(ctx.config.cache_root_dir(), "eopkg_db")
+        # We determine readonly based on directory access
+        readonly = not os.access(ctx.config.cache_root_dir(), os.W_OK)
+        return LMDBStore.get_instance(path, readonly=readonly)
 
     def is_initialized(self):
         return self.initialized
@@ -99,6 +109,12 @@ class LazyDB(Singleton):
                 os.remove(path)
             except FileNotFoundError:
                 pass
+
+        if not self.lmdb_store.readonly:
+            # Subclasses can define lmdb_mappings to be cleared
+            if hasattr(self, "lmdb_mappings"):
+                for mapping in self.lmdb_mappings:
+                    mapping.clear()
 
     def invalidate(self):
         self._delete()

@@ -4,46 +4,121 @@
 # installation database
 #
 
+import datetime
+import gettext
+import gzip
+import os
 import re
 import time
-import gzip
-import gettext
-import datetime
 
 import iksemel
 
 import pisi.db
-import pisi.metadata
-import pisi.dependency
 import pisi.db.itembyrepo
 import pisi.db.lazydb as lazydb
-from pisi import translate as _
+import pisi.dependency
+import pisi.metadata
 from pisi import Error
+from pisi import translate as _
 
 
 class PackageDB(lazydb.LazyDB):
     def __init__(self):
-        lazydb.LazyDB.__init__(self, cacheable=True)
+        # Set cacheable=False because we use LMDB now
+        lazydb.LazyDB.__init__(self, cacheable=False)
+
+    @property
+    def lmdb_mappings(self):
+        mappings = []
+        for repo in self.__package_nodes:
+            mappings.append(self.__package_nodes[repo])
+            mappings.append(self.__revdeps[repo])
+            mappings.append(self.__obsoletes[repo])
+            mappings.append(self.__replaces[repo])
+            mappings.append(self.__pkgconfigs[repo])
+            mappings.append(self.__pkgconfigs32[repo])
+        return mappings
 
     def init(self):
-        self.__package_nodes = {}  # Packages
-        self.__revdeps = {}  # Reverse dependencies
-        self.__obsoletes = {}  # Obsoletes
-        self.__replaces = {}  # Replaces
-
         repodb = pisi.db.repodb.RepoDB()
+        repos = repodb.list_repos()
 
-        for repo in repodb.list_repos():
-            doc = repodb.get_repo_doc(repo)
-            self.__package_nodes[repo] = self.__generate_packages(doc)
-            self.__revdeps[repo] = self.__generate_revdeps(doc)
-            self.__obsoletes[repo] = self.__generate_obsoletes(doc)
-            self.__replaces[repo] = self.__generate_replaces(doc)
+        self.__package_nodes = {
+            repo: self.lmdb_store.get_mapping(f"pdb_{repo}") for repo in repos
+        }
+        self.__revdeps = {
+            repo: self.lmdb_store.get_mapping(f"rvdb_{repo}") for repo in repos
+        }
+        self.__obsoletes = {
+            repo: self.lmdb_store.get_mapping(f"odb_{repo}") for repo in repos
+        }
+        self.__replaces = {
+            repo: self.lmdb_store.get_mapping(f"rpdb_{repo}") for repo in repos
+        }
+        self.__pkgconfigs = {
+            repo: self.lmdb_store.get_mapping(f"pcdb_{repo}") for repo in repos
+        }
+        self.__pkgconfigs32 = {
+            repo: self.lmdb_store.get_mapping(f"pc32db_{repo}") for repo in repos
+        }
+
+        meta = self.lmdb_store.get_mapping("meta")
+
+        for repo in repos:
+            index_path = repodb.get_index_path(repo)
+            if not os.path.exists(index_path):
+                continue
+
+            mtime = os.path.getmtime(index_path)
+            cached_mtime = meta.get(f"mtime_pdb_{repo}")
+
+            # If the package nodes for this repo are empty or index changed, generate them
+            if (
+                len(self.__package_nodes[repo]) == 0
+                or len(self.__pkgconfigs[repo]) == 0
+                or cached_mtime != mtime
+            ):
+                if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
+                    # Stale/missing but we can't write to LMDB. Use memory for this session.
+                    from pisi.db.lmdbstore import MemoryMapping
+
+                    self.__package_nodes[repo] = MemoryMapping()
+                    self.__revdeps[repo] = MemoryMapping()
+                    self.__obsoletes[repo] = MemoryMapping()
+                    self.__replaces[repo] = MemoryMapping()
+                    self.__pkgconfigs[repo] = MemoryMapping()
+                    self.__pkgconfigs32[repo] = MemoryMapping()
+
+                doc = repodb.get_repo_doc(repo)
+                self.__package_nodes[repo].clear()
+                self.__revdeps[repo].clear()
+                self.__obsoletes[repo].clear()
+                self.__replaces[repo].clear()
+                self.__pkgconfigs[repo].clear()
+                self.__pkgconfigs32[repo].clear()
+
+                self.__package_nodes[repo].update_bulk(self.__generate_packages(doc))
+                self.__revdeps[repo].update_bulk(self.__generate_revdeps(doc))
+                self.__obsoletes[repo].update_bulk(
+                    {x: None for x in self.__generate_obsoletes(doc)}
+                )
+                self.__replaces[repo].update_bulk(
+                    {x: None for x in self.__generate_replaces(doc)}
+                )
+
+                pc, pc32 = self.__generate_pkgconfigs(doc)
+                self.__pkgconfigs[repo].update_bulk(pc)
+                self.__pkgconfigs32[repo].update_bulk(pc32)
+
+                if not self.lmdb_store.readonly:
+                    meta[f"mtime_pdb_{repo}"] = mtime
 
         self.pdb = pisi.db.itembyrepo.ItemByRepo(self.__package_nodes, compressed=True)
         self.rvdb = pisi.db.itembyrepo.ItemByRepo(self.__revdeps)
         self.odb = pisi.db.itembyrepo.ItemByRepo(self.__obsoletes)
         self.rpdb = pisi.db.itembyrepo.ItemByRepo(self.__replaces)
+        self.pcdb = pisi.db.itembyrepo.ItemByRepo(self.__pkgconfigs)
+        self.pc32db = pisi.db.itembyrepo.ItemByRepo(self.__pkgconfigs32)
 
     def __generate_replaces(self, doc):
         return [
@@ -61,6 +136,20 @@ class PackageDB(lazydb.LazyDB):
             return []
 
         return [x.firstChild().data() for x in obsoletes.tags("Package")]
+
+    def __generate_pkgconfigs(self, doc):
+        pkgConfigs = {}
+        pkgConfigs32 = {}
+        for pkg in doc.tags("Package"):
+            prov = pkg.getTag("Provides")
+            name = pkg.getTagData("Name")
+            if not prov:
+                continue
+            for node in prov.tags("PkgConfig32"):
+                pkgConfigs32[node.firstChild().data()] = name
+            for node in prov.tags("PkgConfig"):
+                pkgConfigs[node.firstChild().data()] = name
+        return pkgConfigs, pkgConfigs32
 
     def __generate_packages(self, doc):
         return dict(
@@ -97,39 +186,15 @@ class PackageDB(lazydb.LazyDB):
         The second dict ([1]) contains the pkgconfig32 mapping to
         package name.
         """
-        repodb = pisi.db.repodb.RepoDB()
-
         pkgConfigs = dict()
         pkgConfigs32 = dict()
 
-        def map_providers(doc, pkgConfigs: dict, pkgConfigs32: dict):
-            for pkg in doc.tags("Package"):
-                prov = pkg.getTag("Provides")
-                name = pkg.getTagData("Name")
-                if not prov:
-                    continue
-                for node in prov.tags("PkgConfig32"):
-                    pkgConfigs32[node.firstChild().data()] = name
-                for node in prov.tags("PkgConfig"):
-                    pkgConfigs[node.firstChild().data()] = name
-            return (pkgConfigs, pkgConfigs32)
-
         if repo is None:
-            repos = repodb.list_repos()
-            # .reverse() doesn't work, so use the slice notation for reversing the non-empty list.
-            # This is necessary because we traverse the list in reverse order to solve the
-            # original problem, and now we need to reverse it back to the normal order
-            repos = repos[::-1] if repos is not None else None
-            for repo in repos:
-                doc = repodb.get_repo_doc(repo)
-                pkgConfig, pkgConfigs32 = map_providers(
-                        doc, pkgConfigs, pkgConfigs32)
+            pkgConfigs = self.pcdb.get_all_items()
+            pkgConfigs32 = self.pc32db.get_all_items()
         else:
-            if repo not in repodb.list_repos(only_active=False):
-                raise Error(_("Repo %s not found.") % repo)
-            doc = repodb.get_repo_doc(repo)
-            pkgConfig, pkgConfigs32 = map_providers(
-                        doc, pkgConfigs, pkgConfigs32)
+            pkgConfigs = self.pcdb.get_items(repo)
+            pkgConfigs32 = self.pc32db.get_items(repo)
 
         return (pkgConfigs, pkgConfigs32)
 
