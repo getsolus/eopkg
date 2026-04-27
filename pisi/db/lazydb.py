@@ -43,6 +43,8 @@ class LazyDB(Singleton):
     def __init__(self, cacheable=False, cachedir=None):
         if "initialized" not in self.__dict__:
             self.initialized = False
+        if "version_cache" not in self.__dict__:
+            self.version_cache = {}
         self.cacheable = cacheable
         self.cachedir = cachedir
 

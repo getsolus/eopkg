@@ -156,9 +156,13 @@ class InstallDB(lazydb.LazyDB):
         return distro, release
 
     def get_version_and_distro_release(self, package):
+        if package in self.version_cache:
+            return self.version_cache[package]
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
         meta_doc = iksemel.parse(metadata_xml)
-        return self.__get_version(meta_doc) + self.__get_distro_release(meta_doc)
+        info = self.__get_version(meta_doc) + self.__get_distro_release(meta_doc)
+        self.version_cache[package] = info
+        return info
 
     def get_version(self, package):
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
