@@ -10,7 +10,7 @@ import sys
 
 import pisi
 from pisi import context as ctx
-from pisi import ngettext
+from pisi import ngettext, util
 from pisi import translate as _
 from pisi.db import lazydb
 
@@ -36,9 +36,31 @@ else:
 
 
 class FilesDB(lazydb.LazyDB):
+    def __init__(self):
+        # Set cacheable=False because we use LMDB now
+        lazydb.LazyDB.__init__(self, cacheable=False)
+
+    @property
+    def lmdb_mappings(self):
+        return [self.filesdb]
+
     def init(self, force_rebuild=False):
-        self.filesdb = {}
-        self.__check_filesdb(force_rebuild)
+        self.filesdb = self.lmdb_store.get_mapping("files")
+        meta = self.lmdb_store.get_mapping("meta")
+
+        version = meta.get("filesdb_version")
+
+        if force_rebuild or version != FILESDB_FORMAT_VERSION or len(self.filesdb) == 0:
+            if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
+                # We need to rebuild but can't write to LMDB. Fallback to memory.
+                from pisi.db.lmdbstore import MemoryMapping
+
+                self.filesdb = MemoryMapping()
+
+            self.__rebuild()
+
+            if not self.lmdb_store.readonly:
+                meta["filesdb_version"] = FILESDB_FORMAT_VERSION
 
     def has_file(self, path):
         return hashlib.md5(path.encode()).hexdigest() in self.filesdb
@@ -54,14 +76,20 @@ class FilesDB(lazydb.LazyDB):
         installdb = pisi.db.installdb.InstallDB()
         found = []
         for pkg in installdb.list_installed():
-            files_xml = open(
-                os.path.join(installdb.package_path(pkg), ctx.const.files_xml)
-            ).read()
-            paths = re.compile(
-                "<Path>(.*?%s.*?)</Path>" % re.escape(term), re.I
-            ).findall(files_xml)
-            if paths:
-                found.append((pkg, paths))
+            # Check if we have files cached in InstallDB first
+            # Actually, InstallDB might not have all files cached yet.
+            # Fallback to XML search as before if FilesDB doesn't have it.
+            try:
+                files_xml = open(
+                    os.path.join(installdb.package_path(pkg), ctx.const.files_xml)
+                ).read()
+                paths = re.compile(
+                    "<Path>(.*?%s.*?)</Path>" % re.escape(term), re.I
+                ).findall(files_xml)
+                if paths:
+                    found.append((pkg, paths))
+            except IOError:
+                continue
         return found
 
     def get_pkgconfig_provider(self, pkgconfigName):
@@ -86,139 +114,65 @@ class FilesDB(lazydb.LazyDB):
         return None
 
     def add_files(self, pkg, files):
-        self.__check_filesdb()
-
+        new_files = {}
         for f in files.list:
-            self.filesdb[hashlib.md5(f.path.encode()).hexdigest()] = pkg
+            new_files[hashlib.md5(f.path.encode()).hexdigest()] = pkg
+        self.filesdb.update_bulk(new_files)
 
     def remove_files(self, files):
         for f in files:
-            if hashlib.md5(f.path.encode()).hexdigest() in self.filesdb:
-                del self.filesdb[hashlib.md5(f.path.encode()).hexdigest()]
+            key = hashlib.md5(f.path.encode()).hexdigest()
+            if key in self.filesdb:
+                del self.filesdb[key]
 
     def destroy(self):
-        files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
-        if os.path.exists(files_db):
-            os.unlink(files_db)
+        # We don't destroy the LMDB file itself, just clear the mapping
+        self.filesdb.clear()
+        meta = self.lmdb_store.get_mapping("meta")
+        if not self.lmdb_store.readonly:
+            if "filesdb_version" in meta:
+                del meta["filesdb_version"]
 
     def close(self):
-        if isinstance(self.filesdb, shelve.Shelf):
-            self.filesdb.sync()
-            self.filesdb.close()
-
-    def __open_shelve(self, path, flag):
-        """Helper to open shelve with preferred backend."""
-        if gdbm:
-            try:
-                # Explicitly use gdbm if available for write performance
-                return shelve.Shelf(gdbm.open(path, flag))
-            except dbm.error:
-                # If it's not a gdbm file (e.g. it's sqlite), fall back to default
-                pass
-        return shelve.open(path, flag)
-
-    def __check_filesdb(self, force_rebuild=False):
-        """Sets valid self.files_db reference and automatically rebuilds the underlying db if necessary."""
-
-        # already initialized
-        if isinstance(self.filesdb, shelve.Shelf):
-            return
-
-        files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
-        needs_rebuild = force_rebuild
-
-        if not force_rebuild:
-            if os.path.exists(files_db):
-                try:
-                    # Try opening read-write first
-                    try:
-                        self.filesdb = self.__open_shelve(files_db, "w")
-                    except dbm.error:
-                        # Fallback to read-only
-                        self.filesdb = self.__open_shelve(files_db, "r")
-                        ctx.ui.debug(
-                            # . FilesDB is a proper name and should not be translated
-                            _(f"Opened FilesDB {files_db} read-only.")
-                        )
-
-                    # Check version
-                    if self.filesdb.get("version") != FILESDB_FORMAT_VERSION:
-                        ctx.ui.warning(
-                            # . FilesDB is a proper name and should not be translated
-                            _("FilesDB version mismatch or missing version.")
-                        )
-                        needs_rebuild = True
-
-                except Exception as e:
-                    ctx.ui.debug(
-                        # . FilesDB is a proper name and should not be translated
-                        _(f"Failed to open FilesDB {files_db}: {e}")
-                    )
-                    needs_rebuild = True
-            else:
-                # File missing
-                needs_rebuild = True
-
-        if needs_rebuild:
-            # Check if we have write access to the directory to perform a rebuild
-            if os.access(os.path.dirname(files_db) or ".", os.W_OK):
-                self.__rebuild()
-            else:
-                self.close()
-                self.filesdb = {}
-                ctx.ui.warning(
-                    # . FilesDB is a proper name and should not be translated
-                    _("FilesDB is invalid and cannot be rebuilt (no write access).")
-                )
-                ctx.ui.warning(_("Falling back to slow and inaccurate XML search..."))
+        # LMDBStore handles closing
+        pass
 
     def __rebuild(self):
-        # This assumes that __check_filesdb() has determined a rebuild is needed
-        files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
-        ctx.ui.info(
-            # . FilesDB is a proper name and should not be translated
-            _("Rebuilding the FilesDB...")
-        )
-
-        self.close()
-        self.destroy()
-        self.filesdb = {}
-
-        try:
-            # "n" means we're opening a new shelve, overwriting the old one
-            self.filesdb = self.__open_shelve(files_db, "n")
-        except Exception as err:
-            ctx.ui.error(
-                # . FilesDB is a proper name and should not be translated
-                _("FilesDB rebuild failed: %s") % err
-            )
-            raise err
-
-        self.filesdb["version"] = FILESDB_FORMAT_VERSION
+        ctx.ui.info(_("Rebuilding the FilesDB..."))
+        self.filesdb.clear()
         # we need a list of installed files per package
         installdb = pisi.db.installdb.InstallDB()
         pkgs = 0
         verbose = ctx.config.options.verbose
-        ctx.ui.info(
-            # . FilesDB is a proper name and should not be translated
-            _(f"Adding packages to FilesDB {files_db}:")
-        )
-        for pkg in installdb.list_installed():
+        ctx.ui.info(_("Adding packages to FilesDB:"))
+
+        all_files = {}
+        batch_size = 100
+
+        installed_pkgs = installdb.list_installed()
+        for pkg in installed_pkgs:
             files = installdb.get_files(pkg)
             if verbose:
                 ctx.ui.info(_("Adding '%s' ...") % pkg, noln=True)
-            self.add_files(pkg, files)
+
+            for f in files.list:
+                all_files[hashlib.md5(f.path.encode()).hexdigest()] = pkg
+
             if verbose:
                 ctx.ui.info(_("Okay."))
+
             pkgs += 1
-            # Print out useful markers every so often
-            if pkgs % 50 == 0:
-                if verbose:
+            if pkgs % batch_size == 0:
+                self.filesdb.update_bulk(all_files)
+                all_files = {}
+                if not verbose:
+                    ctx.ui.info(".", noln=True)
+                else:
                     ctx.ui.info("-------------")
                     ctx.ui.info(_("Added so far: %s") % pkgs)
                     ctx.ui.info("-------------")
-                else:
-                    ctx.ui.info(".", noln=True)
+        if all_files:
+            self.filesdb.update_bulk(all_files)
         ctx.ui.info(
             ngettext(
                 "\n%(num)d package added in total.",
@@ -227,10 +181,4 @@ class FilesDB(lazydb.LazyDB):
             )
             % {"num": pkgs}
         )
-        # ensure that the changes get pushed out to disk
-        self.filesdb.sync()
-        # This acts as a check that the version has been correctly added and synced to disk
-        ctx.ui.info(
-            # . FilesDB is a proper name and should not be translated
-            _(f"Finished rebuilding FilesDB (version: {self.filesdb['version']})")
-        )
+        ctx.ui.info(_("Done rebuilding FilesDB."))

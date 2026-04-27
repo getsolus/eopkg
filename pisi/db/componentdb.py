@@ -1,60 +1,109 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+import os
 import re
-from pisi import translate as _
-from pisi import Error
 
 import pisi
-import pisi.db.repodb
-import pisi.db.itembyrepo
 import pisi.component
+import pisi.db.itembyrepo
 import pisi.db.lazydb as lazydb
+import pisi.db.repodb
+from pisi import Error
 from pisi import context as ctx
-import os
+from pisi import translate as _
 
 
 class ComponentDB(lazydb.LazyDB):
     def __init__(self):
-        lazydb.LazyDB.__init__(self, cacheable=True)
+        # Set cacheable=False because we use LMDB now
+        lazydb.LazyDB.__init__(self, cacheable=False)
+
+    @property
+    def lmdb_mappings(self):
+        mappings = []
+        for repo in self.__component_nodes:
+            mappings.append(self.__component_nodes[repo])
+            mappings.append(self.__component_packages[repo])
+            mappings.append(self.__component_sources[repo])
+        return mappings
 
     def init(self):
-        component_nodes = {}
-        component_packages = {}
-        component_sources = {}
-
         repodb = pisi.db.repodb.RepoDB()
+        repos = repodb.list_repos()
 
-        for repo in repodb.list_repos():
-            doc = repodb.get_repo_doc(repo)
-            component_nodes[repo] = self.__generate_components(doc)
-            component_packages[repo] = self.__generate_packages(doc)
-            component_sources[repo] = self.__generate_sources(doc)
+        self.__component_nodes = {
+            repo: self.lmdb_store.get_mapping(f"cdb_{repo}") for repo in repos
+        }
+        self.__component_packages = {
+            repo: self.lmdb_store.get_mapping(f"cpdb_{repo}") for repo in repos
+        }
+        self.__component_sources = {
+            repo: self.lmdb_store.get_mapping(f"csdb_{repo}") for repo in repos
+        }
 
-        self.cdb = pisi.db.itembyrepo.ItemByRepo(component_nodes)
-        self.cpdb = pisi.db.itembyrepo.ItemByRepo(component_packages)
-        self.csdb = pisi.db.itembyrepo.ItemByRepo(component_sources)
+        meta = self.lmdb_store.get_mapping("meta")
+
+        for repo in repos:
+            index_path = repodb.get_index_path(repo)
+            if not os.path.exists(index_path):
+                continue
+
+            mtime = os.path.getmtime(index_path)
+            cached_mtime = meta.get(f"mtime_cdb_{repo}")
+
+            if len(self.__component_nodes[repo]) == 0 or cached_mtime != mtime:
+                if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
+                    from pisi.db.lmdbstore import MemoryMapping
+
+                    self.__component_nodes[repo] = MemoryMapping()
+                    self.__component_packages[repo] = MemoryMapping()
+                    self.__component_sources[repo] = MemoryMapping()
+
+                doc = repodb.get_repo_doc(repo)
+                self.__component_nodes[repo].clear()
+                self.__component_packages[repo].clear()
+                self.__component_sources[repo].clear()
+
+                self.__component_nodes[repo].update_bulk(
+                    self.__generate_components(doc)
+                )
+                self.__component_packages[repo].update_bulk(
+                    self.__generate_packages(doc)
+                )
+                self.__component_sources[repo].update_bulk(self.__generate_sources(doc))
+
+                if not self.lmdb_store.readonly:
+                    meta[f"mtime_cdb_{repo}"] = mtime
+
+        self.cdb = pisi.db.itembyrepo.ItemByRepo(self.__component_nodes)
+        self.cpdb = pisi.db.itembyrepo.ItemByRepo(self.__component_packages)
+        self.csdb = pisi.db.itembyrepo.ItemByRepo(self.__component_sources)
 
     def __generate_packages(self, doc):
         components = {}
         for pkg in doc.tags("Package"):
-            components.setdefault(pkg.getTagData("PartOf"), []).append(
-                pkg.getTagData("Name")
-            )
+            part_of = pkg.getTagData("PartOf")
+            if part_of:
+                components.setdefault(part_of, []).append(pkg.getTagData("Name"))
         return components
 
     def __generate_sources(self, doc):
         components = {}
         for spec in doc.tags("SpecFile"):
             src = spec.getTag("Source")
-            components.setdefault(src.getTagData("PartOf"), []).append(
-                src.getTagData("Name")
-            )
+            part_of = src.getTagData("PartOf")
+            if part_of:
+                components.setdefault(part_of, []).append(src.getTagData("Name"))
         return components
 
     def __generate_components(self, doc):
         return dict(
-            [(x.getTagData("Name"), x.toString()) for x in doc.tags("Component")]
+            [
+                (x.getTagData("Name"), x.toString())
+                for x in doc.tags("Component")
+                if x.getTagData("Name")
+            ]
         )
 
     def has_component(self, name, repo=None):
@@ -91,11 +140,9 @@ class ComponentDB(lazydb.LazyDB):
             component = pisi.component.Component()
             component.parse(self.cdb.get_item(component_name, repo))
         except pisi.pxml.autoxml.Error:
-            ctx.ui.debug('ComponentDB cache contains invalid XML; ignoring cache')
-            if os.access(ctx.config.cache_root_dir(), os.W_OK):
-                ctx.ui.debug(
-                    f'We have write access to {ctx.config.cache_root_dir()}; removing corrupted ComponentDB Cache'
-                )
+            ctx.ui.debug("ComponentDB cache contains invalid XML; ignoring cache")
+            if not self.lmdb_store.readonly:
+                ctx.ui.debug("Invalidating ComponentDB LMDB cache")
                 self.cache_flush()
             self.init()
             component = pisi.component.Component()
@@ -123,11 +170,9 @@ class ComponentDB(lazydb.LazyDB):
             component = pisi.component.Component()
             component.parse(self.cdb.get_item(component_name))
         except pisi.pxml.autoxml.Error:
-            ctx.ui.debug('ComponentDB cache contains invalid XML; ignoring cache')
-            if os.access(ctx.config.cache_root_dir(), os.W_OK):
-                ctx.ui.debug(
-                    f'We have write access to {ctx.config.cache_root_dir()}; removing corrupted ComponentDB Cache'
-                )
+            ctx.ui.debug("ComponentDB cache contains invalid XML; ignoring cache")
+            if not self.lmdb_store.readonly:
+                ctx.ui.debug("Invalidating ComponentDB LMDB cache")
                 self.cache_flush()
             self.init()
             component = pisi.component.Component()

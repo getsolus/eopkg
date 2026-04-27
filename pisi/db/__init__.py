@@ -19,7 +19,12 @@ def invalidate_caches():
 
 def flush_caches():
     # Invalidate and flush caches to re-generate them when needed
-    for db in [packagedb.PackageDB(), componentdb.ComponentDB(), groupdb.GroupDB()]:
+    for db in [
+        packagedb.PackageDB(),
+        componentdb.ComponentDB(),
+        groupdb.GroupDB(),
+        installdb.InstallDB(),
+    ]:
         db.invalidate()
         db.cache_flush()
 
@@ -39,5 +44,10 @@ def update_caches():
 def regenerate_caches():
     flush_caches()
     # Force cache regeneration
-    for db in [packagedb.PackageDB(), componentdb.ComponentDB(), groupdb.GroupDB()]:
+    for db in [
+        packagedb.PackageDB(),
+        componentdb.ComponentDB(),
+        groupdb.GroupDB(),
+        installdb.InstallDB(),
+    ]:
         db.cache_regenerate()

@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import zlib
-from pisi import translate as _
-from pisi import Error
 
 import pisi.db
+from pisi import Error
+from pisi import translate as _
 
 
 class ItemByRepo:
@@ -73,6 +73,24 @@ class ItemByRepo:
 
             for item, data in self.dbobj[r].items():
                 yield item, zlib.decompress(data) if self.compressed else data
+
+    def get_items(self, repo):
+        if not self.has_repo(repo):
+            raise Error(_("Repository %s does not exist.") % repo)
+        items = {}
+        for k, v in self.dbobj[repo].items():
+            items[k] = zlib.decompress(v) if self.compressed else v
+        return items
+
+    def get_all_items(self):
+        items = {}
+        # Traverse in reverse order so that higher priority repos override lower ones
+        repos = pisi.db.repodb.RepoDB().list_repos()[::-1]
+        for r in repos:
+            if r in self.dbobj:
+                for k, v in self.dbobj[r].items():
+                    items[k] = zlib.decompress(v) if self.compressed else v
+        return items
 
     def item_repos(self, repo=None):
         repos = pisi.db.repodb.RepoDB().list_repos()
