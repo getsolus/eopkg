@@ -163,12 +163,17 @@ class Install(AtomicOperation):
             _("Installing %s, version %s, release %s")
             % (self.pkginfo.name, self.pkginfo.version, self.pkginfo.release)
         )
-        ctx.ui.notify(pisi.ui.installing, package=self.pkginfo, files=self.files)
 
         self.ask_reinstall = ask_reinstall
+        self.check_operation()
+
+        if self.operation == UPGRADE:
+            ctx.ui.notify(pisi.ui.upgrading, package=self.pkginfo, files=self.files)
+        else:
+            ctx.ui.notify(pisi.ui.installing, package=self.pkginfo, files=self.files)
+
         self.check_versioning(self.pkginfo.version, self.pkginfo.release)
         self.check_relations()
-        self.check_operation()
 
         self.extract_install()
         self.store_pisi_files()
