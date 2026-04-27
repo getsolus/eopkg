@@ -36,12 +36,7 @@ class Singleton(object):
         del self._the_instances[type(self).__name__]
 
 
-# this is the pickle protocol version with which cache_version cache files
-# are written to disk in all LazyDB caches
-LAZYDB_PICKLE_PROTOCOL_VERSION = 2
-
 class LazyDB(Singleton):
-
     # Make sure that caches get invalidated when switching between pisi/eopkg versions
     cache_version = pisi.__version__
 
@@ -69,8 +64,7 @@ class LazyDB(Singleton):
                 f.write(LazyDB.cache_version)
                 f.flush()
                 os.fsync(f.fileno())
-            pickle.dump(self._instance, open(self.__cache_file(), "wb"),
-                         protocol=LAZYDB_PICKLE_PROTOCOL_VERSION)
+            pickle.dump(self._instance, open(self.__cache_file(), "wb"))
 
     def cache_valid(self):
         try:
