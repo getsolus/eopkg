@@ -112,15 +112,19 @@ Usage: list-installed
             print(
                 "==========================================================================="
             )
+
+        auto_installed = (
+            self.installdb.list_auto_installed() if self.options.explicit else list()
+        )
+
         for pkg in installed:
             package = self.installdb.get_package(pkg)
             inst_info = self.installdb.get_info(pkg)
 
             # Skip package if we only want to show explicitly installed
             # packages to the user.
-            if self.options.explicit:
-                if package.name in self.installdb.list_auto_installed():
-                    continue
+            if self.options.explicit and package.name in auto_installed:
+                continue
 
             if self.options.long:
                 ctx.ui.info(str(package))
