@@ -228,7 +228,7 @@ class File:
             if ctypes & File.COMPRESSION_TYPE_XZ:
                 compressed_file = self.localfile + ".xz"
                 compressed_files.append(compressed_file)
-                lzma_file = lzma.open(compressed_file, "w")
+                lzma_file = lzma_mt.open(compressed_file, "w")
                 lzma_file.write(open(self.localfile, "r").read().encode())
                 lzma_file.close()
 
