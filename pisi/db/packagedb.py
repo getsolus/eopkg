@@ -214,14 +214,10 @@ class PackageDB(lazydb.LazyDB):
         return distro, release
 
     def get_version_and_distro_release(self, name, repo):
-        if (name, repo) in self.version_cache:
-            return self.version_cache[(name, repo)]
         if not self.has_package(name, repo):
             raise Error(_("Package %s not found.") % name)
         pkg_doc = iksemel.parseString(self.pdb.get_item(name, repo).decode())
-        info = self.__get_version(pkg_doc) + self.__get_distro_release(pkg_doc)
-        self.version_cache[(name, repo)] = info
-        return info
+        return self.__get_version(pkg_doc) + self.__get_distro_release(pkg_doc)
 
     def get_version(self, name, repo):
         if not self.has_package(name, repo):
