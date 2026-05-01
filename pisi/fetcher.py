@@ -61,7 +61,7 @@ class Fetcher:
             resp.raise_for_status()
             start_time = time.time()
 
-            total = int(resp.headers.get("Content-Length"), 0)
+            total = int(resp.headers.get("Content-Length") or 0)
 
             with (
                 open(destination, "wb") as f,
