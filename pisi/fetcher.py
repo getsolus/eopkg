@@ -63,7 +63,7 @@ class Fetcher:
             resp.raise_for_status()
             start_time = time.time()
 
-            total = int(resp.headers.get("Content-Length"), 0)
+            total = int(resp.headers.get("Content-Length") or 0)
 
             with (
                 open(destination, "wb") as f,
@@ -96,10 +96,11 @@ class Fetcher:
                             time.sleep(expected_time - elapsed)
 
     def fetch(
-        self, url: URI | str,
+        self,
+        url: URI | str,
         dest_dir: str,
         filename: str = None,
-        progress_bar_pos: int = 0
+        progress_bar_pos: int = 0,
     ) -> None:
         """
         Fetches a remote resource.
