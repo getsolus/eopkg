@@ -429,6 +429,8 @@ def fetch(packages=[], path=os.path.curdir):
     repodb = pisi.db.repodb.RepoDB()
     fetcher = Fetcher()
 
+    fetch_items = []
+
     for name in packages:
         package, repo = packagedb.get_package_repo(name)
         ctx.ui.info(_("%s package found in %s repository") % (package.name, repo))
@@ -446,8 +448,12 @@ def fetch(packages=[], path=os.path.curdir):
                 os.path.dirname(repodb.get_repo_url(repo)), str(uri.path())
             )
 
-        # TODO(Evan): Error handling
-        fetcher.fetch(url, path)
+        fetch_items.append((url, path))
+
+    # TODO(Evan): Error handling
+    if fetch_items:
+        fetcher.fetch_multi(fetch_items)
+
 
 
 @locked
