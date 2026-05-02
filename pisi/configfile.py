@@ -101,6 +101,7 @@ class BuildDefaults:
 
 class DirectoriesDefaults:
     "Default values for [directories] section"
+
     lib_dir = "/var/lib/eopkg"
     log_dir = "/var/log"
     info_dir = "/var/lib/eopkg/info"

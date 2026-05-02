@@ -35,18 +35,20 @@ def reorder_base_packages_old(order):
         ctx.ui.info(_("install_order: %s" % install_order))
     return install_order
 
+
 def reorder_base_packages(order):
     """Dummy function that doesn't actually re-order system.base in front.
 
-       We now use OrderedSets, which keep the original topological sort,
-       so this shouldn't actually be necessary now.
+    We now use OrderedSets, which keep the original topological sort,
+    so this shouldn't actually be necessary now.
 
-       This also implies that the only function of system.base is for the
-       packages in it to be un-removable.
+    This also implies that the only function of system.base is for the
+    packages in it to be un-removable.
     """
     if len(order) > 1 and ctx.config.get_option("debug"):
         ctx.ui.info(_("order: %s" % order))
     return order
+
 
 def check_conflicts(order, packagedb):
     """check if upgrading to the latest versions will cause havoc

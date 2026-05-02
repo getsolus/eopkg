@@ -45,16 +45,14 @@ class Build(command.Command, metaclass=command.autocommand):
             "--quiet",
             action="store_true",
             default=False,
-            help=_(
-                "Run pisi build operation without printing " "extra debug information"
-            ),
+            help=_("Run pisi build operation without printing extra debug information"),
         )
 
         group.add_option(
             "--ignore-dependency",
             action="store_true",
             default=False,
-            help=_("Do not take dependency information into " "account"),
+            help=_("Do not take dependency information into account"),
         )
 
         group.add_option(
@@ -108,14 +106,14 @@ class Build(command.Command, metaclass=command.autocommand):
             "--use-quilt",
             action="store_true",
             default=False,
-            help=_("Use quilt patch management system " "instead of GNU patch"),
+            help=_("Use quilt patch management system instead of GNU patch"),
         )
 
         group.add_option(
             "--ignore-sandbox",
             action="store_true",
             default=False,
-            help=_("Do not constrain build process inside " "the build folder"),
+            help=_("Do not constrain build process inside the build folder"),
         )
 
     def add_steps_options(self):
@@ -126,7 +124,7 @@ class Build(command.Command, metaclass=command.autocommand):
             dest="until",
             action="store_const",
             const="fetch",
-            help=_("Break build after fetching the source " "archive"),
+            help=_("Break build after fetching the source archive"),
         )
 
         group.add_option(
@@ -185,7 +183,11 @@ class Build(command.Command, metaclass=command.autocommand):
 
     def run(self):
         if "__compiled__" in globals():
-            raise pisi.Error(_("Building packages is not supported when eopkg is compiled with nuitka. Please use eopkg.py3 instead."))
+            raise pisi.Error(
+                _(
+                    "Building packages is not supported when eopkg is compiled with nuitka. Please use eopkg.py3 instead."
+                )
+            )
 
         if not self.options.quiet:
             self.options.debug = True

@@ -103,8 +103,12 @@ class Command(object):
         )
         # Username and password are leftovers from auth-basic support.
         # These are here (but hidden) so we can issue a deprecation warning.
-        group.add_option("-u", "--username", action="store", help=optparse.SUPPRESS_HELP)
-        group.add_option("-p", "--password", action="store", help=optparse.SUPPRESS_HELP)
+        group.add_option(
+            "-u", "--username", action="store", help=optparse.SUPPRESS_HELP
+        )
+        group.add_option(
+            "-p", "--password", action="store", help=optparse.SUPPRESS_HELP
+        )
         group.add_option(
             "-L",
             "--bandwidth-limit",
@@ -155,7 +159,11 @@ class Command(object):
 
     def process_opts(self):
         if self.options.username or self.options.password:
-            raise pisi.cli.Error(_("HTTP Basic-Auth is no longer supported. Please reconfigure your repository."))
+            raise pisi.cli.Error(
+                _(
+                    "HTTP Basic-Auth is no longer supported. Please reconfigure your repository."
+                )
+            )
 
         # make destdir absolute
         if self.options.destdir:
@@ -178,7 +186,13 @@ class Command(object):
 
         if write and not os.access(pisi.context.config.packages_dir(), os.W_OK):
             try:
-                os.execv('/usr/bin/pkexec',  ['/usr/bin/pkexec', ] + sys.argv)
+                os.execv(
+                    "/usr/bin/pkexec",
+                    [
+                        "/usr/bin/pkexec",
+                    ]
+                    + sys.argv,
+                )
             except:
                 raise pisi.cli.Error(_("You have to be root for this operation."))
 

@@ -3,7 +3,6 @@
 
 """supports globs in sourceFile arguments"""
 
-
 # Standart Python Modules
 import os
 import glob

@@ -382,10 +382,7 @@ class Builder:
                 ctx.ui.info(_("ccache detected..."))
             if self.has_icecream:
                 ctx.ui.info(
-                    _(
-                        "IceCream detected. Make sure your daemon "
-                        "is up and running..."
-                    )
+                    _("IceCream detected. Make sure your daemon is up and running...")
                 )
 
             self.run_setup_action()
@@ -811,16 +808,13 @@ class Builder:
 
                 if not path.startswith("/"):
                     raise Error(
-                        _(
-                            "Source package '%s' defines a relative 'Path' element: "
-                            "%s"
-                        )
+                        _("Source package '%s' defines a relative 'Path' element: %s")
                         % (self.spec.source.name, path_info.path)
                     )
 
                 if path in paths:
                     raise Error(
-                        _("Source package '%s' defines multiple 'Path' tags " "for %s")
+                        _("Source package '%s' defines multiple 'Path' tags for %s")
                         % (self.spec.source.name, path_info.path)
                     )
 
@@ -1562,15 +1556,14 @@ class Builder:
                         os.chown(dest, pwd.getpwnam(afile.owner)[2], -1)
                     except KeyError:
                         ctx.ui.warning(
-                            _("No user named '%s' found " "on the system") % afile.owner
+                            _("No user named '%s' found on the system") % afile.owner
                         )
                 if afile.group:
                     try:
                         os.chown(dest, -1, grp.getgrnam(afile.group)[2])
                     except KeyError:
                         ctx.ui.warning(
-                            _("No group named '%s' found " "on the system")
-                            % afile.group
+                            _("No group named '%s' found on the system") % afile.group
                         )
         os.chdir(c)
 
@@ -1578,8 +1571,7 @@ class Builder:
         abandoned_files = self.get_abandoned_files()
         if abandoned_files:
             ctx.ui.error(
-                _("There are abandoned files " "under the install dir (%s):")
-                % install_dir
+                _("There are abandoned files under the install dir (%s):") % install_dir
             )
 
             for f in abandoned_files:

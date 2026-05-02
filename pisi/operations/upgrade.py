@@ -109,7 +109,7 @@ def find_upgrades(packages, replaces):
     return Ap
 
 
-def upgrade(packages = [], repo = None):
+def upgrade(packages=[], repo=None):
     """
     Re-installs packages from the repository, trying to perform
     a minimum or maximum number of upgrades according to options.
@@ -442,18 +442,32 @@ def upgrade_base(A=set()):
 
             if extra_upgrades:
                 ctx.ui.warning(
-                    _("Safety switch forces the upgrade of " "following packages:")
+                    _("Safety switch forces the upgrade of following packages:")
                 )
                 ctx.ui.info(util.format_by_columns(sorted(extra_upgrades)))
                 G_f, upgrade_order = plan_upgrade(extra_upgrades, force_replaced=False)
 
-             # return packages that must be added to any installation
+            # return packages that must be added to any installation
             install_and_upgrade_order = set(install_order + upgrade_order)
             if len(install_and_upgrade_order) > 1 and ctx.config.get_option("debug"):
-                ctx.ui.info(_("installs and upgrades (unordered): %s" % install_and_upgrade_order))
-            install_and_upgrade_order = operations.install.plan_deterministic_install_order(install_and_upgrade_order)
+                ctx.ui.info(
+                    _(
+                        "installs and upgrades (unordered): %s"
+                        % install_and_upgrade_order
+                    )
+                )
+            install_and_upgrade_order = (
+                operations.install.plan_deterministic_install_order(
+                    install_and_upgrade_order
+                )
+            )
             if len(install_and_upgrade_order) > 1 and ctx.config.get_option("debug"):
-                ctx.ui.info(_("installs and upgrades (deterministic order): %s" % install_and_upgrade_order))
+                ctx.ui.info(
+                    _(
+                        "installs and upgrades (deterministic order): %s"
+                        % install_and_upgrade_order
+                    )
+                )
             return install_and_upgrade_order
         else:
             ctx.ui.warning(

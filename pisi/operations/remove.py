@@ -18,7 +18,11 @@ import pisi.db
 
 
 def remove(
-    packages, ignore_dep=False, ignore_safety=False, autoremove=False, force_prompt=False
+    packages,
+    ignore_dep=False,
+    ignore_safety=False,
+    autoremove=False,
+    force_prompt=False,
 ):
     """Remove a set of packages from the system.
     Parameters:
@@ -33,9 +37,11 @@ def remove(
     installdb = pisi.db.installdb.InstallDB()
     signal_handler = signalhandler.SignalHandler()
 
-    should_ignore_safety = (not ctx.get_option("ignore_safety")
-                            and not ctx.config.values.general.ignore_safety
-                            and not ignore_safety)
+    should_ignore_safety = (
+        not ctx.get_option("ignore_safety")
+        and not ctx.config.values.general.ignore_safety
+        and not ignore_safety
+    )
 
     packages = [str(package) for package in packages]
 
@@ -48,7 +54,7 @@ def remove(
             refused = packages.intersection(systembase)
             if refused:
                 raise pisi.Error(
-                    _("Safety switch prevents the removal of " "following packages:\n")
+                    _("Safety switch prevents the removal of following packages:\n")
                     + util.format_by_columns(sorted(refused))
                 )
         else:

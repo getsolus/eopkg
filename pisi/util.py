@@ -979,16 +979,21 @@ def systemd_inhibit(reason: str):
         login1_addr = DBusAddress(
             "/org/freedesktop/login1",
             bus_name="org.freedesktop.login1",
-            interface="org.freedesktop.login1.Manager"
+            interface="org.freedesktop.login1.Manager",
         )
-        conn = open_dbus_connection(bus='SYSTEM', enable_fds=True)
+        conn = open_dbus_connection(bus="SYSTEM", enable_fds=True)
 
         # Create the method call: Inhibit(what, who, why, mode)
         msg = new_method_call(
             login1_addr,
             "Inhibit",
             "ssss",
-            ("shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch", "eopkg", reason, "block")
+            (
+                "shutdown:sleep:idle:handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch",
+                "eopkg",
+                reason,
+                "block",
+            ),
         )
 
         # Call and receive the file descriptor

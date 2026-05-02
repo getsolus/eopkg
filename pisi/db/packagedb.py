@@ -122,14 +122,12 @@ class PackageDB(lazydb.LazyDB):
             repos = repos[::-1] if repos is not None else None
             for repo in repos:
                 doc = repodb.get_repo_doc(repo)
-                pkgConfig, pkgConfigs32 = map_providers(
-                        doc, pkgConfigs, pkgConfigs32)
+                pkgConfig, pkgConfigs32 = map_providers(doc, pkgConfigs, pkgConfigs32)
         else:
             if repo not in repodb.list_repos(only_active=False):
                 raise Error(_("Repo %s not found.") % repo)
             doc = repodb.get_repo_doc(repo)
-            pkgConfig, pkgConfigs32 = map_providers(
-                        doc, pkgConfigs, pkgConfigs32)
+            pkgConfig, pkgConfigs32 = map_providers(doc, pkgConfigs, pkgConfigs32)
 
         return (pkgConfigs, pkgConfigs32)
 

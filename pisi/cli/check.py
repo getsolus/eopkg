@@ -47,14 +47,14 @@ class Check(command.Command, metaclass=command.autocommand):
             "--component",
             action="store",
             default=None,
-            help=_("Check installed packages under " "given component"),
+            help=_("Check installed packages under given component"),
         )
 
         group.add_option(
             "--config",
             action="store_true",
             default=False,
-            help=_("Checks only changed config files of " "the packages"),
+            help=_("Checks only changed config files of the packages"),
         )
 
         self.parser.add_option_group(group)
@@ -144,7 +144,11 @@ class Check(command.Command, metaclass=command.autocommand):
         broken_pkgs = [pkg for pkg in broken_pkgs if pkgdb.has_package(pkg)]
 
         if custom_pkgs:
-            ctx.ui.warning(_("These packages are broken but are not found in a repository, they must be reinstalled manually:"))
+            ctx.ui.warning(
+                _(
+                    "These packages are broken but are not found in a repository, they must be reinstalled manually:"
+                )
+            )
             ctx.ui.info(util.format_by_columns(sorted(custom_pkgs)))
 
         if broken_pkgs:

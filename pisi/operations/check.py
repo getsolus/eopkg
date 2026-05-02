@@ -44,11 +44,11 @@ _top_level_dirs = [
 ]
 
 _empty_results = {
-                'missing'   :   [],
-                'corrupted' :   [],
-                'denied'    :   [],
-                'config'    :   [],
-                }
+    "missing": [],
+    "corrupted": [],
+    "denied": [],
+    "config": [],
+}
 
 
 def ignorance_is_bliss(f):

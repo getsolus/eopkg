@@ -48,7 +48,7 @@ Usage: list-installed
             "--with-build-host",
             action="store",
             default=None,
-            help=_("Only list the installed packages built " "by the given host"),
+            help=_("Only list the installed packages built by the given host"),
         )
         group.add_option(
             "-l",

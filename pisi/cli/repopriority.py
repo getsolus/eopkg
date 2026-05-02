@@ -14,6 +14,7 @@ import pisi.api
 import pisi.cli.command as command
 import pisi.context as ctx
 
+
 class RepoPriority(command.Command, metaclass=command.autocommand):
     __doc__ = _(
         """Set a repository's priority
@@ -45,21 +46,25 @@ Usage: repo-priority <repo> <priority>
 
         repos_xml_file = os.path.join(ctx.config.info_dir(), ctx.const.repos)
         if not Path(repos_xml_file).is_file():
-            raise pisi.Error(_("Unable to locate repository file, expected: %s") % repos_xml_file)
+            raise pisi.Error(
+                _("Unable to locate repository file, expected: %s") % repos_xml_file
+            )
 
         tree = ET.parse(repos_xml_file)
         root = tree.getroot()
 
         matched_repo = None
 
-        for subitem in root.findall('Repo'):
-            name = subitem.find('Name')
+        for subitem in root.findall("Repo"):
+            name = subitem.find("Name")
             if name is not None and name.text == repo_name:
                 matched_repo = subitem
                 break
 
         if matched_repo is None:
-            raise pisi.Error(_("Repository %s does not exist. Cannot reorder.") % repo_name)
+            raise pisi.Error(
+                _("Repository %s does not exist. Cannot reorder.") % repo_name
+            )
 
         root.remove(matched_repo)
         root.insert(int(repo_priority), matched_repo)

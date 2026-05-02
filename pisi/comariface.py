@@ -104,9 +104,7 @@ def post_install(
     package_name = safe_script_name(package_name)
 
     if package_name == "comar":
-        ctx.ui.debug(
-            _("COMAR package updated. From now on," " using new COMAR daemon.")
-        )
+        ctx.ui.debug(_("COMAR package updated. From now on, using new COMAR daemon."))
         pisi.api.set_comar_updated(True)
 
     link = get_link()

@@ -169,7 +169,8 @@ def add_package(params):
             ctx.ui.info("  %s" % os.path.basename(path))
         else:
             ctx.ui.info(
-                "%-80.80s\r" % (_("Adding package to index: %s") % os.path.basename(path)),
+                "%-80.80s\r"
+                % (_("Adding package to index: %s") % os.path.basename(path)),
                 noln=True,
             )
 

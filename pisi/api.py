@@ -467,7 +467,9 @@ def remove(packages, ignore_dependency=False, ignore_safety=False):
     @param ignore_safety: system.base packages can also be removed if True
     """
     pisi.db.historydb.HistoryDB().create_history("remove")
-    return pisi.operations.remove.remove(packages, ignore_dependency, ignore_safety, force_prompt=True)
+    return pisi.operations.remove.remove(
+        packages, ignore_dependency, ignore_safety, force_prompt=True
+    )
 
 
 @locked
@@ -939,6 +941,7 @@ def rebuild_db(files=False):
 
     filesdb = pisi.db.filesdb.FilesDB()
     filesdb.init(force_rebuild=True)
+
 
 ############# FIXME: this was a quick fix. ##############################
 

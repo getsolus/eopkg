@@ -43,8 +43,7 @@ class Delta(command.Command, metaclass=command.autocommand):
             action="store",
             default=None,
             help=_(
-                "Use arg as the new package and treat "
-                "other arguments as old packages."
+                "Use arg as the new package and treat other arguments as old packages."
             ),
         )
 

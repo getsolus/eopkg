@@ -4,14 +4,15 @@
 """Files module provides access to files.xml. files.xml is generated
 during the build process of a package and used in installation."""
 
-
 import pisi.pxml.autoxml as autoxml
 
+
 class ExtendedAttribute(metaclass=autoxml.autoxml):
-    """XAttr holds a key/value mapping of extended attributes """
+    """XAttr holds a key/value mapping of extended attributes"""
 
     a_label = [autoxml.String, autoxml.MANDATORY]
     s_value = [autoxml.String, autoxml.MANDATORY]
+
 
 class FileInfo(metaclass=autoxml.autoxml):
     """File holds the information for a File node/tag in files.xml"""
@@ -34,6 +35,7 @@ class FileInfo(metaclass=autoxml.autoxml):
             self.hash,
         )
         return s
+
 
 class Files(autoxml.xmlfile.XmlFile, metaclass=autoxml.autoxml):
     tag = "Files"

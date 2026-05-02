@@ -2,12 +2,12 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
- autoxml is a metaclass for automatic XML translation, using
- a miniature type system. (w00t!) This is based on an excellent
- high-level XML processing prototype that Gurer prepared.
+autoxml is a metaclass for automatic XML translation, using
+a miniature type system. (w00t!) This is based on an excellent
+high-level XML processing prototype that Gurer prepared.
 
- Method names are mixedCase for compatibility with minidom,
- an old library.
+Method names are mixedCase for compatibility with minidom,
+an old library.
 """
 
 # System

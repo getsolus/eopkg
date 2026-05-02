@@ -91,10 +91,10 @@ class ComponentDB(lazydb.LazyDB):
             component = pisi.component.Component()
             component.parse(self.cdb.get_item(component_name, repo))
         except pisi.pxml.autoxml.Error:
-            ctx.ui.debug('ComponentDB cache contains invalid XML; ignoring cache')
+            ctx.ui.debug("ComponentDB cache contains invalid XML; ignoring cache")
             if os.access(ctx.config.cache_root_dir(), os.W_OK):
                 ctx.ui.debug(
-                    f'We have write access to {ctx.config.cache_root_dir()}; removing corrupted ComponentDB Cache'
+                    f"We have write access to {ctx.config.cache_root_dir()}; removing corrupted ComponentDB Cache"
                 )
                 self.cache_flush()
             self.init()
@@ -123,10 +123,10 @@ class ComponentDB(lazydb.LazyDB):
             component = pisi.component.Component()
             component.parse(self.cdb.get_item(component_name))
         except pisi.pxml.autoxml.Error:
-            ctx.ui.debug('ComponentDB cache contains invalid XML; ignoring cache')
+            ctx.ui.debug("ComponentDB cache contains invalid XML; ignoring cache")
             if os.access(ctx.config.cache_root_dir(), os.W_OK):
                 ctx.ui.debug(
-                    f'We have write access to {ctx.config.cache_root_dir()}; removing corrupted ComponentDB Cache'
+                    f"We have write access to {ctx.config.cache_root_dir()}; removing corrupted ComponentDB Cache"
                 )
                 self.cache_flush()
             self.init()

@@ -40,7 +40,11 @@ def handle_exception(exception, value, tb):
             ui.error(msg)
         show_traceback = ctx.get_option("debug")
     elif isinstance(value, pisi.graph.CycleException):
-        ui.error(_(f"Cyclic dependency detected. The following packages cannot be installed:"))
+        ui.error(
+            _(
+                f"Cyclic dependency detected. The following packages cannot be installed:"
+            )
+        )
         for package in value.cycle:
             ui.info(package)
         ui.error(_("This is a packaging error."))

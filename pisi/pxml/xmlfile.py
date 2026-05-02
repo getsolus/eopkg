@@ -2,14 +2,14 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
- XmlFile class further abstracts a dom object using the
- high-level dom functions provided in xmlext module (and sorely lacking
- in xml.dom :( )
+XmlFile class further abstracts a dom object using the
+high-level dom functions provided in xmlext module (and sorely lacking
+in xml.dom :( )
 
- function names are mixedCase for compatibility with minidom,
- an 'old library'
+function names are mixedCase for compatibility with minidom,
+an 'old library'
 
- this implementation uses piksemel
+this implementation uses piksemel
 """
 
 from pisi import translate as _

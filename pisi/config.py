@@ -83,7 +83,7 @@ class Config(object, metaclass=pisi.util.Singleton):
 
             if not os.path.exists(self.__dest_dir):
                 ctx.ui.warning(
-                    _("Destination directory %s does not exist. " "Creating it.")
+                    _("Destination directory %s does not exist. Creating it.")
                     % self.__dest_dir
                 )
                 os.makedirs(self.__dest_dir)

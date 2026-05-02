@@ -57,9 +57,19 @@ class Build(build):
         try:
             for page in glob.glob("*.md", root_dir=MAN_DIR):
                 # strip the .md suffix
-                man_page = '.'.join(page.split('.')[:-1])
+                man_page = ".".join(page.split(".")[:-1])
                 # Example: `pandoc --standalone --to man dist/man/eopkg.1.md -o dist/man/eopkg.1`
-                self.spawn(["pandoc", "--standalone", "--to", "man", path(MAN_DIR, page), "-o", path(MAN_DIR, man_page)])
+                self.spawn(
+                    [
+                        "pandoc",
+                        "--standalone",
+                        "--to",
+                        "man",
+                        path(MAN_DIR, page),
+                        "-o",
+                        path(MAN_DIR, man_page),
+                    ]
+                )
         except Exception as e:
             # It's not that important if we didn't manage
             # to build a manpage. Just warn the user.

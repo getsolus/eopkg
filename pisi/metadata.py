@@ -90,9 +90,7 @@ class MetaData(xmlfile.XmlFile, metaclass=autoxml.autoxml):
         self.source.name = src.name
         self.source.homepage = src.homepage
         self.source.packager = src.packager
-        self.package.source = (
-            self.source
-        )  # FIXME: I know that replication sucks here, but this is the easiest for now-- exa
+        self.package.source = self.source  # FIXME: I know that replication sucks here, but this is the easiest for now-- exa
         self.package.name = pkg.name
         self.package.summary = pkg.summary
         self.package.description = pkg.description

@@ -131,7 +131,7 @@ def create_delta_packages_from_obj(old_packages, new_package_obj, specdir):
 def create_delta_packages(old_packages, new_package):
     if new_package in old_packages:
         ctx.ui.warning(
-            _("New package '%s' exists in the list of old " "packages. Skipping it...")
+            _("New package '%s' exists in the list of old packages. Skipping it...")
             % new_package
         )
         while new_package in old_packages:

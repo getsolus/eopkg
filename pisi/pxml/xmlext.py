@@ -2,15 +2,15 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
- xmlext is a helper module for accessing XML files using
- xml.dom.minidom . It is a convenient wrapper for some
- DOM functions, and provides path based get/add functions
- as in KDE API.
+xmlext is a helper module for accessing XML files using
+xml.dom.minidom . It is a convenient wrapper for some
+DOM functions, and provides path based get/add functions
+as in KDE API.
 
- function names are mixedCase for compatibility with minidom,
- an 'old library'
+function names are mixedCase for compatibility with minidom,
+an 'old library'
 
- this implementation uses piksemel
+this implementation uses piksemel
 """
 
 from pisi import translate as _

@@ -21,13 +21,13 @@ def is_usr_merged(path):
     :param path: Path to check. Must be relative to the destination directory.
     :return: Boolean indicating if the file has been usr merged.
     """
-    components = normpath(path).split('/')
+    components = normpath(path).split("/")
 
-    if components[0] not in ['bin', 'sbin', 'lib', 'lib32', 'lib64']:
+    if components[0] not in ["bin", "sbin", "lib", "lib32", "lib64"]:
         return False
 
     for i, _ in enumerate(components[:-1]):
-        if _islink(os.path.join(*components[0:i + 1])):
+        if _islink(os.path.join(*components[0 : i + 1])):
             return True
 
     return False
@@ -58,7 +58,8 @@ def usr_merged_path(path):
     :param path: Path to check. Must be relative to the destination directory.
     :return: Usr-merged equivalent path.
     """
-    return os.path.normpath(os.path.join('usr', path))
+    return os.path.normpath(os.path.join("usr", path))
+
 
 def normpath(path):
     """
@@ -71,7 +72,7 @@ def normpath(path):
     :param path: Path to normalize. Must be relative to the destination directory.
     :return: Normalized path.
     """
-    norm = os.path.normpath(os.path.join('/', path)).lstrip('/')
+    norm = os.path.normpath(os.path.join("/", path)).lstrip("/")
     if norm != path:
         ctx.ui.debug("normpath: %s -> %s" % (path, norm))
 

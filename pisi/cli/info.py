@@ -63,7 +63,7 @@ Usage: info <package1> <package2> ... <packagen>
             "--repo",
             action="store",
             default=None,
-            help=_("Resolve package against specified repository")
+            help=_("Resolve package against specified repository"),
         )
         group.add_option(
             "-s",

@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 """
- Specfile module is our handler for PSPEC files. PSPEC (eopkg SPEC)
- files are specification files for eopkg source packages. This module
- provides read and write routines for PSPEC files.
+Specfile module is our handler for PSPEC files. PSPEC (eopkg SPEC)
+files are specification files for eopkg source packages. This module
+provides read and write routines for PSPEC files.
 """
 
 from pisi import translate as _
