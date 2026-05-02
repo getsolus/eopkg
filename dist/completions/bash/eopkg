@@ -17,11 +17,11 @@ _eopkg()
   COMPREPLY=()
   cur=${COMP_WORDS[COMP_CWORD]}
 
-  commands="add-repo autoremove build check clean configure-pending delete-cache delta \
-            emerge graph help history index info install list-available \
-            list-components list-installed list-newest list-pending list-repo \
-            list-sources list-upgrades rebuild-db remove remove-orphans remove-repo repo-priority \
-            search search-file update-repo upgrade"
+  commands="add-repo autoremove blame build check clean configure-pending delete-cache delta \
+  			disable-repo enable-repo fetch help history index info install \
+            list-available list-components list-installed list-newest \
+            list-pending list-repo list-upgrades rebuild-db remove remove-orphans \
+            remove-repo repo-priority search search-file update-repo upgrade"
 
   options="--destdir --yes-all --username --password --bandwidth-limit --verbose \
            --debug --no-color --retry-attempts"
@@ -77,22 +77,11 @@ _eopkg()
         @(disable-repo|dr))
           options="${options}"
           ;;
-        @(emerge|em))
-          options="${options} --ignore-build-no --quiet --ignore-dependency \
-                   --output-dir --ignore-action-errors --ignore safety \
-                   --ignore-check --create-static --package-format \
-                   --use-quilt --ignore-sandbox --component \
-                   --ignore-file-conflicts --ignore-package-conflicts --ignore-comar"
-          ;;
         @(enable-repo|er))
           options="${options}"
           ;;
         @(fetch|fc))
           options="${options} --output-dir"
-          ;;
-        @(graph))
-          options="${options} --reporsitory --installed \
-                   --ignore-installed --output"
           ;;
         @(help|--help))
           options="${commands}"
@@ -178,7 +167,7 @@ _eopkg()
       return 0;
     else
       case $command in
-        @(install|it|info))
+        @(blame|bl|install|it|info|fetch|fc))
           if [ -z "$_eopkg_pdb_list" ]; then
             _eopkg_pdb_list=$(get_pdb_package_list)
           fi
