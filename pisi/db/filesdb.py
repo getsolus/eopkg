@@ -4,6 +4,7 @@
 import dbm
 import hashlib
 import os
+import pickle
 import re
 import shelve
 
@@ -22,9 +23,11 @@ from pisi.db import lazydb
 # So currently filesdb is the only db and we cant still get rid of rebuild-db :/
 
 # This MUST match the version used in eopkg.py2 as long as that is in use.
-FILESDB_PICKLE_PROTOCOL_VERSION = 2
+# Now that eopkg.py2 is no longer in use, just use the current default version.
+FILESDB_PICKLE_PROTOCOL_VERSION = pickle.DEFAULT_PROTOCOL
 
 # We suspect that there will be an advantage in versioning this separately
+# As long as a gdbm-backed shelve is used, no need to bump this beyond 4
 FILESDB_FORMAT_VERSION = 4
 
 class FilesDB(lazydb.LazyDB):
