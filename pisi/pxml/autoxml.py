@@ -286,19 +286,9 @@ class autoxml(oo.autosuper, oo.autoprop):
         errorss = []
         formatters = []
 
-        # FIXME: What is this? Remove this crap and try to fix autoxml, if can not be fixed then
-        # really throw whole autoxml to junk. But not this.
-
-        # read declaration order from source
-        # code contributed by bahadir kandemir
-        try:
-            fn = re.compile(r"\s*([tas]_[a-zA-Z]+).*").findall
-
-            inspect.linecache.clearcache()
-            lines = list(filter(fn, inspect.getsourcelines(cls)[0]))
-            decl_order = [x.split()[0] for x in lines]
-        except IOError:
-            decl_order = list(dict.keys())
+        decl_order = [
+            name for name in cls.__dict__.keys() if name.startswith(("t_", "a_", "s_"))
+        ]
 
         # there should be at most one str member, and it should be
         # the first to process
