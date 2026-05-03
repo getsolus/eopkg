@@ -209,8 +209,8 @@ class Package:
         copies the directory archiveroot/dir to outdir"""
         self.impl.unpack_dir(dir, outdir)
 
-    def extract_install(self, outdir):
-        def callback(tarinfo, extracted):
+    def extract_install(self, outdir, callback=None):
+        def callback_internal(tarinfo, extracted):
             if not extracted:
                 # Installing packages (especially shared libraries) is a
                 # bit tricky. You should also change the inode if you
@@ -226,16 +226,18 @@ class Package:
                         os.unlink(tarinfo.name)
                     except OSError as e:
                         ctx.ui.warning(e)
-
             else:
                 # Added for package-manager
                 if tarinfo.name.endswith(".desktop"):
                     ctx.ui.notify(pisi.ui.desktopfile, desktopfile=tarinfo.name)
 
+            if callback:
+                callback(tarinfo, extracted)
+
         tar = self.get_install_archive()
 
         if tar:
-            tar.unpack_dir(outdir, callback=callback, files=self._files())
+            tar.unpack_dir(outdir, callback=callback_internal, files=self._files())
         else:
             self.extract_dir_flat("install", outdir)
 
