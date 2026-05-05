@@ -8,12 +8,10 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 from requests import HTTPError
 from requests.adapters import HTTPAdapter
-
 from tqdm import tqdm
 
 import pisi
 import pisi.context as ctx
-
 from pisi import translate as _
 from pisi.uri import URI
 
@@ -68,7 +66,7 @@ class Fetcher:
             with (
                 open(destination, "wb") as f,
                 tqdm(
-                    desc=destination,
+                    desc=os.path.basename(destination),
                     total=total,
                     unit="iB",
                     unit_scale=True,
