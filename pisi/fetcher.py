@@ -66,7 +66,7 @@ class Fetcher:
             with (
                 open(destination, "wb") as f,
                 tqdm(
-                    desc=destination,
+                    desc=os.path.basename(destination),
                     total=total,
                     unit="iB",
                     unit_scale=True,
