@@ -114,10 +114,22 @@ def extract_automatic(A, total):
 
 
 def calculate_download_sizes(order):
-    total_size = cached_size = 0
+    download_info = get_download_info(order)
+    total_size = sum(info["size"] for info in download_info)
+    cached_size = sum(info["cached_size"] for info in download_info)
 
+    ctx.ui.notify(ui.cached, total=total_size, cached=cached_size)
+    return total_size, cached_size
+
+
+def get_download_info(order):
+    """
+    Returns a list of dicts containing download info for each package in order.
+    """
+    download_info = []
     installdb = pisi.db.installdb.InstallDB()
     packagedb = pisi.db.packagedb.PackageDB()
+    repodb = pisi.db.repodb.RepoDB()
 
     try:
         cached_packages_dir = ctx.config.cached_packages_dir()
@@ -125,8 +137,15 @@ def calculate_download_sizes(order):
         # happens when cached_packages_dir tried to be created by an unpriviledged user
         cached_packages_dir = None
 
-    for pkg in [packagedb.get_package(name) for name in order]:
+    for name in order:
+        repo_name = packagedb.which_repo(name)
+        if not repo_name:
+            raise Error(_("Package %s not found in any active repository.") % name)
+
+        repo = repodb.get_repo(repo_name)
+        pkg = packagedb.get_package(name)
         delta = None
+
         if installdb.has_package(pkg.name):
             (
                 version,
@@ -141,23 +160,65 @@ def calculate_download_sizes(order):
         ignore_delta = ctx.config.values.general.ignore_delta
 
         if delta and not ignore_delta:
-            fn = os.path.basename(delta.packageURI)
+            pkg_uri_str = delta.packageURI
             pkg_hash = delta.packageHash
             pkg_size = delta.packageSize
         else:
-            fn = os.path.basename(pkg.packageURI)
+            pkg_uri_str = pkg.packageURI
             pkg_hash = pkg.packageHash
             pkg_size = pkg.packageSize
 
-        if cached_packages_dir:
-            path = util.join_path(cached_packages_dir, fn)
+        uri = pisi.uri.URI(pkg_uri_str)
+        if not uri.is_absolute_path():
+            pkg_uri_str = os.path.join(
+                os.path.dirname(repo.indexuri.get_uri()), str(uri.path())
+            )
+
+        uri = pisi.uri.URI(pkg_uri_str)
+
+        info = {
+            "name": name,
+            "uri": uri,
+            "hash": pkg_hash,
+            "size": pkg_size,
+        }
+
+        if cached_packages_dir and uri.is_remote_file():
+            path = util.join_path(cached_packages_dir, uri.filename())
             # check the file and sha1sum to be sure it _is_ the cached package
             if os.path.exists(path) and util.sha1_file(path) == pkg_hash:
-                cached_size += pkg_size
-            elif os.path.exists("%s.part" % path):
-                cached_size += os.stat("%s.part" % path).st_size
+                info["cached"] = True
+                info["cached_size"] = pkg_size
+            else:
+                info["cached"] = False
+                part_path = "%s.part" % path
+                if os.path.exists(part_path):
+                    info["cached_size"] = os.stat(part_path).st_size
+                else:
+                    info["cached_size"] = 0
+        else:
+            info["cached"] = not uri.is_remote_file()
+            info["cached_size"] = pkg_size if info["cached"] else 0
 
-        total_size += pkg_size
+        download_info.append(info)
 
-    ctx.ui.notify(ui.cached, total=total_size, cached=cached_size)
-    return total_size, cached_size
+    return download_info
+
+
+def fetch_packages(order):
+    """
+    Fetches all packages in order concurrently if they are not already cached.
+    """
+    download_info = get_download_info(order)
+    items_to_fetch = []
+    cached_packages_dir = ctx.config.cached_packages_dir()
+
+    for info in download_info:
+        if not info["cached"] and info["uri"].is_remote_file():
+            items_to_fetch.append(
+                (info["uri"], cached_packages_dir, info["uri"].filename())
+            )
+
+    if items_to_fetch:
+        fetcher = Fetcher()
+        fetcher.fetch_multi(items_to_fetch)

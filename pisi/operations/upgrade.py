@@ -204,6 +204,9 @@ def upgrade(packages = [], repo = None):
 
     ctx.ui.notify(ui.packagestogo, order=order)
 
+    # Fetch packages concurrently
+    operations.helper.fetch_packages(order)
+
     # Detect package conflicts
     conflicts = []
     if not ctx.get_option("ignore_package_conflicts"):
@@ -212,11 +215,6 @@ def upgrade(packages = [], repo = None):
     automatic = operations.helper.extract_automatic(packages, order)
     paths = []
     for x in order:
-        ctx.ui.info(
-            util.colorize(
-                _("Downloading %d / %d") % (order.index(x) + 1, len(order)), "yellow"
-            )
-        )
         install_op = atomicoperations.Install.from_name(x)
         paths.append(install_op.package_fname)
 

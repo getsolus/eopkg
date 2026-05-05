@@ -119,15 +119,14 @@ def install_pkg_names(packages, reinstall=False):
 
     ctx.ui.notify(ui.packagestogo, order=order)
 
+    # Fetch packages concurrently
+    operations.helper.fetch_packages(order)
+
     automatic = operations.helper.extract_automatic(packages, order)
     paths = []
     for package in order:
-        ctx.ui.info(
-            util.colorize(
-                _("Downloading %d / %d") % (order.index(package) + 1, len(order)), "yellow"
-            )
-        )
         install_op = atomicoperations.Install.from_name(package)
+
         paths.append(install_op.package_fname)
 
     ctx.ui.status(_("Finished downloading packages."))
