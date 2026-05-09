@@ -197,6 +197,7 @@ class File:
         if mode == File.read or mode == File.write:
             self.mode = mode
         else:
+            #: File.read and File.write are function names, and should not be translated.
             raise Error(_("File mode must be either File.read or File.write"))
         if uri.is_remote_file():
             if self.mode == File.read:
