@@ -58,7 +58,7 @@ SOLROOT="${PWD}/${SOLNAME}"
 checkPrereqs () {
     # prerequisite checks
     test -x $(command -v chroot) || die "\n${0} assumes that chroot is available\n"
-    test -x $(command -v eopkg.py3) || die "\n${0} assumes that eopkg.py3 is available\n"
+    test -x $(command -v eopkg.py) || die "\n${0} assumes that eopkg.py is available\n"
     test -x $(command -v find) || die "\n${0} assumes that find is available\n"
     test -x $(command -v groupadd) || die "\n${0} assumes that groupadd is available\n"
     test -x $(command -v passwd) || die "\n${0} assumes that passwd is available\n"
@@ -133,14 +133,14 @@ basicSetup () {
     local chroot="sudo systemd-nspawn --as-pid2 --quiet -D ${SOLROOT}" # better chroot essentially
     #local chroot="sudo chroot ${SOLROOT}"
     # necessary cruft for sudo to work with the eopkg_venv
-    local eopkg_py3="sudo -E env PATH=${PATH} eopkg.py3 --debug"
+    local eopkg_py3="sudo -E env PATH=${PATH} eopkg.py --debug"
     local eopkg_bin='eopkg.bin --debug'
     local mkdir='sudo mkdir -pv'
 
-    local eopkg_py3_path="$(command -v eopkg.py3)"
-    MSG="Path to eopkg.py3: ${eopkg_py3_path}"
+    local eopkg_py3_path="$(command -v eopkg.py)"
+    MSG="Path to eopkg.py: ${eopkg_py3_path}"
     printInfo "${MSG}"
-    MSG="Elevated eopkg.py3 command: ${eopkg_py3}"
+    MSG="Elevated eopkg.py command: ${eopkg_py3}"
     printInfo "${MSG}"
 
     # should no longer be necessary
@@ -177,7 +177,7 @@ basicSetup () {
     #MSG="Installing baselayout ..."
     #${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety --ignore-comar baselayout || die "${MSG}"
 
-    # Since we're testing eopkg.py3 from a venv, let's use that instead for creating the root
+    # Since we're testing eopkg.py from a venv, let's use that instead for creating the root
     #MSG="Installing packages to act as a seed for systemd-nspawn chroot runs ..."
     #printInfo "${MSG}"
     #${eopkg_py3} install -y -D "${SOLROOT}" --ignore-safety "${SELFHOSTINGEOPKG[@]}" || die "${MSG}"

@@ -296,7 +296,7 @@ class FilesDB(lazydb.LazyDB):
 
         # This block implies that the state is invalid
         if please_rebuild_manually:
-            ctx.ui.warning(_("FilesDB is invalid. Please rebuild it with 'sudo eopkg.py3 -y rdb'"))
+            ctx.ui.warning(_("FilesDB is invalid. Please rebuild it with 'sudo eopkg.py -y rdb'"))
             ctx.ui.warning(_("Falling back to slow and inaccurate XML search..."))
 
         if force_rebuild or needs_rebuild:
