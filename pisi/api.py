@@ -598,7 +598,7 @@ def snapshot():
     progress = ctx.ui.Progress(len(li))
 
     processed = 0
-    for name in installdb.list_installed():
+    for name in li:
         package = installdb.get_package(name)
         historydb.add_package(pkgBefore=package, operation="snapshot")
         # Save changed config files of the package in snapshot
