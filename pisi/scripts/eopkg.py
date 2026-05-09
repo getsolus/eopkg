@@ -1,1 +1,1 @@
-../../eopkg.py3
+../../eopkg.py

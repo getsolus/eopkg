@@ -185,7 +185,7 @@ class Build(command.Command, metaclass=command.autocommand):
 
     def run(self):
         if "__compiled__" in globals():
-            raise pisi.Error(_("Building packages is not supported when eopkg is compiled with nuitka. Please use eopkg.py3 instead."))
+            raise pisi.Error(_("Building packages is not supported when eopkg is compiled with nuitka. Please use eopkg.py instead."))
 
         if not self.options.quiet:
             self.options.debug = True

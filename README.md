@@ -53,7 +53,7 @@ To build the eopkg.1 man-page, the `pandoc` executable needs to be available.
 - Execute `./prepare_eopkg_venv.sh`
 - Depending on the shell you use, `source` one of `eopkg_venv/bin/activate`, `eopkg_venv/bin/activate.fish`, or `eopkg_venv/bin/activate.zsh`.
 
-Now you should be able to execute `eopkg.py3 --version` successfully, independently of whether your host system is running Solus or not.
+Now you should be able to execute `eopkg.py --version` successfully, independently of whether your host system is running Solus or not.
 
 ### Running commands with sudo inside the venv
 
@@ -64,10 +64,10 @@ To run a command with elevated privileges via sudo inside the venv, execute:
 **Example:**
 
     source eopkg_venv/bin/activate
-    sudo -E env PATH="${PATH}" eopkg.py3 --version
+    sudo -E env PATH="${PATH}" eopkg.py --version
     deactivate
 
-### Building a Solus chroot using the eopkg_venv eopkg.py3 version
+### Building a Solus chroot using the eopkg_venv eopkg.py version
 
 After setting up and activating the venv as above, run `./build_chroot.sh` followed by `./start_systemd_nspawn.sh` (recommended) or `/start_chroot.sh`.
 
