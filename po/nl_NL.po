@@ -2770,7 +2770,7 @@ msgstr ""
 #: pisi/operations/upgrade.py:453
 #, python-format
 msgid "installs and upgrades (unordered): %s"
-msgstr ""
+msgstr "installaties en upgrades (ongeordend): %s"
 
 #: pisi/operations/upgrade.py:456
 #, python-format
