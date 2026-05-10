@@ -669,6 +669,8 @@ msgid ""
 "These packages are broken but are not found in a repository, they must be "
 "reinstalled manually:"
 msgstr ""
+"Te pakiety są uszkodzone i nie znaleziono ich w repozytorium; muszą zostać "
+"przeinstalowane ręcznie:"
 
 #: pisi/cli/check.py:152
 msgid "The following packages are broken:"
