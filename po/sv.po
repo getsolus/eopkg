@@ -84,7 +84,7 @@ msgstr "Körning av autoheader misslyckades."
 
 #: pisi/actionsapi/cmaketools.py:78
 msgid "No configure script found for cmake."
-msgstr ""
+msgstr "Inget konfigurationsskript hittad för cmake."
 
 #: pisi/actionsapi/cmaketools.py:131 pisi/actionsapi/kde.py:89
 msgid "No Makefile found."
@@ -98,7 +98,7 @@ msgstr "Verktyget %s kunde inte hittas"
 #: pisi/actionsapi/get.py:241
 #, python-format
 msgid "Warning: %s does not exist, using plain name %s"
-msgstr ""
+msgstr " Varning\\: %s existerar inte, använder vanligt namn %s "
 
 #: pisi/actionsapi/kde.py:27
 #, python-format
@@ -114,7 +114,7 @@ msgstr ""
 #: pisi/actionsapi/kerneltools.py:118
 #, python-format
 msgid "Can't find kernel version information file %s."
-msgstr ""
+msgstr "Kan inte hitta filen med information om kärnversionen %s."
 
 #: pisi/actionsapi/libtools.py:30
 msgid "Running ldconfig failed."
@@ -122,11 +122,11 @@ msgstr "Körning av ldconfig misslyckades."
 
 #: pisi/actionsapi/libtools.py:42
 msgid "GNU Config Update Finished."
-msgstr ""
+msgstr "GNU-konfigurationsuppdatering slutförd."
 
 #: pisi/actionsapi/libtools.py:47
 msgid "Running libtoolize failed."
-msgstr ""
+msgstr "Körning av libtoolize misslyckades."
 
 #: pisi/actionsapi/perlmodules.py:65
 msgid "perl build failed."
@@ -179,7 +179,7 @@ msgstr "ActionsAPI [dosym]: Filen finns redan: %s"
 #: pisi/actionsapi/pisitools.py:292 pisi/actionsapi/pisitoolsfunctions.py:67
 #, python-format
 msgid "No file matched pattern \"%s\"."
-msgstr ""
+msgstr "Ingen fil matchade mönstret ”%s”."
 
 #: pisi/actionsapi/pisitools.py:341 pisi/actionsapi/shelltools.py:102
 #, python-format
@@ -200,7 +200,7 @@ msgstr "Otillräckligt med argument."
 #: pisi/actionsapi/pisitoolsfunctions.py:46
 #, python-format
 msgid "No executable file matched pattern \"%s\"."
-msgstr ""
+msgstr "Ingen körbar fil matchade mönstret ”%s”."
 
 #: pisi/actionsapi/pythonmodules.py:51
 msgid "Configuration failed."
@@ -222,6 +222,8 @@ msgid ""
 "It seems there are more than one .pro file, you must specify one. (Possible "
 ".pro files: %s)"
 msgstr ""
+"Det verkar finnas mer än en .pro-fil, du måste ange en. (Möjliga .pro-filer:"
+" %s)"
 
 #: pisi/actionsapi/shelltools.py:42
 #, python-format
@@ -344,71 +346,74 @@ msgstr "Flyttning av källfilen misslyckades."
 
 #: pisi/actionsapi/texlivemodules.py:53
 msgid "Generate config files failed"
-msgstr ""
+msgstr "Generering av konfigurationsfiler misslyckades."
 
 #: pisi/actionsapi/texlivemodules.py:56
 msgid "Building format files failed"
-msgstr ""
+msgstr "Byggande av formatfiler misslyckades."
 
 #: pisi/actionsapi/texlivemodules.py:64
 msgid "Creating symlinks from format to engines failed"
 msgstr ""
+"Skapande av symboliska länkar från format till komponenter misslyckades."
 
 #: pisi/actionsapi/texlivemodules.py:68
 msgid "Installing docs failed"
-msgstr ""
+msgstr "Installation av dokumentation misslyckades."
 
 #: pisi/actionsapi/texlivemodules.py:72
 msgid "Installing texmf files failed"
-msgstr ""
+msgstr "Installation av texmf-filer misslyckades."
 
 #: pisi/actionsapi/texlivemodules.py:76
 msgid "Installing config files failed"
-msgstr ""
+msgstr "Installation av konfigurationsfiler misslyckades."
 
 #: pisi/actionsapi/texlivemodules.py:80
 msgid "Handle config files failed"
-msgstr ""
+msgstr "Hantering av konfigurationsfiler misslyckades."
 
 #: pisi/actionsapi/texlivemodules.py:95
 #, python-format
 msgid "Symlink %s skipped (special case)"
-msgstr ""
+msgstr "Symbolisk länk %s hoppades över (specialfall)."
 
 #: pisi/actionsapi/texlivemodules.py:98
 #, python-format
 msgid "Symlink %s -> %s skipped (texlive-core takes care of it."
-msgstr ""
+msgstr "Symbolisk länk %s -> %s hoppades över (texlive-core tar hand om det."
 
 #: pisi/actionsapi/texlivemodules.py:104
 #, python-format
 msgid "Symlink %s -> %s skipped."
-msgstr ""
+msgstr "Symbolisk länk %s -> %s hoppades över."
 
 #: pisi/actionsapi/texlivemodules.py:109
 #, python-format
 msgid "Symlink %s skipped (file exists.)"
-msgstr ""
+msgstr "Symbolisk länk %s hoppades över (filen finns redan)."
 
 #: pisi/actionsapi/texlivemodules.py:112
 #, python-format
 msgid "Making symlink from %s to %s"
-msgstr ""
+msgstr "Skapar symbolisk länk från %s till %s."
 
 #: pisi/actionsapi/texlivemodules.py:178
 #, python-format
 msgid "Creating /etc/texmf/%s.d"
-msgstr ""
+msgstr "Skapar /etc/texmf/%s.d."
 
 #: pisi/actionsapi/texlivemodules.py:182
 #, python-format
 msgid "Moving (and symlinking) /usr/share/texmf/%s to /etc/texmf/%s.d"
 msgstr ""
+"Flyttar (och skapar symbolisk länk) /usr/share/texmf/%s till "
+"/etc/texmf/%s.d."
 
 #: pisi/actionsapi/texlivemodules.py:263
 #, python-format
 msgid "Building format file %s"
-msgstr ""
+msgstr "Bygger formatfil %s."
 
 #: pisi/actionsapi/texlivemodules.py:354
 #, python-format
