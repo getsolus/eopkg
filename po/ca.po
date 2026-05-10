@@ -2680,7 +2680,7 @@ msgstr "Hi ha paquets extres a causa de les dependències."
 
 #: pisi/operations/install.py:133
 msgid "Finished downloading packages."
-msgstr ""
+msgstr "S'han acabat de baixar els paquets."
 
 #: pisi/operations/install.py:154 pisi/operations/upgrade.py:243
 #, python-format
