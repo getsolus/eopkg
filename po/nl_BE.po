@@ -2657,7 +2657,7 @@ msgstr "Wegens afhankelijkheden zijn er extra pakketten."
 
 #: pisi/operations/install.py:133
 msgid "Finished downloading packages."
-msgstr ""
+msgstr "Downloaden van pakketten voltooid."
 
 #: pisi/operations/install.py:154 pisi/operations/upgrade.py:243
 #, python-format
