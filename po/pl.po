@@ -3348,7 +3348,7 @@ msgstr "Nieprawidłowa nazwa pakietu delta: %s"
 #: pisi/util.py:998
 #, python-format
 msgid "Failed to acquire inhibit lock: %s"
-msgstr ""
+msgstr "Nie udało się uzyskać blokady wstrzymania: %s"
 
 #: pisi/util.py:1007
 #, python-format
