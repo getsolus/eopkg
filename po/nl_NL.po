@@ -1721,7 +1721,7 @@ msgstr "Toon alleen paden."
 
 #: pisi/cli/info.py:66
 msgid "Resolve package against specified repository"
-msgstr ""
+msgstr "Los pakket op ten opzichte van de opgegeven softwarebron"
 
 #: pisi/cli/info.py:73
 msgid "Do not show details"
