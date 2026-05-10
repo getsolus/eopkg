@@ -1426,6 +1426,12 @@ msgid ""
 "<repo>: Name of repository to adjust priority\n"
 "<priority>: Set the repository's priority at given position (0 is first)\n"
 msgstr ""
+"Ustaw priorytet repozytorium\n"
+"\n"
+"Użycie: repo-priority <repo><priority>\n"
+"\n"
+"<repo>: Nazwa repozytorium, którego priorytet ma zostać zmieniony\n"
+"<priority>: Ustawienie priorytetu repozytorium na danej pozycji (0 oznacza pierwszą)\n"
 
 #: pisi/cli/repopriority.py:44
 msgid "Priority needs to be a number"
