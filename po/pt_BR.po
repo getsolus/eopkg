@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-09 16:57-0400\n"
+"POT-Creation-Date: 2026-05-10 17:24-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
 "Last-Translator: Evan Maddock, 2026\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/solus/teams/188714/pt_BR/)\n"
@@ -450,47 +450,6 @@ msgstr "Ficheiro de idioma %s já gerado."
 #, python-format
 msgid "No rule to proccess %s. Please file a bug."
 msgstr "Nenhuma regra para o processo %s. Por favor, registe um erro."
-
-#: pisi/cli/__init__.py:107
-msgid "Warning: "
-msgstr "Atenção: "
-
-#: pisi/cli/__init__.py:121
-msgid "Error: "
-msgstr "Erro: "
-
-#: pisi/cli/__init__.py:150
-msgid " (yes/no)"
-msgstr " (sim/não) "
-
-#: pisi/cli/__init__.py:178
-msgid " [complete]\n"
-msgstr "[completo]\n"
-
-#: pisi/cli/__init__.py:188
-#, python-format
-msgid "Installed %s"
-msgstr "%s instalado"
-
-#: pisi/cli/__init__.py:190
-#, python-format
-msgid "Removed %s"
-msgstr "Removido(s) %s"
-
-#: pisi/cli/__init__.py:192
-#, python-format
-msgid "Upgraded %s"
-msgstr "%s atualizado"
-
-#: pisi/cli/__init__.py:194
-#, python-format
-msgid "Configured %s"
-msgstr "%s configurado"
-
-#: pisi/cli/__init__.py:196
-#, python-format
-msgid "Extracting the files of %s"
-msgstr "Extraindo os arquivos de %s"
 
 #: pisi/cli/autoremove.py:16
 msgid ""
@@ -2010,6 +1969,42 @@ msgstr "Não é possível especificar --explicit e --automatic"
 msgid "Orphaned package"
 msgstr "Pacote órfão"
 
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Atenção: "
+
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Erro: "
+
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr " (sim/não) "
+
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr "[completo]\n"
+
+#: pisi/cli/__init__.py:188
+#, python-format
+msgid "Installed %s"
+msgstr "%s instalado"
+
+#: pisi/cli/__init__.py:190
+#, python-format
+msgid "Removed %s"
+msgstr "Removido(s) %s"
+
+#: pisi/cli/__init__.py:192
+#, python-format
+msgid "Upgraded %s"
+msgstr "%s atualizado"
+
+#: pisi/cli/__init__.py:194
+#, python-format
+msgid "Configured %s"
+msgstr "%s configurado"
+
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
 msgid "Group %s not found"
@@ -2615,8 +2610,8 @@ msgstr "Pacote %s encontrado no repositório %s"
 msgid "%s could not be found"
 msgstr "%s não pode ser encontrado"
 
-#: pisi/operations/history.py:129 pisi/package.py:112
-#: pisi/sourcearchive.py:101
+#: pisi/operations/history.py:129 pisi/sourcearchive.py:101
+#: pisi/package.py:112
 #, python-format
 msgid "%s [cached]"
 msgstr "%s [em cache]"
@@ -3154,25 +3149,6 @@ msgid "Mirrors file %s does not exist. Could not resolve mirrors://"
 msgstr ""
 "O ficheiro Mirrors %s não existe. Não foi possível resolver mirrors://"
 
-#: pisi/package.py:61
-#, python-format
-msgid "Cannot open package file: %s"
-msgstr "Não é possível abrir o ficheiro do pacote: %s"
-
-#: pisi/package.py:82
-#, python-format
-msgid "Unsupported package format: %s"
-msgstr "Formato de pacote não suportado: %s"
-
-#: pisi/package.py:105
-#, python-format
-msgid ""
-"There was a problem while fetching '%s'.\n"
-"The package may have been upgraded. Please try to upgrade the package."
-msgstr ""
-"Ocorreu um problema ao buscar '%s'.\n"
-"O pacote pode ter sido atualizado. Tente atualizar o pacote."
-
 #: pisi/specfile.py:172
 #, python-format
 msgid "URI: %s, type: %s, sha1sum: %s"
@@ -3573,6 +3549,65 @@ msgstr "Base de dados de pacotes actualizada."
 msgid "No repository named %s found."
 msgstr "Nenhum repositório com o nome%s encontrado."
 
+#: pisi/version.py:71
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr "String de versão inválida: '%s'"
+
+#: pisi/file.py:28
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr "URL %s já descarregado como %s"
+
+#: pisi/file.py:36
+#, python-format
+msgid "No signature found for %s"
+msgstr "Não foi encontrada nenhuma assinatura para %s"
+
+#: pisi/file.py:46
+#, python-format
+msgid " invalid for %s"
+msgstr "inválido para %s"
+
+#: pisi/file.py:70
+msgid "uri must have type either URI or string"
+msgstr "uri deve ser do tipo URI ou string"
+
+#: pisi/file.py:142
+#, python-format
+msgid "Fetching %s"
+msgstr "Buscando %s"
+
+#: pisi/file.py:147
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr "Copiar %s para o diretório de transferência"
+
+#: pisi/file.py:153
+#, python-format
+msgid "File '%s' not found."
+msgstr "Arquivo '%s' não encontrado."
+
+#: pisi/file.py:176
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr "A integridade do arquivo %s está comprometida."
+
+#. : File.read and File.write are function names, and should not be
+#. translated.
+#: pisi/file.py:201
+msgid "File mode must be either File.read or File.write"
+msgstr "O modo de ficheiro deve ser File.read ou File.write"
+
+#: pisi/file.py:206
+msgid "Remote write not implemented"
+msgstr "Escrita remota não implementada"
+
+#: pisi/file.py:254 pisi/file.py:258
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr "ERRO: gpg --detach-sig %s falhou"
+
 #: pisi/atomicoperations.py:114
 #, python-format
 msgid "Package URI: %s"
@@ -3648,33 +3683,33 @@ msgstr ""
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
-#: pisi/atomicoperations.py:509 pisi/atomicoperations.py:512
-#: pisi/atomicoperations.py:519
+#: pisi/atomicoperations.py:524 pisi/atomicoperations.py:527
+#: pisi/atomicoperations.py:534
 #, python-format
 msgid "Storing %s"
 msgstr "Armazenando %s"
 
-#: pisi/atomicoperations.py:599
+#: pisi/atomicoperations.py:614
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr ""
 "A lista de arquivo não pode ser lida pelo pacote %s, continuando remoção."
 
-#: pisi/atomicoperations.py:607
+#: pisi/atomicoperations.py:622
 #, python-format
 msgid "Removing package %s"
 msgstr "Removendo pacote %s"
 
-#: pisi/atomicoperations.py:611
+#: pisi/atomicoperations.py:626
 msgid "Trying to remove nonexistent package "
 msgstr "A tentar remover um pacote inexistente "
 
-#: pisi/atomicoperations.py:653
+#: pisi/atomicoperations.py:668
 #, python-format
 msgid "Not removing conflicted file : %s"
 msgstr "Não remover ficheiro em conflito : %s"
 
-#: pisi/atomicoperations.py:678
+#: pisi/atomicoperations.py:693
 #, python-format
 msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
@@ -3683,7 +3718,7 @@ msgstr ""
 "O ficheiro de configuração instalado %s não existe no sistema [Provavelmente"
 " foi eliminado manualmente]"
 
-#: pisi/atomicoperations.py:690
+#: pisi/atomicoperations.py:705
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
@@ -3691,61 +3726,21 @@ msgstr ""
 "O ficheiro instalado %s não existe no sistema [Provavelmente foi eliminado "
 "manualmente]"
 
-#: pisi/file.py:28
+#: pisi/package.py:61
 #, python-format
-msgid "URL %s already downloaded as %s"
-msgstr "URL %s já descarregado como %s"
+msgid "Cannot open package file: %s"
+msgstr "Não é possível abrir o ficheiro do pacote: %s"
 
-#: pisi/file.py:36
+#: pisi/package.py:82
 #, python-format
-msgid "No signature found for %s"
-msgstr "Não foi encontrada nenhuma assinatura para %s"
+msgid "Unsupported package format: %s"
+msgstr "Formato de pacote não suportado: %s"
 
-#: pisi/file.py:46
+#: pisi/package.py:105
 #, python-format
-msgid " invalid for %s"
-msgstr "inválido para %s"
-
-#: pisi/file.py:70
-msgid "uri must have type either URI or string"
-msgstr "uri deve ser do tipo URI ou string"
-
-#: pisi/file.py:142
-#, python-format
-msgid "Fetching %s"
-msgstr "Buscando %s"
-
-#: pisi/file.py:147
-#, python-format
-msgid "Copying %s to transfer dir"
-msgstr "Copiar %s para o diretório de transferência"
-
-#: pisi/file.py:153
-#, python-format
-msgid "File '%s' not found."
-msgstr "Arquivo '%s' não encontrado."
-
-#: pisi/file.py:176
-#, python-format
-msgid "File integrity of %s compromised."
-msgstr "A integridade do arquivo %s está comprometida."
-
-#. : File.read and File.write are function names, and should not be
-#. translated.
-#: pisi/file.py:201
-msgid "File mode must be either File.read or File.write"
-msgstr "O modo de ficheiro deve ser File.read ou File.write"
-
-#: pisi/file.py:206
-msgid "Remote write not implemented"
-msgstr "Escrita remota não implementada"
-
-#: pisi/file.py:254 pisi/file.py:258
-#, python-format
-msgid "ERROR: gpg --detach-sig %s failed"
-msgstr "ERRO: gpg --detach-sig %s falhou"
-
-#: pisi/version.py:71
-#, python-format
-msgid "Invalid version string: '%s'"
-msgstr "String de versão inválida: '%s'"
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
+msgstr ""
+"Ocorreu um problema ao buscar '%s'.\n"
+"O pacote pode ter sido atualizado. Tente atualizar o pacote."
