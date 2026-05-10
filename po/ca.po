@@ -1753,7 +1753,7 @@ msgstr "Sortida en format xml"
 #: pisi/cli/info.py:129
 #, python-format
 msgid "Unable to resolve repository: %s"
-msgstr ""
+msgstr "No s'ha pogut resoldre el repositori: %s"
 
 #: pisi/cli/info.py:154
 msgid "Reverse Dependencies:"
