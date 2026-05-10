@@ -5,6 +5,7 @@
 # 
 # Translators:
 # Evan Maddock, 2026
+# pomon pl, 2026
 # 
 #, fuzzy
 msgid ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-09 16:57-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
-"Last-Translator: Evan Maddock, 2026\n"
+"Last-Translator: pomon pl, 2026\n"
 "Language-Team: Polish (https://app.transifex.com/solus/teams/188714/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -668,18 +669,20 @@ msgid ""
 "These packages are broken but are not found in a repository, they must be "
 "reinstalled manually:"
 msgstr ""
+"Te pakiety są uszkodzone i nie znaleziono ich w repozytorium; muszą zostać "
+"przeinstalowane ręcznie:"
 
 #: pisi/cli/check.py:152
 msgid "The following packages are broken:"
-msgstr ""
+msgstr "Następujące pakiety są uszkodzone:"
 
 #: pisi/cli/check.py:154
 msgid "Reinstall the broken packages?"
-msgstr ""
+msgstr "Przeinstalować uszkodzone pakiety?"
 
 #: pisi/cli/check.py:160
 msgid "Broken packages were not reinstalled."
-msgstr ""
+msgstr "Nie przeinstalowano uszkodzonych pakietów."
 
 #: pisi/cli/check.py:166
 msgid ""
@@ -997,7 +1000,7 @@ msgstr "usuń"
 
 #: pisi/cli/history.py:22
 msgid "emerge"
-msgstr ""
+msgstr "emerge"
 
 #: pisi/cli/history.py:23
 msgid "install"
@@ -1425,6 +1428,12 @@ msgid ""
 "<repo>: Name of repository to adjust priority\n"
 "<priority>: Set the repository's priority at given position (0 is first)\n"
 msgstr ""
+"Ustaw priorytet repozytorium\n"
+"\n"
+"Użycie: repo-priority <repo><priority>\n"
+"\n"
+"<repo>: Nazwa repozytorium, którego priorytet ma zostać zmieniony\n"
+"<priority>: Ustawienie priorytetu repozytorium na danej pozycji (0 oznacza pierwszą)\n"
 
 #: pisi/cli/repopriority.py:44
 msgid "Priority needs to be a number"
@@ -1731,7 +1740,7 @@ msgstr "Pokaż tylko ścieżki."
 
 #: pisi/cli/info.py:66
 msgid "Resolve package against specified repository"
-msgstr ""
+msgstr "Sprawdź pakiet w wybranym repozytorium"
 
 #: pisi/cli/info.py:73
 msgid "Do not show details"
@@ -1744,7 +1753,7 @@ msgstr "Wynik w formacie XML"
 #: pisi/cli/info.py:129
 #, python-format
 msgid "Unable to resolve repository: %s"
-msgstr ""
+msgstr "Nie można odnaleźć repozytorium: %s"
 
 #: pisi/cli/info.py:154
 msgid "Reverse Dependencies:"
@@ -1878,6 +1887,8 @@ msgid ""
 "Building packages is not supported when eopkg is compiled with nuitka. "
 "Please use eopkg.py instead."
 msgstr ""
+"Budowanie pakietów nie jest obsługiwane, gdy eopkg skompilowano przy użyciu "
+"Nuitka. Użyj zamiast tego eopkg.py."
 
 #: pisi/cli/install.py:16
 msgid ""
@@ -2138,6 +2149,7 @@ msgstr "FilesDB jest w wersji %s, potrzebna wersja %s."
 #: pisi/db/filesdb.py:299
 msgid "FilesDB is invalid. Please rebuild it with 'sudo eopkg.py -y rdb'"
 msgstr ""
+"Baza FilesDB jest uszkodzona. Odbuduj ją za pomocą 'sudo eopkg.py -y rdb'"
 
 #: pisi/db/filesdb.py:300
 msgid "Falling back to slow and inaccurate XML search..."
@@ -2653,7 +2665,7 @@ msgstr "Istnieją dodatkowe pakiety z powodu zależności."
 
 #: pisi/operations/install.py:133
 msgid "Finished downloading packages."
-msgstr ""
+msgstr "Zakończono pobieranie pakietów."
 
 #: pisi/operations/install.py:154 pisi/operations/upgrade.py:243
 #, python-format
@@ -2919,10 +2931,11 @@ msgstr "Program Zakończony."
 msgid ""
 "Cyclic dependency detected. The following packages cannot be installed:"
 msgstr ""
+"Wykryto zależność cykliczną. Nie można zainstalować następujących pakietów:"
 
 #: pisi/scripts/eopkg.py:46
 msgid "This is a packaging error."
-msgstr ""
+msgstr "To jest błąd pakowania."
 
 #: pisi/scripts/eopkg.py:52
 msgid ""
@@ -3235,12 +3248,12 @@ msgstr "Nieznana operacja na pakiecie"
 #: pisi/archive.py:248
 #, python-format
 msgid "Ignoring unknown file in archive: %s"
-msgstr ""
+msgstr "Ignorowanie nieznanego pliku w archiwum: %s"
 
 #: pisi/archive.py:253
 #, python-format
 msgid "Skipping merged file %s"
-msgstr ""
+msgstr "Pomijanie scalonego pliku %s"
 
 #: pisi/archive.py:484
 #, python-format
@@ -3335,7 +3348,7 @@ msgstr "Nieprawidłowa nazwa pakietu delta: %s"
 #: pisi/util.py:998
 #, python-format
 msgid "Failed to acquire inhibit lock: %s"
-msgstr ""
+msgstr "Nie udało się uzyskać blokady wstrzymania: %s"
 
 #: pisi/util.py:1007
 #, python-format
