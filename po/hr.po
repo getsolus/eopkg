@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-09 16:57-0400\n"
+"POT-Creation-Date: 2026-05-10 17:24-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
 "Last-Translator: Evan Maddock, 2026\n"
 "Language-Team: Croatian (https://app.transifex.com/solus/teams/188714/hr/)\n"
@@ -445,47 +445,6 @@ msgstr " Datoteka jezika %s je već generirana."
 #, python-format
 msgid "No rule to proccess %s. Please file a bug."
 msgstr ""
-
-#: pisi/cli/__init__.py:107
-msgid "Warning: "
-msgstr "Upozorenje:"
-
-#: pisi/cli/__init__.py:121
-msgid "Error: "
-msgstr "Greška:"
-
-#: pisi/cli/__init__.py:150
-msgid " (yes/no)"
-msgstr " (da/ne)"
-
-#: pisi/cli/__init__.py:178
-msgid " [complete]\n"
-msgstr " [dovršeno]\n"
-
-#: pisi/cli/__init__.py:188
-#, python-format
-msgid "Installed %s"
-msgstr "Instaliran %s"
-
-#: pisi/cli/__init__.py:190
-#, python-format
-msgid "Removed %s"
-msgstr "Uklonjen %s"
-
-#: pisi/cli/__init__.py:192
-#, python-format
-msgid "Upgraded %s"
-msgstr "Nadograđen %s"
-
-#: pisi/cli/__init__.py:194
-#, python-format
-msgid "Configured %s"
-msgstr "Konfiguriran %s"
-
-#: pisi/cli/__init__.py:196
-#, python-format
-msgid "Extracting the files of %s"
-msgstr "Raspakiran datoteke od %s"
 
 #: pisi/cli/autoremove.py:16
 msgid ""
@@ -1767,6 +1726,42 @@ msgstr ""
 msgid "Orphaned package"
 msgstr ""
 
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Upozorenje:"
+
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Greška:"
+
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr " (da/ne)"
+
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr " [dovršeno]\n"
+
+#: pisi/cli/__init__.py:188
+#, python-format
+msgid "Installed %s"
+msgstr "Instaliran %s"
+
+#: pisi/cli/__init__.py:190
+#, python-format
+msgid "Removed %s"
+msgstr "Uklonjen %s"
+
+#: pisi/cli/__init__.py:192
+#, python-format
+msgid "Upgraded %s"
+msgstr "Nadograđen %s"
+
+#: pisi/cli/__init__.py:194
+#, python-format
+msgid "Configured %s"
+msgstr "Konfiguriran %s"
+
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
 msgid "Group %s not found"
@@ -2338,8 +2333,8 @@ msgstr "Paket %s je nađen u repozitoriju %s"
 msgid "%s could not be found"
 msgstr "%s nije moguće pronaći"
 
-#: pisi/operations/history.py:129 pisi/package.py:112
-#: pisi/sourcearchive.py:101
+#: pisi/operations/history.py:129 pisi/sourcearchive.py:101
+#: pisi/package.py:112
 #, python-format
 msgid "%s [cached]"
 msgstr ""
@@ -2860,23 +2855,6 @@ msgstr ", Veličina paketa: %s"
 msgid "Mirrors file %s does not exist. Could not resolve mirrors://"
 msgstr ""
 
-#: pisi/package.py:61
-#, python-format
-msgid "Cannot open package file: %s"
-msgstr "Ne mogu otvoriti datoteku paketa: %s"
-
-#: pisi/package.py:82
-#, python-format
-msgid "Unsupported package format: %s"
-msgstr "Nepodržani format paketa: %s"
-
-#: pisi/package.py:105
-#, python-format
-msgid ""
-"There was a problem while fetching '%s'.\n"
-"The package may have been upgraded. Please try to upgrade the package."
-msgstr ""
-
 #: pisi/specfile.py:172
 #, python-format
 msgid "URI: %s, type: %s, sha1sum: %s"
@@ -3265,6 +3243,65 @@ msgstr "Baza podataka paketa je dopunjena."
 msgid "No repository named %s found."
 msgstr "NIjedan reopzitori zvan %s nije nađen."
 
+#: pisi/version.py:71
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr ""
+
+#: pisi/file.py:28
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr "URL %s već preuzet kao %s"
+
+#: pisi/file.py:36
+#, python-format
+msgid "No signature found for %s"
+msgstr "Nije pronađen potpis za %s"
+
+#: pisi/file.py:46
+#, python-format
+msgid " invalid for %s"
+msgstr "neispravno za %s"
+
+#: pisi/file.py:70
+msgid "uri must have type either URI or string"
+msgstr ""
+
+#: pisi/file.py:142
+#, python-format
+msgid "Fetching %s"
+msgstr ""
+
+#: pisi/file.py:147
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr "Kopiranje %s u direktorij prijenosa "
+
+#: pisi/file.py:153
+#, python-format
+msgid "File '%s' not found."
+msgstr "Datoteka '%s' nije nađena."
+
+#: pisi/file.py:176
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr ""
+
+#. : File.read and File.write are function names, and should not be
+#. translated.
+#: pisi/file.py:201
+msgid "File mode must be either File.read or File.write"
+msgstr ""
+
+#: pisi/file.py:206
+msgid "Remote write not implemented"
+msgstr ""
+
+#: pisi/file.py:254 pisi/file.py:258
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr "GREŠKA: gpg --detach-sig %s nije uspjelo"
+
 #: pisi/atomicoperations.py:114
 #, python-format
 msgid "Package URI: %s"
@@ -3338,39 +3375,39 @@ msgstr ""
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
-#: pisi/atomicoperations.py:509 pisi/atomicoperations.py:512
-#: pisi/atomicoperations.py:519
+#: pisi/atomicoperations.py:524 pisi/atomicoperations.py:527
+#: pisi/atomicoperations.py:534
 #, python-format
 msgid "Storing %s"
 msgstr "Pohranjujem %s"
 
-#: pisi/atomicoperations.py:599
+#: pisi/atomicoperations.py:614
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr "Lista datoteke sa ne može čitati za paket %s,nastavljam uklanjanje."
 
-#: pisi/atomicoperations.py:607
+#: pisi/atomicoperations.py:622
 #, python-format
 msgid "Removing package %s"
 msgstr "Uklanjam paket %s"
 
-#: pisi/atomicoperations.py:611
+#: pisi/atomicoperations.py:626
 msgid "Trying to remove nonexistent package "
 msgstr "Pokušava ukloniti nepostojeći paket"
 
-#: pisi/atomicoperations.py:653
+#: pisi/atomicoperations.py:668
 #, python-format
 msgid "Not removing conflicted file : %s"
 msgstr "Ne uklanjanje sporne datoteke: %s"
 
-#: pisi/atomicoperations.py:678
+#: pisi/atomicoperations.py:693
 #, python-format
 msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
 "deleted]"
 msgstr ""
 
-#: pisi/atomicoperations.py:690
+#: pisi/atomicoperations.py:705
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
@@ -3378,61 +3415,19 @@ msgstr ""
 "Instalirana datoteka %s ne postoji u sustavu [Vejrovatno ste je ručno "
 "obrisali]"
 
-#: pisi/file.py:28
+#: pisi/package.py:61
 #, python-format
-msgid "URL %s already downloaded as %s"
-msgstr "URL %s već preuzet kao %s"
+msgid "Cannot open package file: %s"
+msgstr "Ne mogu otvoriti datoteku paketa: %s"
 
-#: pisi/file.py:36
+#: pisi/package.py:82
 #, python-format
-msgid "No signature found for %s"
-msgstr "Nije pronađen potpis za %s"
+msgid "Unsupported package format: %s"
+msgstr "Nepodržani format paketa: %s"
 
-#: pisi/file.py:46
+#: pisi/package.py:105
 #, python-format
-msgid " invalid for %s"
-msgstr "neispravno za %s"
-
-#: pisi/file.py:70
-msgid "uri must have type either URI or string"
-msgstr ""
-
-#: pisi/file.py:142
-#, python-format
-msgid "Fetching %s"
-msgstr ""
-
-#: pisi/file.py:147
-#, python-format
-msgid "Copying %s to transfer dir"
-msgstr "Kopiranje %s u direktorij prijenosa "
-
-#: pisi/file.py:153
-#, python-format
-msgid "File '%s' not found."
-msgstr "Datoteka '%s' nije nađena."
-
-#: pisi/file.py:176
-#, python-format
-msgid "File integrity of %s compromised."
-msgstr ""
-
-#. : File.read and File.write are function names, and should not be
-#. translated.
-#: pisi/file.py:201
-msgid "File mode must be either File.read or File.write"
-msgstr ""
-
-#: pisi/file.py:206
-msgid "Remote write not implemented"
-msgstr ""
-
-#: pisi/file.py:254 pisi/file.py:258
-#, python-format
-msgid "ERROR: gpg --detach-sig %s failed"
-msgstr "GREŠKA: gpg --detach-sig %s nije uspjelo"
-
-#: pisi/version.py:71
-#, python-format
-msgid "Invalid version string: '%s'"
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
 msgstr ""
