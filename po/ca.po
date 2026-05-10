@@ -675,7 +675,7 @@ msgstr "Els paquets següents estan trencats:"
 
 #: pisi/cli/check.py:154
 msgid "Reinstall the broken packages?"
-msgstr ""
+msgstr "Voleu tornar a instal·lar els paquets trencats?"
 
 #: pisi/cli/check.py:160
 msgid "Broken packages were not reinstalled."
