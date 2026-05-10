@@ -2657,7 +2657,7 @@ msgstr "Istnieją dodatkowe pakiety z powodu zależności."
 
 #: pisi/operations/install.py:133
 msgid "Finished downloading packages."
-msgstr ""
+msgstr "Zakończono pobieranie pakietów."
 
 #: pisi/operations/install.py:154 pisi/operations/upgrade.py:243
 #, python-format
