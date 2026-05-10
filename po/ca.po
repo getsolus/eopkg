@@ -1887,6 +1887,8 @@ msgid ""
 "Building packages is not supported when eopkg is compiled with nuitka. "
 "Please use eopkg.py instead."
 msgstr ""
+"No es permet la construcció de paquets quan eopkg es compila amb nuitka. Si "
+"us plau, feu servir eopkg.py en comptes d'això."
 
 #: pisi/cli/install.py:16
 msgid ""
