@@ -3251,7 +3251,7 @@ msgstr ""
 #: pisi/archive.py:253
 #, python-format
 msgid "Skipping merged file %s"
-msgstr ""
+msgstr "Sla samengevoegd bestand over %s"
 
 #: pisi/archive.py:484
 #, python-format
