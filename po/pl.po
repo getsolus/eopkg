@@ -2927,7 +2927,7 @@ msgstr ""
 
 #: pisi/scripts/eopkg.py:46
 msgid "This is a packaging error."
-msgstr ""
+msgstr "To jest błąd pakowania."
 
 #: pisi/scripts/eopkg.py:52
 msgid ""
