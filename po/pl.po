@@ -2923,6 +2923,7 @@ msgstr "Program Zakończony."
 msgid ""
 "Cyclic dependency detected. The following packages cannot be installed:"
 msgstr ""
+"Wykryto zależność cykliczną. Nie można zainstalować następujących pakietów:"
 
 #: pisi/scripts/eopkg.py:46
 msgid "This is a packaging error."
