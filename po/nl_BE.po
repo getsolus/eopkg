@@ -2138,7 +2138,7 @@ msgstr "BestandDB is versie %s , heeft versie %s nodig. "
 
 #: pisi/db/filesdb.py:299
 msgid "FilesDB is invalid. Please rebuild it with 'sudo eopkg.py -y rdb'"
-msgstr ""
+msgstr "FilesDB is ongeldig. Herbouw het met 'sudo eopkg.py3 -y rdb'"
 
 #: pisi/db/filesdb.py:300
 msgid "Falling back to slow and inaccurate XML search..."
