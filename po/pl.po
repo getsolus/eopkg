@@ -3240,7 +3240,7 @@ msgstr "Nieznana operacja na pakiecie"
 #: pisi/archive.py:248
 #, python-format
 msgid "Ignoring unknown file in archive: %s"
-msgstr ""
+msgstr "Ignorowanie nieznanego pliku w archiwum: %s"
 
 #: pisi/archive.py:253
 #, python-format
