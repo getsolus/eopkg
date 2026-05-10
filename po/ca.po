@@ -2154,6 +2154,8 @@ msgstr "La base de dades de fitxers és de la versió %s. Cal la versió %s."
 #: pisi/db/filesdb.py:299
 msgid "FilesDB is invalid. Please rebuild it with 'sudo eopkg.py -y rdb'"
 msgstr ""
+"La base de dades de fitxers no és vàlida. Reconstruïu-la amb sudo eopkg.py "
+"-y rdb."
 
 #: pisi/db/filesdb.py:300
 msgid "Falling back to slow and inaccurate XML search..."
