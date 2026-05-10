@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-09 16:57-0400\n"
+"POT-Creation-Date: 2026-05-10 17:24-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
 "Last-Translator: Evan Maddock, 2026\n"
 "Language-Team: Greek (https://app.transifex.com/solus/teams/188714/el/)\n"
@@ -454,47 +454,6 @@ msgid "No rule to proccess %s. Please file a bug."
 msgstr ""
 "Δεν υπάρχει κανόνας για την επεξεργασία του %s. Παρακαλώ υποβάλετε ένα "
 "σφάλμα."
-
-#: pisi/cli/__init__.py:107
-msgid "Warning: "
-msgstr "Προειδοποίηση:"
-
-#: pisi/cli/__init__.py:121
-msgid "Error: "
-msgstr "Σφάλμα:"
-
-#: pisi/cli/__init__.py:150
-msgid " (yes/no)"
-msgstr " (ναι/όχι)"
-
-#: pisi/cli/__init__.py:178
-msgid " [complete]\n"
-msgstr "  [ολοκληρωμένο]\n"
-
-#: pisi/cli/__init__.py:188
-#, python-format
-msgid "Installed %s"
-msgstr "Εγκατεστημένο %s"
-
-#: pisi/cli/__init__.py:190
-#, python-format
-msgid "Removed %s"
-msgstr "Αφαιρέθηκε %s"
-
-#: pisi/cli/__init__.py:192
-#, python-format
-msgid "Upgraded %s"
-msgstr "Αναβαθμίσθηκε %s"
-
-#: pisi/cli/__init__.py:194
-#, python-format
-msgid "Configured %s"
-msgstr "Διαμορφωμένο %s"
-
-#: pisi/cli/__init__.py:196
-#, python-format
-msgid "Extracting the files of %s"
-msgstr "Εξαγωγή των αρχείων του %s"
 
 #: pisi/cli/autoremove.py:16
 msgid ""
@@ -2021,6 +1980,42 @@ msgstr ""
 msgid "Orphaned package"
 msgstr "Ορφανό πακέτο"
 
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Προειδοποίηση:"
+
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Σφάλμα:"
+
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr " (ναι/όχι)"
+
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr "  [ολοκληρωμένο]\n"
+
+#: pisi/cli/__init__.py:188
+#, python-format
+msgid "Installed %s"
+msgstr "Εγκατεστημένο %s"
+
+#: pisi/cli/__init__.py:190
+#, python-format
+msgid "Removed %s"
+msgstr "Αφαιρέθηκε %s"
+
+#: pisi/cli/__init__.py:192
+#, python-format
+msgid "Upgraded %s"
+msgstr "Αναβαθμίσθηκε %s"
+
+#: pisi/cli/__init__.py:194
+#, python-format
+msgid "Configured %s"
+msgstr "Διαμορφωμένο %s"
+
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
 msgid "Group %s not found"
@@ -2628,8 +2623,8 @@ msgstr "Πακέτο %s που βρέθηκε στο αποθετήριο %s"
 msgid "%s could not be found"
 msgstr "%s  δεν βρέθηκε"
 
-#: pisi/operations/history.py:129 pisi/package.py:112
-#: pisi/sourcearchive.py:101
+#: pisi/operations/history.py:129 pisi/sourcearchive.py:101
+#: pisi/package.py:112
 #, python-format
 msgid "%s [cached]"
 msgstr "%s  [αποθηκευμένο]"
@@ -3170,25 +3165,6 @@ msgid "Mirrors file %s does not exist. Could not resolve mirrors://"
 msgstr ""
 "Το mirrors αρχείο %s δεν υπάρχει. Δεν ήταν δυνατή η επίλυση του mirrors://"
 
-#: pisi/package.py:61
-#, python-format
-msgid "Cannot open package file: %s"
-msgstr "Δεν είναι δυνατή η άνοιγμα του αρχείου πακέτου: %s"
-
-#: pisi/package.py:82
-#, python-format
-msgid "Unsupported package format: %s"
-msgstr "Μη υποστηριζόμενη μορφή πακέτου: %s"
-
-#: pisi/package.py:105
-#, python-format
-msgid ""
-"There was a problem while fetching '%s'.\n"
-"The package may have been upgraded. Please try to upgrade the package."
-msgstr ""
-"Παρουσιάστηκε πρόβλημα κατά τη λήψη του '%s'.\n"
-"Το πακέτο ενδέχεται να έχει αναβαθμιστεί. Προσπαθήστε να αναβαθμίσετε το πακέτο."
-
 #: pisi/specfile.py:172
 #, python-format
 msgid "URI: %s, type: %s, sha1sum: %s"
@@ -3588,6 +3564,65 @@ msgstr "Η βάση δεδομένων πακέτων ενημερώθηκε."
 msgid "No repository named %s found."
 msgstr "Δεν βρέθηκε αποθετήριο με το όνομα %s."
 
+#: pisi/version.py:71
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr "Μη έγκυρη συμβολοσειρά έκδοσης: '%s'"
+
+#: pisi/file.py:28
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr "URL %s έχει ήδη κατεβαστεί ως %s"
+
+#: pisi/file.py:36
+#, python-format
+msgid "No signature found for %s"
+msgstr "Δεν βρέθηκε υπογραφή για %s"
+
+#: pisi/file.py:46
+#, python-format
+msgid " invalid for %s"
+msgstr " άκυρο για %s"
+
+#: pisi/file.py:70
+msgid "uri must have type either URI or string"
+msgstr "Το uri πρέπει να έχει τύπο URI ή string."
+
+#: pisi/file.py:142
+#, python-format
+msgid "Fetching %s"
+msgstr "Λήψη %s"
+
+#: pisi/file.py:147
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr "Αντιγραφή %s για μεταφορά καταλόγου"
+
+#: pisi/file.py:153
+#, python-format
+msgid "File '%s' not found."
+msgstr "Το αρχείο '%s' δεν βρέθηκε."
+
+#: pisi/file.py:176
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr "Η ακεραιότητα των αρχείων %s έχει παραβιαστεί."
+
+#. : File.read and File.write are function names, and should not be
+#. translated.
+#: pisi/file.py:201
+msgid "File mode must be either File.read or File.write"
+msgstr "Η λειτουργία αρχείου πρέπει να είναι είτε File.read είτε File.write"
+
+#: pisi/file.py:206
+msgid "Remote write not implemented"
+msgstr "Η απομακρυσμένη εγγραφή δεν έχει εφαρμοστεί"
+
+#: pisi/file.py:254 pisi/file.py:258
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr "ΣΦΑΛΜΑ: gpg --detach-sig %s απέτυχε"
+
 #: pisi/atomicoperations.py:114
 #, python-format
 msgid "Package URI: %s"
@@ -3662,34 +3697,34 @@ msgstr ""
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
-#: pisi/atomicoperations.py:509 pisi/atomicoperations.py:512
-#: pisi/atomicoperations.py:519
+#: pisi/atomicoperations.py:524 pisi/atomicoperations.py:527
+#: pisi/atomicoperations.py:534
 #, python-format
 msgid "Storing %s"
 msgstr "Αποθηκεύοντας %s"
 
-#: pisi/atomicoperations.py:599
+#: pisi/atomicoperations.py:614
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr ""
 "Δεν ήταν δυνατή η ανάγνωση της λίστας αρχείων για το πακέτο %s, συνεχίζεται "
 "η κατάργηση."
 
-#: pisi/atomicoperations.py:607
+#: pisi/atomicoperations.py:622
 #, python-format
 msgid "Removing package %s"
 msgstr "Αφαιρώντας το πακέτο  %s"
 
-#: pisi/atomicoperations.py:611
+#: pisi/atomicoperations.py:626
 msgid "Trying to remove nonexistent package "
 msgstr "Προσπάθεια κατάργησης πακέτου που δεν υπάρχει "
 
-#: pisi/atomicoperations.py:653
+#: pisi/atomicoperations.py:668
 #, python-format
 msgid "Not removing conflicted file : %s"
 msgstr "Δεν αφαιρείται το αρχείο με διένεξη: %s"
 
-#: pisi/atomicoperations.py:678
+#: pisi/atomicoperations.py:693
 #, python-format
 msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
@@ -3698,7 +3733,7 @@ msgstr ""
 "Το εγκατεστημένο αρχείο %s ρυθμίσεων δεν υπάρχει στο σύστημα [Πιθανόν το "
 "διαγράψατε χειροκίνητα]"
 
-#: pisi/atomicoperations.py:690
+#: pisi/atomicoperations.py:705
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
@@ -3706,61 +3741,21 @@ msgstr ""
 "Το εγκατεστημένο αρχείο %s δεν υπάρχει στο σύστημα [Πιθανόν το διαγράψατε "
 "χειροκίνητα]"
 
-#: pisi/file.py:28
+#: pisi/package.py:61
 #, python-format
-msgid "URL %s already downloaded as %s"
-msgstr "URL %s έχει ήδη κατεβαστεί ως %s"
+msgid "Cannot open package file: %s"
+msgstr "Δεν είναι δυνατή η άνοιγμα του αρχείου πακέτου: %s"
 
-#: pisi/file.py:36
+#: pisi/package.py:82
 #, python-format
-msgid "No signature found for %s"
-msgstr "Δεν βρέθηκε υπογραφή για %s"
+msgid "Unsupported package format: %s"
+msgstr "Μη υποστηριζόμενη μορφή πακέτου: %s"
 
-#: pisi/file.py:46
+#: pisi/package.py:105
 #, python-format
-msgid " invalid for %s"
-msgstr " άκυρο για %s"
-
-#: pisi/file.py:70
-msgid "uri must have type either URI or string"
-msgstr "Το uri πρέπει να έχει τύπο URI ή string."
-
-#: pisi/file.py:142
-#, python-format
-msgid "Fetching %s"
-msgstr "Λήψη %s"
-
-#: pisi/file.py:147
-#, python-format
-msgid "Copying %s to transfer dir"
-msgstr "Αντιγραφή %s για μεταφορά καταλόγου"
-
-#: pisi/file.py:153
-#, python-format
-msgid "File '%s' not found."
-msgstr "Το αρχείο '%s' δεν βρέθηκε."
-
-#: pisi/file.py:176
-#, python-format
-msgid "File integrity of %s compromised."
-msgstr "Η ακεραιότητα των αρχείων %s έχει παραβιαστεί."
-
-#. : File.read and File.write are function names, and should not be
-#. translated.
-#: pisi/file.py:201
-msgid "File mode must be either File.read or File.write"
-msgstr "Η λειτουργία αρχείου πρέπει να είναι είτε File.read είτε File.write"
-
-#: pisi/file.py:206
-msgid "Remote write not implemented"
-msgstr "Η απομακρυσμένη εγγραφή δεν έχει εφαρμοστεί"
-
-#: pisi/file.py:254 pisi/file.py:258
-#, python-format
-msgid "ERROR: gpg --detach-sig %s failed"
-msgstr "ΣΦΑΛΜΑ: gpg --detach-sig %s απέτυχε"
-
-#: pisi/version.py:71
-#, python-format
-msgid "Invalid version string: '%s'"
-msgstr "Μη έγκυρη συμβολοσειρά έκδοσης: '%s'"
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
+msgstr ""
+"Παρουσιάστηκε πρόβλημα κατά τη λήψη του '%s'.\n"
+"Το πακέτο ενδέχεται να έχει αναβαθμιστεί. Προσπαθήστε να αναβαθμίσετε το πακέτο."
