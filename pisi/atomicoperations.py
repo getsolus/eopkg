@@ -476,7 +476,22 @@ class Install(AtomicOperation):
             relocate_files()
             update_permissions()
 
-        self.package.extract_install(ctx.config.dest_dir())
+        progress = ctx.ui.Progress(len(self.files.list))
+        extracted_count = 0
+
+        def extract_callback(tarinfo, extracted):
+            nonlocal extracted_count
+            if extracted:
+                extracted_count += 1
+                ctx.ui.display_progress(
+                    operation="extracting",
+                    percent=progress.update(extracted_count),
+                    info=pisi.util.colorize(
+                        _(f"Extracting the files of {self.pkginfo.name}"), "cyan"
+                    ),
+                )
+
+        self.package.extract_install(ctx.config.dest_dir(), callback=extract_callback)
         self.restore_xattrs()
 
         if config_changed:
