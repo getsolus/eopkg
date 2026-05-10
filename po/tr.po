@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-09 16:57-0400\n"
+"POT-Creation-Date: 2026-05-10 17:24-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
 "Last-Translator: Evan Maddock, 2026\n"
 "Language-Team: Turkish (https://app.transifex.com/solus/teams/188714/tr/)\n"
@@ -448,47 +448,6 @@ msgstr "Lisan dosyası %s zaten oluşturuldu."
 msgid "No rule to proccess %s. Please file a bug."
 msgstr ""
 "%s öğesini işlemek için kural belirtilmemiş, lütfen bir hata raporu girin."
-
-#: pisi/cli/__init__.py:107
-msgid "Warning: "
-msgstr "Uyarı: "
-
-#: pisi/cli/__init__.py:121
-msgid "Error: "
-msgstr "Hata: "
-
-#: pisi/cli/__init__.py:150
-msgid " (yes/no)"
-msgstr " (evet/hayır)"
-
-#: pisi/cli/__init__.py:178
-msgid " [complete]\n"
-msgstr " [tamamlandı]\n"
-
-#: pisi/cli/__init__.py:188
-#, python-format
-msgid "Installed %s"
-msgstr "%s kuruldu."
-
-#: pisi/cli/__init__.py:190
-#, python-format
-msgid "Removed %s"
-msgstr "%s kaldırıldı."
-
-#: pisi/cli/__init__.py:192
-#, python-format
-msgid "Upgraded %s"
-msgstr "%s yükseltildi."
-
-#: pisi/cli/__init__.py:194
-#, python-format
-msgid "Configured %s"
-msgstr "%s yapılandırıldı."
-
-#: pisi/cli/__init__.py:196
-#, python-format
-msgid "Extracting the files of %s"
-msgstr "%s dosyaları arşivden çıkartılıyor."
 
 #: pisi/cli/autoremove.py:16
 msgid ""
@@ -1952,6 +1911,42 @@ msgstr ""
 msgid "Orphaned package"
 msgstr ""
 
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Uyarı: "
+
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Hata: "
+
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr " (evet/hayır)"
+
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr " [tamamlandı]\n"
+
+#: pisi/cli/__init__.py:188
+#, python-format
+msgid "Installed %s"
+msgstr "%s kuruldu."
+
+#: pisi/cli/__init__.py:190
+#, python-format
+msgid "Removed %s"
+msgstr "%s kaldırıldı."
+
+#: pisi/cli/__init__.py:192
+#, python-format
+msgid "Upgraded %s"
+msgstr "%s yükseltildi."
+
+#: pisi/cli/__init__.py:194
+#, python-format
+msgid "Configured %s"
+msgstr "%s yapılandırıldı."
+
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
 msgid "Group %s not found"
@@ -2536,8 +2531,8 @@ msgstr "%s paketi %s deposunda bulundu."
 msgid "%s could not be found"
 msgstr "%s bulunamadı"
 
-#: pisi/operations/history.py:129 pisi/package.py:112
-#: pisi/sourcearchive.py:101
+#: pisi/operations/history.py:129 pisi/sourcearchive.py:101
+#: pisi/package.py:112
 #, python-format
 msgid "%s [cached]"
 msgstr "%s [önbellekte]"
@@ -3065,25 +3060,6 @@ msgstr ", Paket Boyutu: %s"
 msgid "Mirrors file %s does not exist. Could not resolve mirrors://"
 msgstr "Yansı dosyası %s bulunamadı. mirrors:// çözümlenemedi."
 
-#: pisi/package.py:61
-#, python-format
-msgid "Cannot open package file: %s"
-msgstr "Paket dosyası açılamadı: %s"
-
-#: pisi/package.py:82
-#, python-format
-msgid "Unsupported package format: %s"
-msgstr "Desteklenmeyen paket biçimi: %s"
-
-#: pisi/package.py:105
-#, python-format
-msgid ""
-"There was a problem while fetching '%s'.\n"
-"The package may have been upgraded. Please try to upgrade the package."
-msgstr ""
-"'%s' indirilirken bir hata oluştu.\n"
-"Paket yükseltilmiş olabilir. Lütfen paketi yükseltmeyi deneyin."
-
 #: pisi/specfile.py:172
 #, python-format
 msgid "URI: %s, type: %s, sha1sum: %s"
@@ -3476,6 +3452,65 @@ msgstr "Paket veritabanı güncellendi."
 msgid "No repository named %s found."
 msgstr "%s adında bir depo bulunamadı."
 
+#: pisi/version.py:71
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr "Hatalı sürüm dizgisi: '%s'"
+
+#: pisi/file.py:28
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr "%s adresi zaten %s olarak indirilmişti."
+
+#: pisi/file.py:36
+#, python-format
+msgid "No signature found for %s"
+msgstr "%s dosyası için imza bulunamadı."
+
+#: pisi/file.py:46
+#, python-format
+msgid " invalid for %s"
+msgstr " %s için geçersiz"
+
+#: pisi/file.py:70
+msgid "uri must have type either URI or string"
+msgstr "uri parametresi ya URI ya da string tipine sahip olmalı."
+
+#: pisi/file.py:142
+#, python-format
+msgid "Fetching %s"
+msgstr "%s indiriliyor"
+
+#: pisi/file.py:147
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr "%s aktarım dizinine kopyalanıyor"
+
+#: pisi/file.py:153
+#, python-format
+msgid "File '%s' not found."
+msgstr "'%s' dosyası bulunamadı."
+
+#: pisi/file.py:176
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr "%s dosyasının bütünlüğü bozuk."
+
+#. : File.read and File.write are function names, and should not be
+#. translated.
+#: pisi/file.py:201
+msgid "File mode must be either File.read or File.write"
+msgstr "Dosya kipi File.read veya File.write olmalı."
+
+#: pisi/file.py:206
+msgid "Remote write not implemented"
+msgstr "Uzağa yazma özelliği henüz desteklenmiyor."
+
+#: pisi/file.py:254 pisi/file.py:258
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr "HATA: gpg --detach-sig %s çalışmadı."
+
 #: pisi/atomicoperations.py:114
 #, python-format
 msgid "Package URI: %s"
@@ -3549,99 +3584,59 @@ msgstr ""
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
-#: pisi/atomicoperations.py:509 pisi/atomicoperations.py:512
-#: pisi/atomicoperations.py:519
+#: pisi/atomicoperations.py:524 pisi/atomicoperations.py:527
+#: pisi/atomicoperations.py:534
 #, python-format
 msgid "Storing %s"
 msgstr "%s depolanıyor."
 
-#: pisi/atomicoperations.py:599
+#: pisi/atomicoperations.py:614
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr "%s paketi dosya listesi okunamadı, kaldırma işlemine devam ediliyor."
 
-#: pisi/atomicoperations.py:607
+#: pisi/atomicoperations.py:622
 #, python-format
 msgid "Removing package %s"
 msgstr "%s paketi kaldırılıyor."
 
-#: pisi/atomicoperations.py:611
+#: pisi/atomicoperations.py:626
 msgid "Trying to remove nonexistent package "
 msgstr "Varolmayan paket kaldırılmaya çalışıldı "
 
-#: pisi/atomicoperations.py:653
+#: pisi/atomicoperations.py:668
 #, python-format
 msgid "Not removing conflicted file : %s"
 msgstr "Çakışan dosya (%s) silinmiyor."
 
-#: pisi/atomicoperations.py:678
+#: pisi/atomicoperations.py:693
 #, python-format
 msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
 "deleted]"
 msgstr ""
 
-#: pisi/atomicoperations.py:690
+#: pisi/atomicoperations.py:705
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
 msgstr "Kurulmuş dosya %s sistemde bulunamadı (Muhtemelen elle sildiniz)."
 
-#: pisi/file.py:28
+#: pisi/package.py:61
 #, python-format
-msgid "URL %s already downloaded as %s"
-msgstr "%s adresi zaten %s olarak indirilmişti."
+msgid "Cannot open package file: %s"
+msgstr "Paket dosyası açılamadı: %s"
 
-#: pisi/file.py:36
+#: pisi/package.py:82
 #, python-format
-msgid "No signature found for %s"
-msgstr "%s dosyası için imza bulunamadı."
+msgid "Unsupported package format: %s"
+msgstr "Desteklenmeyen paket biçimi: %s"
 
-#: pisi/file.py:46
+#: pisi/package.py:105
 #, python-format
-msgid " invalid for %s"
-msgstr " %s için geçersiz"
-
-#: pisi/file.py:70
-msgid "uri must have type either URI or string"
-msgstr "uri parametresi ya URI ya da string tipine sahip olmalı."
-
-#: pisi/file.py:142
-#, python-format
-msgid "Fetching %s"
-msgstr "%s indiriliyor"
-
-#: pisi/file.py:147
-#, python-format
-msgid "Copying %s to transfer dir"
-msgstr "%s aktarım dizinine kopyalanıyor"
-
-#: pisi/file.py:153
-#, python-format
-msgid "File '%s' not found."
-msgstr "'%s' dosyası bulunamadı."
-
-#: pisi/file.py:176
-#, python-format
-msgid "File integrity of %s compromised."
-msgstr "%s dosyasının bütünlüğü bozuk."
-
-#. : File.read and File.write are function names, and should not be
-#. translated.
-#: pisi/file.py:201
-msgid "File mode must be either File.read or File.write"
-msgstr "Dosya kipi File.read veya File.write olmalı."
-
-#: pisi/file.py:206
-msgid "Remote write not implemented"
-msgstr "Uzağa yazma özelliği henüz desteklenmiyor."
-
-#: pisi/file.py:254 pisi/file.py:258
-#, python-format
-msgid "ERROR: gpg --detach-sig %s failed"
-msgstr "HATA: gpg --detach-sig %s çalışmadı."
-
-#: pisi/version.py:71
-#, python-format
-msgid "Invalid version string: '%s'"
-msgstr "Hatalı sürüm dizgisi: '%s'"
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
+msgstr ""
+"'%s' indirilirken bir hata oluştu.\n"
+"Paket yükseltilmiş olabilir. Lütfen paketi yükseltmeyi deneyin."
