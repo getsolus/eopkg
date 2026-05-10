@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-09 16:57-0400\n"
+"POT-Creation-Date: 2026-05-10 17:24-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
 "Last-Translator: Evan Maddock, 2026\n"
 "Language-Team: Hungarian (https://app.transifex.com/solus/teams/188714/hu/)\n"
@@ -452,47 +452,6 @@ msgstr "A(z) %s nyelvi fájl már létezik."
 #, python-format
 msgid "No rule to proccess %s. Please file a bug."
 msgstr "Nincs szabály a(z) %s feldolgozására. Kérjük jelentse a hibát."
-
-#: pisi/cli/__init__.py:107
-msgid "Warning: "
-msgstr "Figyelmeztetés:"
-
-#: pisi/cli/__init__.py:121
-msgid "Error: "
-msgstr "Hiba:"
-
-#: pisi/cli/__init__.py:150
-msgid " (yes/no)"
-msgstr "(igen/nem)"
-
-#: pisi/cli/__init__.py:178
-msgid " [complete]\n"
-msgstr "[teljes]\n"
-
-#: pisi/cli/__init__.py:188
-#, python-format
-msgid "Installed %s"
-msgstr "%s telepítve"
-
-#: pisi/cli/__init__.py:190
-#, python-format
-msgid "Removed %s"
-msgstr "%s eltávolítva"
-
-#: pisi/cli/__init__.py:192
-#, python-format
-msgid "Upgraded %s"
-msgstr "%s frissítve"
-
-#: pisi/cli/__init__.py:194
-#, python-format
-msgid "Configured %s"
-msgstr "%s beállítva"
-
-#: pisi/cli/__init__.py:196
-#, python-format
-msgid "Extracting the files of %s"
-msgstr "Fájlok kibontása %s csomagból"
 
 #: pisi/cli/autoremove.py:16
 msgid ""
@@ -1936,6 +1895,42 @@ msgstr ""
 msgid "Orphaned package"
 msgstr ""
 
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Figyelmeztetés:"
+
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Hiba:"
+
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr "(igen/nem)"
+
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr "[teljes]\n"
+
+#: pisi/cli/__init__.py:188
+#, python-format
+msgid "Installed %s"
+msgstr "%s telepítve"
+
+#: pisi/cli/__init__.py:190
+#, python-format
+msgid "Removed %s"
+msgstr "%s eltávolítva"
+
+#: pisi/cli/__init__.py:192
+#, python-format
+msgid "Upgraded %s"
+msgstr "%s frissítve"
+
+#: pisi/cli/__init__.py:194
+#, python-format
+msgid "Configured %s"
+msgstr "%s beállítva"
+
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
 msgid "Group %s not found"
@@ -2520,8 +2515,8 @@ msgstr "A(z) %s csomag nem található a(z) %s tárolóban"
 msgid "%s could not be found"
 msgstr "%s nem található"
 
-#: pisi/operations/history.py:129 pisi/package.py:112
-#: pisi/sourcearchive.py:101
+#: pisi/operations/history.py:129 pisi/sourcearchive.py:101
+#: pisi/package.py:112
 #, python-format
 msgid "%s [cached]"
 msgstr "%s [a gyorsítótárban]"
@@ -3056,25 +3051,6 @@ msgstr ""
 "A tükröket leíró %s fájl nem létezik. Nem tudom feloldani a mirrors:// "
 "jellegű címet"
 
-#: pisi/package.py:61
-#, python-format
-msgid "Cannot open package file: %s"
-msgstr "A csomagfájl nem található: %s"
-
-#: pisi/package.py:82
-#, python-format
-msgid "Unsupported package format: %s"
-msgstr "Nem támogatott csomagformátum: %s"
-
-#: pisi/package.py:105
-#, python-format
-msgid ""
-"There was a problem while fetching '%s'.\n"
-"The package may have been upgraded. Please try to upgrade the package."
-msgstr ""
-"Hiba történt a(z) '%s' letöltése során.\n"
-"Lehet, hogy a csomagot frissíteni kéne. Kérem, próbálja meg frissíteni a csomagot."
-
 #: pisi/specfile.py:172
 #, python-format
 msgid "URI: %s, type: %s, sha1sum: %s"
@@ -3469,6 +3445,65 @@ msgstr ""
 msgid "No repository named %s found."
 msgstr "%s nevű tároló nem található."
 
+#: pisi/version.py:71
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr "Érvénytelen verzió-sztring: '%s'"
+
+#: pisi/file.py:28
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr ""
+
+#: pisi/file.py:36
+#, python-format
+msgid "No signature found for %s"
+msgstr ""
+
+#: pisi/file.py:46
+#, python-format
+msgid " invalid for %s"
+msgstr ""
+
+#: pisi/file.py:70
+msgid "uri must have type either URI or string"
+msgstr "Az URI típusa URI vagy sztring kell legyen."
+
+#: pisi/file.py:142
+#, python-format
+msgid "Fetching %s"
+msgstr "%s letöltése"
+
+#: pisi/file.py:147
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr "%s másolása a transzfer könyvtárba"
+
+#: pisi/file.py:153
+#, python-format
+msgid "File '%s' not found."
+msgstr "A(z) %s nevű fájl nem található."
+
+#: pisi/file.py:176
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr "A(z) %s fájl sérült."
+
+#. : File.read and File.write are function names, and should not be
+#. translated.
+#: pisi/file.py:201
+msgid "File mode must be either File.read or File.write"
+msgstr "A fájl mód File.read vagy File.write lehet."
+
+#: pisi/file.py:206
+msgid "Remote write not implemented"
+msgstr "A távoli írás nem lehetséges."
+
+#: pisi/file.py:254 pisi/file.py:258
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr "HIBA: gpg --detach-sig %s nem sikerült"
+
 #: pisi/atomicoperations.py:114
 #, python-format
 msgid "Package URI: %s"
@@ -3545,39 +3580,39 @@ msgstr ""
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
-#: pisi/atomicoperations.py:509 pisi/atomicoperations.py:512
-#: pisi/atomicoperations.py:519
+#: pisi/atomicoperations.py:524 pisi/atomicoperations.py:527
+#: pisi/atomicoperations.py:534
 #, python-format
 msgid "Storing %s"
 msgstr "%s kiírása"
 
-#: pisi/atomicoperations.py:599
+#: pisi/atomicoperations.py:614
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr "A %s csomag fájllistáját nem lehet olvasni, eltávolítás folytatása."
 
-#: pisi/atomicoperations.py:607
+#: pisi/atomicoperations.py:622
 #, python-format
 msgid "Removing package %s"
 msgstr "%s csomag eltávolítása"
 
-#: pisi/atomicoperations.py:611
+#: pisi/atomicoperations.py:626
 msgid "Trying to remove nonexistent package "
 msgstr "Nem létező csomag eltávolításának kísérlete"
 
-#: pisi/atomicoperations.py:653
+#: pisi/atomicoperations.py:668
 #, python-format
 msgid "Not removing conflicted file : %s"
 msgstr "Ütköző fájl nincs eltávolítva: %s "
 
-#: pisi/atomicoperations.py:678
+#: pisi/atomicoperations.py:693
 #, python-format
 msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
 "deleted]"
 msgstr ""
 
-#: pisi/atomicoperations.py:690
+#: pisi/atomicoperations.py:705
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
@@ -3585,61 +3620,21 @@ msgstr ""
 "A telepített %s fájl nem létezik a rendszerben [Valószínűleg a felhasználó "
 "törölte]"
 
-#: pisi/file.py:28
+#: pisi/package.py:61
 #, python-format
-msgid "URL %s already downloaded as %s"
+msgid "Cannot open package file: %s"
+msgstr "A csomagfájl nem található: %s"
+
+#: pisi/package.py:82
+#, python-format
+msgid "Unsupported package format: %s"
+msgstr "Nem támogatott csomagformátum: %s"
+
+#: pisi/package.py:105
+#, python-format
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
 msgstr ""
-
-#: pisi/file.py:36
-#, python-format
-msgid "No signature found for %s"
-msgstr ""
-
-#: pisi/file.py:46
-#, python-format
-msgid " invalid for %s"
-msgstr ""
-
-#: pisi/file.py:70
-msgid "uri must have type either URI or string"
-msgstr "Az URI típusa URI vagy sztring kell legyen."
-
-#: pisi/file.py:142
-#, python-format
-msgid "Fetching %s"
-msgstr "%s letöltése"
-
-#: pisi/file.py:147
-#, python-format
-msgid "Copying %s to transfer dir"
-msgstr "%s másolása a transzfer könyvtárba"
-
-#: pisi/file.py:153
-#, python-format
-msgid "File '%s' not found."
-msgstr "A(z) %s nevű fájl nem található."
-
-#: pisi/file.py:176
-#, python-format
-msgid "File integrity of %s compromised."
-msgstr "A(z) %s fájl sérült."
-
-#. : File.read and File.write are function names, and should not be
-#. translated.
-#: pisi/file.py:201
-msgid "File mode must be either File.read or File.write"
-msgstr "A fájl mód File.read vagy File.write lehet."
-
-#: pisi/file.py:206
-msgid "Remote write not implemented"
-msgstr "A távoli írás nem lehetséges."
-
-#: pisi/file.py:254 pisi/file.py:258
-#, python-format
-msgid "ERROR: gpg --detach-sig %s failed"
-msgstr "HIBA: gpg --detach-sig %s nem sikerült"
-
-#: pisi/version.py:71
-#, python-format
-msgid "Invalid version string: '%s'"
-msgstr "Érvénytelen verzió-sztring: '%s'"
+"Hiba történt a(z) '%s' letöltése során.\n"
+"Lehet, hogy a csomagot frissíteni kéne. Kérem, próbálja meg frissíteni a csomagot."
