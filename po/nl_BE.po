@@ -3246,7 +3246,7 @@ msgstr "Onbekende pakketbewerking"
 #: pisi/archive.py:248
 #, python-format
 msgid "Ignoring unknown file in archive: %s"
-msgstr ""
+msgstr "Negeer onbekend bestand in archief: %s  "
 
 #: pisi/archive.py:253
 #, python-format
