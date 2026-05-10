@@ -2948,6 +2948,8 @@ msgstr "S'ha acabat el programa."
 msgid ""
 "Cyclic dependency detected. The following packages cannot be installed:"
 msgstr ""
+"S'ha detectat una dependència cíclica. No es poden instal·lar els paquets "
+"següents:"
 
 #: pisi/scripts/eopkg.py:46
 msgid "This is a packaging error."
