@@ -2953,7 +2953,7 @@ msgstr ""
 
 #: pisi/scripts/eopkg.py:46
 msgid "This is a packaging error."
-msgstr ""
+msgstr "Això és un error d'empaquetament."
 
 #: pisi/scripts/eopkg.py:52
 msgid ""
