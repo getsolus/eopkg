@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-09 16:57-0400\n"
+"POT-Creation-Date: 2026-05-10 17:24-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
 "Last-Translator: Evan Maddock, 2026\n"
 "Language-Team: Ukrainian (Ukraine) (https://app.transifex.com/solus/teams/188714/uk_UA/)\n"
@@ -444,49 +444,6 @@ msgstr "Мовний пакет  %s  вже створенний."
 #, python-format
 msgid "No rule to proccess %s. Please file a bug."
 msgstr ""
-
-#: pisi/cli/__init__.py:107
-msgid "Warning: "
-msgstr "Увага:"
-
-#: pisi/cli/__init__.py:121
-msgid "Error: "
-msgstr "Помилка:"
-
-#: pisi/cli/__init__.py:150
-msgid " (yes/no)"
-msgstr ""
-"(так/ні)\n"
-"[Note: if it's an install dialog. which only responds to yes and no, keep it the same as English, or if not added, add support for так and ні for this]"
-
-#: pisi/cli/__init__.py:178
-msgid " [complete]\n"
-msgstr "[Завершено]\n"
-
-#: pisi/cli/__init__.py:188
-#, python-format
-msgid "Installed %s"
-msgstr "Встановленно %s"
-
-#: pisi/cli/__init__.py:190
-#, python-format
-msgid "Removed %s"
-msgstr "Видалено %s"
-
-#: pisi/cli/__init__.py:192
-#, python-format
-msgid "Upgraded %s"
-msgstr "Оновлено %s"
-
-#: pisi/cli/__init__.py:194
-#, python-format
-msgid "Configured %s"
-msgstr "Налаштовано %s"
-
-#: pisi/cli/__init__.py:196
-#, python-format
-msgid "Extracting the files of %s"
-msgstr "Видобовування файлів від %s"
 
 #: pisi/cli/autoremove.py:16
 msgid ""
@@ -1769,6 +1726,44 @@ msgstr ""
 msgid "Orphaned package"
 msgstr ""
 
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Увага:"
+
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Помилка:"
+
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr ""
+"(так/ні)\n"
+"[Note: if it's an install dialog. which only responds to yes and no, keep it the same as English, or if not added, add support for так and ні for this]"
+
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr "[Завершено]\n"
+
+#: pisi/cli/__init__.py:188
+#, python-format
+msgid "Installed %s"
+msgstr "Встановленно %s"
+
+#: pisi/cli/__init__.py:190
+#, python-format
+msgid "Removed %s"
+msgstr "Видалено %s"
+
+#: pisi/cli/__init__.py:192
+#, python-format
+msgid "Upgraded %s"
+msgstr "Оновлено %s"
+
+#: pisi/cli/__init__.py:194
+#, python-format
+msgid "Configured %s"
+msgstr "Налаштовано %s"
+
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
 msgid "Group %s not found"
@@ -2337,8 +2332,8 @@ msgstr ""
 msgid "%s could not be found"
 msgstr ""
 
-#: pisi/operations/history.py:129 pisi/package.py:112
-#: pisi/sourcearchive.py:101
+#: pisi/operations/history.py:129 pisi/sourcearchive.py:101
+#: pisi/package.py:112
 #, python-format
 msgid "%s [cached]"
 msgstr ""
@@ -2861,25 +2856,6 @@ msgstr ""
 msgid "Mirrors file %s does not exist. Could not resolve mirrors://"
 msgstr ""
 
-#: pisi/package.py:61
-#, python-format
-msgid "Cannot open package file: %s"
-msgstr ""
-
-#: pisi/package.py:82
-#, python-format
-msgid "Unsupported package format: %s"
-msgstr ""
-
-#: pisi/package.py:105
-#, python-format
-msgid ""
-"There was a problem while fetching '%s'.\n"
-"The package may have been upgraded. Please try to upgrade the package."
-msgstr ""
-"З'явилася проблема при збиранні \"%s\".\n"
-"Пакунок може бути оновленним, спробуйте оновити пакунок."
-
 #: pisi/specfile.py:172
 #, python-format
 msgid "URI: %s, type: %s, sha1sum: %s"
@@ -3268,6 +3244,65 @@ msgstr ""
 msgid "No repository named %s found."
 msgstr ""
 
+#: pisi/version.py:71
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr ""
+
+#: pisi/file.py:28
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr ""
+
+#: pisi/file.py:36
+#, python-format
+msgid "No signature found for %s"
+msgstr ""
+
+#: pisi/file.py:46
+#, python-format
+msgid " invalid for %s"
+msgstr ""
+
+#: pisi/file.py:70
+msgid "uri must have type either URI or string"
+msgstr ""
+
+#: pisi/file.py:142
+#, python-format
+msgid "Fetching %s"
+msgstr ""
+
+#: pisi/file.py:147
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr ""
+
+#: pisi/file.py:153
+#, python-format
+msgid "File '%s' not found."
+msgstr ""
+
+#: pisi/file.py:176
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr ""
+
+#. : File.read and File.write are function names, and should not be
+#. translated.
+#: pisi/file.py:201
+msgid "File mode must be either File.read or File.write"
+msgstr ""
+
+#: pisi/file.py:206
+msgid "Remote write not implemented"
+msgstr ""
+
+#: pisi/file.py:254 pisi/file.py:258
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr ""
+
 #: pisi/atomicoperations.py:114
 #, python-format
 msgid "Package URI: %s"
@@ -3339,99 +3374,59 @@ msgstr ""
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
-#: pisi/atomicoperations.py:509 pisi/atomicoperations.py:512
-#: pisi/atomicoperations.py:519
+#: pisi/atomicoperations.py:524 pisi/atomicoperations.py:527
+#: pisi/atomicoperations.py:534
 #, python-format
 msgid "Storing %s"
 msgstr ""
 
-#: pisi/atomicoperations.py:599
+#: pisi/atomicoperations.py:614
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr ""
 
-#: pisi/atomicoperations.py:607
+#: pisi/atomicoperations.py:622
 #, python-format
 msgid "Removing package %s"
 msgstr ""
 
-#: pisi/atomicoperations.py:611
+#: pisi/atomicoperations.py:626
 msgid "Trying to remove nonexistent package "
 msgstr ""
 
-#: pisi/atomicoperations.py:653
+#: pisi/atomicoperations.py:668
 #, python-format
 msgid "Not removing conflicted file : %s"
 msgstr ""
 
-#: pisi/atomicoperations.py:678
+#: pisi/atomicoperations.py:693
 #, python-format
 msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
 "deleted]"
 msgstr ""
 
-#: pisi/atomicoperations.py:690
+#: pisi/atomicoperations.py:705
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
 msgstr ""
 
-#: pisi/file.py:28
+#: pisi/package.py:61
 #, python-format
-msgid "URL %s already downloaded as %s"
+msgid "Cannot open package file: %s"
 msgstr ""
 
-#: pisi/file.py:36
+#: pisi/package.py:82
 #, python-format
-msgid "No signature found for %s"
+msgid "Unsupported package format: %s"
 msgstr ""
 
-#: pisi/file.py:46
+#: pisi/package.py:105
 #, python-format
-msgid " invalid for %s"
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
 msgstr ""
-
-#: pisi/file.py:70
-msgid "uri must have type either URI or string"
-msgstr ""
-
-#: pisi/file.py:142
-#, python-format
-msgid "Fetching %s"
-msgstr ""
-
-#: pisi/file.py:147
-#, python-format
-msgid "Copying %s to transfer dir"
-msgstr ""
-
-#: pisi/file.py:153
-#, python-format
-msgid "File '%s' not found."
-msgstr ""
-
-#: pisi/file.py:176
-#, python-format
-msgid "File integrity of %s compromised."
-msgstr ""
-
-#. : File.read and File.write are function names, and should not be
-#. translated.
-#: pisi/file.py:201
-msgid "File mode must be either File.read or File.write"
-msgstr ""
-
-#: pisi/file.py:206
-msgid "Remote write not implemented"
-msgstr ""
-
-#: pisi/file.py:254 pisi/file.py:258
-#, python-format
-msgid "ERROR: gpg --detach-sig %s failed"
-msgstr ""
-
-#: pisi/version.py:71
-#, python-format
-msgid "Invalid version string: '%s'"
-msgstr ""
+"З'явилася проблема при збиранні \"%s\".\n"
+"Пакунок може бути оновленним, спробуйте оновити пакунок."
