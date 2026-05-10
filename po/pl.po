@@ -1745,7 +1745,7 @@ msgstr "Wynik w formacie XML"
 #: pisi/cli/info.py:129
 #, python-format
 msgid "Unable to resolve repository: %s"
-msgstr ""
+msgstr "Nie można odnaleźć repozytorium: %s"
 
 #: pisi/cli/info.py:154
 msgid "Reverse Dependencies:"
