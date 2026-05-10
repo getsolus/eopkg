@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-09 16:57-0400\n"
+"POT-Creation-Date: 2026-05-10 17:24-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
 "Last-Translator: Davidmp <medipas@gmail.com>, 2026\n"
 "Language-Team: Catalan (https://app.transifex.com/solus/teams/188714/ca/)\n"
@@ -455,47 +455,6 @@ msgstr "Fitxer de llengua %s ja generat."
 #, python-format
 msgid "No rule to proccess %s. Please file a bug."
 msgstr "Cap regla per processar %s. Feu un informe d'error."
-
-#: pisi/cli/__init__.py:107
-msgid "Warning: "
-msgstr "Avís:"
-
-#: pisi/cli/__init__.py:121
-msgid "Error: "
-msgstr "Error: "
-
-#: pisi/cli/__init__.py:150
-msgid " (yes/no)"
-msgstr " (sí / no)"
-
-#: pisi/cli/__init__.py:178
-msgid " [complete]\n"
-msgstr " [complet]\n"
-
-#: pisi/cli/__init__.py:188
-#, python-format
-msgid "Installed %s"
-msgstr "Instal·lat/s %s"
-
-#: pisi/cli/__init__.py:190
-#, python-format
-msgid "Removed %s"
-msgstr "Suprimit/s %s"
-
-#: pisi/cli/__init__.py:192
-#, python-format
-msgid "Upgraded %s"
-msgstr "Actualitzat/s %s"
-
-#: pisi/cli/__init__.py:194
-#, python-format
-msgid "Configured %s"
-msgstr "Configurat/s %s"
-
-#: pisi/cli/__init__.py:196
-#, python-format
-msgid "Extracting the files of %s"
-msgstr "S'extreuen els fitxers de %s"
 
 #: pisi/cli/autoremove.py:16
 msgid ""
@@ -2012,6 +1971,42 @@ msgstr "No podeu especificar --explicit i --automatic alhora."
 msgid "Orphaned package"
 msgstr "Paquet orfe"
 
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Avís:"
+
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Error: "
+
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr " (sí / no)"
+
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr " [complet]\n"
+
+#: pisi/cli/__init__.py:188
+#, python-format
+msgid "Installed %s"
+msgstr "Instal·lat/s %s"
+
+#: pisi/cli/__init__.py:190
+#, python-format
+msgid "Removed %s"
+msgstr "Suprimit/s %s"
+
+#: pisi/cli/__init__.py:192
+#, python-format
+msgid "Upgraded %s"
+msgstr "Actualitzat/s %s"
+
+#: pisi/cli/__init__.py:194
+#, python-format
+msgid "Configured %s"
+msgstr "Configurat/s %s"
+
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
 msgid "Group %s not found"
@@ -2619,8 +2614,8 @@ msgstr "El paquet %s s'ha trobat al repositori %s"
 msgid "%s could not be found"
 msgstr "%s no s'ha pogut trobar"
 
-#: pisi/operations/history.py:129 pisi/package.py:112
-#: pisi/sourcearchive.py:101
+#: pisi/operations/history.py:129 pisi/sourcearchive.py:101
+#: pisi/package.py:112
 #, python-format
 msgid "%s [cached]"
 msgstr "%s [a la cau]"
@@ -3162,25 +3157,6 @@ msgstr ""
 "El fitxer de rèpliques %s no existeix. No s'han pogut resoldre les "
 "rèpliques://"
 
-#: pisi/package.py:61
-#, python-format
-msgid "Cannot open package file: %s"
-msgstr "No es pot obrir el fitxer del paquet: %s"
-
-#: pisi/package.py:82
-#, python-format
-msgid "Unsupported package format: %s"
-msgstr "Format de paquet no admès: %s"
-
-#: pisi/package.py:105
-#, python-format
-msgid ""
-"There was a problem while fetching '%s'.\n"
-"The package may have been upgraded. Please try to upgrade the package."
-msgstr ""
-"Hi ha hagut un problema en obtenir %s.\n"
-"Potser el paquet s'ha actualitzat. Si us plau, intenteu actualitzar el paquet."
-
 #: pisi/specfile.py:172
 #, python-format
 msgid "URI: %s, type: %s, sha1sum: %s"
@@ -3580,6 +3556,65 @@ msgstr "S'ha actualitzat la base de dades de paquets."
 msgid "No repository named %s found."
 msgstr "No s'ha trobat cap repositori anomenat %s."
 
+#: pisi/version.py:71
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr "Cadena de versió no vàlida: \"%s\""
+
+#: pisi/file.py:28
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr "Ja s'ha baixat l'URL %s com a %s"
+
+#: pisi/file.py:36
+#, python-format
+msgid "No signature found for %s"
+msgstr "No s'ha trobat la signatura per a %s"
+
+#: pisi/file.py:46
+#, python-format
+msgid " invalid for %s"
+msgstr " no vàlid per a %s"
+
+#: pisi/file.py:70
+msgid "uri must have type either URI or string"
+msgstr "l'uri ha de tenir el tipus URI o cadena"
+
+#: pisi/file.py:142
+#, python-format
+msgid "Fetching %s"
+msgstr "S'obté %s"
+
+#: pisi/file.py:147
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr "Es copia %s al directori de transferència"
+
+#: pisi/file.py:153
+#, python-format
+msgid "File '%s' not found."
+msgstr "No s'ha trobat el fitxer %s."
+
+#: pisi/file.py:176
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr "Integritat del fitxer de %s compromesa."
+
+#. : File.read and File.write are function names, and should not be
+#. translated.
+#: pisi/file.py:201
+msgid "File mode must be either File.read or File.write"
+msgstr "El mode del fitxer ha de ser o bé Fitxer.read o Fitxer.write"
+
+#: pisi/file.py:206
+msgid "Remote write not implemented"
+msgstr "Escriptura remota no implementada"
+
+#: pisi/file.py:254 pisi/file.py:258
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr "ERROR: gpg --detach-sig %s ha fallat"
+
 #: pisi/atomicoperations.py:114
 #, python-format
 msgid "Package URI: %s"
@@ -3657,34 +3692,34 @@ msgstr ""
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
-#: pisi/atomicoperations.py:509 pisi/atomicoperations.py:512
-#: pisi/atomicoperations.py:519
+#: pisi/atomicoperations.py:524 pisi/atomicoperations.py:527
+#: pisi/atomicoperations.py:534
 #, python-format
 msgid "Storing %s"
 msgstr "Es desa %s"
 
-#: pisi/atomicoperations.py:599
+#: pisi/atomicoperations.py:614
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr ""
 "No s'ha pogut llegir la llista de fitxers per al paquet %s. Es continua la "
 "supressió."
 
-#: pisi/atomicoperations.py:607
+#: pisi/atomicoperations.py:622
 #, python-format
 msgid "Removing package %s"
 msgstr "Se suprimeix el paquet %s"
 
-#: pisi/atomicoperations.py:611
+#: pisi/atomicoperations.py:626
 msgid "Trying to remove nonexistent package "
 msgstr "S'intenta suprimir un paquet que no existeix"
 
-#: pisi/atomicoperations.py:653
+#: pisi/atomicoperations.py:668
 #, python-format
 msgid "Not removing conflicted file : %s"
 msgstr "No se suprimeix un fitxer conflictiu: %s"
 
-#: pisi/atomicoperations.py:678
+#: pisi/atomicoperations.py:693
 #, python-format
 msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
@@ -3693,7 +3728,7 @@ msgstr ""
 "El fitxer de configuració instal·lat %s no existeix al sistema. Probablement"
 " l'heu suprimit manualment."
 
-#: pisi/atomicoperations.py:690
+#: pisi/atomicoperations.py:705
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
@@ -3701,61 +3736,21 @@ msgstr ""
 "El fitxer instal·lat %s no existeix al sistema. Probablement l'heu suprimit "
 "manualment."
 
-#: pisi/file.py:28
+#: pisi/package.py:61
 #, python-format
-msgid "URL %s already downloaded as %s"
-msgstr "Ja s'ha baixat l'URL %s com a %s"
+msgid "Cannot open package file: %s"
+msgstr "No es pot obrir el fitxer del paquet: %s"
 
-#: pisi/file.py:36
+#: pisi/package.py:82
 #, python-format
-msgid "No signature found for %s"
-msgstr "No s'ha trobat la signatura per a %s"
+msgid "Unsupported package format: %s"
+msgstr "Format de paquet no admès: %s"
 
-#: pisi/file.py:46
+#: pisi/package.py:105
 #, python-format
-msgid " invalid for %s"
-msgstr " no vàlid per a %s"
-
-#: pisi/file.py:70
-msgid "uri must have type either URI or string"
-msgstr "l'uri ha de tenir el tipus URI o cadena"
-
-#: pisi/file.py:142
-#, python-format
-msgid "Fetching %s"
-msgstr "S'obté %s"
-
-#: pisi/file.py:147
-#, python-format
-msgid "Copying %s to transfer dir"
-msgstr "Es copia %s al directori de transferència"
-
-#: pisi/file.py:153
-#, python-format
-msgid "File '%s' not found."
-msgstr "No s'ha trobat el fitxer %s."
-
-#: pisi/file.py:176
-#, python-format
-msgid "File integrity of %s compromised."
-msgstr "Integritat del fitxer de %s compromesa."
-
-#. : File.read and File.write are function names, and should not be
-#. translated.
-#: pisi/file.py:201
-msgid "File mode must be either File.read or File.write"
-msgstr "El mode del fitxer ha de ser o bé Fitxer.read o Fitxer.write"
-
-#: pisi/file.py:206
-msgid "Remote write not implemented"
-msgstr "Escriptura remota no implementada"
-
-#: pisi/file.py:254 pisi/file.py:258
-#, python-format
-msgid "ERROR: gpg --detach-sig %s failed"
-msgstr "ERROR: gpg --detach-sig %s ha fallat"
-
-#: pisi/version.py:71
-#, python-format
-msgid "Invalid version string: '%s'"
-msgstr "Cadena de versió no vàlida: \"%s\""
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
+msgstr ""
+"Hi ha hagut un problema en obtenir %s.\n"
+"Potser el paquet s'ha actualitzat. Si us plau, intenteu actualitzar el paquet."
