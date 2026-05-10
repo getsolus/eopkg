@@ -3268,7 +3268,7 @@ msgstr "Operació de paquet desconeguda"
 #: pisi/archive.py:248
 #, python-format
 msgid "Ignoring unknown file in archive: %s"
-msgstr ""
+msgstr "S'ignora el fitxer desconegut a l'arxiu: %s"
 
 #: pisi/archive.py:253
 #, python-format
