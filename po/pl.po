@@ -1732,7 +1732,7 @@ msgstr "Pokaż tylko ścieżki."
 
 #: pisi/cli/info.py:66
 msgid "Resolve package against specified repository"
-msgstr ""
+msgstr "Sprawdź pakiet w wybranym repozytorium"
 
 #: pisi/cli/info.py:73
 msgid "Do not show details"
