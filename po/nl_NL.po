@@ -2706,7 +2706,7 @@ msgstr "topologische_sort() volgorde: %s"
 #: pisi/operations/install.py:403
 #, python-format
 msgid "deterministic order: %s"
-msgstr ""
+msgstr "installeer_volgorde: %s"
 
 #: pisi/operations/install.py:406
 #, python-format
@@ -2723,7 +2723,7 @@ msgstr ""
 
 #: pisi/operations/upgrade.py:72
 msgid "Warning: package *name* ends with '.pisi'"
-msgstr ""
+msgstr "Waarschuwing: pakket *naam* eindigt op '.pisi'"
 
 #: pisi/operations/upgrade.py:75
 #, python-format
