@@ -192,8 +192,6 @@ class CLI(pisi.ui.UI):
             msg = _("Upgraded %s") % keywords["package"].name
         elif event == pisi.ui.configured:
             msg = _("Configured %s") % keywords["package"].name
-        elif event == pisi.ui.extracting:
-            msg = _("Extracting the files of %s") % keywords["package"].name
         else:
             msg = None
         if msg:
