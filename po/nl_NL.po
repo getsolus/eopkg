@@ -5,6 +5,7 @@
 # 
 # Translators:
 # Evan Maddock, 2026
+# Vanhoorne Michael, 2026
 # 
 #, fuzzy
 msgid ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-09 16:57-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
-"Last-Translator: Evan Maddock, 2026\n"
+"Last-Translator: Vanhoorne Michael, 2026\n"
 "Language-Team: Dutch (Netherlands) (https://app.transifex.com/solus/teams/188714/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -660,15 +661,15 @@ msgstr ""
 
 #: pisi/cli/check.py:152
 msgid "The following packages are broken:"
-msgstr ""
+msgstr "De volgende pakket zijn kapot:"
 
 #: pisi/cli/check.py:154
 msgid "Reinstall the broken packages?"
-msgstr ""
+msgstr "Herinstalleer de kapotte pakketten?"
 
 #: pisi/cli/check.py:160
 msgid "Broken packages were not reinstalled."
-msgstr ""
+msgstr "Kapotte pakketten zijn niet herinstalleerd."
 
 #: pisi/cli/check.py:166
 msgid ""
@@ -1720,7 +1721,7 @@ msgstr "Toon alleen paden."
 
 #: pisi/cli/info.py:66
 msgid "Resolve package against specified repository"
-msgstr ""
+msgstr "Los pakket op ten opzichte van de opgegeven softwarebron"
 
 #: pisi/cli/info.py:73
 msgid "Do not show details"
@@ -1733,7 +1734,7 @@ msgstr "Uitvoer in xml-opmaak"
 #: pisi/cli/info.py:129
 #, python-format
 msgid "Unable to resolve repository: %s"
-msgstr ""
+msgstr "Kan de softwarebron niet oplossen: %s"
 
 #: pisi/cli/info.py:154
 msgid "Reverse Dependencies:"
@@ -2651,7 +2652,7 @@ msgstr "Wegens afhankelijkheden zijn er extra pakketten."
 
 #: pisi/operations/install.py:133
 msgid "Finished downloading packages."
-msgstr ""
+msgstr "Downloaden van pakketten voltooid."
 
 #: pisi/operations/install.py:154 pisi/operations/upgrade.py:243
 #, python-format
@@ -2700,17 +2701,17 @@ msgstr "%s afhankelijkheid van pakket %s is niet bevredigend"
 #: pisi/operations/install.py:400
 #, python-format
 msgid "topological_sort() order: %s"
-msgstr ""
+msgstr "topologische_sort() volgorde: %s"
 
 #: pisi/operations/install.py:403
 #, python-format
 msgid "deterministic order: %s"
-msgstr ""
+msgstr "installeer_volgorde: %s"
 
 #: pisi/operations/install.py:406
 #, python-format
 msgid "final order.reverse(): %s"
-msgstr ""
+msgstr "laatste bestelling.reverse(): %s"
 
 #: pisi/operations/upgrade.py:48
 msgid ""
@@ -2722,7 +2723,7 @@ msgstr ""
 
 #: pisi/operations/upgrade.py:72
 msgid "Warning: package *name* ends with '.pisi'"
-msgstr ""
+msgstr "Waarschuwing: pakket *naam* eindigt op '.pisi'"
 
 #: pisi/operations/upgrade.py:75
 #, python-format
@@ -2769,16 +2770,16 @@ msgstr ""
 #: pisi/operations/upgrade.py:453
 #, python-format
 msgid "installs and upgrades (unordered): %s"
-msgstr ""
+msgstr "installaties en upgrades (ongeordend): %s"
 
 #: pisi/operations/upgrade.py:456
 #, python-format
 msgid "installs and upgrades (deterministic order): %s"
-msgstr ""
+msgstr "installaties en upgrades (deterministische volgorde): %s"
 
 #: pisi/pxml/xmlext.py:74
 msgid "getNodeText: Expected text node, got something else!"
-msgstr ""
+msgstr "getNodeText: Verwachte tekstknoop, kreeg iets anders"
 
 #: pisi/pxml/xmlfile.py:51
 #, python-format
@@ -2798,7 +2799,7 @@ msgstr "Bestand '%s' bevat ongeldige XML"
 #: pisi/pxml/autoxml.py:74
 #, python-brace-format
 msgid "At least one '{}' tag should have local text."
-msgstr ""
+msgstr "Minimaal één '{}'-tag moet lokale tekst bevatten."
 
 #: pisi/pxml/autoxml.py:86
 #, python-brace-format
