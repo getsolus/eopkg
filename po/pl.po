@@ -2141,6 +2141,8 @@ msgstr "FilesDB jest w wersji %s, potrzebna wersja %s."
 #: pisi/db/filesdb.py:299
 msgid "FilesDB is invalid. Please rebuild it with 'sudo eopkg.py -y rdb'"
 msgstr ""
+"Baza danych plików (FilesDB) jest uszkodzona. Odbuduj ją za pomocą 'sudo "
+"eopkg.py -y rdb'"
 
 #: pisi/db/filesdb.py:300
 msgid "Falling back to slow and inaccurate XML search..."
