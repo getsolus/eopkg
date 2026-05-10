@@ -5,15 +5,16 @@
 # 
 # Translators:
 # Evan Maddock, 2026
+# Vanhoorne Michael, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-09 16:57-0400\n"
+"POT-Creation-Date: 2026-05-10 17:24-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
-"Last-Translator: Evan Maddock, 2026\n"
+"Last-Translator: Vanhoorne Michael, 2026\n"
 "Language-Team: Dutch (Belgium) (https://app.transifex.com/solus/teams/188714/nl_BE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -444,47 +445,6 @@ msgstr "Taalbestand %s is al aangemaakt."
 msgid "No rule to proccess %s. Please file a bug."
 msgstr "Geen regel verwerkt %s. Meld de bug alstublieft."
 
-#: pisi/cli/__init__.py:107
-msgid "Warning: "
-msgstr "Waarschuwing: "
-
-#: pisi/cli/__init__.py:121
-msgid "Error: "
-msgstr "Fout: "
-
-#: pisi/cli/__init__.py:150
-msgid " (yes/no)"
-msgstr " (ja/nee)"
-
-#: pisi/cli/__init__.py:178
-msgid " [complete]\n"
-msgstr " [compleet]\n"
-
-#: pisi/cli/__init__.py:188
-#, python-format
-msgid "Installed %s"
-msgstr "Geïnstalleerd %s"
-
-#: pisi/cli/__init__.py:190
-#, python-format
-msgid "Removed %s"
-msgstr "Verwijderd %s"
-
-#: pisi/cli/__init__.py:192
-#, python-format
-msgid "Upgraded %s"
-msgstr "Opgewaardeerd %s"
-
-#: pisi/cli/__init__.py:194
-#, python-format
-msgid "Configured %s"
-msgstr "Geconfigureerd %s"
-
-#: pisi/cli/__init__.py:196
-#, python-format
-msgid "Extracting the files of %s"
-msgstr "Bestanden uitpakken van %s"
-
 #: pisi/cli/autoremove.py:16
 msgid ""
 "Remove eopkg packages\n"
@@ -657,18 +617,20 @@ msgid ""
 "These packages are broken but are not found in a repository, they must be "
 "reinstalled manually:"
 msgstr ""
+"Deze pakketten zijn kapot, maar worden niet gevonden in een software. Ze "
+"moeten handmatig worden geïnstalleerd:"
 
 #: pisi/cli/check.py:152
 msgid "The following packages are broken:"
-msgstr ""
+msgstr "De volgende pakket zijn kapot:"
 
 #: pisi/cli/check.py:154
 msgid "Reinstall the broken packages?"
-msgstr ""
+msgstr "Herinstalleer de kapotte pakketten?"
 
 #: pisi/cli/check.py:160
 msgid "Broken packages were not reinstalled."
-msgstr ""
+msgstr "Kapotte pakketten zijn niet herinstalleerd."
 
 #: pisi/cli/check.py:166
 msgid ""
@@ -1726,7 +1688,7 @@ msgstr "Toon alleen paden."
 
 #: pisi/cli/info.py:66
 msgid "Resolve package against specified repository"
-msgstr ""
+msgstr "Los pakket op ten opzichte van de opgegeven softwarebron"
 
 #: pisi/cli/info.py:73
 msgid "Do not show details"
@@ -1739,7 +1701,7 @@ msgstr "Uitvoer in xml-opmaak"
 #: pisi/cli/info.py:129
 #, python-format
 msgid "Unable to resolve repository: %s"
-msgstr ""
+msgstr "Kan de softwarebron niet oplossen: %s"
 
 #: pisi/cli/info.py:154
 msgid "Reverse Dependencies:"
@@ -1872,6 +1834,8 @@ msgid ""
 "Building packages is not supported when eopkg is compiled with nuitka. "
 "Please use eopkg.py instead."
 msgstr ""
+"Het bouwen van pakketten wordt niet ondersteund wanneer eopkg is "
+"gecompileerd met Nuitka. Gebruik in plaats daarvan eopkg.py3"
 
 #: pisi/cli/install.py:16
 msgid ""
@@ -1996,6 +1960,42 @@ msgstr "U kunt niet zowel --explicit als --automatic opgeven."
 #: pisi/cli/listinstalled.py:157
 msgid "Orphaned package"
 msgstr "Weespakket"
+
+#: pisi/cli/__init__.py:107
+msgid "Warning: "
+msgstr "Waarschuwing: "
+
+#: pisi/cli/__init__.py:121
+msgid "Error: "
+msgstr "Fout: "
+
+#: pisi/cli/__init__.py:150
+msgid " (yes/no)"
+msgstr " (ja/nee)"
+
+#: pisi/cli/__init__.py:178
+msgid " [complete]\n"
+msgstr " [compleet]\n"
+
+#: pisi/cli/__init__.py:188
+#, python-format
+msgid "Installed %s"
+msgstr "Geïnstalleerd %s"
+
+#: pisi/cli/__init__.py:190
+#, python-format
+msgid "Removed %s"
+msgstr "Verwijderd %s"
+
+#: pisi/cli/__init__.py:192
+#, python-format
+msgid "Upgraded %s"
+msgstr "Opgewaardeerd %s"
+
+#: pisi/cli/__init__.py:194
+#, python-format
+msgid "Configured %s"
+msgstr "Geconfigureerd %s"
 
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
@@ -2133,7 +2133,7 @@ msgstr "BestandDB is versie %s , heeft versie %s nodig. "
 
 #: pisi/db/filesdb.py:299
 msgid "FilesDB is invalid. Please rebuild it with 'sudo eopkg.py -y rdb'"
-msgstr ""
+msgstr "FilesDB is ongeldig. Herbouw het met 'sudo eopkg.py3 -y rdb'"
 
 #: pisi/db/filesdb.py:300
 msgid "Falling back to slow and inaccurate XML search..."
@@ -2597,8 +2597,8 @@ msgstr "Pakket %s gevonden in softwarebron %s "
 msgid "%s could not be found"
 msgstr "%s niet gevonden"
 
-#: pisi/operations/history.py:129 pisi/package.py:112
-#: pisi/sourcearchive.py:101
+#: pisi/operations/history.py:129 pisi/sourcearchive.py:101
+#: pisi/package.py:112
 #, python-format
 msgid "%s [cached]"
 msgstr "%s [gebufferd]"
@@ -2656,7 +2656,7 @@ msgstr "Wegens afhankelijkheden zijn er extra pakketten."
 
 #: pisi/operations/install.py:133
 msgid "Finished downloading packages."
-msgstr ""
+msgstr "Downloaden van pakketten voltooid."
 
 #: pisi/operations/install.py:154 pisi/operations/upgrade.py:243
 #, python-format
@@ -2925,10 +2925,12 @@ msgstr "Programma beëindigd."
 msgid ""
 "Cyclic dependency detected. The following packages cannot be installed:"
 msgstr ""
+"Cyclische afhankelijkheid gedetecteerd. De volgende pakketten kunnen niet "
+"worden geïnstalleerd:"
 
 #: pisi/scripts/eopkg.py:46
 msgid "This is a packaging error."
-msgstr ""
+msgstr "Dit is een verpakkingsfout."
 
 #: pisi/scripts/eopkg.py:52
 msgid ""
@@ -3135,25 +3137,6 @@ msgstr ", Pakketgrootte: %s"
 msgid "Mirrors file %s does not exist. Could not resolve mirrors://"
 msgstr "Mirror bestand %s bestaat niet. Kan mirrors niet oplossen://"
 
-#: pisi/package.py:61
-#, python-format
-msgid "Cannot open package file: %s"
-msgstr "Kan pakketbestand niet openen: %s"
-
-#: pisi/package.py:82
-#, python-format
-msgid "Unsupported package format: %s"
-msgstr "Niet-ondersteunde pakketformaat: %s"
-
-#: pisi/package.py:105
-#, python-format
-msgid ""
-"There was a problem while fetching '%s'.\n"
-"The package may have been upgraded. Please try to upgrade the package."
-msgstr ""
-"Er was een probleem het bij ophalen van '%s'.\n"
-"Het pakket kan opgewaardeerd zijn. Probeer het pakket op te waarderen."
-
 #: pisi/specfile.py:172
 #, python-format
 msgid "URI: %s, type: %s, sha1sum: %s"
@@ -3241,12 +3224,12 @@ msgstr "Onbekende pakketbewerking"
 #: pisi/archive.py:248
 #, python-format
 msgid "Ignoring unknown file in archive: %s"
-msgstr ""
+msgstr "Negeer onbekend bestand in archief: %s  "
 
 #: pisi/archive.py:253
 #, python-format
 msgid "Skipping merged file %s"
-msgstr ""
+msgstr "Sla samengevoegd bestand over %s"
 
 #: pisi/archive.py:484
 #, python-format
@@ -3341,7 +3324,7 @@ msgstr "Ongeldige delta-pakketnaam: %s."
 #: pisi/util.py:998
 #, python-format
 msgid "Failed to acquire inhibit lock: %s"
-msgstr ""
+msgstr "Het is niet gelukt om de inhibit lock te verkrijgen %s"
 
 #: pisi/util.py:1007
 #, python-format
@@ -3551,6 +3534,65 @@ msgstr "Pakketdatabase bijgewerkt."
 msgid "No repository named %s found."
 msgstr "Geen softwarebron met de naam %s gevonden."
 
+#: pisi/version.py:71
+#, python-format
+msgid "Invalid version string: '%s'"
+msgstr "Ongeldige versie tekenreeks: '%s'"
+
+#: pisi/file.py:28
+#, python-format
+msgid "URL %s already downloaded as %s"
+msgstr "URL %s is reeds gedownload als %s"
+
+#: pisi/file.py:36
+#, python-format
+msgid "No signature found for %s"
+msgstr "Geen ondertekening gevonden voor %s"
+
+#: pisi/file.py:46
+#, python-format
+msgid " invalid for %s"
+msgstr "Ongeldig voor %s"
+
+#: pisi/file.py:70
+msgid "uri must have type either URI or string"
+msgstr "uri moet van het type URI-adres of tekenreeks zijn"
+
+#: pisi/file.py:142
+#, python-format
+msgid "Fetching %s"
+msgstr "Ophalen %s"
+
+#: pisi/file.py:147
+#, python-format
+msgid "Copying %s to transfer dir"
+msgstr "Kopiëren %s naar overdrachtmap"
+
+#: pisi/file.py:153
+#, python-format
+msgid "File '%s' not found."
+msgstr "Bestand '%s' niet gevonden."
+
+#: pisi/file.py:176
+#, python-format
+msgid "File integrity of %s compromised."
+msgstr "Bestandsintegriteit van %s is gecompromitteerd."
+
+#. : File.read and File.write are function names, and should not be
+#. translated.
+#: pisi/file.py:201
+msgid "File mode must be either File.read or File.write"
+msgstr "Bestandsmodus moet ofwel File.read ofwel File.write zijn"
+
+#: pisi/file.py:206
+msgid "Remote write not implemented"
+msgstr "Schrijven op afstand niet geïmplementeerd"
+
+#: pisi/file.py:254 pisi/file.py:258
+#, python-format
+msgid "ERROR: gpg --detach-sig %s failed"
+msgstr "FOUT: gpg --detach-sig %s mislukt"
+
 #: pisi/atomicoperations.py:114
 #, python-format
 msgid "Package URI: %s"
@@ -3627,34 +3669,34 @@ msgstr ""
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
-#: pisi/atomicoperations.py:509 pisi/atomicoperations.py:512
-#: pisi/atomicoperations.py:519
+#: pisi/atomicoperations.py:524 pisi/atomicoperations.py:527
+#: pisi/atomicoperations.py:534
 #, python-format
 msgid "Storing %s"
 msgstr "Opslaan %s"
 
-#: pisi/atomicoperations.py:599
+#: pisi/atomicoperations.py:614
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr ""
 "Bestandslijst kon niet gelezen worden voor pakket %s, voortzetten "
 "verwijderen."
 
-#: pisi/atomicoperations.py:607
+#: pisi/atomicoperations.py:622
 #, python-format
 msgid "Removing package %s"
 msgstr "Verwijderen pakket %s"
 
-#: pisi/atomicoperations.py:611
+#: pisi/atomicoperations.py:626
 msgid "Trying to remove nonexistent package "
 msgstr "Proberen niet-bestaand pakket te verwijderen "
 
-#: pisi/atomicoperations.py:653
+#: pisi/atomicoperations.py:668
 #, python-format
 msgid "Not removing conflicted file : %s"
 msgstr "Niet verwijderen conflicterend bestand: %s"
 
-#: pisi/atomicoperations.py:678
+#: pisi/atomicoperations.py:693
 #, python-format
 msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
@@ -3663,7 +3705,7 @@ msgstr ""
 "Geïnstalleerd configuratiebestand%s bestaat niet op systeem [waarschijnlijk "
 "handmatig verwijderd]"
 
-#: pisi/atomicoperations.py:690
+#: pisi/atomicoperations.py:705
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
@@ -3671,61 +3713,21 @@ msgstr ""
 "Geïnstalleerd bestand %s bestaat niet op systeem [waarschijnlijk handmatig "
 "verwijderd]"
 
-#: pisi/file.py:28
+#: pisi/package.py:61
 #, python-format
-msgid "URL %s already downloaded as %s"
-msgstr "URL %s is reeds gedownload als %s"
+msgid "Cannot open package file: %s"
+msgstr "Kan pakketbestand niet openen: %s"
 
-#: pisi/file.py:36
+#: pisi/package.py:82
 #, python-format
-msgid "No signature found for %s"
-msgstr "Geen ondertekening gevonden voor %s"
+msgid "Unsupported package format: %s"
+msgstr "Niet-ondersteunde pakketformaat: %s"
 
-#: pisi/file.py:46
+#: pisi/package.py:105
 #, python-format
-msgid " invalid for %s"
-msgstr "Ongeldig voor %s"
-
-#: pisi/file.py:70
-msgid "uri must have type either URI or string"
-msgstr "uri moet van het type URI-adres of tekenreeks zijn"
-
-#: pisi/file.py:142
-#, python-format
-msgid "Fetching %s"
-msgstr "Ophalen %s"
-
-#: pisi/file.py:147
-#, python-format
-msgid "Copying %s to transfer dir"
-msgstr "Kopiëren %s naar overdrachtmap"
-
-#: pisi/file.py:153
-#, python-format
-msgid "File '%s' not found."
-msgstr "Bestand '%s' niet gevonden."
-
-#: pisi/file.py:176
-#, python-format
-msgid "File integrity of %s compromised."
-msgstr "Bestandsintegriteit van %s is gecompromitteerd."
-
-#. : File.read and File.write are function names, and should not be
-#. translated.
-#: pisi/file.py:201
-msgid "File mode must be either File.read or File.write"
-msgstr "Bestandsmodus moet ofwel File.read ofwel File.write zijn"
-
-#: pisi/file.py:206
-msgid "Remote write not implemented"
-msgstr "Schrijven op afstand niet geïmplementeerd"
-
-#: pisi/file.py:254 pisi/file.py:258
-#, python-format
-msgid "ERROR: gpg --detach-sig %s failed"
-msgstr "FOUT: gpg --detach-sig %s mislukt"
-
-#: pisi/version.py:71
-#, python-format
-msgid "Invalid version string: '%s'"
-msgstr "Ongeldige versie tekenreeks: '%s'"
+msgid ""
+"There was a problem while fetching '%s'.\n"
+"The package may have been upgraded. Please try to upgrade the package."
+msgstr ""
+"Er was een probleem het bij ophalen van '%s'.\n"
+"Het pakket kan opgewaardeerd zijn. Probeer het pakket op te waarderen."
