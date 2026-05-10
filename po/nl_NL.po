@@ -669,7 +669,7 @@ msgstr "Herinstalleer de kapotte pakketten?"
 
 #: pisi/cli/check.py:160
 msgid "Broken packages were not reinstalled."
-msgstr ""
+msgstr "Kapotte pakketten zijn niet herinstalleerd."
 
 #: pisi/cli/check.py:166
 msgid ""
