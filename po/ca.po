@@ -1740,7 +1740,7 @@ msgstr "Mostra'n només els camins."
 
 #: pisi/cli/info.py:66
 msgid "Resolve package against specified repository"
-msgstr "Resol el paquet contra el repositori especificat"
+msgstr "Resol el paquet amb el repositori especificat"
 
 #: pisi/cli/info.py:73
 msgid "Do not show details"
