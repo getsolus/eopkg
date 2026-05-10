@@ -2711,7 +2711,7 @@ msgstr ""
 #: pisi/operations/install.py:406
 #, python-format
 msgid "final order.reverse(): %s"
-msgstr ""
+msgstr "laatste bestelling.reverse(): %s"
 
 #: pisi/operations/upgrade.py:48
 msgid ""
