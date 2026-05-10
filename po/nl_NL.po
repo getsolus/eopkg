@@ -2799,7 +2799,7 @@ msgstr "Bestand '%s' bevat ongeldige XML"
 #: pisi/pxml/autoxml.py:74
 #, python-brace-format
 msgid "At least one '{}' tag should have local text."
-msgstr ""
+msgstr "Minimaal één '{}'-tag moet lokale tekst bevatten."
 
 #: pisi/pxml/autoxml.py:86
 #, python-brace-format
