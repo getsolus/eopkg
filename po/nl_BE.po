@@ -658,6 +658,8 @@ msgid ""
 "These packages are broken but are not found in a repository, they must be "
 "reinstalled manually:"
 msgstr ""
+"Deze pakketten zijn kapot, maar worden niet gevonden in een software. Ze "
+"moeten handmatig worden geïnstalleerd:"
 
 #: pisi/cli/check.py:152
 msgid "The following packages are broken:"
