@@ -3368,7 +3368,7 @@ msgstr "Nom de paquet delta no vàlid: %s"
 #: pisi/util.py:998
 #, python-format
 msgid "Failed to acquire inhibit lock: %s"
-msgstr ""
+msgstr "No s'ha pogut adquirir el blocatge d'inhibició: %s"
 
 #: pisi/util.py:1007
 #, python-format
