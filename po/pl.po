@@ -3245,7 +3245,7 @@ msgstr "Ignorowanie nieznanego pliku w archiwum: %s"
 #: pisi/archive.py:253
 #, python-format
 msgid "Skipping merged file %s"
-msgstr ""
+msgstr "Pomijanie scalonego pliku %s"
 
 #: pisi/archive.py:484
 #, python-format
