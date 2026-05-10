@@ -680,7 +680,7 @@ msgstr "Przeinstalować uszkodzone pakiety?"
 
 #: pisi/cli/check.py:160
 msgid "Broken packages were not reinstalled."
-msgstr ""
+msgstr "Nie przeinstalowano uszkodzonych pakietów."
 
 #: pisi/cli/check.py:166
 msgid ""
