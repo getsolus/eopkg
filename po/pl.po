@@ -1000,7 +1000,7 @@ msgstr "usuń"
 
 #: pisi/cli/history.py:22
 msgid "emerge"
-msgstr ""
+msgstr "emerge"
 
 #: pisi/cli/history.py:23
 msgid "install"
