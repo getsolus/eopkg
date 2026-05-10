@@ -1734,7 +1734,7 @@ msgstr "Uitvoer in xml-opmaak"
 #: pisi/cli/info.py:129
 #, python-format
 msgid "Unable to resolve repository: %s"
-msgstr ""
+msgstr "Kan de softwarebron niet oplossen: %s"
 
 #: pisi/cli/info.py:154
 msgid "Reverse Dependencies:"
