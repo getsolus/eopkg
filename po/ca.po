@@ -3273,7 +3273,7 @@ msgstr "S'ignora el fitxer desconegut a l'arxiu: %s"
 #: pisi/archive.py:253
 #, python-format
 msgid "Skipping merged file %s"
-msgstr ""
+msgstr "S'omet el fitxer fusionat %s"
 
 #: pisi/archive.py:484
 #, python-format
