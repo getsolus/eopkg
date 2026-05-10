@@ -2779,7 +2779,7 @@ msgstr "installaties en upgrades (deterministische volgorde): %s"
 
 #: pisi/pxml/xmlext.py:74
 msgid "getNodeText: Expected text node, got something else!"
-msgstr ""
+msgstr "getNodeText: Verwachte tekstknoop, kreeg iets anders"
 
 #: pisi/pxml/xmlfile.py:51
 #, python-format
