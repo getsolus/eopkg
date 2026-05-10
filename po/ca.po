@@ -4,8 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Evan Maddock, 2024
-# Davidmp <medipas@gmail.com>, 2026
+# Evan Maddock, 2026
 # 
 #, fuzzy
 msgid ""
@@ -13,8 +12,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-09 16:57-0400\n"
-"PO-Revision-Date: 2024-11-19 19:33+0000\n"
-"Last-Translator: Davidmp <medipas@gmail.com>, 2026\n"
+"PO-Revision-Date: 2026-05-10 00:00+0000\n"
+"Last-Translator: Evan Maddock, 2026\n"
 "Language-Team: Catalan (https://app.transifex.com/solus/teams/188714/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +32,7 @@ msgstr "Ha fallat la instal·lació."
 #: pisi/actionsapi/rubymodules.py:133
 #, python-format
 msgid "Running 'ruby %s' failed."
-msgstr "Ha fallat executar ruby %s"
+msgstr "Ha fallat executar \"ruby %s\""
 
 #: pisi/actionsapi/autotools.py:33 pisi/actionsapi/cmaketools.py:28
 #, python-format
@@ -141,7 +140,7 @@ msgstr "Ha fallat la instal·lació de perl."
 #: pisi/actionsapi/pisitools.py:70 pisi/actionsapi/pisitools.py:146
 #, python-format
 msgid "No file matched pattern \"%s\""
-msgstr "No hi ha cap fitxer que coincideixi amb el patró %s."
+msgstr "No hi ha cap fitxer que coincideixi amb el patró \"%s\""
 
 #: pisi/actionsapi/pisitools.py:158
 #, python-format
@@ -152,8 +151,8 @@ msgstr "ActionsAPI [doman]: fitxer de pàgina de manual incorrecte: %s"
 #, python-format
 msgid "No file matched pattern \"%s\". 'domove' operation failed."
 msgstr ""
-"No hi ha cap fitxer que coincideixi amb el patró %s. Ha fallat l'operació "
-"domove."
+"No hi ha cap fitxer que coincideixi amb el patró \"%s\". Ha fallat "
+"l'operació domove."
 
 #: pisi/actionsapi/pisitools.py:224
 #, python-format
@@ -164,13 +163,13 @@ msgstr "ActionsAPI [rename]: %s: %s"
 #, python-format
 msgid "No such file matching pattern: \"%s\". 'dosed' operation failed."
 msgstr ""
-"No hi ha cap fitxer que coincideixi amb el patró %s. Ha fallat l'operació "
-"dosed."
+"No hi ha cap fitxer que coincideixi amb el patró \"%s\". Ha fallat "
+"l'operació dosed."
 
 #: pisi/actionsapi/pisitools.py:257
 #, python-format
 msgid "dosed method has not changed file '%s'."
-msgstr "El mètode dosed no ha canviat el fitxer %s."
+msgstr "el mètode dosed no ha canviat el fitxer \"%s\"."
 
 #: pisi/actionsapi/pisitools.py:262
 #, python-format
@@ -191,15 +190,15 @@ msgstr "No hi ha cap fitxer que coincideixi amb el patró \"%s\"."
 #, python-format
 msgid "No file matched pattern \"%s\". Remove operation failed."
 msgstr ""
-"No hi ha cap fitxer que coincideixi amb el patró %s. Ha fallat l'operació "
-"remove."
+"No hi ha cap fitxer que coincideixi amb el patró \"%s\". Ha fallat "
+"l'operació remove."
 
 #: pisi/actionsapi/pisitools.py:353
 #, python-format
 msgid "No directory matched pattern \"%s\". Remove directory operation failed."
 msgstr ""
-"No hi ha cap directori que coincideixi amb el patró %s. Ha fallat l'operació"
-" de supressió del directori."
+"No hi ha cap directori que coincideixi amb el patró \"%s\". Ha fallat "
+"l'operació remove directory."
 
 #: pisi/actionsapi/pisitoolsfunctions.py:38
 #: pisi/actionsapi/pisitoolsfunctions.py:59
@@ -224,7 +223,7 @@ msgstr "Ha fallat executar %s."
 #: pisi/actionsapi/qt4.py:44
 #, python-format
 msgid "Project file '%s' not found."
-msgstr "No s'ha trobat el fitxer de projecte %s."
+msgstr "No s'ha trobat el fitxer de projecte \"%s\"."
 
 #: pisi/actionsapi/qt4.py:50
 #, python-format
@@ -249,7 +248,7 @@ msgstr "ActionsAPI [echo]: no es pot afegir al fitxer %s."
 #, python-format
 msgid "ActionsAPI [chmod]: No file matched pattern \"%s\"."
 msgstr ""
-"ActionsAPI [chmod]: no hi ha cap fitxer que coincideixi amb el patró %s."
+"ActionsAPI [chmod]: no hi ha cap fitxer que coincideixi amb el patró \"%s\""
 
 #: pisi/actionsapi/shelltools.py:66
 #, python-format
@@ -300,7 +299,7 @@ msgstr "ActionsAPI [unlinkDir]: el directori %s no existeix."
 #, python-format
 msgid "ActionsAPI [move]: No file matched pattern \"%s\"."
 msgstr ""
-"ActionsAPI [move]: no hi ha cap fitxer que coincideixi amb el patró %s."
+"ActionsAPI [move]: no hi ha cap fitxer que coincideixi amb el patró \"%s\""
 
 #: pisi/actionsapi/shelltools.py:151
 #, python-format
@@ -316,7 +315,7 @@ msgstr "ActionsAPI [move]: el fitxer %s no existeix."
 #, python-format
 msgid "ActionsAPI [copy]: No file matched pattern \"%s\"."
 msgstr ""
-"ActionsAPI [copy]: no hi ha cap fitxer que coincideixi amb el patró %s."
+"ActionsAPI [copy]: no hi ha cap fitxer que coincideixi amb el patró \"%s\""
 
 #: pisi/actionsapi/shelltools.py:171
 #, python-format
@@ -342,7 +341,7 @@ msgstr "ActionsAPI [copytree]: el directori %s no existeix."
 #, python-format
 msgid "ActionsAPI [touch]: No file matched pattern \"%s\"."
 msgstr ""
-"ActionsAPI [touch]: no hi ha cap fitxer que coincideixi amb el patró %s."
+"ActionsAPI [touch]: no hi ha cap fitxer que coincideixi amb el patró \"%s\""
 
 #: pisi/actionsapi/shelltools.py:230
 #, python-format
@@ -352,7 +351,7 @@ msgstr "ActionsAPI [touch]: permís denegat: %s."
 #: pisi/actionsapi/shelltools.py:296
 #, python-format
 msgid "Command \"%s\" failed, return value was %d."
-msgstr "Ha fallat l'ordre %s. El valor de retorn ha estat %d."
+msgstr "Ha fallat l'ordre \"%s\". El valor de retorn ha estat %d."
 
 #: pisi/actionsapi/texlivemodules.py:50
 msgid "Moving source files failed"
@@ -414,17 +413,17 @@ msgstr "Es fa l'enllaç simbòlic de %s a %s"
 #: pisi/actionsapi/texlivemodules.py:178
 #, python-format
 msgid "Creating /etc/texmf/%s.d"
-msgstr "Es crea /etc/texmf/%s.d"
+msgstr "Creant /etc/texmf/%s.d"
 
 #: pisi/actionsapi/texlivemodules.py:182
 #, python-format
 msgid "Moving (and symlinking) /usr/share/texmf/%s to /etc/texmf/%s.d"
-msgstr "Es mou (i s'enllaça) /usr/share/texmf/%s a /etc/texmf/%s.d"
+msgstr "Movent (i enllaçant) /usr/share/texmf/%s a /etc/texmf/%s.d"
 
 #: pisi/actionsapi/texlivemodules.py:263
 #, python-format
 msgid "Building format file %s"
-msgstr "Es construeix el fitxer de format %s"
+msgstr "Construint el fitxer de format %s"
 
 #: pisi/actionsapi/texlivemodules.py:354
 #, python-format
@@ -466,7 +465,7 @@ msgstr "Error: "
 
 #: pisi/cli/__init__.py:150
 msgid " (yes/no)"
-msgstr " (sí / no)"
+msgstr " (sí/no)"
 
 #: pisi/cli/__init__.py:178
 msgid " [complete]\n"
@@ -475,22 +474,22 @@ msgstr " [complet]\n"
 #: pisi/cli/__init__.py:188
 #, python-format
 msgid "Installed %s"
-msgstr "Instal·lat/s %s"
+msgstr "Instal·lat(s) %s"
 
 #: pisi/cli/__init__.py:190
 #, python-format
 msgid "Removed %s"
-msgstr "Suprimit/s %s"
+msgstr "Eliminat(s) %s"
 
 #: pisi/cli/__init__.py:192
 #, python-format
 msgid "Upgraded %s"
-msgstr "Actualitzat/s %s"
+msgstr "Actualitzat(s) %s"
 
 #: pisi/cli/__init__.py:194
 #, python-format
 msgid "Configured %s"
-msgstr "Configurat/s %s"
+msgstr "Configurat(s) %s"
 
 #: pisi/cli/__init__.py:196
 #, python-format
@@ -512,22 +511,16 @@ msgid ""
 "installing the packages being removed, will also be removed if it is\n"
 "safe to do so.\n"
 msgstr ""
-"Supressió de paquets eopkg\n"
-"\n"
-"Ús: autoremove <package1> <package2> ... <packagen>\n"
-"\n"
-"Suprimeix els paquets del sistema. Només calen els noms dels paquets que es volen suprimir.\n"
 
 #: pisi/cli/autoremove.py:38
 msgid "autoremove options"
-msgstr "opcions de l'ordre autoremove"
+msgstr ""
 
 #: pisi/cli/autoremove.py:44 pisi/cli/remove.py:40
 #: pisi/cli/removeorphans.py:40
 msgid "Removes everything including changed config files of the package"
 msgstr ""
-"Ho suprimeix tot incloent-hi els fitxers de configuració canviats del "
-"paquet."
+"Ho elimina tot incloent-hi els fitxers de configuració canviats del paquet"
 
 #: pisi/cli/blame.py:15
 msgid ""
@@ -588,7 +581,7 @@ msgid ""
 "\n"
 "If no packages are given, checks all installed packages.\n"
 msgstr ""
-"Verificació de la instal·lació\n"
+"Verificar la instal·lació\n"
 "\n"
 "Ús: check [<package1> <package2> ... <packagen>]\n"
 "       check -c <component>\n"
@@ -684,8 +677,6 @@ msgid ""
 "Could not check the integrity of packages which contain files your user did not have permission to read.\n"
 "Running the check under a privileged user may help to fix this problem."
 msgstr ""
-"No s'ha pogut comprovar la integritat dels paquets que contenen fitxers que l'usuari no tenia permís per llegir.\n"
-"Executar la comprovació amb un usuari privilegiat pot ajudar a solucionar aquest problema."
 
 #: pisi/cli/clean.py:11
 msgid ""
@@ -696,12 +687,12 @@ msgid ""
 "eopkg uses filesystem locks for managing database access.\n"
 "This command deletes unused locks from the database directory."
 msgstr ""
-"Neteja dels blocatges obsolets\n"
+"Neteja els registres obsolets\n"
 "\n"
 "Ús: clean\n"
 "\n"
-"L'eopkg usa blocatges del sistema de fitxers per gestionar l'accés a la base de dades.\n"
-"Aquesta ordre suprimeix els blocatges no usats del directori de la base de dades."
+"eopkg usa registres de sistema de fitxers per gestionar l'accés a la base de dades.\n"
+"Aquesta ordre elimina els registres no usats del directori de la base de dades."
 
 #: pisi/cli/command.py:19
 msgid "Command lacks name"
@@ -736,8 +727,6 @@ msgstr "Mantén l'amplada de banda sota els KB especificats"
 #: pisi/cli/command.py:121
 msgid "Set the max number of retry attempts in case of connection timeouts"
 msgstr ""
-"Estableix el nombre màxim d'intents en cas que s'esgoti el temps d'espera de"
-" la connexió."
 
 #: pisi/cli/command.py:130
 msgid "Detailed output"
@@ -755,8 +744,6 @@ msgstr "Suprimeix els colors de la sortida d'eopkg"
 msgid ""
 "HTTP Basic-Auth is no longer supported. Please reconfigure your repository."
 msgstr ""
-"L'autenticació bàsica d'HTTP ja no és compatible. Si us plau, reconfigureu "
-"el repositori."
 
 #: pisi/cli/command.py:165
 #, python-format
@@ -823,7 +810,7 @@ msgid ""
 "under /var directory. Since these accumulate they can\n"
 "consume a lot of disk space."
 msgstr ""
-"Supressió de fitxers de la cau\n"
+"Eliminar fitxers de la cau\n"
 "\n"
 "Ús: delete-cache\n"
 "\n"
@@ -891,7 +878,7 @@ msgid ""
 "\n"
 "Disabled repositories are not taken into account in operations\n"
 msgstr ""
-"Inhabilitació de repositoris\n"
+"Inhabilitar repositoris\n"
 "\n"
 "Ús: disable-repo [<repo1> <repo2> ... <repon>]\n"
 "\n"
@@ -927,7 +914,7 @@ msgid ""
 "\n"
 "Downloads the given pisi packages to working directory\n"
 msgstr ""
-"Obtenció d'un paquet\n"
+"Recuperar un paquet\n"
 "\n"
 "Ús: fetch [<package1> <package2> ... <packagen>]\n"
 "\n"
@@ -941,14 +928,14 @@ msgstr "opcions d'obtenció"
 
 #: pisi/cli/fetch.py:42
 msgid "Output directory for the fetched packages"
-msgstr "Directori de sortida per als paquets obtinguts"
+msgstr "Directori de sortida per als paquets recollits"
 
 #: pisi/cli/fetch.py:53 pisi/cli/listavailable.py:63
 #: pisi/cli/listcomponents.py:53 pisi/cli/listnewest.py:59
 #: pisi/cli/listupgrades.py:61 pisi/cli/search.py:86 pisi/cli/searchfile.py:63
 #: pisi/cli/upgrade.py:120 pisi/cli/info.py:83 pisi/cli/install.py:121
 msgid "No active repositories found"
-msgstr "No s'ha trobat cap repositori actiu."
+msgstr ""
 
 #: pisi/cli/help.py:37
 msgid ""
@@ -958,7 +945,7 @@ msgid ""
 "\n"
 "If run without parameters, it prints the general help."
 msgstr ""
-"Impressió de l'ajuda per a les ordres especificades\n"
+"Imprimeix l'ajuda per a les ordres especificades\n"
 "\n"
 "Ús: help [ <command1> <command2> ... <commandn> ]\n"
 "\n"
@@ -990,7 +977,7 @@ msgstr "actualitza"
 
 #: pisi/cli/history.py:21
 msgid "remove"
-msgstr "suprimeix"
+msgstr "elimina"
 
 #: pisi/cli/history.py:22
 msgid "emerge"
@@ -1100,8 +1087,6 @@ msgid ""
 "Comma-separated compression types for index file. Valid options are \"xz\" "
 "and \"bz2\". Defaults to \"xz\"."
 msgstr ""
-"Tipus de compressió separats per comes per a fitxers d'índex. Les opcions "
-"vàlides són xz i bz2. El valor per defecte és xz."
 
 #: pisi/cli/index.py:66
 msgid "Do not sign index."
@@ -1117,7 +1102,7 @@ msgid ""
 "repositories. If no repository is specified, we list packages in\n"
 "all repositories.\n"
 msgstr ""
-"Llista de paquets disponibles als repositoris\n"
+"Llista paquets disponibles als repositoris\n"
 "\n"
 "Ús: list-available [ <repo1> <repo2> ... repon ]\n"
 "\n"
@@ -1186,7 +1171,7 @@ msgid ""
 "repositories. If no repository is specified, we list the new\n"
 "packages from all repositories.\n"
 msgstr ""
-"Llista dels paquets més nous dels repositoris\n"
+"Llista els paquets més nous dels repositoris\n"
 "\n"
 "Ús: list-newest [ <repo1> <repo2> ... repon ]\n"
 "\n"
@@ -1246,7 +1231,7 @@ msgid ""
 "\n"
 "Lists currently tracked repositories.\n"
 msgstr ""
-"Llista de repositoris\n"
+"Llista repositoris\n"
 "\n"
 "Ús: list-repo\n"
 "\n"
@@ -1304,7 +1289,7 @@ msgstr ""
 
 #: pisi/cli/pisicli.py:77
 msgid "Options must precede non-option arguments"
-msgstr "Les opcions han de precedir els arguments de no opció."
+msgstr "Les opcions han de precedir els arguments de no opció"
 
 #: pisi/cli/pisicli.py:118
 msgid "No command given"
@@ -1357,22 +1342,22 @@ msgid ""
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
 msgstr ""
-"Supressió de paquets eopkg\n"
+"Eliminació de paquets eopkg\n"
 "\n"
 "Ús: remove <package1> <package2> ... <packagen>\n"
 "\n"
-"Suprimeix paquets del sistema. Només cal dir el nom dels paquets per suprimir.\n"
+"Elimina paquets del sistema. Només cal dir el nom dels paquets per eliminar.\n"
 "\n"
 "També podeu especificar components en lloc de noms de paquets, que\n"
 "s'expandiran a noms de paquets.\n"
 
 #: pisi/cli/remove.py:34
 msgid "remove options"
-msgstr "opcions de supressió"
+msgstr "opcions d'eliminació"
 
 #: pisi/cli/remove.py:47
 msgid "Remove component's and recursive components' packages"
-msgstr "Suprimeix els paquets dels components i dels components recursius."
+msgstr "Elimina els paquets dels components i dels components recursius"
 
 #: pisi/cli/removeorphans.py:16
 msgid ""
@@ -1386,20 +1371,10 @@ msgid ""
 "Only packages that have no reverse dependencies outside of the automatically\n"
 "installed list will be removed.\n"
 msgstr ""
-"Supressió de paquets orfes\n"
-"\n"
-"Ús: remove-orphans\n"
-"\n"
-"Suprimeix tots els paquets orfes no usats que s'hagin instal·lat automàticament\n"
-"com a dependència d'un altre paquet.\n"
-"\n"
-"Només se suprimiran els paquets que no tinguin dependències inverses\n"
-"fora de la llista instal·lada automàticament.\n"
-"\n"
 
 #: pisi/cli/removeorphans.py:34
 msgid "remove-orphans options"
-msgstr "opcions de l'ordre remove-orphans"
+msgstr ""
 
 #: pisi/cli/removerepo.py:12
 msgid ""
@@ -1409,11 +1384,11 @@ msgid ""
 "\n"
 "Remove all repository information from the system.\n"
 msgstr ""
-"Supressió de repositoris\n"
+"Eliminació de repositoris\n"
 "\n"
 "Ús: remove-repo <repo1> <repo2> ... <repon>\n"
 "\n"
-"Suprimeix tota la informació de repositoris del sistema.\n"
+"Elimina tota la informació de repositoris del sistema.\n"
 
 #: pisi/cli/repopriority.py:19
 msgid ""
@@ -1424,35 +1399,29 @@ msgid ""
 "<repo>: Name of repository to adjust priority\n"
 "<priority>: Set the repository's priority at given position (0 is first)\n"
 msgstr ""
-"Establiment de la prioritat d'un repositori\n"
-"\n"
-"Ús: repo-priority <repo> <priority>\n"
-"\n"
-"<repo>: nom del repositori per ajustar-ne la prioritat\n"
-"<priority>: estableix la prioritat del repositori a la posició donada (0 és el primer)\n"
 
 #: pisi/cli/repopriority.py:44
 msgid "Priority needs to be a number"
-msgstr "La prioritat ha de ser un número."
+msgstr ""
 
 #: pisi/cli/repopriority.py:48
 #, python-format
 msgid "Unable to locate repository file, expected: %s"
-msgstr "No s'ha pogut localitzar el fitxer del repositori, s'esperava %s"
+msgstr ""
 
 #: pisi/cli/repopriority.py:62
 #, python-format
 msgid "Repository %s does not exist. Cannot reorder."
-msgstr "El repositori %s no existeix. No es pot reordenar."
+msgstr ""
 
 #: pisi/cli/repopriority.py:71
 msgid "Failed to write to repository file"
-msgstr "Ha fallat escriure al fitxer del repositori."
+msgstr ""
 
 #: pisi/cli/repopriority.py:73
 #, python-format
 msgid "Repo %s reordered to position %s."
-msgstr "El repositori %s s'ha reordenat a la posició %s."
+msgstr ""
 
 #: pisi/cli/search.py:16
 msgid ""
@@ -1668,7 +1637,7 @@ msgid ""
 "\n"
 "NB: We support only local files (e.g., /a/b/c) and http:// URIs at the moment\n"
 msgstr ""
-"Addició d'un repositori\n"
+"Afegir un repositori\n"
 "\n"
 "Ús: add-repo <repo> <indexuri>\n"
 "\n"
@@ -1688,7 +1657,7 @@ msgstr "Ignora la comprovació del repositori de la distribució"
 #: pisi/cli/addrepo.py:45
 msgid "Does not fetch repository index and does not check distribution match"
 msgstr ""
-"No obté l'índex del repositori i no comprova la coincidència de la "
+"No recull l'índex del repositori i no comprova la coincidència de la "
 "distribució"
 
 #: pisi/cli/addrepo.py:53
@@ -1703,7 +1672,7 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 "Voleu afegir el repositori %s sense actualitzar la base de dades?\n"
-"Si ho confirmeu també afegiu el repositori al sistema sense comprovar la distribució del repositori.\n"
+"Confirmant això també afegiu el repositori al sistema sense comprovar la distribució del repositori.\n"
 "Voleu continuar?"
 
 #: pisi/cli/info.py:17
@@ -1714,11 +1683,6 @@ msgid ""
 "\n"
 "<packagei> is either a package name or a .pisi file,\n"
 msgstr ""
-"Mostrar la informació del paquet\n"
-"\n"
-"Ús: info <package1> <package2> ... <packagen>\n"
-"\n"
-"<packagei> és o bé un nom de paquet o bé un fitxer .pisi.\n"
 
 #: pisi/cli/info.py:35
 msgid "info options"
@@ -1773,7 +1737,7 @@ msgstr "Paquet instal·lat:"
 #: pisi/cli/info.py:188
 #, python-format
 msgid "%s package is not installed"
-msgstr "El paquet %s no està instal·lat"
+msgstr "el paquet %s no està instal·lat"
 
 #: pisi/cli/info.py:194
 msgid "[binary] "
@@ -1787,7 +1751,7 @@ msgstr "El paquet s'ha trobat al repositori %s:"
 #: pisi/cli/info.py:199
 #, python-format
 msgid "%s package is not found in binary repositories"
-msgstr "El paquet %s no s'ha trobat als repositoris binaris"
+msgstr "el paquet %s no s'ha trobat als repositoris binaris"
 
 #: pisi/cli/build.py:15
 msgid ""
@@ -1806,7 +1770,7 @@ msgstr ""
 "Ús: build [<pspec.xml> | <sourcename>] ...\n"
 "\n"
 "Podeu especificar l'URI del fitxer pspec.xml. L'eopkg\n"
-"obtindrà tots els fitxers necessaris i us construirà el paquet.\n"
+"recuperarà tots els fitxers necessaris i us construirà el paquet.\n"
 "\n"
 "Alternativament, podeu especificar el nom del paquet font\n"
 "per baixar d'un repositori que contingui fonts.\n"
@@ -1850,7 +1814,7 @@ msgstr "passos de construcció"
 
 #: pisi/cli/build.py:129
 msgid "Break build after fetching the source archive"
-msgstr "Interromp la construcció després d'obtenir l'arxiu font"
+msgstr "Pausa la construcció després de recollir l'arxiu font"
 
 #: pisi/cli/build.py:138
 msgid ""
@@ -1926,8 +1890,6 @@ msgid ""
 "Don't check for updates in reverse dependencies of runtime dependencies when"
 " updates are available"
 msgstr ""
-"No es comprova si hi ha actualitzacions a les dependències inverses de les "
-"dependències de l'entorn d'execució quan hi ha actualitzacions disponibles."
 
 #: pisi/cli/install.py:76
 msgid "Install component's and recursive components' packages"
@@ -1963,8 +1925,6 @@ msgid ""
 "Updates available, checking reverse dependencies of runtime dependencies for"
 " safety."
 msgstr ""
-"Actualitzacions disponibles. Es comproven les dependències inverses de les "
-"dependències de l'entorn d'execució per seguretat."
 
 #: pisi/cli/listinstalled.py:17
 msgid ""
@@ -1972,7 +1932,7 @@ msgid ""
 "\n"
 "Usage: list-installed\n"
 msgstr ""
-"Impressió d'una llista de tots els paquets instal·lats\n"
+"Imprimeix una llista de tots els paquets instal·lats\n"
 "\n"
 "Ús: list-installed\n"
 
@@ -1983,11 +1943,10 @@ msgstr "opcions de la llista d'instal·lats"
 #: pisi/cli/listinstalled.py:37
 msgid "Show automatically installed packages and the parent dependency"
 msgstr ""
-"Mostra els paquets instal·lats automàticament i la dependència principal."
 
 #: pisi/cli/listinstalled.py:44
 msgid "Show installed packages that were installed by a user"
-msgstr "Mostra els paquets instal·lats per un usuari."
+msgstr ""
 
 #: pisi/cli/listinstalled.py:51
 msgid "Only list the installed packages built by the given host"
@@ -2002,11 +1961,11 @@ msgstr "Llista els paquets instal·lats segons un component donat"
 #. not be translated.
 #: pisi/cli/listinstalled.py:82
 msgid "You cannot specify both --explicit and --automatic"
-msgstr "No podeu especificar --explicit i --automatic alhora."
+msgstr ""
 
 #: pisi/cli/listinstalled.py:157
 msgid "Orphaned package"
-msgstr "Paquet orfe"
+msgstr ""
 
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
@@ -2046,8 +2005,8 @@ msgid ""
 "Installation info for package '%s' is broken. Reinstall it to fix this "
 "problem."
 msgstr ""
-"La informació d'instal·lació per al paquet %s està trencada. Reinstal·leu-lo"
-" per corregir aquest problema."
+"La informació d'instal·lació per al paquet \"%s\" està trencada. "
+"Reinstal·leu-lo per corregir aquest problema."
 
 #: pisi/db/installdb.py:378
 #, python-format
@@ -2057,7 +2016,7 @@ msgstr "El paquet %s no està instal·lat"
 #: pisi/db/packagedb.py:129
 #, python-format
 msgid "Repo %s not found."
-msgstr "No s'ha trobat el repositori %s."
+msgstr ""
 
 #: pisi/db/packagedb.py:218 pisi/db/packagedb.py:224
 #, python-format
@@ -2074,15 +2033,15 @@ msgid ""
 "Error parsing repository index information. Index file does not exist or is "
 "malformed."
 msgstr ""
-"Error en analitzar l'índex d'informació del repositori. El fitxer d'índex no"
-" existeix o està mal format."
+"Error analitzant l'índex d'informació del repositori. El fitxer d'índex no "
+"existeix o està mal format."
 
 #: pisi/db/repodb.py:309
 #, python-format
 msgid ""
 "Repository '%s' is not compatible with your distribution. Repository is "
 "disabled."
-msgstr "El repositori %s no és compatible amb la distribució. S'inhabilita."
+msgstr "El repositori \"%s\" no és compatible amb la distribució. S'inhabilita."
 
 #: pisi/db/itembyrepo.py:31
 #, python-format
@@ -2102,50 +2061,43 @@ msgstr "El repositori %s no existeix."
 #: pisi/db/filesdb.py:171
 #, python-format
 msgid "FilesDB %s does not exist."
-msgstr "La base de dades de fitxers %s no existeix."
+msgstr ""
 
 #: pisi/db/filesdb.py:200
 #, python-format
 msgid "FilesDB %s is writable, but is of wrong type '%s'."
 msgstr ""
-"Es pot escriure a la base de dades de fitxers %s, però és del tipus %s "
-"incorrecte."
 
 #: pisi/db/filesdb.py:212
 #, python-format
 msgid "FilesDB %s is readable, but is of wrong type '%s'."
 msgstr ""
-"La base de dades de fitxers %s és llegible, però és del tipus %s incorrecte."
 
 #: pisi/db/filesdb.py:216
 #, python-format
 msgid "Cannot open FilesDB %s for writing. Opening it read-only."
 msgstr ""
-"No es pot obrir la base de dades de fitxers %s per a escriptura. S'obre en "
-"mode només de lectura."
 
 #: pisi/db/filesdb.py:224
 #, python-format
 msgid "FilesDB %s of type '%s' exists, but we cannot access it."
 msgstr ""
-"Existeix la base de dades de fitxers %s del tipus %s, però no s'hi pot "
-"accedir."
 
 #. Can't open the shelve, it needs a rebuild
 #: pisi/db/filesdb.py:242
 #, python-format
 msgid "FilesDB %s is not in a valid shelve format."
-msgstr "La base de dades de fitxers %s no té un format de prestatgeria vàlid."
+msgstr ""
 
 #: pisi/db/filesdb.py:258
 #, python-format
 msgid "FilesDB %s has no version."
-msgstr "La base de dades de fitxers %s no té cap versió."
+msgstr ""
 
 #: pisi/db/filesdb.py:271
 #, python-format
 msgid "FilesDB is version %s, need version %s."
-msgstr "La base de dades de fitxers és de la versió %s. Cal la versió %s."
+msgstr ""
 
 #: pisi/db/filesdb.py:299
 msgid "FilesDB is invalid. Please rebuild it with 'sudo eopkg.py -y rdb'"
@@ -2153,34 +2105,34 @@ msgstr ""
 
 #: pisi/db/filesdb.py:300
 msgid "Falling back to slow and inaccurate XML search..."
-msgstr "Es torna a una cerca XML lenta i imprecisa..."
+msgstr ""
 
 #: pisi/db/filesdb.py:308
 msgid "Rebuilding the FilesDB..."
-msgstr "Es reconstrueix la base de dades de fitxers..."
+msgstr ""
 
 #: pisi/db/filesdb.py:319
 msgid "FilesDB rebuild failed!"
-msgstr "La reconstrucció de la base de dades de fitxers ha fallat!"
+msgstr ""
 
 #: pisi/db/filesdb.py:327
 #, python-format
 msgid "Adding packages to FilesDB %s:"
-msgstr "S'afegeixen paquets a la base de dades de fitxers %s:"
+msgstr ""
 
 #: pisi/db/filesdb.py:331
 #, python-format
 msgid "Adding '%s' ..."
-msgstr "S'afegeix %s ..."
+msgstr ""
 
 #: pisi/db/filesdb.py:334
 msgid "Okay."
-msgstr "D'acord."
+msgstr ""
 
 #: pisi/db/filesdb.py:340
 #, python-format
 msgid "Added so far: %s"
-msgstr "Afegit fins ara: %s"
+msgstr ""
 
 #: pisi/db/filesdb.py:344
 #, python-format
@@ -2191,24 +2143,20 @@ msgid_plural ""
 "\n"
 "%(num)d packages added in total."
 msgstr[0] ""
-"\n"
-"%(num)d paquet afegit en total."
 msgstr[1] ""
-"\n"
-"%(num)d paquets afegits en total."
 
 #. This acts as a check that the version has been correctly added and synced
 #. to disk
 #: pisi/db/filesdb.py:348
 #, python-format
 msgid "Done rebuilding FilesDB (version: %s)"
-msgstr "Reconstrucció de la base de dades de fitxers feta (versió: %s)"
+msgstr ""
 
 #: pisi/operations/delta.py:43
 #, python-format
 msgid ""
 "The file '%s' belongs to a different package other than '%s'. Skipping it..."
-msgstr "El fitxer %s pertany a un paquet diferent que no sigui %s. S'omet..."
+msgstr "El fitxer \"%s\" pertany a un paquet diferent que no sigui \"%s\". S'omet..."
 
 #: pisi/operations/delta.py:53
 #, python-format
@@ -2216,7 +2164,7 @@ msgid ""
 "Package '%s' has the same release number with the new package. Skipping "
 "it..."
 msgstr ""
-"El paquet %s té el mateix número de versió que el paquet nou. S'omet..."
+"El paquet \"%s\" té el mateix número de versió que el paquet nou. S'omet..."
 
 #: pisi/operations/delta.py:73 pisi/operations/build.py:1649
 #, python-format
@@ -2229,29 +2177,27 @@ msgid ""
 "All files in the package '%s' are different from the files in the new "
 "package. Skipping it..."
 msgstr ""
-"Tots els fitxers del paquet %s són diferents dels fitxers del paquet nou. "
-"S'omet..."
+"Tots els fitxers del paquet \"%s\" són diferents dels fitxers del paquet "
+"nou. S'omet..."
 
 #: pisi/operations/delta.py:134
 #, python-format
 msgid "New package '%s' exists in the list of old packages. Skipping it..."
-msgstr "El paquet nou %s existeix a la llista de paquets antics. S'omet..."
+msgstr "El paquet nou \"%s\" existeix a la llista de paquets antics. S'omet..."
 
 #: pisi/operations/helper.py:33
 msgid "Reordering install order so system.base packages come first."
 msgstr ""
-"Es reordena l'ordre d'instal·lació perquè els paquets system.base siguin els"
-" primers."
 
 #: pisi/operations/helper.py:35
 #, python-format
 msgid "install_order: %s"
-msgstr "_ordre d'instal·lació: %s"
+msgstr ""
 
 #: pisi/operations/helper.py:48
 #, python-format
 msgid "order: %s"
-msgstr "ordre: %s"
+msgstr ""
 
 #: pisi/operations/helper.py:60
 #, python-format
@@ -2274,15 +2220,15 @@ msgstr ""
 
 #: pisi/operations/helper.py:74
 msgid "Remove the following conflicting packages?"
-msgstr "Voleu suprimir els paquets conflictius següents?"
+msgstr "Voleu eliminar els paquets conflictius següents?"
 
 #: pisi/operations/helper.py:75
 msgid "Conflicting packages should be removed to continue"
-msgstr "S'haurien de suprimir els paquets conflictius per continuar."
+msgstr "S'haurien d'eliminar els paquets conflictius per continuar"
 
 #: pisi/operations/remove.py:51 pisi/operations/remove.py:85
 msgid "Safety switch prevents the removal of following packages:\n"
-msgstr "El canvi de seguretat evita la supressió dels paquets següents:\n"
+msgstr "El canvi de seguretat evita l'eliminació dels paquets següents:\n"
 
 #: pisi/operations/remove.py:56 pisi/operations/remove.py:92
 #: pisi/operations/upgrade.py:460
@@ -2292,18 +2238,18 @@ msgstr "Canvi de seguretat: no es pot trobar el component system.base."
 #: pisi/operations/remove.py:64
 #, python-format
 msgid "Package %s does not exist. Cannot remove."
-msgstr "El paquet %s no existeix. No es pot suprimir."
+msgstr "El paquet %s no existeix. No es pot eliminar."
 
 #: pisi/operations/remove.py:68
 msgid "No packages to remove."
-msgstr "No hi ha paquets per suprimir."
+msgstr "No hi ha paquets per eliminar."
 
 #: pisi/operations/remove.py:103
 msgid ""
 "The following list of packages will be removed\n"
 "in the respective order to satisfy dependencies:\n"
 msgstr ""
-"Els paquets de la llista següent se suprimiran\n"
+"Els paquets de la llista següent s'eliminaran\n"
 "en l'ordre respectiu per satisfer dependències:\n"
 
 #: pisi/operations/remove.py:119 pisi/operations/history.py:191
@@ -2314,7 +2260,7 @@ msgstr "Voleu continuar?"
 
 #: pisi/operations/remove.py:120
 msgid "Package removal declined"
-msgstr "Supressió de paquet rebutjada"
+msgstr "Eliminació de paquet rebutjada"
 
 #. Remove the packages.
 #. Install all the packages
@@ -2322,12 +2268,11 @@ msgstr "Supressió de paquet rebutjada"
 #: pisi/operations/upgrade.py:236 pisi/api.py:897 pisi/api.py:937
 msgid "Disabling keyboard interrupts for file operations."
 msgstr ""
-"Es desactiven les interrupcions del teclat per a operacions amb fitxers."
 
 #: pisi/operations/remove.py:134
 #, python-format
 msgid "Package %s is not installed. Cannot remove."
-msgstr "El paquet %s no està instal·lat. No es pot suprimir."
+msgstr "El paquet %s no està instal·lat. No es pot eliminar."
 
 #: pisi/operations/remove.py:302
 msgid "Conflicts remain"
@@ -2349,7 +2294,7 @@ msgstr "El camí %s pertany a paquets múltiples"
 #: pisi/operations/build.py:362
 #, python-format
 msgid "pspec.xml avoids this package from building for '%s'"
-msgstr "pspec.xml evita la construcció d'aquest paquet per a %s"
+msgstr "pspec.xml evita la construcció d'aquest paquet per a \"%s\""
 
 #: pisi/operations/build.py:365
 #, python-format
@@ -2389,7 +2334,7 @@ msgstr ""
 
 #: pisi/operations/build.py:568
 msgid "Unpacking archive(s)..."
-msgstr "Es desempaqueten arxius..."
+msgstr "Desempaquetant arxius..."
 
 #: pisi/operations/build.py:576
 #, python-format
@@ -2458,17 +2403,17 @@ msgstr "Violacions de Sandbox!"
 #: pisi/operations/build.py:800
 #, python-format
 msgid "unable to call function from actions: %s"
-msgstr "No es pot cridar la funció des de les accions: %s"
+msgstr "no es pot cridar la funció des de les accions: %s"
 
 #: pisi/operations/build.py:815
 #, python-format
 msgid "Source package '%s' defines a relative 'Path' element: %s"
-msgstr "El paquet font %s defineix un element \"Path\" relatiu: %s"
+msgstr "El paquet font \"%s\" defineix un element \"Path\" relatiu: %s"
 
 #: pisi/operations/build.py:823
 #, python-format
 msgid "Source package '%s' defines multiple 'Path' tags for %s"
-msgstr "El paquet font %s defineix múltiples etiquetes Path per a %s"
+msgstr "El paquet font \"%s\" defineix múltiples etiquetes \"Path\" per a %s"
 
 #: pisi/operations/build.py:835 pisi/atomicoperations.py:200
 #, python-format
@@ -2533,23 +2478,21 @@ msgid ""
 "pkg-config not found but package provides .pc files - skipping export of "
 "pkgconfig information"
 msgstr ""
-"No s'ha trobat pkg-config però el paquet proporciona fitxers .pc. S'omet "
-"l'exportació de la informació de pkgconfig."
 
 #: pisi/operations/build.py:1137
 #, python-format
 msgid "Unable to obtain pkgconfig module version for %s"
-msgstr "No s'ha pogut obtenir la versió del mòdul pkgconfig per a %s."
+msgstr ""
 
 #: pisi/operations/build.py:1145
 #, python-format
 msgid "Adding %s to provided pkgconfig32 list"
-msgstr "S'afegeix %s a la llista pkgconfig32 proporcionada."
+msgstr ""
 
 #: pisi/operations/build.py:1150
 #, python-format
 msgid "Adding %s to provided pkgconfig list"
-msgstr "S'afegeix %s a la llista de pkgconfig proporcionada."
+msgstr ""
 
 #: pisi/operations/build.py:1374
 #, python-format
@@ -2559,12 +2502,12 @@ msgstr "/%s té establert el suid bit"
 #: pisi/operations/build.py:1565
 #, python-format
 msgid "No user named '%s' found on the system"
-msgstr "No s'ha trobat cap usuari anomenat %s al sistema."
+msgstr "No s'ha trobat cap usuari anomenat \"%s\" al sistema."
 
 #: pisi/operations/build.py:1572
 #, python-format
 msgid "No group named '%s' found on the system"
-msgstr "No s'ha trobat cap grup anomenat %s al sistema."
+msgstr "No s'ha trobat cap grup anomenat \"%s\" al sistema."
 
 #: pisi/operations/build.py:1581
 #, python-format
@@ -2601,7 +2544,7 @@ msgstr "*** %d error(s), %d avís(os)"
 #: pisi/operations/build.py:1874
 #, python-format
 msgid "Last state was '%s'"
-msgstr "L'últim estat era %s"
+msgstr "L'últim estat era \"%s\""
 
 #: pisi/operations/history.py:74 pisi/atomicoperations.py:77
 #, python-format
@@ -2625,9 +2568,7 @@ msgstr "Els paquets següents s'instal·laran:\n"
 
 #: pisi/operations/history.py:188
 msgid "Following packages will be removed:\n"
-msgstr ""
-"Se suprimiran els paquets següents:\n"
-"\n"
+msgstr "Els paquets següents s'eliminaran:\n"
 
 #: pisi/operations/history.py:199 pisi/operations/install.py:127
 #: pisi/operations/upgrade.py:217
@@ -2657,11 +2598,11 @@ msgstr "No hi ha paquets per instal·lar."
 
 #: pisi/operations/install.py:93 pisi/operations/upgrade.py:176
 msgid "The following packages will be downloaded:"
-msgstr "Es baixaran els paquets següents:"
+msgstr ""
 
 #: pisi/operations/install.py:95
 msgid "The following packages will be installed:"
-msgstr "S'instal·laran els paquets següents:"
+msgstr ""
 
 #: pisi/operations/install.py:104 pisi/operations/upgrade.py:187
 #, python-format
@@ -2717,22 +2658,22 @@ msgstr "Ordre d'instal·lació:"
 #: pisi/operations/install.py:378 pisi/specfile.py:301
 #, python-format
 msgid "%s dependency of package %s is not satisfied"
-msgstr "La dependència %s del paquet %s no està satisfeta."
+msgstr "La dependència %s del paquet %s no està satisfeta"
 
 #: pisi/operations/install.py:400
 #, python-format
 msgid "topological_sort() order: %s"
-msgstr "ordre _topològica de classificació (): %s"
+msgstr ""
 
 #: pisi/operations/install.py:403
 #, python-format
 msgid "deterministic order: %s"
-msgstr "ordre determinista: %s"
+msgstr ""
 
 #: pisi/operations/install.py:406
 #, python-format
 msgid "final order.reverse(): %s"
-msgstr "ordre final invers (): %s"
+msgstr ""
 
 #: pisi/operations/upgrade.py:48
 msgid ""
@@ -2744,7 +2685,7 @@ msgstr ""
 
 #: pisi/operations/upgrade.py:72
 msgid "Warning: package *name* ends with '.pisi'"
-msgstr "Avís: el paquet *nom* acaba amb .pisi."
+msgstr ""
 
 #: pisi/operations/upgrade.py:75
 #, python-format
@@ -2767,7 +2708,7 @@ msgstr "S'actualitzaran els paquets següents:"
 
 #: pisi/operations/upgrade.py:223
 msgid "Finished downloading package upgrades."
-msgstr "S'han acabat de baixar les actualitzacions de paquets."
+msgstr ""
 
 #: pisi/operations/upgrade.py:308
 #, python-format
@@ -2789,16 +2730,16 @@ msgstr "El canvi de seguretat força l'actualització dels paquets següents:"
 #: pisi/operations/upgrade.py:453
 #, python-format
 msgid "installs and upgrades (unordered): %s"
-msgstr "Instal·lacions i actualitzacions (sense ordenar): %s"
+msgstr ""
 
 #: pisi/operations/upgrade.py:456
 #, python-format
 msgid "installs and upgrades (deterministic order): %s"
-msgstr "Instal·lacions i actualitzacions (ordre determinista): %s"
+msgstr ""
 
 #: pisi/pxml/xmlext.py:74
 msgid "getNodeText: Expected text node, got something else!"
-msgstr "getNodeText: s'esperava un node de text, però hi ha alguna cosa més!"
+msgstr ""
 
 #: pisi/pxml/xmlfile.py:51
 #, python-format
@@ -2813,107 +2754,103 @@ msgstr "No es pot llegir el fitxer (%s): %s"
 #: pisi/pxml/xmlfile.py:89 pisi/specfile.py:494
 #, python-format
 msgid "File '%s' has invalid XML"
-msgstr "El fitxer %s té un XML no vàlid"
+msgstr "El fitxer \"%s\" té un XML no vàlid"
 
 #: pisi/pxml/autoxml.py:74
 #, python-brace-format
 msgid "At least one '{}' tag should have local text."
-msgstr "Com a mínim una etiqueta {} ha de tenir text local."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:86
 #, python-brace-format
 msgid "'{0}' language of tag '{1}' is empty."
-msgstr "La llengua {0} de l'etiqueta {1} és buida."
+msgstr ""
 
 #. FIXME: what exception could we catch here, replace with that.
 #: pisi/pxml/autoxml.py:118
 msgid "LocalText: unable to get either current or default locale."
 msgstr ""
-"LocalText: no s'ha pogut obtenir la configuració regional actual ni la "
-"predeterminada."
 
 #: pisi/pxml/autoxml.py:132 pisi/pxml/autoxml.py:151
 msgid ""
 "Tag should have at least the current locale, or failing that an English or "
 "Turkish version."
 msgstr ""
-"L'etiqueta hauria de tenir com a mínim la configuració regional actual o, si"
-" no, una versió en anglès o turc."
 
 #: pisi/pxml/autoxml.py:386
 #, python-brace-format
 msgid "autoxml.check: '{}' errors."
-msgstr "autoxml.check: errors de {}."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:454 pisi/pxml/autoxml.py:464
 #, python-brace-format
 msgid "autoxml.parse: String '{}' has errors."
-msgstr "autoxml.parse: la cadena {} té errors."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:493 pisi/pxml/autoxml.py:503
 #, python-brace-format
 msgid "autoxml.read: File '{}' has errors."
-msgstr "autoxml.read: el fitxer {} té errors."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:518
 msgid "autoxml.write: object validation has failed."
-msgstr "autoxml.write: la validació de l'objecte ha fallat."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:527
 #, python-brace-format
 msgid "autoxml.write: File encoding '{}' has errors."
-msgstr "autoxml.write: la codificació del fitxer {} té errors."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:586
 #, python-brace-format
 msgid "gen_tag: unrecognized tag type {} in spec."
-msgstr "gen_tag: tipus d'etiqueta no reconegut ({}) a l'especificació."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:642 pisi/pxml/autoxml.py:654
 #, python-brace-format
 msgid "Mandatory variable {} not available."
-msgstr "La variable obligatòria {} no està disponible."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:731
 msgid "Type mismatch: read text cannot be decoded."
-msgstr "Tipus no coincidents: el text llegit no es pot descodificar."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:739 pisi/pxml/autoxml.py:749
 #, python-brace-format
 msgid "Mandatory token {} not available."
-msgstr "El testimoni obligatori {} no està disponible."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:757
 #, python-brace-format
 msgid "Type mismatch. Expected {0}, got {1}"
-msgstr "Tipus no coincidents. S'esperava {0} però s'ha obtingut {1}"
+msgstr ""
 
 #: pisi/pxml/autoxml.py:791 pisi/pxml/autoxml.py:923
 msgid "Type mismatch: DOM cannot be decoded."
-msgstr "Tipus no coincidents: el DOM no es pot descodificar."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:795 pisi/pxml/autoxml.py:811 pisi/pxml/autoxml.py:825
 #: pisi/pxml/autoxml.py:927 pisi/pxml/autoxml.py:941 pisi/pxml/autoxml.py:955
 msgid "Mandatory argument not available."
-msgstr "Argument obligatori no disponible."
+msgstr ""
 
 #. note: we can receive an error if obj has no content
 #: pisi/pxml/autoxml.py:808 pisi/pxml/autoxml.py:938
 msgid "Object cannot be encoded."
-msgstr "L'objecte no es pot codificar."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:822 pisi/pxml/autoxml.py:952
 msgid "Object cannot be formatted."
-msgstr "No es pot formatar l'objecte."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:838
 msgid "List type must contain only one element."
-msgstr "El tipus de llista només ha de contenir un element."
+msgstr ""
 
 #: pisi/pxml/autoxml.py:854 pisi/pxml/autoxml.py:878
 #, python-brace-format
 msgid "Mandatory list \"{0}\" under \"{1}\" node is empty."
-msgstr "La llista obligatòria {0} sota el node {1} és buida."
+msgstr ""
 
 #: pisi/scenarioapi/package.py:71
 #, python-format
@@ -2923,12 +2860,12 @@ msgstr "Cap paquet pisi: %s* trobat(s)."
 #: pisi/scenarioapi/repoops.py:17
 #, python-format
 msgid "Repo already has package named %s."
-msgstr "El repositori ja té un paquet anomenat %s."
+msgstr "El repositori ja té un paquet anomenat \"%s\"."
 
 #: pisi/scenarioapi/repoops.py:44 pisi/scenarioapi/repoops.py:52
 #, python-format
 msgid "Repo does not have package named %s."
-msgstr "El repositori no té un paquet anomenat %s."
+msgstr "El repositori no té un paquet anomenat \"%s\"."
 
 #: pisi/scripts/eopkg.py:34
 msgid "Keyboard Interrupt: Exiting..."
@@ -3012,41 +2949,41 @@ msgstr "Error d'script: %s"
 
 #: pisi/comariface.py:131
 msgid "Calling post install handlers"
-msgstr "Es criden els gestors de postinstal·lació."
+msgstr "Es criden els gestors de postinstal·lació"
 
 #: pisi/comariface.py:149
 msgid "Running package's post install script"
-msgstr "S'executa l'script de postinstal·lació del paquet."
+msgstr "S'executa l'script de postinstal·lació del paquet"
 
 #: pisi/comariface.py:163
 #, python-format
 msgid "Running pre removal operations for %s"
-msgstr "S'executen operacions prèvies de supressió per a %s"
+msgstr "S'executen operacions de preeliminació per a %s"
 
 #: pisi/comariface.py:169
 msgid "Running package's pre remove script"
-msgstr "S'executa l'script previ de supressió del paquet."
+msgstr "S'executa l'script de preeliminació del paquet"
 
 #: pisi/comariface.py:177
 msgid "Calling pre remove handlers"
-msgstr "Es criden els gestors previs de supressió."
+msgstr "Es criden els gestors de preeliminació"
 
 #: pisi/comariface.py:193
 #, python-format
 msgid "Running post removal operations for %s"
-msgstr "S'executen operacions posteriors de supressió per a %s"
+msgstr "S'executen operacions de posteliminació per a %s"
 
 #: pisi/comariface.py:201
 msgid "Running package's postremove script"
-msgstr "S'executa l'script posterior de supressió del paquet."
+msgstr "S'executa l'script de posteliminació del paquet"
 
 #: pisi/comariface.py:209
 msgid "Calling post remove handlers"
-msgstr "Es criden els gestors posteriors de supressió."
+msgstr "Es criden els gestors de posteliminació"
 
 #: pisi/comariface.py:221
 msgid "Unregistering comar scripts"
-msgstr "S'anul·la el registre d'scripts comar."
+msgstr "S'anul·la el registre d'scripts comar"
 
 #: pisi/config.py:86
 #, python-format
@@ -3056,7 +2993,7 @@ msgstr "El directori de destinació %s no existeix. Es crea."
 #: pisi/configfile.py:135
 #, python-format
 msgid "No section by name '%s'"
-msgstr "No hi ha cap secció amb el nom %s."
+msgstr "No hi ha cap secció amb el nom \"%s\""
 
 #: pisi/conflict.py:17 pisi/dependency.py:19 pisi/replace.py:15
 msgid " version >= "
@@ -3085,20 +3022,20 @@ msgstr " versió "
 #: pisi/constants.py:21
 #, python-format
 msgid "Can't rebind constant: %s"
-msgstr "No es pot fer una revinculació constant: %s"
+msgstr "No es pot fer rebind constant: %s"
 
 #: pisi/constants.py:27
 #, python-format
 msgid "Can't unbind constant: %s"
-msgstr "No es pot fer desfer una vinculació constant: %s"
+msgstr "No es pot fer unbind constant: %s"
 
 #: pisi/context.py:63
 msgid "usysconf not installed. Please upgrade!"
-msgstr "El paquet usysconf no està instal·lat. Si us plau, actualitzeu-lo!"
+msgstr ""
 
 #: pisi/context.py:76
 msgid "Failed to configure system"
-msgstr "Ha fallat configurar el sistema."
+msgstr ""
 
 #: pisi/graph.py:17
 #, python-format
@@ -3107,12 +3044,12 @@ msgstr "S'ha trobat cicle %s"
 
 #: pisi/index.py:151
 msgid "Adding packages to index:"
-msgstr "Addició de paquets a l'índex:"
+msgstr ""
 
 #: pisi/index.py:172
 #, python-format
 msgid "Adding package to index: %s"
-msgstr "S'afegeix el paquet a l'índex: %s"
+msgstr ""
 
 #: pisi/index.py:190
 #, python-format
@@ -3121,16 +3058,16 @@ msgstr "Paquet %s: metadades corruptes, s'omet..."
 
 #: pisi/index.py:244
 msgid "Adding groups.xml to index"
-msgstr "Addició de groups.xml a l'índex"
+msgstr "Afegint groups.xml a l'índex"
 
 #: pisi/index.py:251
 msgid "Adding components.xml to index"
-msgstr "S'afegeixen components.xml a l'índex"
+msgstr "Afegint components.xml a l'índex"
 
 #: pisi/index.py:285
 #, python-format
 msgid "Adding %s to source index"
-msgstr "S'afegeix %s a l'índex font"
+msgstr "Afegint %s a l'índex font"
 
 #: pisi/metadata.py:64
 #, python-format
@@ -3170,7 +3107,7 @@ msgid ""
 "There was a problem while fetching '%s'.\n"
 "The package may have been upgraded. Please try to upgrade the package."
 msgstr ""
-"Hi ha hagut un problema en obtenir %s.\n"
+"Hi ha hagut un problema obtenint \"%s\".\n"
 "Potser el paquet s'ha actualitzat. Si us plau, intenteu actualitzar el paquet."
 
 #: pisi/specfile.py:172
@@ -3236,7 +3173,7 @@ msgstr "%s és actualitzat des de %s a %s."
 #: pisi/history.py:68
 #, python-format
 msgid "%s %s is removed."
-msgstr "%s %s se suprimeix."
+msgstr "%s %s és eliminat."
 
 #: pisi/history.py:70
 #, python-format
@@ -3279,17 +3216,17 @@ msgstr "S'executa"
 #: pisi/util.py:204 pisi/util.py:231
 #, python-format
 msgid "return value for \"%s\" is %s"
-msgstr "el valor de retorn per a %s és %s"
+msgstr "el valor de retorn per a \"%s\" és %s"
 
 #: pisi/util.py:445
 #, python-format
 msgid "Including external link '%s'"
-msgstr "S'inclou l'enllaç extern %s"
+msgstr "S'inclou l'enllaç extern \"%s\""
 
 #: pisi/util.py:447
 #, python-format
 msgid "Including directory '%s'"
-msgstr "S'inclou el directori %s"
+msgstr "S'inclou el directori \"%s\""
 
 #: pisi/util.py:534
 msgid "You don't have necessary read permissions"
@@ -3299,7 +3236,7 @@ msgstr "No teniu els permisos de lectura necessaris"
 #: pisi/util.py:538
 #, python-format
 msgid "File %s was not found"
-msgstr "No s'ha trobat el fitxer %s"
+msgstr ""
 
 #: pisi/util.py:540
 #, python-format
@@ -3309,7 +3246,7 @@ msgstr "No es pot calcular SHA1 hash de %s"
 #: pisi/util.py:554
 #, python-format
 msgid "Compression type is not valid: '%s'"
-msgstr "El tipus de compressió no és vàlid: %s"
+msgstr "El tipus de compressió no és vàlid: \"%s\""
 
 #: pisi/util.py:560
 #, python-format
@@ -3330,22 +3267,22 @@ msgstr "ERROR: ha fallat el pedaç (%s): %s"
 #: pisi/util.py:623
 #, python-format
 msgid "strip command failed for file '%s'!"
-msgstr "strip: l'ordre ha fallat per al fitxer %s!"
+msgstr "strip: l'ordre ha fallat per al fitxer \"%s\"!"
 
 #: pisi/util.py:630
 #, python-format
 msgid "chrpath command failed for file '%s'!"
-msgstr "chrpath: l'ordre ha fallat per al fitxer %s!"
+msgstr "chrpath: l'ordre ha fallat per al fitxer \"%s\"!"
 
 #: pisi/util.py:639
 #, python-format
 msgid "objcopy (keep-debug) command failed for file '%s'!"
-msgstr "L'ordre objcopy (keep-debug) ha fallat per al fitxer %s!"
+msgstr "objcopy (keep-debug) command failed for file '%s'!"
 
 #: pisi/util.py:648
 #, python-format
 msgid "objcopy (add-debuglink) command failed for file '%s'!"
-msgstr "L'ordre objcopy (add-debuglink) ha fallat per al fitxer %s!"
+msgstr "objcopy (add-debuglink): l'ordre ha fallat per al fitxer \"%s\"!"
 
 #: pisi/util.py:751
 #, python-format
@@ -3365,7 +3302,7 @@ msgstr ""
 #: pisi/util.py:1007
 #, python-format
 msgid "D-Bus call failed: %s"
-msgstr "La crida de D-Bus ha fallat: %s"
+msgstr ""
 
 #: pisi/fetcher.py:129
 msgid "Filename error"
@@ -3374,17 +3311,17 @@ msgstr "Error de nom de fitxer"
 #: pisi/fetcher.py:133
 #, python-format
 msgid "Access denied to write to destination directory: \"%s\""
-msgstr "Accés denegat per escriure al directori de destinació: %s"
+msgstr "Accés denegat per escriure al directori de destinació: \"%s\""
 
 #: pisi/fetcher.py:141
 #, python-format
 msgid "Access denied to destination file: \"%s\""
-msgstr "Accés denegat al fitxer de destinació: %s"
+msgstr "Accés denegat al fitxer de destinació: \"%s\""
 
 #: pisi/fetcher.py:203
 #, python-format
 msgid "Hit max retry count when downloading: \"%s\""
-msgstr "S'ha assolit el nombre màxim d'intents en baixar: %s"
+msgstr ""
 
 #: pisi/fetcher.py:207
 #, python-format
@@ -3392,8 +3329,6 @@ msgid ""
 "\n"
 "Failed to fetch file, retrying %d out of %d \"%s\": %s"
 msgstr ""
-"\n"
-"No s'ha pogut obtenir el fitxer, intent %d de %d, %s: %s"
 
 #: pisi/fetcher.py:216
 msgid ""
@@ -3406,7 +3341,7 @@ msgstr ""
 #: pisi/fetcher.py:249
 #, python-format
 msgid "Proxy configuration has been found for '%s' protocol"
-msgstr "S'ha trobat una configuració d'intermediari per al protocol %s"
+msgstr "S'ha trobat una configuració de proxy per al protocol \"%s\""
 
 #: pisi/fetcher.py:261
 #, python-format
@@ -3452,7 +3387,7 @@ msgstr "S'obté la font de la rèplica: %s"
 #: pisi/sourcearchive.py:91
 #, python-format
 msgid "Could not fetch source from %s mirrors."
-msgstr "No s'ha pogut obtenir la font de %s rèpliques."
+msgstr "No s'ha pogut recollir la font de %s rèpliques."
 
 #: pisi/sourcearchive.py:109
 msgid "unpack: check_file_hash failed"
@@ -3482,17 +3417,17 @@ msgstr "paquet %s trobat al repositori %s"
 #: pisi/api.py:438
 #, python-format
 msgid "%s package already fetched"
-msgstr "paquet %s ja obtingut"
+msgstr "paquet %s ja recollit"
 
 #: pisi/api.py:571
 #, python-format
 msgid "Cleaning package cache %s..."
-msgstr "Es neteja la cau de paquets %s..."
+msgstr "Es neteja la cau de paquet %s..."
 
 #: pisi/api.py:573
 #, python-format
 msgid "Cleaning source archive cache %s..."
-msgstr "Es neteja la cau d'arxius font %s..."
+msgstr "Es neteja la cau d'arxiu font %s..."
 
 #: pisi/api.py:575
 #, python-format
@@ -3502,7 +3437,7 @@ msgstr "Es neteja el directori temporal %s..."
 #: pisi/api.py:581
 #, python-format
 msgid "Removing cache file %s..."
-msgstr "Se suprimeix el fitxer de cau %s..."
+msgstr "S'elimina el fitxer de cau %s..."
 
 #: pisi/api.py:614
 msgid "Taking snapshot of the system"
@@ -3530,8 +3465,6 @@ msgstr "No és un nom de repositori vàlid."
 #, python-format
 msgid "Repo already present with name %s and same URL. Removing first."
 msgstr ""
-"El repositori ja és present amb el nom %s i el mateix URL. Se suprimeix el "
-"primer."
 
 #: pisi/api.py:858
 #, python-format
@@ -3541,12 +3474,12 @@ msgstr "S'ha afegit el repositori %s al sistema."
 #: pisi/api.py:867
 #, python-format
 msgid "Repo %s removed from system."
-msgstr "S'ha suprimit el repositori %s del sistema."
+msgstr "S'ha eliminat el repositori %s del sistema."
 
 #: pisi/api.py:869
 #, python-format
 msgid "Repository %s does not exist. Cannot remove."
-msgstr "El repositori %s no existeix. No es pot suprimir."
+msgstr "El repositori %s no existeix. No es pot eliminar."
 
 #: pisi/api.py:895
 #, python-format
@@ -3556,7 +3489,7 @@ msgstr "S'actualitza el repositori %s"
 #: pisi/api.py:907
 #, python-format
 msgid "%s repository information is up-to-date."
-msgstr "La informació del repositori %s està al dia."
+msgstr "la informació del repositori %s està al dia."
 
 #: pisi/api.py:909
 msgid "Updating database at any rate as requested"
@@ -3570,7 +3503,7 @@ msgstr "S'ha actualitzat la base de dades de paquets."
 #: pisi/api.py:918
 #, python-format
 msgid "No repository named %s found."
-msgstr "No s'ha trobat cap repositori anomenat %s."
+msgstr "No s'ha trobat cap repositori anomenat \"%s\"."
 
 #: pisi/atomicoperations.py:114
 #, python-format
@@ -3602,7 +3535,7 @@ msgstr ""
 #: pisi/atomicoperations.py:248
 #, python-format
 msgid "/%s from %s gets replaced by %s package\n"
-msgstr "/%s de %s és substituït pel paquet %s\n"
+msgstr ""
 
 #: pisi/atomicoperations.py:252 pisi/atomicoperations.py:257
 #, python-format
@@ -3621,7 +3554,6 @@ msgstr ""
 #: pisi/atomicoperations.py:278
 msgid "Re-install same distribution release of package?"
 msgstr ""
-"Voleu tornar a instal·lar la mateixa versió de distribució del paquet?"
 
 #: pisi/atomicoperations.py:279
 msgid "Package re-install declined"
@@ -3659,22 +3591,22 @@ msgstr "Es desa %s"
 #, python-format
 msgid "File list could not be read for package %s, continuing removal."
 msgstr ""
-"No s'ha pogut llegir la llista de fitxers per al paquet %s. Es continua la "
-"supressió."
+"No s'ha pogut llegir la llista de fitxers per al paquet %s. Es continua "
+"l'eliminació."
 
 #: pisi/atomicoperations.py:607
 #, python-format
 msgid "Removing package %s"
-msgstr "Se suprimeix el paquet %s"
+msgstr "S'elimina el paquet %s"
 
 #: pisi/atomicoperations.py:611
 msgid "Trying to remove nonexistent package "
-msgstr "S'intenta suprimir un paquet que no existeix"
+msgstr "S'intenta eliminar un paquet que no existeix"
 
 #: pisi/atomicoperations.py:653
 #, python-format
 msgid "Not removing conflicted file : %s"
-msgstr "No se suprimeix un fitxer conflictiu: %s"
+msgstr "No s'elimina un fitxer conflictiu: %s"
 
 #: pisi/atomicoperations.py:678
 #, python-format
@@ -3682,16 +3614,14 @@ msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
 "deleted]"
 msgstr ""
-"El fitxer de configuració instal·lat %s no existeix al sistema. Probablement"
-" l'heu suprimit manualment."
 
 #: pisi/atomicoperations.py:690
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
 msgstr ""
-"El fitxer instal·lat %s no existeix al sistema. Probablement l'heu suprimit "
-"manualment."
+"El fitxer instal·lat %s no existeix al sistema [probablement l'heu eliminat "
+"manualment]"
 
 #: pisi/file.py:28
 #, python-format
@@ -3710,7 +3640,7 @@ msgstr " no vàlid per a %s"
 
 #: pisi/file.py:70
 msgid "uri must have type either URI or string"
-msgstr "l'uri ha de tenir el tipus URI o cadena"
+msgstr "uri ha de tenir el tipus URI o cadena"
 
 #: pisi/file.py:142
 #, python-format
@@ -3725,7 +3655,7 @@ msgstr "Es copia %s al directori de transferència"
 #: pisi/file.py:153
 #, python-format
 msgid "File '%s' not found."
-msgstr "No s'ha trobat el fitxer %s."
+msgstr "No s'ha trobat el fitxer \"%s\"."
 
 #: pisi/file.py:176
 #, python-format
