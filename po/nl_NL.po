@@ -2775,7 +2775,7 @@ msgstr "installaties en upgrades (ongeordend): %s"
 #: pisi/operations/upgrade.py:456
 #, python-format
 msgid "installs and upgrades (deterministic order): %s"
-msgstr ""
+msgstr "installaties en upgrades (deterministische volgorde): %s"
 
 #: pisi/pxml/xmlext.py:74
 msgid "getNodeText: Expected text node, got something else!"
