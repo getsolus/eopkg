@@ -81,6 +81,9 @@ class Install(AtomicOperation):
                 # Explicitly download if not cached.
                 # Note: In the future, this should be handled by a separate fetch stage.
                 dest = os.path.dirname(resource.local_path)
+
+                ctx.ui.notify(pisi.ui.downloading, packageresource=resource)
+
                 pisi.file.File.download(resource.uri, dest)
 
             pkg_path = resource.local_path
