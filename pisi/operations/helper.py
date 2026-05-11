@@ -4,15 +4,15 @@
 import os
 
 from ordered_set import OrderedSet as set
-from pisi import translate as _
-from pisi import Error
 
 import pisi
-import pisi.context as ctx
-import pisi.util as util
-import pisi.ui as ui
 import pisi.conflict
+import pisi.context as ctx
 import pisi.db
+import pisi.ui as ui
+import pisi.util as util
+from pisi import Error
+from pisi import translate as _
 
 
 def reorder_base_packages_old(order):
@@ -114,50 +114,20 @@ def extract_automatic(A, total):
 
 
 def calculate_download_sizes(order):
-    total_size = cached_size = 0
-
-    installdb = pisi.db.installdb.InstallDB()
     packagedb = pisi.db.packagedb.PackageDB()
+    resources = [packagedb.get_resource(name) for name in order]
 
-    try:
-        cached_packages_dir = ctx.config.cached_packages_dir()
-    except OSError:
-        # happens when cached_packages_dir tried to be created by an unpriviledged user
-        cached_packages_dir = None
-
-    for pkg in [packagedb.get_package(name) for name in order]:
-        delta = None
-        if installdb.has_package(pkg.name):
-            (
-                version,
-                release,
-                build,
-                distro,
-                distro_release,
-            ) = installdb.get_version_and_distro_release(pkg.name)
-            if distro_release == pkg.distributionRelease:
-                delta = pkg.get_delta(release)
-
-        ignore_delta = ctx.config.values.general.ignore_delta
-
-        if delta and not ignore_delta:
-            fn = os.path.basename(delta.packageURI)
-            pkg_hash = delta.packageHash
-            pkg_size = delta.packageSize
-        else:
-            fn = os.path.basename(pkg.packageURI)
-            pkg_hash = pkg.packageHash
-            pkg_size = pkg.packageSize
-
-        if cached_packages_dir:
-            path = util.join_path(cached_packages_dir, fn)
-            # check the file and sha1sum to be sure it _is_ the cached package
-            if os.path.exists(path) and util.sha1_file(path) == pkg_hash:
-                cached_size += pkg_size
-            elif os.path.exists("%s.part" % path):
-                cached_size += os.stat("%s.part" % path).st_size
-
-        total_size += pkg_size
+    total_size = sum(r.size for r in resources)
+    cached_size = 0
+    for r in resources:
+        if os.path.exists(r.local_path):
+            if util.sha1_file(r.local_path) == r.expected_hash:
+                cached_size += r.size
+            else:
+                # partial download?
+                part_path = r.local_path + ".part"
+                if os.path.exists(part_path):
+                    cached_size += os.stat(part_path).st_size
 
     ctx.ui.notify(ui.cached, total=total_size, cached=cached_size)
     return total_size, cached_size
