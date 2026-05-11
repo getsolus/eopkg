@@ -119,15 +119,21 @@ def install_pkg_names(packages, reinstall=False):
 
     ctx.ui.notify(ui.packagestogo, order=order)
 
+    # Resolve resources
+    resources = operations.helper.get_download_info(order)
+
     # Fetch packages concurrently
     operations.helper.fetch_packages(order)
 
-    automatic = operations.helper.extract_automatic(packages, order)
-    paths = []
-    for package in order:
-        install_op = atomicoperations.Install.from_name(package)
-
-        paths.append(install_op.package_fname)
+    # Verify hashes and instantiate Install objects
+    install_ops = []
+    for r in resources:
+        if util.sha1_file(r.local_path) != r.expected_hash:
+            raise Error(
+                _("Download Error: Package %s does not match the repository package.")
+                % r.name
+            )
+        install_ops.append(atomicoperations.Install(r.local_path))
 
     ctx.ui.status(_("Finished downloading packages."))
 
@@ -146,15 +152,16 @@ def install_pkg_names(packages, reinstall=False):
     ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     signal_handler.disable_signal(signal.SIGINT)
 
+    automatic = operations.helper.extract_automatic(packages, order)
+
     try:
-        for path in paths:
+        for i, install_op in enumerate(install_ops):
             ctx.ui.info(
                 util.colorize(
-                    _("Installing %d / %d") % (paths.index(path) + 1, len(paths)),
+                    _("Installing %d / %d") % (i + 1, len(install_ops)),
                     "yellow",
                 )
             )
-            install_op = atomicoperations.Install(path)
             if install_op.pkginfo.name in automatic:
                 install_op.automatic = True
             install_op.install(False)
