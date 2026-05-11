@@ -551,6 +551,14 @@ def install_single(pkg, upgrade=False):
 # FIXME: Here and elsewhere pkg_location must be a URI
 def install_single_file(pkg_location, upgrade=False):
     """install a package file"""
+    url = pisi.uri.URI(pkg_location)
+    if url.is_remote_file():
+        dest = ctx.config.cached_packages_dir()
+        filepath = os.path.join(dest, url.filename())
+        if not os.path.exists(filepath):
+            pisi.file.File.download(url, dest)
+        pkg_location = filepath
+
     Install(pkg_location).install(not upgrade)
 
 
