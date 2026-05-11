@@ -426,34 +426,25 @@ def fetch(packages=[], path=os.path.curdir):
     to the current working directory.
     """
     packagedb = pisi.db.packagedb.PackageDB()
-    repodb = pisi.db.repodb.RepoDB()
     fetcher = Fetcher()
 
     fetch_items = []
 
     for name in packages:
-        package, repo = packagedb.get_package_repo(name)
-        ctx.ui.info(_("%s package found in %s repository") % (package.name, repo))
-        uri = pisi.uri.URI(package.packageURI)
-        output = os.path.join(path, uri.path())
-        if os.path.exists(output) and package.packageHash == pisi.util.sha1_file(
+        resource = packagedb.get_resource(name)
+        ctx.ui.info(_("Package %s found in repository") % name)
+
+        output = os.path.join(path, resource.uri.filename())
+        if os.path.exists(output) and resource.expected_hash == pisi.util.sha1_file(
             output
         ):
-            ctx.ui.warning(_("%s package already fetched") % uri.path())
+            ctx.ui.warning(_("%s package already fetched") % resource.uri.filename())
             continue
-        if uri.is_absolute_path():
-            url = str(uri)
-        else:
-            url = os.path.join(
-                os.path.dirname(repodb.get_repo_url(repo)), str(uri.path())
-            )
 
-        fetch_items.append((url, path))
+        fetch_items.append((resource.uri, path, resource.uri.filename()))
 
-    # TODO(Evan): Error handling
     if fetch_items:
         fetcher.fetch_multi(fetch_items)
-
 
 
 @locked
