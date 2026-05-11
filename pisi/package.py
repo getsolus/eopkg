@@ -22,6 +22,19 @@ class Error(pisi.Error):
     pass
 
 
+class PackageResource:
+    def __init__(
+        self, name, uri, repo, expected_hash, size, local_path, is_delta=False
+    ):
+        self.name = name
+        self.uri = uri
+        self.repo = repo
+        self.expected_hash = expected_hash
+        self.size = size
+        self.local_path = local_path
+        self.is_delta = is_delta
+
+
 class Package:
     """eopkg Package Class provides access to a pisi package (.pisi
     file)."""
