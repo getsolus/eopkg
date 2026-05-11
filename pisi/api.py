@@ -781,6 +781,14 @@ def info(package, installed=False):
 
 
 def info_file(package_fn):
+    url = pisi.uri.URI(package_fn)
+    if url.is_remote_file():
+        dest = ctx.config.cached_packages_dir()
+        filepath = os.path.join(dest, url.filename())
+        if not os.path.exists(filepath):
+            pisi.file.File.download(url, dest)
+        package_fn = filepath
+
     if not os.path.exists(package_fn):
         raise pisi.Error(_("File %s not found") % package_fn)
 
