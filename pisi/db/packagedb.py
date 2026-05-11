@@ -4,21 +4,25 @@
 # installation database
 #
 
+import datetime
+import gettext
+import gzip
+import os
 import re
 import time
-import gzip
-import gettext
-import datetime
 
 import iksemel
 
+import pisi.context
 import pisi.db
-import pisi.metadata
-import pisi.dependency
 import pisi.db.itembyrepo
 import pisi.db.lazydb as lazydb
-from pisi import translate as _
+import pisi.dependency
+import pisi.metadata
+import pisi.package
+import pisi.uri
 from pisi import Error
+from pisi import translate as _
 
 
 class PackageDB(lazydb.LazyDB):
@@ -231,6 +235,57 @@ class PackageDB(lazydb.LazyDB):
         package = pisi.metadata.Package()
         package.parse(pkg)
         return package, repo
+
+    def get_resource(self, name):
+        repodb = pisi.db.repodb.RepoDB()
+        installdb = pisi.db.installdb.InstallDB()
+
+        repo_name = self.which_repo(name)
+        if not repo_name:
+            raise Error(_("Package %s not found in any active repository.") % name)
+
+        repo = repodb.get_repo(repo_name)
+        pkg = self.get_package(name)
+        delta = None
+
+        if installdb.has_package(pkg.name):
+            (
+                version,
+                release,
+                build,
+                distro,
+                distro_release,
+            ) = installdb.get_version_and_distro_release(pkg.name)
+            if distro_release == pkg.distributionRelease:
+                delta = pkg.get_delta(release)
+
+        ignore_delta = pisi.context.config.values.general.ignore_delta
+
+        if delta and not ignore_delta:
+            pkg_uri_str = delta.packageURI
+            pkg_hash = delta.packageHash
+            pkg_size = delta.packageSize
+            is_delta = True
+        else:
+            pkg_uri_str = pkg.packageURI
+            pkg_hash = pkg.packageHash
+            pkg_size = pkg.packageSize
+            is_delta = False
+
+        uri = pisi.uri.URI(pkg_uri_str)
+        if not uri.is_absolute_path():
+            pkg_uri_str = os.path.join(
+                os.path.dirname(repo.indexuri.get_uri()), str(uri.path())
+            )
+
+        uri = pisi.uri.URI(pkg_uri_str)
+        local_path = os.path.join(
+            pisi.context.config.cached_packages_dir(), uri.filename()
+        )
+
+        return pisi.package.PackageResource(
+            name, uri, pkg_hash, pkg_size, local_path, is_delta
+        )
 
     def which_repo(self, name):
         return self.pdb.which_repo(name)
