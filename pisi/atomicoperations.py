@@ -3,24 +3,23 @@
 
 """Atomic package operations such as install/remove/upgrade"""
 
-from pisi import translate as _
-from pisi.path import is_usr_merged_duplicate
-
+import base64
 import os
 import shutil
 import zipfile
 
 import pisi
 import pisi.context as ctx
-import pisi.util as util
-import pisi.metadata
-import pisi.files
-import pisi.uri
-import pisi.ui
-import pisi.version
-import pisi.operations.delta
 import pisi.db
-import base64
+import pisi.files
+import pisi.metadata
+import pisi.operations.delta
+import pisi.ui
+import pisi.uri
+import pisi.util as util
+import pisi.version
+from pisi import translate as _
+from pisi.path import is_usr_merged_duplicate
 
 
 class Error(pisi.Error):
@@ -69,71 +68,31 @@ class Install(AtomicOperation):
     @staticmethod
     def from_name(name, ignore_dep=None):
         packagedb = pisi.db.packagedb.PackageDB()
-        # download package and return an installer object
-        # find package in repository
-        repo = packagedb.which_repo(name)
-        if repo:
-            repodb = pisi.db.repodb.RepoDB()
-            ctx.ui.info(_("Package %s found in repository %s") % (name, repo))
+        resource = packagedb.get_resource(name)
 
-            repo = repodb.get_repo(repo)
-            pkg = packagedb.get_package(name)
-            delta = None
+        ctx.ui.info(_("Package %s found in repository") % name)
+        ctx.ui.info(_("Package URI: %s") % resource.uri, verbose=True)
 
-            installdb = pisi.db.installdb.InstallDB()
-            # Package is installed. This is an upgrade. Check delta.
-            if installdb.has_package(pkg.name):
-                (
-                    version,
-                    release,
-                    build,
-                    distro,
-                    distro_release,
-                ) = installdb.get_version_and_distro_release(pkg.name)
-                if distro_release == pkg.distributionRelease:
-                    delta = pkg.get_delta(release)
-
-            ignore_delta = ctx.config.values.general.ignore_delta
-
-            # If delta exists than use the delta uri.
-            if delta and not ignore_delta:
-                pkg_uri = delta.packageURI
-                pkg_hash = delta.packageHash
+        if resource.uri.is_remote_file():
+            if os.path.exists(resource.local_path):
+                if util.sha1_file(resource.local_path) != resource.expected_hash:
+                    os.unlink(resource.local_path)
             else:
-                pkg_uri = pkg.packageURI
-                pkg_hash = pkg.packageHash
+                # Explicitly download if not cached.
+                # Note: In the future, this should be handled by a separate fetch stage.
+                dest = os.path.dirname(resource.local_path)
+                pisi.file.File.download(resource.uri, dest)
 
-            uri = pisi.uri.URI(pkg_uri)
-            if uri.is_absolute_path():
-                pkg_path = str(pkg_uri)
-            else:
-                pkg_path = os.path.join(
-                    os.path.dirname(repo.indexuri.get_uri()), str(uri.path())
-                )
-
-            ctx.ui.info(_("Package URI: %s") % pkg_path, verbose=True)
-
-            # Bug 4113
-            cached_file = pisi.package.Package.is_cached(pkg_path)
-            if cached_file and util.sha1_file(cached_file) != pkg_hash:
-                os.unlink(cached_file)
-                cached_file = None
-
-            install_op = Install(pkg_path, ignore_dep)
-
-            # Bug 4113
-            if not cached_file:
-                downloaded_file = install_op.package.filepath
-                if pisi.util.sha1_file(downloaded_file) != pkg_hash:
-                    raise pisi.Error(
-                        _(
-                            "Download Error: Package does not match the repository package."
-                        )
-                    )
-
-            return install_op
+            pkg_path = resource.local_path
         else:
-            raise Error(_("Package %s not found in any active repository.") % name)
+            pkg_path = resource.uri.path()
+
+        if util.sha1_file(pkg_path) != resource.expected_hash:
+            raise Error(
+                _("Download Error: Package does not match the repository package.")
+            )
+
+        return Install(pkg_path, ignore_dep)
 
     def __init__(self, package_fname, ignore_dep=None, ignore_file_conflicts=None):
         "initialize from a file name"
