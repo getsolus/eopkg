@@ -1,10 +1,11 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
+import pisi
 
 
-class AnotherInstanceError(Exception):
+class AnotherInstanceError(pisi.Error):
     pass
 
 
-class PrivilegeError(Exception):
+class PrivilegeError(pisi.Error):
     pass
