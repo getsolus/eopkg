@@ -3,39 +3,39 @@
 
 import fcntl
 import os
-import signal
 import re
-from . import fetcher
-
-from pisi import translate as _
+import signal
 
 import pisi
+import pisi.atomicoperations
+import pisi.blacklist
+import pisi.config
 import pisi.context as ctx
-import pisi.uri
-import pisi.util
-import pisi.pgraph as pgraph
+import pisi.db.componentdb
+import pisi.db.filesdb
+import pisi.db.groupdb
+import pisi.db.historydb
+import pisi.db.installdb
 import pisi.db.packagedb
 import pisi.db.repodb
-import pisi.db.filesdb
-import pisi.db.installdb
-import pisi.db.historydb
-import pisi.db.componentdb
-import pisi.db.groupdb
-import pisi.index
-import pisi.config
-import pisi.metadata
+import pisi.errors
 import pisi.file
-import pisi.blacklist
-import pisi.atomicoperations
+import pisi.index
+import pisi.metadata
+import pisi.operations.build
+import pisi.operations.check
+import pisi.operations.helper
+import pisi.operations.history
+import pisi.operations.install
 import pisi.operations.remove
 import pisi.operations.upgrade
-import pisi.operations.install
-import pisi.operations.history
-import pisi.operations.helper
-import pisi.operations.check
-import pisi.operations.build
+import pisi.pgraph as pgraph
 import pisi.signalhandler as signalhandler
-import pisi.errors
+import pisi.uri
+import pisi.util
+from pisi import translate as _
+
+from . import fetcher
 
 
 def locked(func):
@@ -425,6 +425,7 @@ def fetch(packages=[], path=os.path.curdir, repo=None):
     @param path: path to where the packages will be downloaded. If not given, packages will be downloaded
     to the current working directory.
     """
+
     packagedb = pisi.db.packagedb.PackageDB()
     repodb = pisi.db.repodb.RepoDB()
 
@@ -433,23 +434,17 @@ def fetch(packages=[], path=os.path.curdir, repo=None):
         return
 
     for name in packages:
-        package, repo = packagedb.get_package_repo(name, repo)
-        ctx.ui.info(_(f"{package.name} package found in {repo} repository"))
-        uri = pisi.uri.URI(package.packageURI)
-        output = os.path.join(path, uri.path())
-        if os.path.exists(output) and package.packageHash == pisi.util.sha1_file(
+        resource = packagedb.get_resource(name, repo=repo)
+        ctx.ui.info(_(f"Package {name} found in repository {resource.repo}"))
+
+        output = os.path.join(path, resource.uri.filename())
+        if os.path.exists(output) and resource.expected_hash == pisi.util.sha1_file(
             output
         ):
-            ctx.ui.warning(_("%s package already fetched") % uri.path())
+            ctx.ui.warning(_(f"{resource.uri.filename()} package already fetched"))
             continue
-        if uri.is_absolute_path():
-            url = str(uri)
-        else:
-            url = os.path.join(
-                os.path.dirname(repodb.get_repo_url(repo)), str(uri.path())
-            )
 
-        fetcher.fetch_url(url, path, ctx.ui.Progress)
+        fetcher.fetch_url(resource.uri, path, ctx.ui.Progress)
 
 
 @locked
@@ -472,7 +467,9 @@ def remove(packages, ignore_dependency=False, ignore_safety=False):
     @param ignore_safety: system.base packages can also be removed if True
     """
     pisi.db.historydb.HistoryDB().create_history("remove")
-    return pisi.operations.remove.remove(packages, ignore_dependency, ignore_safety, force_prompt=True)
+    return pisi.operations.remove.remove(
+        packages, ignore_dependency, ignore_safety, force_prompt=True
+    )
 
 
 @locked
@@ -944,6 +941,7 @@ def rebuild_db(files=False):
 
     filesdb = pisi.db.filesdb.FilesDB()
     filesdb.init(force_rebuild=True)
+
 
 ############# FIXME: this was a quick fix. ##############################
 
