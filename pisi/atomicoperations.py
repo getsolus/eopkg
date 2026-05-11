@@ -70,8 +70,8 @@ class Install(AtomicOperation):
         packagedb = pisi.db.packagedb.PackageDB()
         resource = packagedb.get_resource(name)
 
-        ctx.ui.info(_("Package %s found in repository") % name)
-        ctx.ui.info(_("Package URI: %s") % resource.uri, verbose=True)
+        ctx.ui.info(_(f"Package {name} found in repository"))
+        ctx.ui.info(_(f"Package URI: {resource.uri}"), verbose=True)
 
         if resource.uri.is_remote_file():
             if os.path.exists(resource.local_path):

@@ -201,6 +201,21 @@ def install_pkg_files(package_URIs, reinstall=False):
             ctx.ui.info(util.format_by_columns(sorted(already_installed)))
         package_URIs = tobe_installed
 
+    # Download remote files first
+    local_URIs = []
+    for x in package_URIs:
+        url = pisi.uri.URI(x)
+        if url.is_remote_file():
+            dest = ctx.config.cached_packages_dir()
+            filepath = os.path.join(dest, url.filename())
+            local_URIs.append(filepath)
+            if not os.path.exists(filepath):
+                pisi.file.File.download(url, dest)
+        else:
+            local_URIs.append(x)
+
+    package_URIs = local_URIs
+
     if ctx.config.get_option("ignore_dependency"):
         # simple code path then
         for x in package_URIs:
