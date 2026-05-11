@@ -4,15 +4,16 @@
 import os
 
 from ordered_set import OrderedSet as set
-from pisi import translate as _
-from pisi import Error
 
 import pisi
-import pisi.context as ctx
-import pisi.util as util
-import pisi.ui as ui
 import pisi.conflict
+import pisi.context as ctx
 import pisi.db
+import pisi.fetcher
+import pisi.ui as ui
+import pisi.util as util
+from pisi import Error
+from pisi import translate as _
 
 
 def reorder_base_packages_old(order):
@@ -114,9 +115,20 @@ def extract_automatic(A, total):
 
 
 def calculate_download_sizes(order):
-    download_info = get_download_info(order)
-    total_size = sum(info["size"] for info in download_info)
-    cached_size = sum(info["cached_size"] for info in download_info)
+    packagedb = pisi.db.packagedb.PackageDB()
+    resources = [packagedb.get_resource(name) for name in order]
+
+    total_size = sum(r.size for r in resources)
+    cached_size = 0
+    for r in resources:
+        if os.path.exists(r.local_path):
+            if util.sha1_file(r.local_path) == r.expected_hash:
+                cached_size += r.size
+            else:
+                # partial download?
+                part_path = r.local_path + ".part"
+                if os.path.exists(part_path):
+                    cached_size += os.stat(part_path).st_size
 
     ctx.ui.notify(ui.cached, total=total_size, cached=cached_size)
     return total_size, cached_size
@@ -124,101 +136,32 @@ def calculate_download_sizes(order):
 
 def get_download_info(order):
     """
-    Returns a list of dicts containing download info for each package in order.
+    Returns a list of PackageResource objects for each package in order.
     """
-    download_info = []
-    installdb = pisi.db.installdb.InstallDB()
     packagedb = pisi.db.packagedb.PackageDB()
-    repodb = pisi.db.repodb.RepoDB()
-
-    try:
-        cached_packages_dir = ctx.config.cached_packages_dir()
-    except OSError:
-        # happens when cached_packages_dir tried to be created by an unpriviledged user
-        cached_packages_dir = None
-
-    for name in order:
-        repo_name = packagedb.which_repo(name)
-        if not repo_name:
-            raise Error(_("Package %s not found in any active repository.") % name)
-
-        repo = repodb.get_repo(repo_name)
-        pkg = packagedb.get_package(name)
-        delta = None
-
-        if installdb.has_package(pkg.name):
-            (
-                version,
-                release,
-                build,
-                distro,
-                distro_release,
-            ) = installdb.get_version_and_distro_release(pkg.name)
-            if distro_release == pkg.distributionRelease:
-                delta = pkg.get_delta(release)
-
-        ignore_delta = ctx.config.values.general.ignore_delta
-
-        if delta and not ignore_delta:
-            pkg_uri_str = delta.packageURI
-            pkg_hash = delta.packageHash
-            pkg_size = delta.packageSize
-        else:
-            pkg_uri_str = pkg.packageURI
-            pkg_hash = pkg.packageHash
-            pkg_size = pkg.packageSize
-
-        uri = pisi.uri.URI(pkg_uri_str)
-        if not uri.is_absolute_path():
-            pkg_uri_str = os.path.join(
-                os.path.dirname(repo.indexuri.get_uri()), str(uri.path())
-            )
-
-        uri = pisi.uri.URI(pkg_uri_str)
-
-        info = {
-            "name": name,
-            "uri": uri,
-            "hash": pkg_hash,
-            "size": pkg_size,
-        }
-
-        if cached_packages_dir and uri.is_remote_file():
-            path = util.join_path(cached_packages_dir, uri.filename())
-            # check the file and sha1sum to be sure it _is_ the cached package
-            if os.path.exists(path) and util.sha1_file(path) == pkg_hash:
-                info["cached"] = True
-                info["cached_size"] = pkg_size
-            else:
-                info["cached"] = False
-                part_path = "%s.part" % path
-                if os.path.exists(part_path):
-                    info["cached_size"] = os.stat(part_path).st_size
-                else:
-                    info["cached_size"] = 0
-        else:
-            info["cached"] = not uri.is_remote_file()
-            info["cached_size"] = pkg_size if info["cached"] else 0
-
-        download_info.append(info)
-
-    return download_info
+    return [packagedb.get_resource(name) for name in order]
 
 
 def fetch_packages(order):
     """
     Fetches all packages in order concurrently if they are not already cached.
     """
-    download_info = get_download_info(order)
+    resources = get_download_info(order)
     items_to_fetch = []
-    cached_packages_dir = ctx.config.cached_packages_dir()
 
-    for info in download_info:
-        if not info["cached"] and info["uri"].is_remote_file():
+    for r in resources:
+        if r.uri.is_remote_file():
+            # Check if it's already cached and valid
+            if (
+                os.path.exists(r.local_path)
+                and util.sha1_file(r.local_path) == r.expected_hash
+            ):
+                continue
+
             items_to_fetch.append(
-                (info["uri"], cached_packages_dir, info["uri"].filename())
+                (r.uri, os.path.dirname(r.local_path), r.uri.filename())
             )
 
     if items_to_fetch:
-        fetcher = Fetcher()
+        fetcher = pisi.fetcher.Fetcher()
         fetcher.fetch_multi(items_to_fetch)
