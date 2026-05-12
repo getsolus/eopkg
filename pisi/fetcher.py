@@ -12,16 +12,17 @@ import contextlib
 import os
 import shutil
 import time
-import urllib.request, urllib.error, urllib.parse
+import urllib.error
+import urllib.parse
+import urllib.request
 from urllib.error import URLError
-
-from pisi import translate as _
 
 # pisi modules
 import pisi
-import pisi.util as util
 import pisi.context as ctx
 import pisi.uri
+import pisi.util as util
+from pisi import translate as _
 
 
 class FetchError(pisi.Error):
@@ -128,6 +129,16 @@ class Fetcher:
         if not self.url.filename():
             raise FetchError(_("Filename error"))
 
+        if self.url.is_local_file():
+            source = os.path.normpath(self.url.path())
+            if not os.path.exists(source):
+                raise FetchError(_("File not found: %s") % source)
+
+            if source != self.archive_file:
+                shutil.copy(source, self.archive_file)
+
+            return self.archive_file
+
         if not os.access(self.destdir, os.W_OK):
             raise FetchError(
                 _('Access denied to write to destination directory: "%s"')
@@ -170,9 +181,6 @@ class Fetcher:
                     urllib.request.urlopen(self.url.get_uri(), timeout=15)
                 ) as fp:
                     headers = fp.info()
-
-                    if self.url.is_local_file():
-                        return os.path.normpath(self.url.path())
 
                     if has_range_support:
                         tfp = open(self.partial_file, "ab")
