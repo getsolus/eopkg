@@ -1,14 +1,13 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-import os
 import optparse
+import os
 
-from pisi import translate as _
-
+import pisi.api
 import pisi.cli.command as command
 import pisi.context as ctx
-import pisi.api
+from pisi import translate as _
 
 
 class Fetch(command.Command, metaclass=command.autocommand):
@@ -41,6 +40,13 @@ Downloads the given pisi packages to working directory
             default=os.path.curdir,
             help=_("Output directory for the fetched packages"),
         )
+        group.add_option(
+            "-r",
+            "--repo",
+            action="store",
+            default=None,
+            help=_("Fetch packages from a specified repository"),
+        )
 
     def run(self):
         self.init(database=False, write=False)
@@ -53,4 +59,6 @@ Downloads the given pisi packages to working directory
             ctx.ui.error(_("No active repositories found"))
             return
 
-        pisi.api.fetch(self.args, ctx.config.options.output_dir)
+        pisi.api.fetch(
+            self.args, ctx.config.options.output_dir, ctx.config.options.repo
+        )

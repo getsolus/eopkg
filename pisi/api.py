@@ -418,7 +418,7 @@ def search_file(term):
     return filesdb.search_file(term)
 
 
-def fetch(packages=[], path=os.path.curdir):
+def fetch(packages=[], path=os.path.curdir, repo=None):
     """
     Fetches the given packages from the repository without installing, just downloads the packages.
     @param packages: list of package names -> list_of_strings
@@ -427,9 +427,14 @@ def fetch(packages=[], path=os.path.curdir):
     """
     packagedb = pisi.db.packagedb.PackageDB()
     repodb = pisi.db.repodb.RepoDB()
+
+    if repo and not repodb.has_repo(repo):
+        ctx.ui.error(_(f"Unable to resolve repository: {repo}"))
+        return
+
     for name in packages:
-        package, repo = packagedb.get_package_repo(name)
-        ctx.ui.info(_("%s package found in %s repository") % (package.name, repo))
+        package, repo = packagedb.get_package_repo(name, repo)
+        ctx.ui.info(_(f"{package.name} package found in {repo} repository"))
         uri = pisi.uri.URI(package.packageURI)
         output = os.path.join(path, uri.path())
         if os.path.exists(output) and package.packageHash == pisi.util.sha1_file(
