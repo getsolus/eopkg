@@ -70,10 +70,30 @@ class InstallDB(lazydb.LazyDB):
 
     def __generate_installed_pkgs(self):
         def split_name(dirname):
-            name, version, release = dirname.rsplit("-", 2)
+            parts = dirname.rsplit("-", 2)
+            if len(parts) != 3:
+                ctx.ui.warning(
+                    _("Skipping malformed package directory: '%s'") % dirname
+                )
+                return None
+            name, version, release = parts
             return name, version + "-" + release
 
-        return dict(list(map(split_name, os.listdir(ctx.config.packages_dir()))))
+        packages_dir = ctx.config.packages_dir()
+        try:
+            entries = os.listdir(packages_dir)
+        except OSError as e:
+            ctx.ui.warning(
+                _("Cannot read packages directory '%s': %s") % (packages_dir, e)
+            )
+            return {}
+
+        result = {}
+        for entry in entries:
+            pair = split_name(entry)
+            if pair is not None:
+                result[pair[0]] = pair[1]
+        return result
 
     def __get_marked_packages(self, _type):
         info_path = os.path.join(ctx.config.info_dir(), _type)
@@ -127,9 +147,16 @@ class InstallDB(lazydb.LazyDB):
         build_host_re = re.compile("<BuildHost>(.*?)</BuildHost>")
         found = []
         for name in self.list_installed():
-            xml = open(
-                os.path.join(self.package_path(name), ctx.const.metadata_xml)
-            ).read()
+            try:
+                with open(
+                    os.path.join(self.package_path(name), ctx.const.metadata_xml)
+                ) as f:
+                    xml = f.read()
+            except OSError as e:
+                ctx.ui.warning(
+                    _("Could not read metadata for package '%s': %s") % (name, e)
+                )
+                continue
             matched = build_host_re.search(xml)
             if matched:
                 if build_host != matched.groups()[0]:
@@ -157,18 +184,33 @@ class InstallDB(lazydb.LazyDB):
 
     def get_version_and_distro_release(self, package):
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
-        meta_doc = iksemel.parse(metadata_xml)
+        try:
+            meta_doc = iksemel.parse(metadata_xml)
+        except Exception as e:
+            raise InstallDBError(
+                _("Failed to read metadata for package '%s': %s") % (package, e)
+            ) from e
         return self.__get_version(meta_doc) + self.__get_distro_release(meta_doc)
 
     def get_version(self, package):
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
-        meta_doc = iksemel.parse(metadata_xml)
+        try:
+            meta_doc = iksemel.parse(metadata_xml)
+        except Exception as e:
+            raise InstallDBError(
+                _("Failed to read metadata for package '%s': %s") % (package, e)
+            ) from e
         return self.__get_version(meta_doc)
 
     def get_files(self, package):
         files = pisi.files.Files()
         files_xml = os.path.join(self.package_path(package), ctx.const.files_xml)
-        files.read(files_xml)
+        try:
+            files.read(files_xml)
+        except Exception as e:
+            raise InstallDBError(
+                _("Failed to read file list for package '%s': %s") % (package, e)
+            ) from e
         return files
 
     def get_config_files(self, package):
@@ -271,7 +313,18 @@ class InstallDB(lazydb.LazyDB):
     def get_package(self, package):
         metadata = pisi.metadata.MetaData()
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
-        metadata.read(metadata_xml)
+        if not os.path.exists(metadata_xml):
+            raise InstallDBError(
+                _("Metadata file missing for package '%s'. "
+                  "Package may be corrupted. Try reinstalling it.") % package
+            )
+        try:
+            metadata.read(metadata_xml)
+        except Exception as e:
+            raise InstallDBError(
+                _("Corrupted metadata for package '%s': %s. "
+                  "Try reinstalling the package.") % (package, e)
+            ) from e
         return metadata.package
 
     def get_package_by_pkgconfig(self, pkgconfig):
@@ -342,10 +395,9 @@ class InstallDB(lazydb.LazyDB):
 
     def __write_marked_packages(self, _type, packages):
         info_file = os.path.join(ctx.config.info_dir(), _type)
-        config = open(info_file, "w")
-        for pkg in set(packages):
-            config.write("%s\n" % pkg)
-        config.close()
+        with open(info_file, "w") as config:
+            for pkg in set(packages):
+                config.write("%s\n" % pkg)
 
     def __clear_marked_packages(self, _type, package):
         if package == "*":

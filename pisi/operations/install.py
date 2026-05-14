@@ -159,8 +159,8 @@ def install_pkg_names(packages, reinstall=False):
             if install_op.pkginfo.name in automatic:
                 install_op.automatic = True
             install_op.install(False)
-    except Exception as e:
-        raise e
+    except Exception:
+        raise
     finally:
         ctx.exec_usysconf()
 
@@ -335,9 +335,8 @@ def install_pkg_files(package_URIs, reinstall=False):
     try:
         for x in order:
             atomicoperations.install_single_file(dfn[x], reinstall)
-    except Exception as e:
-        raise e
-        return False
+    except Exception:
+        raise
     finally:
         ctx.exec_usysconf()
 

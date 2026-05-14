@@ -204,7 +204,7 @@ class Fetcher:
                             blocknum += 1
                             fetch_handler.update(blocknum, bs, size)
                     success = True
-            except URLError as e:
+            except (URLError, OSError) as e:
                 attempt += 1
                 if attempt == self._get_retry_attempts() + 1:
                     raise FetchError(
@@ -214,6 +214,9 @@ class Fetcher:
                 ctx.ui.warning(
                     _('\nFailed to fetch file, retrying %d out of %d "%s": %s')
                     % (attempt, self._get_retry_attempts(), self.url.get_uri(), e)
+                )
+                ctx.ui.debug(
+                    _('Error type: %s') % type(e).__name__
                 )
                 pass
 
@@ -226,6 +229,7 @@ class Fetcher:
             )
 
         shutil.move(self.partial_file, self.archive_file)
+        ctx.ui.info(_('Downloaded: %s') % self.archive_file)
 
         return self.archive_file
 
@@ -316,4 +320,4 @@ class Fetcher:
 def fetch_url(url, destdir, progress=None, destfile=None):
     fetch = Fetcher(url, destdir, destfile)
     fetch.progress = progress
-    fetch.fetch()
+    return fetch.fetch()

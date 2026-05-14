@@ -753,8 +753,8 @@ def configure_pending(packages=None):
 
     try:
         ctx.exec_usysconf()
-    except Exception as e:
-        raise e
+    except Exception:
+        raise
 
     # Clear legacy "needs configuration" flag
     order = generate_pending_order(packages)

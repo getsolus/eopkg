@@ -309,7 +309,7 @@ class PackageDB(lazydb.LazyDB):
                         0:6
                     ]
                 )
-            except:
+            except (ValueError, IndexError):
                 failed = True
             if failed:
                 try:
@@ -318,7 +318,7 @@ class PackageDB(lazydb.LazyDB):
                             self.get_package(pkg).history[-1].date, "%Y-%m-%d"
                         )[0:6]
                     )
-                except:
+                except (ValueError, IndexError):
                     enter_date = datetime.datetime(
                         *time.strptime(
                             self.get_package(pkg).history[-1].date, "%Y-%d-%m"

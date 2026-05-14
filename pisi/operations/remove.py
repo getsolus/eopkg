@@ -131,9 +131,9 @@ in the respective order to satisfy dependencies:
             if installdb.has_package(package):
                 atomicoperations.remove_single(package)
             else:
-                ctx.ui.info(_("Package %s is not installed. Cannot remove.") % package)
-    except Exception as e:
-        raise e
+                ctx.ui.info(_('Package %s is not installed. Cannot remove.') % package)
+    except Exception:
+        raise
     finally:
         ctx.exec_usysconf()
 

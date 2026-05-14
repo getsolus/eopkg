@@ -250,23 +250,21 @@ def add_groups(path):
 def add_components(path):
     ctx.ui.info(_("Adding components.xml to index"))
     components_xml = component.Components()
-    components_xml.read(path)
-    # try:
+    try:
+        components_xml.read(path)
+    except Exception as e:
+        raise Error(_("Component file '%s' is corrupt or unreadable: %s") % (path, e)) from e
     return components_xml.components
-    # except:
-    #    raise Error(_('Component in %s is corrupt') % path)
-    # ctx.ui.error(str(Error(*errs)))
 
 
 def add_distro(path):
-    ctx.ui.info("Adding distribution.xml to index")
+    ctx.ui.info(_("Adding distribution.xml to index"))
     distro = component.Distribution()
-    # try:
-    distro.read(path)
+    try:
+        distro.read(path)
+    except Exception as e:
+        raise Error(_("Distribution file '%s' is corrupt or unreadable: %s") % (path, e)) from e
     return distro
-    # except:
-    #    raise Error(_('Distribution in %s is corrupt') % path)
-    # ctx.ui.error(str(Error(*errs)))
 
 
 def add_spec(params):

@@ -70,7 +70,7 @@ class LazyDB(Singleton):
         try:
             f = self.__cache_version_file()
             ver = open(f).read().strip()
-        except IOError:
+        except OSError:
             return False
         return ver == LazyDB.cache_version
 
@@ -87,9 +87,12 @@ class LazyDB(Singleton):
                     open(self.__cache_file(), "rb"), encoding="utf-8"
                 )
                 return True
-            except (pickle.UnpicklingError, EOFError):
+            except (pickle.UnpicklingError, EOFError, AttributeError, ImportError, TypeError, Exception):
                 if os.access(ctx.config.cache_root_dir(), os.W_OK):
-                    os.unlink(self.__cache_file())
+                    try:
+                        os.unlink(self.__cache_file())
+                    except OSError:
+                        pass
                 return False
         return False
 

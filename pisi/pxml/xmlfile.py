@@ -48,7 +48,7 @@ class XmlFile(object):
             self.doc = iks.parseString(xml.decode() if type(xml) == bytes else xml)
             return self.doc
         except Exception as e:
-            raise Error(_("String '%s' has invalid XML") % (xml))
+            raise Error(_('String \'%s\' has invalid XML') % (xml)) from e
 
     def readxml(
         self,
