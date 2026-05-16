@@ -30,7 +30,7 @@ installed list will be removed.
 
     name = ("remove-orphans", "rmo")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("remove-orphans options"))
         super(RemoveOrphans, self).options(group)
         group.add_option(

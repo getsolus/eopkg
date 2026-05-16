@@ -28,7 +28,7 @@ If no repository is given, all repositories are updated.
 
     name = ("update-repo", "ur")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("update-repo options"))
 
         group.add_option(

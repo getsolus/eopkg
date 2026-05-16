@@ -34,7 +34,7 @@ safe to do so.
 
     name = ("autoremove", "rmf")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("autoremove options"))
         super(AutoRemove, self).options(group)
         group.add_option(

@@ -30,7 +30,7 @@ database.
 
     name = ("search", "sr")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("search options"))
         group.add_option(
             "-l",

@@ -31,7 +31,7 @@ expanded to package names.
 
     name = "install", "it"
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("install options"))
 
         super(Install, self).options(group)

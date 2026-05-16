@@ -28,7 +28,7 @@ Downloads the given pisi packages to working directory
 
     name = ("fetch", "fc")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("fetch options"))
         self.add_options(group)
         self.parser.add_option_group(group)

@@ -27,7 +27,7 @@ repositories.
 
     name = ("list-components", "lc")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("list-components options"))
         group.add_option(
             "-l",

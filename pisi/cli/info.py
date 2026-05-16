@@ -31,7 +31,7 @@ Usage: info <package1> <package2> ... <packagen>
 
     name = ("info", None)
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("info options"))
         self.add_options(group)
         self.parser.add_option_group(group)

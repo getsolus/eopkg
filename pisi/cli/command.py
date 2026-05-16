@@ -73,7 +73,7 @@ class Command(object):
             version="%prog " + pisi.__version__,
             formatter=PisiHelpFormatter(),
         )
-        self.options()
+        self.setup_options()
         self.commonopts()
         (self.options, self.args) = self.parser.parse_args(args)
         if self.args:
@@ -148,7 +148,7 @@ class Command(object):
 
         return p
 
-    def options(self):
+    def setup_options(self):
         """This is a fall back function. If the implementer module provides an
         options function it will be called"""
         pass

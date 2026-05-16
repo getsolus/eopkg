@@ -30,7 +30,7 @@ expanded to package names.
 
     name = ("remove", "rm")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("remove options"))
         super(Remove, self).options(group)
         group.add_option(

@@ -43,7 +43,7 @@ Lists previous operations."""
 
     name = ("history", "hs")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("history options"))
         self.add_options(group)
         self.parser.add_option_group(group)
