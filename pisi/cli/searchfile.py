@@ -25,7 +25,7 @@ Finds the installed package which contains the specified file.
 
     name = ("search-file", "sf")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("search-file options"))
         group.add_option(
             "-l",

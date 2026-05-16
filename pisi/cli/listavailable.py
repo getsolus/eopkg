@@ -31,7 +31,7 @@ all repositories.
 
     name = ("list-available", "la")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("list-available options"))
         group.add_option(
             "-l",

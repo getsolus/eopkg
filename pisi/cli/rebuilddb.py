@@ -28,7 +28,7 @@ dirs under /var/lib/eopkg
 
     name = ("rebuild-db", "rdb")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("rebuild-db options"))
 
         group.add_option(

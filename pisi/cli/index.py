@@ -33,7 +33,7 @@ class Index(command.Command, metaclass=command.autocommand):
 
     name = ("index", "ix")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("index options"))
 
         group.add_option(

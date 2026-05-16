@@ -30,7 +30,7 @@ packages from all repositories.
 
     name = ("list-newest", "ln")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("list-newest options"))
         group.add_option(
             "-s",

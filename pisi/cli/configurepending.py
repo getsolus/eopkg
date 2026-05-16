@@ -25,7 +25,7 @@ configures those packages.
 
     name = ("configure-pending", "cp")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("configure-pending options"))
         super(ConfigurePending, self).options(group)
         self.parser.add_option_group(group)

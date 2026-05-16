@@ -29,7 +29,7 @@ Lists the packages that will be upgraded.
 
     name = ("list-upgrades", "lu")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("list-upgrades options"))
         group.add_option(
             "-l",

@@ -27,7 +27,7 @@ Usage: list-installed
 
     name = ("list-installed", "li")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("list-installed options"))
         group.add_option(
             "-a",

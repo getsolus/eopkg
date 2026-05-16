@@ -31,7 +31,7 @@ class Delta(command.Command, metaclass=command.autocommand):
 
     name = ("delta", "dt")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("delta options"))
         self.add_options(group)
         self.parser.add_option_group(group)

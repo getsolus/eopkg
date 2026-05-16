@@ -33,7 +33,7 @@ class Build(command.Command, metaclass=command.autocommand):
 
     name = ("build", "bi")
 
-    def options(self):
+    def setup_options(self):
         self.add_steps_options()
         group = optparse.OptionGroup(self.parser, _("build options"))
         self.add_options(group)

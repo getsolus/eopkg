@@ -29,7 +29,7 @@ NB: We support only local files (e.g., /a/b/c) and http:// URIs at the moment
 
     name = ("add-repo", "ar")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("add-repo options"))
         group.add_option(
             "--ignore-check",

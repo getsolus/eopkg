@@ -25,7 +25,7 @@ Usage: blame <package> ... <package>
 
     name = ("blame", "bl")
 
-    def options(self):
+    def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("blame options"))
         group.add_option(
             "-r",
