@@ -45,6 +45,13 @@ Usage: info <package1> <package2> ... <packagen>
             help=_("Show a list of package files."),
         )
         group.add_option(
+            "--sort-by",
+            action="store",
+            type="string",
+            default="path",
+            help=_("Sort files by name (path), size or type."),
+        )
+        group.add_option(
             "-c",
             "--component",
             action="append",
@@ -133,7 +140,19 @@ Usage: info <package1> <package2> ... <packagen>
         self.packagedb_info(arg, self.options.repo)
 
     def print_files(self, files):
-        files.list.sort(key=lambda x: x.path)
+        sort_map = {
+            "path": (lambda x: x.path, False),
+            "size": (lambda x: x.size, True),  # sort largest first
+            "type": (lambda x: x.type, False),
+        }
+
+        sort_by = self.options.sort_by
+        if sort_by not in sort_map:
+            ctx.ui.error(_(f"Unknown sort-by option: {sort_by}"))
+
+        key_func, reverse = sort_map[sort_by]
+        files.list.sort(key=key_func, reverse=reverse)
+
         for fileinfo in files.list:
             if self.options.files:
                 print(fileinfo)
