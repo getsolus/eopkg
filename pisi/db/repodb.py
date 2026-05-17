@@ -3,6 +3,7 @@
 
 from pisi import translate as _
 
+import errno
 import os
 
 import iksemel
@@ -224,7 +225,6 @@ class RepoDB(lazydb.LazyDB):
         try:
             os.makedirs(repo_path)
         except OSError as e:
-            import errno
             if e.errno != errno.EEXIST:
                 ctx.ui.warning(_("Failed to create repository directory '%s': %s") % (repo_path, e))
 
