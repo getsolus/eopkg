@@ -3,24 +3,24 @@
 
 """eopkg source/package index"""
 
+import multiprocessing
 import os
 import shutil
-import multiprocessing
-
-from pisi import translate as _
 
 import pisi
-import pisi.context as ctx
-import pisi.specfile as specfile
-import pisi.metadata as metadata
-import pisi.util as util
-import pisi.package
-import pisi.pxml.xmlfile as xmlfile
-import pisi.file
-import pisi.pxml.autoxml as autoxml
+import pisi.appstream as appstream
 import pisi.component as component
+import pisi.context as ctx
+import pisi.file
 import pisi.group as group
+import pisi.metadata as metadata
 import pisi.operations.build
+import pisi.package
+import pisi.pxml.autoxml as autoxml
+import pisi.pxml.xmlfile as xmlfile
+import pisi.specfile as specfile
+import pisi.util as util
+from pisi import translate as _
 
 
 class Error(pisi.Error):
@@ -36,6 +36,7 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
     # t_Metadatas = [ [metadata.MetaData], autoxml.optional, "MetaData"]
     t_Components = [[component.Component], autoxml.OPTIONAL, "Component"]
     t_Groups = [[group.Group], autoxml.OPTIONAL, "Group"]
+    t_Appstreams = [[appstream.AppstreamCatalog], autoxml.OPTIONAL, "AppstreamCatalog"]
 
     def read_uri(self, uri, tmpdir, force=False):
         return self.read(
@@ -97,6 +98,8 @@ class Index(xmlfile.XmlFile, metaclass=autoxml.autoxml):
                 elif fn.endswith(ctx.const.package_suffix):
                     packages.append(os.path.join(root, fn))
 
+                if fn == "appstream.xml":
+                    self.appstreams.extend(add_appstreams(os.path.join(root, fn)))
                 if fn == "components.xml":
                     self.components.extend(add_components(os.path.join(root, fn)))
                 if fn == "distribution.xml":
@@ -169,7 +172,8 @@ def add_package(params):
             ctx.ui.info("  %s" % os.path.basename(path))
         else:
             ctx.ui.info(
-                "%-80.80s\r" % (_("Adding package to index: %s") % os.path.basename(path)),
+                "%-80.80s\r"
+                % (_("Adding package to index: %s") % os.path.basename(path)),
                 noln=True,
             )
 
@@ -238,6 +242,13 @@ def add_package(params):
         # KeyboardInterrupt exception as an Exception.
 
         raise Exception
+
+
+def add_appstreams(path):
+    ctx.ui.info(_("Adding appstream.xml to index"))
+    appstreams_xml = appstream.AppstreamCatalogs()
+    appstreams_xml.read(path)
+    return appstreams_xml.appstreams
 
 
 def add_groups(path):

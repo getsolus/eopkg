@@ -359,6 +359,20 @@ def clean_dir(path):
         shutil.rmtree(path)
 
 
+def nuke_dir_recursive_glob(pattern):
+    """Remove a directory recursively matching a glob e.g. rm -fr foo*"""
+    import glob
+    pattern = f"{pattern}*"
+    for path in glob.glob(pattern):
+        try:
+            if os.path.isdir(path) and not os.path.islink(path):
+                shutil.rmtree(path)
+            else:
+                os.remove(path)
+        except Exception as e:
+            print(f"Error removing {path}: {e}")
+
+
 def creation_time(_file):
     """Return the creation time of the given file."""
     if check_file(_file):
