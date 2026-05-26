@@ -22,6 +22,19 @@ class Error(pisi.Error):
     pass
 
 
+class PackageResource:
+    def __init__(
+        self, name, uri, repo, expected_hash, size, local_path, is_delta=False
+    ):
+        self.name = name
+        self.uri = uri
+        self.repo = repo
+        self.expected_hash = expected_hash
+        self.size = size
+        self.local_path = local_path
+        self.is_delta = is_delta
+
+
 class Package:
     """eopkg Package Class provides access to a pisi package (.pisi
     file)."""
@@ -51,10 +64,6 @@ class Package:
         self.files = None
         self.repo = None
 
-        url = pisi.uri.URI(packagefn)
-        if url.is_remote_file():
-            self.fetch_remote_file(url)
-
         try:
             self.impl = archive.ArchiveZip(self.filepath, "zip", mode)
         except IOError as e:
@@ -82,34 +91,6 @@ class Package:
             raise Error(_("Unsupported package format: %s") % format)
 
         self.tmp_dir = tmp_dir or ctx.config.tmp_dir()
-
-    def fetch_remote_file(self, url):
-        dest = ctx.config.cached_packages_dir()
-        self.filepath = os.path.join(dest, url.filename())
-
-        # So we can emit a notify event with the package info
-        pkg_name, pkg_version = pisi.util.parse_package_name(url.filename())
-        self.metadata, self.files, self.repo = pisi.api.info_name(pkg_name, False)
-
-        if not os.path.exists(self.filepath):
-            try:
-                ctx.ui.notify(
-                    pisi.ui.downloading, package=self.metadata.package, files=self.files
-                )
-                pisi.file.File.download(url, dest)
-            except pisi.fetcher.FetchError:
-                # Bug 3465
-                if ctx.get_option("reinstall"):
-                    raise Error(
-                        _(
-                            "There was a problem while fetching '%s'.\nThe package "
-                            "may have been upgraded. Please try to upgrade the package."
-                        )
-                        % url
-                    )
-                raise
-        else:
-            ctx.ui.info(_("%s [cached]") % url.filename())
 
     def add_to_package(self, fn, an=None):
         """Add a file or directory to package"""
