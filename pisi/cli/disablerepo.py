@@ -5,6 +5,7 @@ from pisi import translate as _
 
 import pisi.cli.command as command
 import pisi.api
+import pisi.context as ctx
 
 
 class DisableRepo(command.Command, metaclass=command.autocommand):
@@ -33,5 +34,10 @@ Disabled repositories are not taken into account in operations
             return
 
         for repo in self.args:
-            if self.repodb.has_repo(repo):
-                pisi.api.set_repo_activity(repo, False)
+            if not self.repodb.has_repo(repo):
+                ctx.ui.warning(
+                    _(f"Repository '{repo}' does not exist. Cannot disable.")
+                )
+                return
+
+            pisi.api.set_repo_activity(repo, False)
