@@ -34,8 +34,7 @@ import pisi.signalhandler as signalhandler
 import pisi.uri
 import pisi.util
 from pisi import translate as _
-
-from . import fetcher
+from pisi.fetcher import Fetcher
 
 
 def locked(func):
@@ -428,6 +427,7 @@ def fetch(packages=[], path=os.path.curdir, repo=None):
 
     packagedb = pisi.db.packagedb.PackageDB()
     repodb = pisi.db.repodb.RepoDB()
+    fetcher = Fetcher()
 
     if repo and not repodb.has_repo(repo):
         ctx.ui.error(_(f"Unable to resolve repository: {repo}"))
@@ -444,7 +444,8 @@ def fetch(packages=[], path=os.path.curdir, repo=None):
             ctx.ui.warning(_(f"{resource.uri.filename()} package already fetched"))
             continue
 
-        fetcher.fetch_url(resource.uri, path, ctx.ui.Progress)
+        # TODO(Evan): Error handling
+        fetcher.fetch(resource.uri, path)
 
 
 @locked
