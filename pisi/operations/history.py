@@ -2,18 +2,16 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import os
-import gettext
-
-__trans = gettext.translation("pisi", fallback=True)
-_ = __trans.gettext
 
 from ordered_set import OrderedSet as set
+from requests import HTTPError
 
 import pisi
 import pisi.context as ctx
-import pisi.util
 import pisi.db
-import pisi.fetcher
+import pisi.util
+from pisi import translate as _
+from pisi.fetcher import Fetcher
 
 
 class PackageNotFound(pisi.Error):
@@ -99,7 +97,7 @@ def __getpackageurl(package):
     return os.path.join(os.path.dirname(repourl), package)
 
 
-def fetch_remote_file(package, errors):
+def fetch_remote_file(fetcher, package, errors):
     try:
         uri = pisi.file.File.make_uri(__getpackageurl_binman(package))
     except PackageNotFound:
@@ -109,20 +107,18 @@ def fetch_remote_file(package, errors):
 
     dest = ctx.config.cached_packages_dir()
     filepath = os.path.join(dest, uri.filename())
+    # TODO(Evan): Validate
     if not os.path.exists(filepath):
-        failed = False
         try:
-            pisi.fetcher.fetch_url(uri, dest, ctx.ui.Progress)
-        except pisi.fetcher.FetchError as e:
-            failed = True
-        if failed:
+            fetcher.fetch(uri, dest)
+        except HTTPError | IOError | ValueError:
             try:
                 new_uri = pisi.file.File.make_uri(__getpackageurl(package))
-                pisi.fetcher.fetch_url(new_uri, dest, ctx.ui.Progress)
-            except:
+                fetcher.fetch(new_uri, dest)
+            except HTTPError | IOError | ValueError:
                 errors.append(package)
                 ctx.ui.info(
-                    pisi.util.colorize(_("%s could not be found") % (package), "red")
+                    pisi.util.colorize(_(f"{package} could not be found"), "red")
                 )
                 return False
     else:
@@ -176,6 +172,7 @@ def plan_takeback(operation):
 def takeback(operation):
     historydb = pisi.db.historydb.HistoryDB()
     beinstalled, beremoved, configs = plan_takeback(operation)
+    fetcher = Fetcher()
 
     if beinstalled:
         ctx.ui.info(
@@ -202,7 +199,7 @@ def takeback(operation):
             )
         )
         pkg += ctx.const.package_suffix
-        if fetch_remote_file(pkg, errors):
+        if fetch_remote_file(fetcher, pkg, errors):
             paths.append(os.path.join(ctx.config.cached_packages_dir(), pkg))
 
     if errors:
