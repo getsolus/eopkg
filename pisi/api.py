@@ -433,6 +433,8 @@ def fetch(packages=[], path=os.path.curdir, repo=None):
         ctx.ui.error(_(f"Unable to resolve repository: {repo}"))
         return
 
+    fetch_items = []
+
     for name in packages:
         resource = packagedb.get_resource(name, repo=repo)
         ctx.ui.info(_(f"Package {name} found in repository {resource.repo}"))
@@ -444,8 +446,11 @@ def fetch(packages=[], path=os.path.curdir, repo=None):
             ctx.ui.warning(_(f"{resource.uri.filename()} package already fetched"))
             continue
 
-        # TODO(Evan): Error handling
-        fetcher.fetch(resource.uri, path)
+        fetch_items.append((resource.uri, path))
+
+    # TODO(Evan): Error handling
+    if fetch_items:
+        fetcher.fetch_multi(fetch_items)
 
 
 @locked
