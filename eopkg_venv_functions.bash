@@ -53,9 +53,7 @@ function compile_iksemel_cleanly () {
     git clone https://github.com/Zaryob/iksemel.git ../iksemel/
     # fetch solus patches into iksemel dir
     pushd ../iksemel/
-    # Need this specific commit to ensure patches apply cleanly; master corrupts memory?
-    git checkout c929245c0953df514956252c288ae220f3411d8c
-        for p in 0001-src-iks.c-Retain-py2-piksemel-behaviour.patch 0001-Escape-non-ASCII-characters.patch 0002-Escape-non-printable-ASCII-characters.patch
+        for p in 0001-Decode-encoded-unicode-characters.patch 0002-Fix-a-crash-on-certain-unicode-strings.patch
         do
             wget https://raw.githubusercontent.com/getsolus/packages/main/packages/i/iksemel/files/"${p}"
             patch -p1 -i "${p}"
@@ -68,10 +66,10 @@ function compile_iksemel_cleanly () {
         sudo meson install -C build/
     popd
     # symlink the iksemel python C module into our eopkg_venv
-    local py3=$(basename "${PY3}")
+    py3_major=$(python -c "import sys; print(f'python{sys.version_info.major}.{sys.version_info.minor}')")
     printInfo "Symlink the newly built Solus-patched iksemel python C-extension into the eopkg_venv ..."
-    ln -srvf "$(find ../iksemel/build/python -name 'iksemel.cpython*.so' -print -quit)" eopkg_venv/lib/"${py3}"/site-packages/
-    ls -l eopkg_venv/lib/"${py3}"/site-packages/*.so
+    ln -srvf $(find ../iksemel/build/python -name 'iksemel.cpython*.so' -print -quit) eopkg_venv/lib/"${py3_major}"/site-packages/
+    ls -l eopkg_venv/lib/"${py3_major}"/site-packages/*.so
 }
 
 function help () {

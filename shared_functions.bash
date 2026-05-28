@@ -5,7 +5,7 @@ RESET='\033[0m'
 YELLOW='\033[0;33m'
 
 # Python venvs use the full python version. Solus uses 3.11 so prefer that
-PY3="$(command -v python3.11 || command -v python3.12 || command -v python3.11)"
+PY3="$(command -v python3)"
 
 printInfo () {
     local INFO="${BOLD}INFO${RESET}"
