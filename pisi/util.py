@@ -5,21 +5,21 @@
 
 # standard python modules
 
-import os
-import sys
 import fcntl
+import fnmatch
+import hashlib
+import operator
+import os
 import shutil
 import string
 import struct
-import fnmatch
-import hashlib
-import termios
-import operator
 import subprocess
+import sys
+import termios
 import unicodedata
+from functools import reduce
 
 from pisi import translate as _
-from functools import reduce
 
 
 class Singleton(type):
@@ -239,14 +239,8 @@ def run_logged(cmd):
 
 
 def get_terminal_size():
-    try:
-        ret = fcntl.ioctl(sys.stdout.fileno(), termios.TIOCGWINSZ, "1234")
-    except IOError:
-        rows = int(os.environ.get("LINES", 25))
-        cols = int(os.environ.get("COLUMNS", 80))
-        return rows, cols
-
-    return struct.unpack("hh", ret)
+    size = shutil.get_terminal_size(fallback=(80, 25))
+    return size.lines, size.columns
 
 
 def xterm_title(message):
