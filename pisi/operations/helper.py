@@ -13,6 +13,7 @@ import pisi.ui as ui
 import pisi.util as util
 from pisi import Error
 from pisi import translate as _
+from pisi.fetcher import Fetcher
 
 
 def reorder_base_packages_old(order):
@@ -35,18 +36,20 @@ def reorder_base_packages_old(order):
         ctx.ui.info(_("install_order: %s" % install_order))
     return install_order
 
+
 def reorder_base_packages(order):
     """Dummy function that doesn't actually re-order system.base in front.
 
-       We now use OrderedSets, which keep the original topological sort,
-       so this shouldn't actually be necessary now.
+    We now use OrderedSets, which keep the original topological sort,
+    so this shouldn't actually be necessary now.
 
-       This also implies that the only function of system.base is for the
-       packages in it to be un-removable.
+    This also implies that the only function of system.base is for the
+    packages in it to be un-removable.
     """
     if len(order) > 1 and ctx.config.get_option("debug"):
         ctx.ui.info(_("order: %s" % order))
     return order
+
 
 def check_conflicts(order, packagedb):
     """check if upgrading to the latest versions will cause havoc
@@ -131,3 +134,36 @@ def calculate_download_sizes(order):
 
     ctx.ui.notify(ui.cached, total=total_size, cached=cached_size)
     return total_size, cached_size
+
+
+def get_download_info(order):
+    """
+    Returns a list of PackageResource objects for each package in order.
+    """
+    packagedb = pisi.db.packagedb.PackageDB()
+    return [packagedb.get_resource(name) for name in order]
+
+
+def fetch_packages(order):
+    """
+    Fetches all packages in order concurrently if they are not already cached.
+    """
+    resources = get_download_info(order)
+    items_to_fetch = []
+
+    for r in resources:
+        if r.uri.is_remote_file():
+            # Check if it's already cached and valid
+            if (
+                os.path.exists(r.local_path)
+                and util.sha1_file(r.local_path) == r.expected_hash
+            ):
+                continue
+
+            items_to_fetch.append(
+                (r.uri, os.path.dirname(r.local_path), r.uri.filename())
+            )
+
+    if items_to_fetch:
+        fetcher = Fetcher()
+        fetcher.fetch_multi(items_to_fetch)
