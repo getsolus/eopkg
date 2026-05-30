@@ -14,6 +14,7 @@ import pisi
 import pisi.context as ctx
 from pisi import translate as _
 from pisi.uri import URI
+from pisi.util import human_readable_rate
 
 """Maximum size in bytes of a download chunk to process at a time."""
 MAX_CHUNK_SIZE = 8192
@@ -93,6 +94,8 @@ class Fetcher:
                         if elapsed < expected_time:
                             time.sleep(expected_time - elapsed)
 
+                        start_time = time.time()
+
     def fetch(
         self,
         url: URI | str,
@@ -171,11 +174,13 @@ class Fetcher:
             or ctx.config.values.general.bandwidth_limit
         )
 
-        # TODO(Evan): Figure out if there's a mismatch between config units
-        # and units used to calculate the limiter
         if bandwidth_limit and bandwidth_limit != "0":
-            ctx.ui.warning(_(f"Bandwidth usage is limited to {bandwidth_limit} KB/s"))
-            return 1024 * int(bandwidth_limit)
+            # The limit is in KB
+            bandwidth_limit = int(bandwidth_limit) * 1000
+            parts = human_readable_rate(bandwidth_limit)
+            rate = f"{parts[0]} {parts[1]}"
+            ctx.ui.warning(_(f"Bandwidth usage is limited to {rate}"))
+            return bandwidth_limit
         else:
             return 0
 
