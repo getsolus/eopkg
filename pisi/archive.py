@@ -66,6 +66,8 @@ class TarFile(tarfile.TarFile):
             t = cls.taropen(name, mode, fileobj, **kwargs)
         except IOError:
             raise tarfile.ReadError("not a lzma file")
+        if hasattr(t, "extraction_filter"):
+            t.extraction_filter = staticmethod(tarfile.fully_trusted_filter)
         t._extfileobj = False
         return t
 
@@ -431,6 +433,10 @@ class ArchiveTar(ArchiveBase):
     def close(self):
         self.tar.close()
 
+    def _set_trust(self, tar):
+        if hasattr(tar, "extraction_filter"):
+            tar.extraction_filter = staticmethod(tarfile.fully_trusted_filter)
+
     def _open_tar(self):
         if self.type == "tar":
             rmode = "r:"
@@ -443,7 +449,9 @@ class ArchiveTar(ArchiveBase):
         else:
             raise UnknownArchiveType
 
-        return tarfile.open(self.file_path, rmode, fileobj=self.fileobj)
+        tar = tarfile.open(self.file_path, rmode, fileobj=self.fileobj)
+        self._set_trust(tar)
+        return tar
 
     def _tar_file_list(self):
         with self._open_tar() as tar:
@@ -486,6 +494,7 @@ class ArchiveTarZ(ArchiveBase):
 
         files = self._tar_file_list()
         self.tar = tarfile.open(self.file_path)
+        self._set_trust(self.tar)
 
         oldwd = None
         try:
@@ -533,6 +542,7 @@ class ArchiveTarZ(ArchiveBase):
 
     def _tar_file_list(self):
         with tarfile.open(self.file_path) as tar:
+            self._set_trust(tar)
             paths = [tarinfo.path for tarinfo in tar]
 
         return paths
