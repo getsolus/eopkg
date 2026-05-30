@@ -5,5 +5,5 @@ lzma_mt
 ordered_set
 python-magic
 requests
-tqdm
+rich
 xattr

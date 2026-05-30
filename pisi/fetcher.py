@@ -8,7 +8,15 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 from requests import HTTPError
 from requests.adapters import HTTPAdapter
-from tqdm import tqdm
+from rich.progress import (
+    BarColumn,
+    DownloadColumn,
+    Progress,
+    TaskID,
+    TextColumn,
+    TimeRemainingColumn,
+    TransferSpeedColumn,
+)
 
 import pisi
 import pisi.context as ctx
@@ -49,14 +57,19 @@ class Fetcher:
         self.session.proxies.update(proxies)
 
     def download_file(
-        self, url: str, destination: str, progress_bar_pos: int = 0
+        self,
+        url: str,
+        destination: str,
+        progress: Progress | None = None,
+        task_id: TaskID | None = None,
     ) -> None:
         """
         Download a remote resource to a local file.
 
         :param str url: The URL of the resource to download.
         :param str destination: The destination file to download to.
-        :param int progress_bar_pos: The position of the progress bar.
+        :param Progress progress: The rich Progress object to use.
+        :param TaskID task_id: The rich TaskID to use.
         """
         with self.session.get(url.get_uri(), stream=True, timeout=15) as resp:
             resp.raise_for_status()
@@ -64,35 +77,51 @@ class Fetcher:
 
             total = int(resp.headers.get("Content-Length") or 0)
 
-            with (
-                open(destination, "wb") as f,
-                tqdm(
-                    desc=os.path.basename(destination),
-                    total=total,
-                    unit="iB",
-                    unit_scale=True,
-                    unit_divisor=1024,
-                    position=progress_bar_pos,
-                ) as bar,
-            ):
-                for chunk in resp.iter_content(chunk_size=MAX_CHUNK_SIZE):
-                    if not chunk:
-                        # TODO(Evan): Figure out what to do here
-                        break
+            if progress is not None and task_id is not None:
+                progress.update(task_id, total=total)
+                progress.start_task(task_id)
+                self._download_to_file(resp, destination, start_time, progress, task_id)
+            else:
+                with Progress(
+                    TextColumn("[bold blue]{task.description}", justify="right"),
+                    BarColumn(bar_width=None),
+                    "[progress.percentage]{task.percentage:>3.1f}%",
+                    "•",
+                    DownloadColumn(),
+                    "•",
+                    TransferSpeedColumn(),
+                    "•",
+                    TimeRemainingColumn(),
+                ) as p:
+                    tid = p.add_task(os.path.basename(destination), total=total)
+                    self._download_to_file(resp, destination, start_time, p, tid)
 
-                    size = f.write(chunk)
-                    bar.update(size)
+    def _download_to_file(
+        self,
+        resp: requests.Response,
+        destination: str,
+        start_time: float,
+        progress: Progress,
+        task_id: TaskID,
+    ) -> None:
+        with open(destination, "wb") as f:
+            for chunk in resp.iter_content(chunk_size=MAX_CHUNK_SIZE):
+                if not chunk:
+                    break
 
-                    # Handle bandwidth limiting, if set
-                    if self.bandwidth_limit:
-                        elapsed = time.time() - start_time
-                        # Calculate the time this chunk "should" take to stay
-                        # under the limit
-                        expected_time = MAX_CHUNK_SIZE / self.bandwidth_limit
+                size = f.write(chunk)
+                progress.update(task_id, advance=size)
 
-                        # Sleep the difference
-                        if elapsed < expected_time:
-                            time.sleep(expected_time - elapsed)
+                # Handle bandwidth limiting, if set
+                if self.bandwidth_limit:
+                    elapsed = time.time() - start_time
+                    # Calculate the time this chunk "should" take to stay
+                    # under the limit
+                    expected_time = MAX_CHUNK_SIZE / self.bandwidth_limit
+
+                    # Sleep the difference
+                    if elapsed < expected_time:
+                        time.sleep(expected_time - elapsed)
 
                         start_time = time.time()
 
@@ -100,8 +129,9 @@ class Fetcher:
         self,
         url: URI | str,
         dest_dir: str,
-        filename: str | None,
-        progress_bar_pos: int = 0,
+        filename: str | None = None,
+        progress: Progress | None = None,
+        task_id: TaskID | None = None,
     ) -> None:
         """
         Fetches a remote resource.
@@ -111,7 +141,8 @@ class Fetcher:
         :param str dest_dir: The directory to save the downloaded file to.
         :param filename: The name of the file to use.
         :type filename: str | None
-        :param int progress_bar_pos: The position of the progress bar.
+        :param Progress progress: The rich Progress object to use.
+        :param TaskID task_id: The rich TaskID to use.
         """
         # This is silly and I hate it.
         if type(url) is str:
@@ -129,7 +160,7 @@ class Fetcher:
             raise IOError(_(f"Unable to access destination file '{archive_file}'"))
 
         try:
-            self.download_file(url, archive_file, progress_bar_pos)
+            self.download_file(url, archive_file, progress, task_id)
         except HTTPError:
             raise
 
@@ -148,25 +179,46 @@ class Fetcher:
         if max_workers > 8:
             max_workers = 8
 
-        with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            futures = []
+        with Progress(
+            TextColumn("[bold blue]{task.description}", justify="right"),
+            BarColumn(bar_width=None),
+            "[progress.percentage]{task.percentage:>3.1f}%",
+            "•",
+            DownloadColumn(),
+            "•",
+            TransferSpeedColumn(),
+            "•",
+            TimeRemainingColumn(),
+        ) as progress:
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = []
 
-            for i, item in enumerate(items):
-                url, dest_dir, *rest = item
-                filename = rest[0] if rest else None
+                for i, item in enumerate(items):
+                    url, dest_dir, *rest = item
+                    filename = rest[0] if rest else None
 
-                futures.append(
-                    executor.submit(
-                        self.fetch, url, dest_dir, filename, i % max_workers
+                    # This is silly and I hate it.
+                    if type(url) is str:
+                        u = URI(url)
+                    else:
+                        u = url
+
+                    task_id = progress.add_task(
+                        filename or u.filename(), total=None, start=False
                     )
-                )
 
-            for future in futures:
-                try:
-                    future.result()
-                except Exception as e:
-                    ctx.ui.error(str(e))
-                    raise
+                    futures.append(
+                        executor.submit(
+                            self.fetch, url, dest_dir, filename, progress, task_id
+                        )
+                    )
+
+                for future in futures:
+                    try:
+                        future.result()
+                    except Exception as e:
+                        ctx.ui.error(str(e))
+                        raise
 
     def _get_bandwidth_limit(self) -> int:
         bandwidth_limit = (
