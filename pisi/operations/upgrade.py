@@ -5,19 +5,19 @@ import signal
 import sys
 
 from ordered_set import OrderedSet as set
-from pisi import translate as _
-from pisi import Error
 
 import pisi
-import pisi.ui as ui
-import pisi.context as ctx
-import pisi.pgraph as pgraph
 import pisi.atomicoperations as atomicoperations
-import pisi.operations as operations
-import pisi.signalhandler as signalhandler
-import pisi.util as util
-import pisi.db
 import pisi.blacklist
+import pisi.context as ctx
+import pisi.db
+import pisi.operations as operations
+import pisi.pgraph as pgraph
+import pisi.signalhandler as signalhandler
+import pisi.ui as ui
+import pisi.util as util
+from pisi import Error
+from pisi import translate as _
 
 
 def check_update_actions(packages):
@@ -109,7 +109,7 @@ def find_upgrades(packages, replaces):
     return Ap
 
 
-def upgrade(packages = [], repo = None):
+def upgrade(packages=[], repo=None):
     """
     Re-installs packages from the repository, trying to perform
     a minimum or maximum number of upgrades according to options.
@@ -204,27 +204,34 @@ def upgrade(packages = [], repo = None):
 
     ctx.ui.notify(ui.packagestogo, order=order)
 
-    # Detect package conflicts
-    conflicts = []
-    if not ctx.get_option("ignore_package_conflicts"):
-        conflicts = operations.helper.check_conflicts(order, packagedb)
+    # Resolve resources
+    resources = operations.helper.get_download_info(order)
 
-    automatic = operations.helper.extract_automatic(packages, order)
-    paths = []
-    for x in order:
-        ctx.ui.info(
-            util.colorize(
-                _("Downloading %d / %d") % (order.index(x) + 1, len(order)), "yellow"
+    # Fetch packages concurrently
+    operations.helper.fetch_packages(order)
+
+    # Verify hashes and instantiate Install objects
+    install_ops = []
+    for r in resources:
+        if util.sha1_file(r.local_path) != r.expected_hash:
+            raise Error(
+                _("Download Error: Package %s does not match the repository package.")
+                % r.name
             )
+        install_ops.append(
+            atomicoperations.Install(r.local_path, ignore_file_conflicts=True)
         )
-        install_op = atomicoperations.Install.from_name(x)
-        paths.append(install_op.package_fname)
 
     ctx.ui.status(_("Finished downloading package upgrades."))
 
     # Don't actually install if --fetch-only was set
     if ctx.get_option("fetch_only"):
         return True
+
+    # Detect package conflicts
+    conflicts = []
+    if not ctx.get_option("ignore_package_conflicts"):
+        conflicts = operations.helper.check_conflicts(order, packagedb)
 
     # Handle package conflicts
     if conflicts:
@@ -236,15 +243,16 @@ def upgrade(packages = [], repo = None):
     ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     signal_handler.disable_signal(signal.SIGINT)
 
+    automatic = operations.helper.extract_automatic(packages, order)
+
     try:
-        for path in paths:
+        for i, install_op in enumerate(install_ops):
             ctx.ui.info(
                 util.colorize(
-                    _("Installing %d / %d") % (paths.index(path) + 1, len(paths)),
+                    _("Installing %d / %d") % (i + 1, len(install_ops)),
                     "yellow",
                 )
             )
-            install_op = atomicoperations.Install(path, ignore_file_conflicts=True)
             if install_op.pkginfo.name in automatic:
                 install_op.automatic = True
             install_op.install(True)
@@ -442,18 +450,32 @@ def upgrade_base(A=set()):
 
             if extra_upgrades:
                 ctx.ui.warning(
-                    _("Safety switch forces the upgrade of " "following packages:")
+                    _("Safety switch forces the upgrade of following packages:")
                 )
                 ctx.ui.info(util.format_by_columns(sorted(extra_upgrades)))
                 G_f, upgrade_order = plan_upgrade(extra_upgrades, force_replaced=False)
 
-             # return packages that must be added to any installation
+            # return packages that must be added to any installation
             install_and_upgrade_order = set(install_order + upgrade_order)
             if len(install_and_upgrade_order) > 1 and ctx.config.get_option("debug"):
-                ctx.ui.info(_("installs and upgrades (unordered): %s" % install_and_upgrade_order))
-            install_and_upgrade_order = operations.install.plan_deterministic_install_order(install_and_upgrade_order)
+                ctx.ui.info(
+                    _(
+                        "installs and upgrades (unordered): %s"
+                        % install_and_upgrade_order
+                    )
+                )
+            install_and_upgrade_order = (
+                operations.install.plan_deterministic_install_order(
+                    install_and_upgrade_order
+                )
+            )
             if len(install_and_upgrade_order) > 1 and ctx.config.get_option("debug"):
-                ctx.ui.info(_("installs and upgrades (deterministic order): %s" % install_and_upgrade_order))
+                ctx.ui.info(
+                    _(
+                        "installs and upgrades (deterministic order): %s"
+                        % install_and_upgrade_order
+                    )
+                )
             return install_and_upgrade_order
         else:
             ctx.ui.warning(
