@@ -7,21 +7,22 @@ import sys
 import zipfile
 
 from ordered_set import OrderedSet as set
-from pisi import translate as _
-from pisi import Error
 
 import pisi
-import pisi.context as ctx
-import pisi.util as util
 import pisi.atomicoperations as atomicoperations
+import pisi.context as ctx
+import pisi.db
 import pisi.operations as operations
 import pisi.pgraph as pgraph
 import pisi.signalhandler as signalhandler
 import pisi.ui as ui
-import pisi.db
+import pisi.util as util
+from pisi import Error
+from pisi import translate as _
 
-BASELAYOUT_PKG = 'baselayout'
-EOPKG_PKG = 'eopkg'
+BASELAYOUT_PKG = "baselayout"
+EOPKG_PKG = "eopkg"
+
 
 def plan_deterministic_install_order(order):
     """Ensure that baselayout is put at the end of any topological sort that includes it."""
@@ -37,6 +38,7 @@ def plan_deterministic_install_order(order):
 
     return order
 
+
 def install_pkg_names(packages, reinstall=False):
     """
     Installs packages from the repository.
@@ -50,13 +52,17 @@ def install_pkg_names(packages, reinstall=False):
     packagedb = pisi.db.packagedb.PackageDB()
     signal_handler = signalhandler.SignalHandler()
 
-    packages = [str(package) for package in packages]  # FIXME: why do we still get unicode input here? :/ -- exa
+    packages = [
+        str(package) for package in packages
+    ]  # FIXME: why do we still get unicode input here? :/ -- exa
 
     deduped_packages = packages = set(packages)
 
     # filter packages that are already installed
     if not reinstall:
-        not_installed = set([package for package in packages if not installdb.has_package(package)])
+        not_installed = set(
+            [package for package in packages if not installdb.has_package(package)]
+        )
         diff = packages - not_installed
         if len(diff) > 0:
             ctx.ui.warning(
@@ -119,16 +125,21 @@ def install_pkg_names(packages, reinstall=False):
 
     ctx.ui.notify(ui.packagestogo, order=order)
 
-    automatic = operations.helper.extract_automatic(packages, order)
-    paths = []
-    for package in order:
-        ctx.ui.info(
-            util.colorize(
-                _("Downloading %d / %d") % (order.index(package) + 1, len(order)), "yellow"
+    # Resolve resources
+    resources = operations.helper.get_download_info(order)
+
+    # Fetch packages concurrently
+    operations.helper.fetch_packages(order)
+
+    # Verify hashes and instantiate Install objects
+    install_ops = []
+    for r in resources:
+        if util.sha1_file(r.local_path) != r.expected_hash:
+            raise Error(
+                _("Download Error: Package %s does not match the repository package.")
+                % r.name
             )
-        )
-        install_op = atomicoperations.Install.from_name(package)
-        paths.append(install_op.package_fname)
+        install_ops.append(atomicoperations.Install(r.local_path))
 
     ctx.ui.status(_("Finished downloading packages."))
 
@@ -147,15 +158,16 @@ def install_pkg_names(packages, reinstall=False):
     ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     signal_handler.disable_signal(signal.SIGINT)
 
+    automatic = operations.helper.extract_automatic(packages, order)
+
     try:
-        for path in paths:
+        for i, install_op in enumerate(install_ops):
             ctx.ui.info(
                 util.colorize(
-                    _("Installing %d / %d") % (paths.index(path) + 1, len(paths)),
+                    _("Installing %d / %d") % (i + 1, len(install_ops)),
                     "yellow",
                 )
             )
-            install_op = atomicoperations.Install(path)
             if install_op.pkginfo.name in automatic:
                 install_op.automatic = True
             install_op.install(False)
