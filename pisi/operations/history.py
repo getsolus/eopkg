@@ -190,17 +190,40 @@ def takeback(operation):
 
     errors = []
     paths = []
-    for pkg in beinstalled:
-        ctx.ui.info(
-            pisi.util.colorize(
-                _("Downloading %d / %d")
-                % (beinstalled.index(pkg) + 1, len(beinstalled)),
-                "yellow",
-            )
-        )
-        pkg += ctx.const.package_suffix
-        if fetch_remote_file(fetcher, pkg, errors):
-            paths.append(os.path.join(ctx.config.cached_packages_dir(), pkg))
+    fetch_items = []
+
+    for pkg_name in beinstalled:
+        pkg_file = pkg_name + ctx.const.package_suffix
+        try:
+            uri = pisi.file.File.make_uri(__getpackageurl_binman(pkg_file))
+        except PackageNotFound:
+            try:
+                uri = pisi.file.File.make_uri(__getpackageurl(pkg_file))
+            except PackageNotFound:
+                errors.append(pkg_name)
+                ctx.ui.info(
+                    pisi.util.colorize(_("%s could not be found") % (pkg_name), "red")
+                )
+                continue
+
+        dest = ctx.config.cached_packages_dir()
+        filepath = os.path.join(dest, uri.filename())
+
+        if not os.path.exists(filepath):
+            fetch_items.append((uri, dest, uri.filename()))
+        else:
+            ctx.ui.info(_("%s [cached]") % uri.filename())
+            paths.append(filepath)
+
+    if fetch_items:
+        ctx.ui.status(_("Downloading historical packages..."))
+        try:
+            fetcher.fetch_multi(fetch_items)
+            for item in fetch_items:
+                paths.append(os.path.join(item[1], item[2]))
+        except Exception as e:
+            ctx.ui.error(_("Error while fetching historical packages: %s") % str(e))
+            # We might still have some packages, but maybe it's safer to stop or ask.
 
     if errors:
         ctx.ui.info(
