@@ -171,13 +171,13 @@ class Fetcher:
         :param items: A list of (url, dest_dir, filename) tuples.
         """
 
-        # TODO(Joey): Add a seperate config value for this
-        max_workers = pisi.util.parse_jobs(ctx.config.values.build.jobs)
-        if max_workers == 0:
-            max_workers = 8
-        # Cap the number of concurrent downloads to 8 to avoid overloading
-        if max_workers > 8:
-            max_workers = 8
+        max_workers = int(
+            ctx.config.options.download_workers
+            or ctx.config.values.general.download_workers
+        )
+        # Ensure we've got something reasonable to work with
+        max_workers = max(1, min(max_workers, 64))
+        ctx.ui.debug(_(f"Setting {max_workers} concurrent download workers"))
 
         with Progress(
             TextColumn("[bold blue]{task.description}", justify="right"),

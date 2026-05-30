@@ -103,8 +103,12 @@ class Command(object):
         )
         # Username and password are leftovers from auth-basic support.
         # These are here (but hidden) so we can issue a deprecation warning.
-        group.add_option("-u", "--username", action="store", help=optparse.SUPPRESS_HELP)
-        group.add_option("-p", "--password", action="store", help=optparse.SUPPRESS_HELP)
+        group.add_option(
+            "-u", "--username", action="store", help=optparse.SUPPRESS_HELP
+        )
+        group.add_option(
+            "-p", "--password", action="store", help=optparse.SUPPRESS_HELP
+        )
         group.add_option(
             "-L",
             "--bandwidth-limit",
@@ -120,6 +124,13 @@ class Command(object):
             help=_(
                 "Set the max number of retry attempts in case of connection timeouts"
             ),
+        )
+        group.add_option(
+            "-w",
+            "--download-workers",
+            action="store",
+            default=8,
+            help=_("Set the max number of concurrent download workers"),
         )
         group.add_option(
             "-v",
