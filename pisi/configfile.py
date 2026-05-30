@@ -26,6 +26,7 @@
 # generateDebug = False
 # enableSandbox = False
 # jobs = "-j3"
+# download_workers = "8"
 # CFLAGS= -mtune=generic -march=i686 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2
 # CXXFLAGS= -mtune=generic -march=i686 -O2 -pipe -fomit-frame-pointer -fstack-protector -D_FORTIFY_SOURCE=2
 # LDFLAGS= -Wl,-O1 -Wl,-z,relro -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--sort-common
@@ -47,14 +48,13 @@
 # kde_dir = /usr/kde/4
 # qt_dir = /usr/qt/4
 
+import configparser
+import io
 import os
 import re
-import io
-import configparser
-
-from pisi import translate as _
 
 import pisi
+from pisi import translate as _
 
 
 class Error(pisi.Error):
@@ -79,6 +79,7 @@ class GeneralDefaults:
     retry_attempts = 5
     ignore_safety = False
     ignore_delta = False
+    download_workers = 8
 
 
 class BuildDefaults:
