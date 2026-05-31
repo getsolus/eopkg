@@ -124,6 +124,7 @@ class Fetcher:
                         time.sleep(expected_time - elapsed)
 
                         start_time = time.time()
+            progress.remove_task(task_id)
 
     def fetch(
         self,
