@@ -77,6 +77,7 @@ class Install(AtomicOperation):
             if os.path.exists(resource.local_path):
                 if util.sha1_file(resource.local_path) != resource.expected_hash:
                     os.unlink(resource.local_path)
+                ctx.ui.info(_(f"{resource.uri.filename()} [cached]"))
             else:
                 # Explicitly download if not cached.
                 # Note: In the future, this should be handled by a separate fetch stage.
