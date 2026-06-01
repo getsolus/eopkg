@@ -27,6 +27,18 @@ from pisi.util import human_readable_rate
 """Maximum size in bytes of a download chunk to process at a time."""
 MAX_CHUNK_SIZE = 8192
 
+rich_progress = Progress(
+    TextColumn("[bold blue]{task.description}", justify="right"),
+    BarColumn(bar_width=None),
+    "[progress.percentage]{task.percentage:>3.1f}%",
+    "•",
+    DownloadColumn(),
+    "•",
+    TransferSpeedColumn(),
+    "•",
+    TimeRemainingColumn(),
+)
+
 
 class Fetcher:
     """Handles an HTTP session for making one or more download requests.
@@ -58,18 +70,18 @@ class Fetcher:
 
     def download_file(
         self,
-        url: str,
+        url: URI,
         destination: str,
         progress: Progress | None = None,
-        task_id: TaskID | None = None,
+        description: str | None = None,
     ) -> None:
         """
         Download a remote resource to a local file.
 
-        :param str url: The URL of the resource to download.
+        :param URI url: The URI of the resource to download.
         :param str destination: The destination file to download to.
         :param Progress progress: The rich Progress object to use.
-        :param TaskID task_id: The rich TaskID to use.
+        :param str description: The description for the task.
         """
         with self.session.get(url.get_uri(), stream=True, timeout=15) as resp:
             resp.raise_for_status()
@@ -77,23 +89,25 @@ class Fetcher:
 
             total = int(resp.headers.get("Content-Length") or 0)
 
-            if progress is not None and task_id is not None:
-                progress.update(task_id, total=total)
-                progress.start_task(task_id)
-                self._download_to_file(resp, destination, start_time, progress, task_id)
+            if progress is not None:
+                task_id = progress.add_task(
+                    description or os.path.basename(destination),
+                    total=total,
+                )
+                try:
+                    self._download_to_file(
+                        resp, destination, start_time, progress, task_id
+                    )
+                finally:
+                    progress.remove_task(task_id)
+                    progress.console.print(
+                        _(f"Downloaded {os.path.basename(destination)}")
+                    )
             else:
-                with Progress(
-                    TextColumn("[bold blue]{task.description}", justify="right"),
-                    BarColumn(bar_width=None),
-                    "[progress.percentage]{task.percentage:>3.1f}%",
-                    "•",
-                    DownloadColumn(),
-                    "•",
-                    TransferSpeedColumn(),
-                    "•",
-                    TimeRemainingColumn(),
-                ) as p:
-                    tid = p.add_task(os.path.basename(destination), total=total)
+                with rich_progress as p:
+                    tid = p.add_task(
+                        description or os.path.basename(destination), total=total
+                    )
                     self._download_to_file(resp, destination, start_time, p, tid)
 
     def _download_to_file(
@@ -124,7 +138,6 @@ class Fetcher:
                         time.sleep(expected_time - elapsed)
 
                         start_time = time.time()
-            progress.remove_task(task_id)
 
     def fetch(
         self,
@@ -132,7 +145,7 @@ class Fetcher:
         dest_dir: str,
         filename: str | None = None,
         progress: Progress | None = None,
-        task_id: TaskID | None = None,
+        description: str | None = None,
     ) -> None:
         """
         Fetches a remote resource.
@@ -143,7 +156,7 @@ class Fetcher:
         :param filename: The name of the file to use.
         :type filename: str | None
         :param Progress progress: The rich Progress object to use.
-        :param TaskID task_id: The rich TaskID to use.
+        :param str description: The description for the task.
         """
         # This is silly and I hate it.
         if type(url) is str:
@@ -161,15 +174,15 @@ class Fetcher:
             raise IOError(_(f"Unable to access destination file '{archive_file}'"))
 
         try:
-            self.download_file(url, archive_file, progress, task_id)
+            self.download_file(url, archive_file, progress, description)
         except HTTPError:
             raise
 
-    def fetch_multi(self, items: list) -> None:
+    def fetch_multi(self, items: list["pisi.package.PackageResource"]) -> None:
         """
         Fetches multiple remote resources concurrently.
 
-        :param items: A list of (url, dest_dir, filename) tuples.
+        :param items: A list of PackageResource objects.
         """
 
         max_workers = int(
@@ -180,37 +193,23 @@ class Fetcher:
         max_workers = max(1, min(max_workers, 64))
         ctx.ui.debug(_(f"Setting {max_workers} concurrent download workers"))
 
-        with Progress(
-            TextColumn("[bold blue]{task.description}", justify="right"),
-            BarColumn(bar_width=None),
-            "[progress.percentage]{task.percentage:>3.1f}%",
-            "•",
-            DownloadColumn(),
-            "•",
-            TransferSpeedColumn(),
-            "•",
-            TimeRemainingColumn(),
-        ) as progress:
+        with rich_progress as progress:
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
                 futures = []
 
-                for i, item in enumerate(items):
-                    url, dest_dir, *rest = item
-                    filename = rest[0] if rest else None
-
-                    # This is silly and I hate it.
-                    if type(url) is str:
-                        u = URI(url)
-                    else:
-                        u = url
-
-                    task_id = progress.add_task(
-                        filename or u.filename(), total=None, start=False
-                    )
+                for resource in items:
+                    description = f"{resource.name} ({resource.repo})"
+                    if resource.is_delta:
+                        description += " [delta]"
 
                     futures.append(
                         executor.submit(
-                            self.fetch, url, dest_dir, filename, progress, task_id
+                            self.fetch,
+                            resource.uri,
+                            os.path.dirname(resource.local_path),
+                            os.path.basename(resource.local_path),
+                            progress,
+                            description,
                         )
                     )
 
