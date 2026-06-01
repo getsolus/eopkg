@@ -437,16 +437,16 @@ def fetch(packages=[], path=os.path.curdir, repo=None):
 
     for name in packages:
         resource = packagedb.get_resource(name, repo=repo)
+        resource.local_path = os.path.join(path, resource.uri.filename())
         ctx.ui.info(_(f"Package {name} found in repository {resource.repo}"))
 
-        output = os.path.join(path, resource.uri.filename())
-        if os.path.exists(output) and resource.expected_hash == pisi.util.sha1_file(
-            output
-        ):
+        if os.path.exists(
+            resource.local_path
+        ) and resource.expected_hash == pisi.util.sha1_file(resource.local_path):
             ctx.ui.warning(_(f"{resource.uri.filename()} package already fetched"))
             continue
 
-        fetch_items.append((resource.uri, path))
+        fetch_items.append(resource)
 
     # TODO(Evan): Error handling
     if fetch_items:

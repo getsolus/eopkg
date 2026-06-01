@@ -158,11 +158,10 @@ def fetch_packages(order):
                 os.path.exists(r.local_path)
                 and util.sha1_file(r.local_path) == r.expected_hash
             ):
+                ctx.ui.info(_(f"{r.uri.filename()} [cached]"))
                 continue
 
-            items_to_fetch.append(
-                (r.uri, os.path.dirname(r.local_path), r.uri.filename())
-            )
+            items_to_fetch.append(r)
 
     if items_to_fetch:
         fetcher = Fetcher()

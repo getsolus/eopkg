@@ -9,6 +9,7 @@ from requests import HTTPError
 import pisi
 import pisi.context as ctx
 import pisi.db
+import pisi.package
 import pisi.util
 from pisi import translate as _
 from pisi.fetcher import Fetcher
@@ -47,82 +48,69 @@ def __listactions(actions):
     return beinstalled, beremoved, configs
 
 
-def __getpackageurl_binman(package):
+def __get_package_resource(package_file):
     packagedb = pisi.db.packagedb.PackageDB()
     repodb = pisi.db.repodb.RepoDB()
-    pkg, ver = pisi.util.parse_package_name(package)
+    pkg_name, _ver = pisi.util.parse_package_name(package_file)
 
     reponame = None
     try:
-        reponame = packagedb.which_repo(pkg)
+        reponame = packagedb.which_repo(pkg_name)
     except Exception:
-        # Maybe this package is obsoluted from repository
+        # Maybe this package is obsoleted from repository
         for repo in repodb.get_binary_repos():
-            if pkg in packagedb.get_obsoletes(repo):
+            if pkg_name in packagedb.get_obsoletes(repo):
                 reponame = repo
 
     if not reponame:
         raise PackageNotFound
 
-    package_ = packagedb.get_package(pkg)
     repourl = repodb.get_repo_url(reponame)
-    base_package = os.path.dirname(package_.packageURI)
     repo_base = os.path.dirname(repourl)
-    possible_url = os.path.join(repo_base, base_package, package)
-    ctx.ui.info(_("Package %s found in repository %s") % (pkg, reponame))
 
-    # return _possible_ url for this package
-    return possible_url
-
-
-def __getpackageurl(package):
-    packagedb = pisi.db.packagedb.PackageDB()
-    repodb = pisi.db.repodb.RepoDB()
-    pkg, ver = pisi.util.parse_package_name(package)
-
-    reponame = None
+    # Try binman style first
     try:
-        reponame = packagedb.which_repo(pkg)
+        package_ = packagedb.get_package(pkg_name)
+        base_package = os.path.dirname(package_.packageURI)
+        url = os.path.join(repo_base, base_package, package_file)
     except Exception:
-        # Maybe this package is obsoluted from repository
-        for repo in repodb.get_binary_repos():
-            if pkg in packagedb.get_obsoletes(repo):
-                reponame = repo
+        # Fallback to simple style
+        url = os.path.join(repo_base, package_file)
 
-    if not reponame:
-        raise PackageNotFound
+    ctx.ui.info(_("Package %s found in repository %s") % (pkg_name, reponame))
 
-    repourl = repodb.get_repo_url(reponame)
-    # return _possible_ url for this package
-    return os.path.join(os.path.dirname(repourl), package)
+    uri = pisi.file.File.make_uri(url)
+    dest = ctx.config.cached_packages_dir()
+    filepath = os.path.join(dest, uri.filename())
+
+    return pisi.package.PackageResource(
+        name=pkg_name,
+        uri=uri,
+        repo=reponame,
+        expected_hash=None,
+        size=None,
+        local_path=filepath,
+    )
 
 
 def fetch_remote_file(fetcher, package, errors):
     try:
-        uri = pisi.file.File.make_uri(__getpackageurl_binman(package))
+        resource = __get_package_resource(package)
     except PackageNotFound:
         errors.append(package)
         ctx.ui.info(pisi.util.colorize(_("%s could not be found") % (package), "red"))
         return False
 
-    dest = ctx.config.cached_packages_dir()
-    filepath = os.path.join(dest, uri.filename())
     # TODO(Evan): Validate
-    if not os.path.exists(filepath):
+    if not os.path.exists(resource.local_path):
         try:
-            fetcher.fetch(uri, dest)
-        except HTTPError | IOError | ValueError:
-            try:
-                new_uri = pisi.file.File.make_uri(__getpackageurl(package))
-                fetcher.fetch(new_uri, dest)
-            except HTTPError | IOError | ValueError:
-                errors.append(package)
-                ctx.ui.info(
-                    pisi.util.colorize(_(f"{package} could not be found"), "red")
-                )
-                return False
+            fetcher.fetch(resource.uri, os.path.dirname(resource.local_path))
+        except (HTTPError, IOError, ValueError):
+            errors.append(package)
+            ctx.ui.info(pisi.util.colorize(_(f"{package} could not be found"), "red"))
+            return False
     else:
-        ctx.ui.info(_("%s [cached]") % uri.filename())
+        ctx.ui.info(_("%s [cached]") % resource.uri.filename())
     return True
 
 
@@ -195,32 +183,26 @@ def takeback(operation):
     for pkg_name in beinstalled:
         pkg_file = pkg_name + ctx.const.package_suffix
         try:
-            uri = pisi.file.File.make_uri(__getpackageurl_binman(pkg_file))
+            resource = __get_package_resource(pkg_file)
         except PackageNotFound:
-            try:
-                uri = pisi.file.File.make_uri(__getpackageurl(pkg_file))
-            except PackageNotFound:
-                errors.append(pkg_name)
-                ctx.ui.info(
-                    pisi.util.colorize(_("%s could not be found") % (pkg_name), "red")
-                )
-                continue
+            errors.append(pkg_name)
+            ctx.ui.info(
+                pisi.util.colorize(_("%s could not be found") % (pkg_name), "red")
+            )
+            continue
 
-        dest = ctx.config.cached_packages_dir()
-        filepath = os.path.join(dest, uri.filename())
-
-        if not os.path.exists(filepath):
-            fetch_items.append((uri, dest, uri.filename()))
+        if not os.path.exists(resource.local_path):
+            fetch_items.append(resource)
         else:
-            ctx.ui.info(_("%s [cached]") % uri.filename())
-            paths.append(filepath)
+            ctx.ui.info(_("%s [cached]") % resource.uri.filename())
+            paths.append(resource.local_path)
 
     if fetch_items:
         ctx.ui.status(_("Downloading historical packages..."))
         try:
             fetcher.fetch_multi(fetch_items)
-            for item in fetch_items:
-                paths.append(os.path.join(item[1], item[2]))
+            for resource in fetch_items:
+                paths.append(resource.local_path)
         except Exception as e:
             ctx.ui.error(_("Error while fetching historical packages: %s") % str(e))
             # We might still have some packages, but maybe it's safer to stop or ask.
