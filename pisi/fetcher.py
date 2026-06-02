@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import os
+import shutil
 import time
 from concurrent.futures import ThreadPoolExecutor
 
@@ -83,6 +84,34 @@ class Fetcher:
         :param Progress progress: The rich Progress object to use.
         :param str description: The description for the task.
         """
+        if url.is_local_file():
+            source = url.path()
+            rooted_path = pisi.util.join_path(ctx.config.dest_dir(), source)
+            if os.path.exists(rooted_path):
+                source = rooted_path
+            else:
+                raise IOError(_(f"Source file '{source}' does not exist"))
+
+            total = os.path.getsize(source)
+
+            if progress is not None:
+                task_id = progress.add_task(
+                    description or os.path.basename(destination),
+                    total=total,
+                )
+                try:
+                    self._copy_to_file(source, destination, progress, task_id)
+                finally:
+                    progress.remove_task(task_id)
+                    progress.console.print(_(f"Copied {os.path.basename(destination)}"))
+            else:
+                with rich_progress as p:
+                    tid = p.add_task(
+                        description or os.path.basename(destination), total=total
+                    )
+                    self._copy_to_file(source, destination, p, tid)
+            return
+
         with self.session.get(url.get_uri(), stream=True, timeout=15) as resp:
             resp.raise_for_status()
             start_time = time.time()
@@ -109,6 +138,28 @@ class Fetcher:
                         description or os.path.basename(destination), total=total
                     )
                     self._download_to_file(resp, destination, start_time, p, tid)
+
+    def _copy_to_file(
+        self,
+        source: str,
+        destination: str,
+        progress: Progress,
+        task_id: TaskID,
+    ) -> None:
+        # Try hardlinking first
+        try:
+            if os.path.exists(destination):
+                os.unlink(destination)
+            os.link(source, destination)
+            progress.update(task_id, completed=os.path.getsize(source))
+            return
+        except OSError:
+            # Fallback to manual copy with progress
+            pass
+
+        with progress.open(source, "rb", task_id=task_id) as src:
+            with open(destination, "wb") as dst:
+                shutil.copyfileobj(src, dst)
 
     def _download_to_file(
         self,
