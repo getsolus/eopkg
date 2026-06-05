@@ -134,12 +134,12 @@ def install_pkg_names(packages, reinstall=False):
     # Verify hashes and instantiate Install objects
     install_ops = []
     for r in resources:
-        if util.sha1_file(r.local_path) != r.expected_hash:
+        if util.sha1_file(r.pkg_path) != r.expected_hash:
             raise Error(
                 _("Download Error: Package %s does not match the repository package.")
                 % r.name
             )
-        install_ops.append(atomicoperations.Install(r.local_path))
+        install_ops.append(atomicoperations.Install(r.pkg_path))
 
     ctx.ui.status(_("Finished downloading packages."))
 

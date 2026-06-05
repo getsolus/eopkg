@@ -123,12 +123,12 @@ def calculate_download_sizes(order):
     total_size = sum(r.size for r in resources)
     cached_size = 0
     for r in resources:
-        if os.path.exists(r.local_path):
-            if util.sha1_file(r.local_path) == r.expected_hash:
+        if os.path.exists(r.pkg_path):
+            if util.sha1_file(r.pkg_path) == r.expected_hash:
                 cached_size += r.size
             else:
                 # partial download?
-                part_path = r.local_path + ".part"
+                part_path = r.pkg_path + ".part"
                 if os.path.exists(part_path):
                     cached_size += os.stat(part_path).st_size
 
@@ -152,15 +152,12 @@ def fetch_packages(order):
     items_to_fetch = []
 
     for r in resources:
-        if r.uri.is_remote_file():
-            # Check if it's already cached and valid
-            if (
-                os.path.exists(r.local_path)
-                and util.sha1_file(r.local_path) == r.expected_hash
-            ):
-                ctx.ui.info(_(f"{r.uri.filename()} [cached]"))
-                continue
+        # Check if it's already cached and valid
+        if os.path.exists(r.pkg_path) and util.sha1_file(r.pkg_path) == r.expected_hash:
+            ctx.ui.info(_(f"{r.uri.filename()} [cached]"))
+            continue
 
+        if r.uri.is_remote_file():
             items_to_fetch.append(r)
 
     if items_to_fetch:

@@ -213,13 +213,13 @@ def upgrade(packages=[], repo=None):
     # Verify hashes and instantiate Install objects
     install_ops = []
     for r in resources:
-        if util.sha1_file(r.local_path) != r.expected_hash:
+        if util.sha1_file(r.pkg_path) != r.expected_hash:
             raise Error(
                 _("Download Error: Package %s does not match the repository package.")
                 % r.name
             )
         install_ops.append(
-            atomicoperations.Install(r.local_path, ignore_file_conflicts=True)
+            atomicoperations.Install(r.pkg_path, ignore_file_conflicts=True)
         )
 
     ctx.ui.status(_("Finished downloading package upgrades."))
