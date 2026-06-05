@@ -5,16 +5,16 @@
 
 import os.path
 
-from pisi import translate as _
-
 import pisi
-import pisi.context as ctx
 import pisi.archive as archive
-import pisi.uri
-import pisi.metadata
+import pisi.context as ctx
 import pisi.file
 import pisi.files
+import pisi.metadata
+import pisi.uri
 import pisi.util as util
+from pisi import translate as _
+
 from . import fetcher
 
 
@@ -33,6 +33,12 @@ class PackageResource:
         self.size = size
         self.local_path = local_path
         self.is_delta = is_delta
+
+    @property
+    def pkg_path(self):
+        # If installing from a local repository eopkg will just directly install
+        # the package instead of installing from the cached archive
+        return self.local_path if self.uri.is_remote_file() else self.uri.path()
 
 
 class Package:
