@@ -150,15 +150,28 @@ def fetch_packages(order):
     """
     resources = get_download_info(order)
     items_to_fetch = []
+    precached = []
 
     for r in resources:
         # Check if it's already cached and valid
         if os.path.exists(r.pkg_path) and util.sha1_file(r.pkg_path) == r.expected_hash:
-            ctx.ui.info(_(f"{r.uri.filename()} [cached]"))
+            precached.append(r)
             continue
 
         if r.uri.is_remote_file():
             items_to_fetch.append(r)
+
+    ctx.ui.info(
+        util.colorize(
+            _(
+                f"Downloading {len(items_to_fetch)} package resources ({len(precached)} cached)"
+            ),
+            "yellow",
+        )
+    )
+
+    for r in precached:
+        ctx.ui.info(_(f"{r.uri.filename()} [cached]"))
 
     if items_to_fetch:
         fetcher = Fetcher()
