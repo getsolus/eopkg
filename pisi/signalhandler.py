@@ -14,6 +14,8 @@ class SignalWrapper:
     Attributes:
         signal (signal.Signals): The signal being wrapped.
         old_handler (signal.Handlers): The original signal handler.
+        ref_count (int): The number of times this signal has been
+            disabled or caught.
     """
 
     def __init__(self, sig: signal.Signals):
@@ -25,6 +27,7 @@ class SignalWrapper:
         """
         self.signal = sig
         self.old_handler: signal.Handlers | None = signal.SIG_DFL
+        self.ref_count = 0
 
 
 class SignalHandler:
@@ -99,6 +102,7 @@ class SignalHandler:
             wrapper = SignalWrapper(sig)
             wrapper.old_handler = signal.signal(sig, signal.SIG_IGN)
             self.signals[sig] = wrapper
+        self.signals[sig].ref_count += 1
 
     def enable_signal(self, sig: signal.Signals):
         """
@@ -115,6 +119,8 @@ class SignalHandler:
             return
 
         wrapper = self.signals[sig]
+        wrapper.ref_count -= 1
 
-        signal.signal(sig, wrapper.old_handler)
-        del self.signals[sig]
+        if wrapper.ref_count <= 0:
+            signal.signal(sig, wrapper.old_handler)
+            del self.signals[sig]
