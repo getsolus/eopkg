@@ -3,6 +3,7 @@
 
 import os
 import shutil
+import signal
 import time
 from concurrent.futures import ThreadPoolExecutor
 
@@ -84,60 +85,68 @@ class Fetcher:
         :param Progress progress: The rich Progress object to use.
         :param str description: The description for the task.
         """
-        if url.is_local_file():
-            source = url.path()
-            rooted_path = pisi.util.join_path(ctx.config.dest_dir(), source)
-            if os.path.exists(rooted_path):
-                source = rooted_path
-            else:
-                raise IOError(_(f"Source file '{source}' does not exist"))
+        ctx.sig.catch_signal(signal.SIGINT)
+        try:
+            if url.is_local_file():
+                source = url.path()
+                rooted_path = pisi.util.join_path(ctx.config.dest_dir(), source)
+                if os.path.exists(rooted_path):
+                    source = rooted_path
+                else:
+                    raise IOError(_(f"Source file '{source}' does not exist"))
 
-            total = os.path.getsize(source)
+                total = os.path.getsize(source)
 
-            if progress is not None:
-                task_id = progress.add_task(
-                    description or os.path.basename(destination),
-                    total=total,
-                )
-                try:
-                    self._copy_to_file(source, destination, progress, task_id)
-                finally:
-                    progress.remove_task(task_id)
-                    progress.console.print(_(f"Copied {os.path.basename(destination)}"))
-            else:
-                with rich_progress as p:
-                    tid = p.add_task(
-                        description or os.path.basename(destination), total=total
+                if progress is not None:
+                    task_id = progress.add_task(
+                        description or os.path.basename(destination),
+                        total=total,
                     )
-                    self._copy_to_file(source, destination, p, tid)
-            return
+                    try:
+                        self._copy_to_file(source, destination, progress, task_id)
+                    finally:
+                        progress.remove_task(task_id)
+                        progress.console.print(
+                            _(f"Copied {os.path.basename(destination)}")
+                        )
+                else:
+                    with rich_progress as p:
+                        tid = p.add_task(
+                            description or os.path.basename(destination), total=total
+                        )
+                        self._copy_to_file(source, destination, p, tid)
+                return
 
-        with self.session.get(url.get_uri(), stream=True, timeout=15) as resp:
-            resp.raise_for_status()
-            start_time = time.time()
+            with self.session.get(url.get_uri(), stream=True, timeout=15) as resp:
+                resp.raise_for_status()
+                start_time = time.time()
 
-            total = int(resp.headers.get("Content-Length") or 0)
+                total = int(resp.headers.get("Content-Length") or 0)
 
-            if progress is not None:
-                task_id = progress.add_task(
-                    description or os.path.basename(destination),
-                    total=total,
-                )
-                try:
-                    self._download_to_file(
-                        resp, destination, start_time, progress, task_id
+                if progress is not None:
+                    task_id = progress.add_task(
+                        description or os.path.basename(destination),
+                        total=total,
                     )
-                finally:
-                    progress.remove_task(task_id)
-                    progress.console.print(
-                        _(f"Downloaded {os.path.basename(destination)}")
-                    )
-            else:
-                with rich_progress as p:
-                    tid = p.add_task(
-                        description or os.path.basename(destination), total=total
-                    )
-                    self._download_to_file(resp, destination, start_time, p, tid)
+                    try:
+                        self._download_to_file(
+                            resp, destination, start_time, progress, task_id
+                        )
+                    finally:
+                        progress.remove_task(task_id)
+                        progress.console.print(
+                            _(f"Downloaded {os.path.basename(destination)}")
+                        )
+                else:
+                    with rich_progress as p:
+                        tid = p.add_task(
+                            description or os.path.basename(destination), total=total
+                        )
+                        self._download_to_file(resp, destination, start_time, p, tid)
+        finally:
+            ctx.sig.enable_signal(signal.SIGINT)
+
+        ctx.sig.check_signals()
 
     def _copy_to_file(
         self,
@@ -189,6 +198,10 @@ class Fetcher:
                         time.sleep(expected_time - elapsed)
 
                         start_time = time.time()
+
+                # Handle SIGINT in ThreadPoolExecutor context
+                if ctx.sig.done_event.is_set():
+                    return
 
     def fetch(
         self,
@@ -244,32 +257,38 @@ class Fetcher:
         max_workers = max(1, min(max_workers, 64))
         ctx.ui.debug(_(f"Setting {max_workers} concurrent download workers"))
 
-        with rich_progress as progress:
-            with ThreadPoolExecutor(max_workers=max_workers) as executor:
-                futures = []
+        ctx.sig.catch_signal(signal.SIGINT)
+        try:
+            with rich_progress as progress:
+                with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                    futures = []
 
-                for resource in items:
-                    description = f"{resource.name} ({resource.repo})"
-                    if resource.is_delta:
-                        description += " [delta]"
+                    for resource in items:
+                        description = f"{resource.name} ({resource.repo})"
+                        if resource.is_delta:
+                            description += " [delta]"
 
-                    futures.append(
-                        executor.submit(
-                            self.fetch,
-                            resource.uri,
-                            os.path.dirname(resource.local_path),
-                            os.path.basename(resource.local_path),
-                            progress,
-                            description,
+                        futures.append(
+                            executor.submit(
+                                self.fetch,
+                                resource.uri,
+                                os.path.dirname(resource.local_path),
+                                os.path.basename(resource.local_path),
+                                progress,
+                                description,
+                            )
                         )
-                    )
 
-                for future in futures:
-                    try:
-                        future.result()
-                    except Exception as e:
-                        ctx.ui.error(str(e))
-                        raise
+                    for future in futures:
+                        try:
+                            future.result()
+                        except Exception as e:
+                            ctx.ui.error(str(e))
+                            raise
+        finally:
+            ctx.sig.enable_signal(signal.SIGINT)
+
+        ctx.sig.check_signals()
 
     def _get_bandwidth_limit(self) -> int:
         bandwidth_limit = (
