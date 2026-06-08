@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import signal
+import threading
+from threading import Event
 
 
 class SignalWrapper:
@@ -34,11 +36,53 @@ class SignalHandler:
     Attributes:
         signals (dict[signal.Signals, SignalWrapper]): Disabled signals
             and their handlers.
+        done_event (Event): An event that is set when a caught signal
+            is received.
     """
 
     def __init__(self):
         """Create a new SignalHandler instance."""
         self.signals: dict[signal.Signals, SignalWrapper] = {}
+        self.done_event = Event()
+
+    def handle_signal(self, signum, frame):
+        """
+        Internal signal handler that sets the done_event.
+        """
+        self.done_event.set()
+        if threading.current_thread() is threading.main_thread():
+            raise KeyboardInterrupt
+
+    def clear_event(self):
+        """
+        Clears the done_event.
+        """
+        self.done_event.clear()
+
+    def check_signals(self):
+        """
+        Checks if a signal was caught and raises KeyboardInterrupt if so.
+        """
+        if self.done_event.is_set():
+            self.clear_event()
+            raise KeyboardInterrupt
+
+    def catch_signal(self, sig: signal.Signals):
+        """
+        Catches a system signal by setting the handler to our own signal
+        handler, which sets the done_event.
+
+        Parameters:
+            sig (signal.Signals): The signal to catch.
+        """
+        if threading.current_thread() is not threading.main_thread():
+            return
+
+        if sig not in self.signals:
+            wrapper = SignalWrapper(sig)
+            wrapper.old_handler = signal.signal(sig, self.handle_signal)
+            self.signals[sig] = wrapper
+        self.signals[sig].ref_count += 1
 
     def disable_signal(self, sig: signal.Signals):
         """
@@ -48,6 +92,9 @@ class SignalHandler:
         Parameters:
             sig (signal.Signals): The signal to disable.
         """
+        if threading.current_thread() is not threading.main_thread():
+            return
+
         if sig not in self.signals:
             wrapper = SignalWrapper(sig)
             wrapper.old_handler = signal.signal(sig, signal.SIG_IGN)
@@ -61,7 +108,10 @@ class SignalHandler:
         Parameters:
             sig (signal.Signals): The signal to enable.
         """
-        if not sig in self.signals:
+        if threading.current_thread() is not threading.main_thread():
+            return
+
+        if sig not in self.signals:
             return
 
         wrapper = self.signals[sig]
