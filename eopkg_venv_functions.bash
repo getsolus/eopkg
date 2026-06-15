@@ -21,15 +21,6 @@ function prepare_venv () {
 
     printInfo "Symlink eopkg-cli into the eopkg_venv bin/ directory so it can be executed as eopkg.py ..."
     ln -srvf ./eopkg-cli eopkg_venv/bin/eopkg.py
-
-    # get rid of any existing lines w/git ref version info
-    sed "/__version__ += /d" -i pisi/__init__.py
-    printInfo "pisi version variable BEFORE patching:":
-    grep -Hn version pisi/__init__.py
-    # append the git ref to __version__ on a new line
-    gawk -i inplace 'BEGIN { "git rev-parse --short HEAD" | getline gitref } { print }; /__version__ = / { printf "%s %s\n", $1, "+= \" (" gitref ")\"" }' pisi/__init__.py
-    printInfo "pisi version variable AFTER patching w/git revision:"
-    grep -Hn version pisi/__init__.py
 }
 
 function compile_iksemel_cleanly () {
