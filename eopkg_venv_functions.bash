@@ -6,19 +6,12 @@ set -euo pipefail
 
 source shared_functions.bash
 
-# allow user to override branch name
-EOPKG_BRANCH="${BRANCH:-main}"
-
 function prepare_venv () {
     if [[ -z "${PY3}" ]]; then
         die "Couldn't find supported python3 (3.11 || 3.12 || 3.10) interpreter, exiting!"
     else
         printInfo "Using python3 interpreter: ${PY3}"
     fi
-    # Assume the user starts in the eopkg dir
-    printInfo "Updating the eopkg git repo ..."
-    # ensure we show the current branch
-    git fetch && git checkout "${EOPKG_BRANCH}" && git pull && git branch
 
     printInfo "Set up a clean eopkg_venv venv ..."
     ${PY3} -m venv --system-site-packages --clear eopkg_venv
