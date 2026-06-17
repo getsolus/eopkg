@@ -5,11 +5,10 @@
 #
 
 import datetime
-import gettext
-import gzip
 import os
 import re
 import time
+import zlib
 
 import iksemel
 
@@ -69,7 +68,7 @@ class PackageDB(lazydb.LazyDB):
     def __generate_packages(self, doc):
         return dict(
             [
-                (x.getTagData("Name"), gzip.zlib.compress(x.toString().encode()))
+                (x.getTagData("Name"), zlib.compress(x.toString().encode()))
                 for x in doc.tags("Package")
             ]
         )
