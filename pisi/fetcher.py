@@ -296,12 +296,18 @@ class Fetcher:
                             )
                         )
 
+                    any_errors = False
                     for future in futures:
                         try:
                             future.result()
                         except Exception as e:
                             ctx.ui.error(str(e))
-                            raise
+                            any_errors = True
+
+                    if any_errors:
+                        raise pisi.Error(
+                            _("One or more errors occurred during fetching")
+                        )
         finally:
             ctx.sig.enable_signal(signal.SIGINT)
 
