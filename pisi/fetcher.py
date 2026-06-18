@@ -142,7 +142,15 @@ class Fetcher:
                         tid = p.add_task(
                             description or os.path.basename(destination), total=total
                         )
-                        self._download_to_file(resp, destination, start_time, p, tid)
+                        try:
+                            self._download_to_file(
+                                resp, destination, start_time, p, tid
+                            )
+                        finally:
+                            p.remove_task(tid)
+                            p.console.print(
+                                _(f"Downloaded {os.path.basename(destination)}")
+                            )
         finally:
             ctx.sig.enable_signal(signal.SIGINT)
 
