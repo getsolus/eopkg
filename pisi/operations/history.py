@@ -101,7 +101,6 @@ def fetch_remote_file(fetcher, package, errors):
         ctx.ui.info(pisi.util.colorize(_("%s could not be found") % (package), "red"))
         return False
 
-    # TODO(Evan): Validate
     if not os.path.exists(resource.local_path):
         try:
             fetcher.fetch(resource.uri, os.path.dirname(resource.local_path))
@@ -179,6 +178,7 @@ def takeback(operation):
     errors = []
     paths = []
     fetch_items = []
+    fetch_map = {}
 
     for pkg_name in beinstalled:
         pkg_file = pkg_name + ctx.const.package_suffix
@@ -193,6 +193,7 @@ def takeback(operation):
 
         if not os.path.exists(resource.local_path):
             fetch_items.append(resource)
+            fetch_map[resource] = pkg_name
         else:
             ctx.ui.info(_("%s [cached]") % resource.uri.filename())
             paths.append(resource.local_path)
@@ -201,11 +202,16 @@ def takeback(operation):
         ctx.ui.status(_("Downloading historical packages..."))
         try:
             fetcher.fetch_multi(fetch_items)
-            for resource in fetch_items:
-                paths.append(resource.local_path)
         except Exception as e:
             ctx.ui.error(_("Error while fetching historical packages: %s") % str(e))
-            # We might still have some packages, but maybe it's safer to stop or ask.
+
+        for resource in fetch_items:
+            if os.path.exists(resource.local_path):
+                paths.append(resource.local_path)
+            else:
+                pkg_name = fetch_map.get(resource, resource.name)
+                if pkg_name not in errors:
+                    errors.append(pkg_name)
 
     if errors:
         ctx.ui.info(
