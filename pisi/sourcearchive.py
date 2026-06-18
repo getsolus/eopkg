@@ -70,7 +70,6 @@ class SourceArchive:
                 % (ctx.config.archives_dir(), self.url.filename())
             )
 
-    # TODO(Evan): WTF
     def fetch_from_mirror(self):
         uri = self.url.get_uri()
         sep = uri[len("mirrors://") :].split("/")
