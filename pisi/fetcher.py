@@ -107,7 +107,10 @@ class Fetcher:
                     finally:
                         progress.remove_task(task_id)
                         progress.console.print(
-                            _(f"Copied {os.path.basename(destination)}")
+                            _(
+                                f"[bold yellow]Copied[reset] {os.path.basename(destination)}"
+                            ),
+                            highlight=False,
                         )
                 else:
                     with rich_progress as p:
@@ -135,7 +138,10 @@ class Fetcher:
                     finally:
                         progress.remove_task(task_id)
                         progress.console.print(
-                            _(f"Downloaded {os.path.basename(destination)}")
+                            _(
+                                f"[bold yellow]Downloaded[reset] {os.path.basename(destination)}"
+                            ),
+                            highlight=False,
                         )
                 else:
                     with rich_progress as p:
@@ -149,7 +155,10 @@ class Fetcher:
                         finally:
                             p.remove_task(tid)
                             p.console.print(
-                                _(f"Downloaded {os.path.basename(destination)}")
+                                _(
+                                    f"[bold yellow]Downloaded[reset] {os.path.basename(destination)}"
+                                ),
+                                highlight=False,
                             )
         finally:
             ctx.sig.enable_signal(signal.SIGINT)
