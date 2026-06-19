@@ -448,7 +448,6 @@ def fetch(packages=[], path=os.path.curdir, repo=None):
 
         fetch_items.append(resource)
 
-    # TODO(Evan): Error handling
     if fetch_items:
         fetcher.fetch_multi(fetch_items)
 
