@@ -1780,7 +1780,7 @@ def build(pspec):
         pb.build()
     except ActionScriptException as e:
         ctx.ui.error(_("Action script error caught."))
-        raise e
+        raise
     finally:
         if ctx.ui.errors or ctx.ui.warnings:
             ctx.ui.warning(

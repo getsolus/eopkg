@@ -110,6 +110,14 @@ class Install(AtomicOperation):
             self.package.read()
         except zipfile.BadZipfile:
             raise zipfile.BadZipfile(self.package_fname)
+        except FileNotFoundError as e:
+            raise Error(
+                _("Package file not found: '%s'") % package_fname
+            ) from e
+        except OSError as e:
+            raise Error(
+                _("Cannot read package file '%s': %s") % (package_fname, e)
+            ) from e
         self.metadata = self.package.metadata
         self.files = self.package.files
         self.pkginfo = self.metadata.package

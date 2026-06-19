@@ -204,7 +204,7 @@ class Fetcher:
                             blocknum += 1
                             fetch_handler.update(blocknum, bs, size)
                     success = True
-            except URLError as e:
+            except (URLError, OSError) as e:
                 attempt += 1
                 if attempt == self._get_retry_attempts() + 1:
                     raise FetchError(
@@ -316,4 +316,4 @@ class Fetcher:
 def fetch_url(url, destdir, progress=None, destfile=None):
     fetch = Fetcher(url, destdir, destfile)
     fetch.progress = progress
-    fetch.fetch()
+    return fetch.fetch()

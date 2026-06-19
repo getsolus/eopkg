@@ -3,6 +3,7 @@
 
 from pisi import translate as _
 
+import errno
 import os
 
 import iksemel
@@ -113,9 +114,8 @@ class RepoOrder:
 
     def _update(self, doc):
         repos_file_path = os.path.join(ctx.config.info_dir(), ctx.const.repos)
-        repo_file = open(repos_file_path, "w")
-        repo_file.write("%s\n" % doc.toPrettyString())
-        repo_file.close()
+        with open(repos_file_path, "w") as repo_file:
+            repo_file.write("%s\n" % doc.toPrettyString())
         self._doc = None
         self.repos = self._get_repos()
 
@@ -193,9 +193,10 @@ class RepoDB(lazydb.LazyDB):
         except Exception as e:
             raise RepoError(
                 _(
-                    "Error parsing repository index information. Index file does not exist or is malformed."
-                )
-            )
+                    "Error parsing repository index information for '%s'. "
+                    "Index file does not exist or is malformed."
+                ) % index_path
+            ) from e
 
     def get_repo(self, repo):
         return Repo(pisi.uri.URI(self.get_repo_url(repo)))
@@ -223,11 +224,13 @@ class RepoDB(lazydb.LazyDB):
 
         try:
             os.makedirs(repo_path)
-        except Exception as e:
-            pass
+        except OSError as e:
+            if e.errno != errno.EEXIST:
+                ctx.ui.warning(_("Failed to create repository directory '%s': %s") % (repo_path, e))
 
         urifile_path = pisi.util.join_path(ctx.config.index_dir(), name, "uri")
-        open(urifile_path, "w").write(repo_info.indexuri.get_uri())
+        with open(urifile_path, "w") as urifile:
+            urifile.write(repo_info.indexuri.get_uri())
         self.repoorder.add(name, repo_info.indexuri.get_uri())
 
     def remove_repo(self, name):

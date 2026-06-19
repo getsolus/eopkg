@@ -132,8 +132,8 @@ in the respective order to satisfy dependencies:
                 atomicoperations.remove_single(package)
             else:
                 ctx.ui.info(_("Package %s is not installed. Cannot remove.") % package)
-    except Exception as e:
-        raise e
+    except Exception:
+        raise
     finally:
         ctx.exec_usysconf()
 

@@ -248,8 +248,8 @@ def upgrade(packages = [], repo = None):
             if install_op.pkginfo.name in automatic:
                 install_op.automatic = True
             install_op.install(True)
-    except Exception as e:
-        raise e
+    except Exception:
+        raise
     finally:
         ctx.exec_usysconf()
 

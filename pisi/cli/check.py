@@ -154,8 +154,8 @@ class Check(command.Command, metaclass=command.autocommand):
             if ctx.ui.confirm(_("Reinstall the broken packages?")):
                 try:
                     pisi.api.install(broken_pkgs, reinstall=True)
-                except Exception as e:
-                    raise e
+                except Exception:
+                    raise
             else:
                 ctx.ui.info(_("Broken packages were not reinstalled."))
 
