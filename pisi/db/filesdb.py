@@ -4,14 +4,13 @@
 import dbm
 import hashlib
 import os
-import pickle
 import re
 import shelve
 import sys
 
 import pisi
 from pisi import context as ctx
-from pisi import ngettext, util
+from pisi import ngettext
 from pisi import translate as _
 from pisi.db import lazydb
 
