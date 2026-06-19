@@ -137,17 +137,24 @@ class FilesDB(lazydb.LazyDB):
                     except dbm.error:
                         # Fallback to read-only
                         self.filesdb = self.__open_shelve(files_db, "r")
-                        ctx.ui.debug(_("Opened FilesDB %s read-only.") % files_db)
+                        ctx.ui.debug(
+                            # . FilesDB is a proper name and should not be translated
+                            _(f"Opened FilesDB {files_db} read-only.")
+                        )
 
                     # Check version
                     if self.filesdb.get("version") != FILESDB_FORMAT_VERSION:
                         ctx.ui.warning(
+                            # . FilesDB is a proper name and should not be translated
                             _("FilesDB version mismatch or missing version.")
                         )
                         needs_rebuild = True
 
                 except Exception as e:
-                    ctx.ui.debug(f"Failed to open FilesDB {files_db}: {e}")
+                    ctx.ui.debug(
+                        # . FilesDB is a proper name and should not be translated
+                        _(f"Failed to open FilesDB {files_db}: {e}")
+                    )
                     needs_rebuild = True
             else:
                 # File missing
@@ -161,6 +168,7 @@ class FilesDB(lazydb.LazyDB):
                 self.close()
                 self.filesdb = {}
                 ctx.ui.warning(
+                    # . FilesDB is a proper name and should not be translated
                     _("FilesDB is invalid and cannot be rebuilt (no write access).")
                 )
                 ctx.ui.warning(_("Falling back to slow and inaccurate XML search..."))
@@ -168,7 +176,10 @@ class FilesDB(lazydb.LazyDB):
     def __rebuild(self):
         # This assumes that __check_filesdb() has determined a rebuild is needed
         files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)
-        ctx.ui.info(_("Rebuilding the FilesDB..."))
+        ctx.ui.info(
+            # . FilesDB is a proper name and should not be translated
+            _("Rebuilding the FilesDB...")
+        )
 
         self.close()
         self.destroy()
@@ -178,7 +189,10 @@ class FilesDB(lazydb.LazyDB):
             # "n" means we're opening a new shelve, overwriting the old one
             self.filesdb = self.__open_shelve(files_db, "n")
         except Exception as err:
-            ctx.ui.error(_("FilesDB rebuild failed: %s") % err)
+            ctx.ui.error(
+                # . FilesDB is a proper name and should not be translated
+                _("FilesDB rebuild failed: %s") % err
+            )
             raise err
 
         self.filesdb["version"] = FILESDB_FORMAT_VERSION
@@ -186,7 +200,10 @@ class FilesDB(lazydb.LazyDB):
         installdb = pisi.db.installdb.InstallDB()
         pkgs = 0
         verbose = ctx.config.options.verbose
-        ctx.ui.info(_("Adding packages to FilesDB %s:") % files_db)
+        ctx.ui.info(
+            # . FilesDB is a proper name and should not be translated
+            _(f"Adding packages to FilesDB {files_db}:")
+        )
         for pkg in installdb.list_installed():
             files = installdb.get_files(pkg)
             if verbose:
@@ -215,5 +232,6 @@ class FilesDB(lazydb.LazyDB):
         self.filesdb.sync()
         # This acts as a check that the version has been correctly added and synced to disk
         ctx.ui.info(
-            _("Done rebuilding FilesDB (version: %s)") % self.filesdb["version"]
+            # . FilesDB is a proper name and should not be translated
+            _(f"Finished rebuilding FilesDB (version: {self.filesdb['version']})")
         )
