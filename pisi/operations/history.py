@@ -93,26 +93,6 @@ def __get_package_resource(package_file):
     )
 
 
-def fetch_remote_file(fetcher, package, errors):
-    try:
-        resource = __get_package_resource(package)
-    except PackageNotFound:
-        errors.append(package)
-        ctx.ui.info(pisi.util.colorize(_("%s could not be found") % (package), "red"))
-        return False
-
-    if not os.path.exists(resource.local_path):
-        try:
-            fetcher.fetch(resource.uri, os.path.dirname(resource.local_path))
-        except (HTTPError, IOError, ValueError):
-            errors.append(package)
-            ctx.ui.info(pisi.util.colorize(_(f"{package} could not be found"), "red"))
-            return False
-    else:
-        ctx.ui.info(_("%s [cached]") % resource.uri.filename())
-    return True
-
-
 def get_snapshot_actions(operation):
     actions = {}
     snapshot_pkgs = set()
