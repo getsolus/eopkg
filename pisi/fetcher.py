@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import os
-import shutil
 import signal
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -10,15 +9,19 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 from requests import HTTPError
 from requests.adapters import HTTPAdapter
+from rich.console import Group
+from rich.live import Live
 from rich.progress import (
     BarColumn,
     DownloadColumn,
     Progress,
     TaskID,
+    TaskProgressColumn,
     TextColumn,
     TimeRemainingColumn,
     TransferSpeedColumn,
 )
+from rich.rule import Rule
 
 import pisi
 import pisi.context as ctx
@@ -28,18 +31,6 @@ from pisi.util import human_readable_rate
 
 """Maximum size in bytes of a download chunk to process at a time."""
 MAX_CHUNK_SIZE = 8192
-
-rich_progress = Progress(
-    TextColumn("[bold blue]{task.description}", justify="right"),
-    BarColumn(bar_width=None),
-    "[progress.percentage]{task.percentage:>3.1f}%",
-    "•",
-    DownloadColumn(),
-    "•",
-    TransferSpeedColumn(),
-    "•",
-    TimeRemainingColumn(),
-)
 
 
 class Fetcher:
@@ -70,11 +61,47 @@ class Fetcher:
         proxies = self._get_proxies()
         self.session.proxies.update(proxies)
 
+        self.progress = Progress(
+            TextColumn("[bold blue]{task.description}", justify="right"),
+            BarColumn(bar_width=None),
+            TaskProgressColumn(),
+            "•",
+            DownloadColumn(),
+            "•",
+            TransferSpeedColumn(),
+            "•",
+            TimeRemainingColumn(),
+        )
+
+        self.overall_progress = Progress(
+            TextColumn("[bold green]Downloading", justify="right"),
+            BarColumn(
+                complete_style="green",
+                bar_width=None,
+            ),
+            TaskProgressColumn(),
+            "•",
+            DownloadColumn(),
+            "•",
+            TransferSpeedColumn(),
+            "•",
+            TimeRemainingColumn(),
+        )
+        self.overall_task = None
+
+        self.live = Live(
+            Group(
+                self.progress,
+                Rule(style="dim"),
+                self.overall_progress,
+            ),
+            refresh_per_second=10,
+        )
+
     def download_file(
         self,
         url: URI,
         destination: str,
-        progress: Progress | None = None,
         description: str | None = None,
     ) -> None:
         """
@@ -82,7 +109,6 @@ class Fetcher:
 
         :param URI url: The URI of the resource to download.
         :param str destination: The destination file to download to.
-        :param Progress progress: The rich Progress object to use.
         :param str description: The description for the task.
         """
         ctx.sig.catch_signal(signal.SIGINT)
@@ -97,69 +123,49 @@ class Fetcher:
 
                 total = os.path.getsize(source)
 
-                if progress is not None:
-                    task_id = progress.add_task(
-                        description or os.path.basename(destination),
-                        total=total,
+                task_id = self.progress.add_task(
+                    description or os.path.basename(destination),
+                    total=total,
+                )
+                try:
+                    self._copy_to_file(
+                        source,
+                        destination,
+                        task_id,
                     )
-                    try:
-                        self._copy_to_file(source, destination, progress, task_id)
-                    finally:
-                        progress.remove_task(task_id)
-                        progress.console.print(
-                            _(
-                                f"[bold yellow]Copied[reset] {os.path.basename(destination)}"
-                            ),
-                            highlight=False,
-                        )
-                else:
-                    with rich_progress as p:
-                        tid = p.add_task(
-                            description or os.path.basename(destination), total=total
-                        )
-                        self._copy_to_file(source, destination, p, tid)
-                return
+                finally:
+                    self.progress.remove_task(task_id)
+                    self.progress.console.print(
+                        _(
+                            f"[bold yellow]Copied[reset] {os.path.basename(destination)}"
+                        ),
+                        highlight=False,
+                    )
 
             with self.session.get(url.get_uri(), stream=True, timeout=15) as resp:
                 resp.raise_for_status()
                 start_time = time.time()
 
                 total = int(resp.headers.get("Content-Length") or 0)
-
-                if progress is not None:
-                    task_id = progress.add_task(
-                        description or os.path.basename(destination),
-                        total=total,
+                task_id = self.progress.add_task(
+                    description or os.path.basename(destination),
+                    total=total,
+                )
+                try:
+                    self._download_to_file(
+                        resp,
+                        destination,
+                        start_time,
+                        task_id,
                     )
-                    try:
-                        self._download_to_file(
-                            resp, destination, start_time, progress, task_id
-                        )
-                    finally:
-                        progress.remove_task(task_id)
-                        progress.console.print(
-                            _(
-                                f"[bold yellow]Downloaded[reset] {os.path.basename(destination)}"
-                            ),
-                            highlight=False,
-                        )
-                else:
-                    with rich_progress as p:
-                        tid = p.add_task(
-                            description or os.path.basename(destination), total=total
-                        )
-                        try:
-                            self._download_to_file(
-                                resp, destination, start_time, p, tid
-                            )
-                        finally:
-                            p.remove_task(tid)
-                            p.console.print(
-                                _(
-                                    f"[bold yellow]Downloaded[reset] {os.path.basename(destination)}"
-                                ),
-                                highlight=False,
-                            )
+                finally:
+                    self.progress.remove_task(task_id)
+                    self.progress.console.print(
+                        _(
+                            f"[bold yellow]Downloaded[reset] {os.path.basename(destination)}"
+                        ),
+                        highlight=False,
+                    )
         finally:
             ctx.sig.enable_signal(signal.SIGINT)
 
@@ -169,7 +175,6 @@ class Fetcher:
         self,
         source: str,
         destination: str,
-        progress: Progress,
         task_id: TaskID,
     ) -> None:
         # Try hardlinking first
@@ -177,22 +182,32 @@ class Fetcher:
             if os.path.exists(destination):
                 os.unlink(destination)
             os.link(source, destination)
-            progress.update(task_id, completed=os.path.getsize(source))
+            size = os.path.getsize(source)
+            self.progress.update(task_id, completed=size)
+            if self.overall_task is not None:
+                self.overall_progress.update(self.overall_task, advance=size)
             return
         except OSError:
             # Fallback to manual copy with progress
             pass
 
-        with progress.open(source, "rb", task_id=task_id) as src:
+        with open(source, "rb") as src:
             with open(destination, "wb") as dst:
-                shutil.copyfileobj(src, dst)
+                while True:
+                    chunk = src.read(MAX_CHUNK_SIZE)
+                    if not chunk:
+                        break
+                    dst.write(chunk)
+                    size = len(chunk)
+                    self.progress.update(task_id, advance=size)
+                    if self.overall_task is not None:
+                        self.overall_progress.update(self.overall_task, advance=size)
 
     def _download_to_file(
         self,
         resp: requests.Response,
         destination: str,
         start_time: float,
-        progress: Progress,
         task_id: TaskID,
     ) -> None:
         with open(destination, "wb") as f:
@@ -201,7 +216,9 @@ class Fetcher:
                     break
 
                 size = f.write(chunk)
-                progress.update(task_id, advance=size)
+                self.progress.update(task_id, advance=size)
+                if self.overall_task is not None:
+                    self.overall_progress.update(self.overall_task, advance=size)
 
                 # Handle bandwidth limiting, if set
                 if self.bandwidth_limit:
@@ -225,7 +242,6 @@ class Fetcher:
         url: URI | str,
         dest_dir: str,
         filename: str | None = None,
-        progress: Progress | None = None,
         description: str | None = None,
     ) -> None:
         """
@@ -236,7 +252,6 @@ class Fetcher:
         :param str dest_dir: The directory to save the downloaded file to.
         :param filename: The name of the file to use.
         :type filename: str | None
-        :param Progress progress: The rich Progress object to use.
         :param str description: The description for the task.
         """
         # This is silly and I hate it.
@@ -255,7 +270,11 @@ class Fetcher:
             raise IOError(_(f"Unable to access destination file '{archive_file}'"))
 
         try:
-            self.download_file(url, archive_file, progress, description)
+            self.download_file(
+                url,
+                archive_file,
+                description,
+            )
         except HTTPError:
             raise
 
@@ -274,9 +293,13 @@ class Fetcher:
         max_workers = max(1, min(max_workers, 64))
         ctx.ui.debug(_(f"Setting {max_workers} concurrent download workers"))
 
+        total_size = sum(item.size for item in items)
+
+        self.overall_task = self.overall_progress.add_task("Overall", total=total_size)
+
         ctx.sig.catch_signal(signal.SIGINT)
         try:
-            with rich_progress as progress:
+            with self.live:
                 with ThreadPoolExecutor(max_workers=max_workers) as executor:
                     futures = []
 
@@ -291,7 +314,6 @@ class Fetcher:
                                 resource.uri,
                                 os.path.dirname(resource.local_path),
                                 os.path.basename(resource.local_path),
-                                progress,
                                 description,
                             )
                         )
@@ -308,6 +330,10 @@ class Fetcher:
                         raise pisi.Error(
                             _("One or more errors occurred during fetching")
                         )
+
+                    # Update live display with a dummy group clean things up visually
+                    self.live.update(Group())
+
         finally:
             ctx.sig.enable_signal(signal.SIGINT)
 
