@@ -900,7 +900,11 @@ def filter_latest_packages(package_paths):
 def colorize(msg, color):
     """Colorize the given message for console output"""
     if color in ctx.const.colors and not ctx.get_option("no_color"):
-        return ctx.const.colors[color] + msg + ctx.const.colors["default"]
+        stripped = msg.rstrip("\n")
+        newlines = msg[len(stripped) :]
+        return (
+            ctx.const.colors[color] + stripped + ctx.const.colors["default"] + newlines
+        )
     else:
         return msg
 
