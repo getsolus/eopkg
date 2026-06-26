@@ -65,39 +65,6 @@ class Install(AtomicOperation):
     # Is this an automatic install?
     automatic = False
 
-    @staticmethod
-    def from_name(name, ignore_dep=None):
-        packagedb = pisi.db.packagedb.PackageDB()
-        resource = packagedb.get_resource(name)
-
-        ctx.ui.info(_(f"Package {name} found in repository {resource.repo}"))
-        ctx.ui.info(_(f"Package URI: {resource.uri}"), verbose=True)
-
-        if resource.uri.is_remote_file():
-            if os.path.exists(resource.local_path):
-                if util.sha1_file(resource.local_path) != resource.expected_hash:
-                    os.unlink(resource.local_path)
-                ctx.ui.info(_(f"{resource.uri.filename()} [cached]"))
-            else:
-                # Explicitly download if not cached.
-                # Note: In the future, this should be handled by a separate fetch stage.
-                dest = os.path.dirname(resource.local_path)
-
-                ctx.ui.notify(pisi.ui.downloading, packageresource=resource)
-
-                pisi.file.File.download(resource.uri, dest)
-
-            pkg_path = resource.local_path
-        else:
-            pkg_path = resource.uri.path()
-
-        if util.sha1_file(pkg_path) != resource.expected_hash:
-            raise Error(
-                _("Download Error: Package does not match the repository package.")
-            )
-
-        return Install(pkg_path, ignore_dep)
-
     def __init__(self, package_fname, ignore_dep=None, ignore_file_conflicts=None):
         "initialize from a file name"
         super(Install, self).__init__(ignore_dep)
