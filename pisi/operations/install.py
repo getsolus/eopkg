@@ -7,21 +7,22 @@ import sys
 import zipfile
 
 from ordered_set import OrderedSet as set
-from pisi import translate as _
-from pisi import Error
 
 import pisi
-import pisi.context as ctx
-import pisi.util as util
 import pisi.atomicoperations as atomicoperations
+import pisi.context as ctx
+import pisi.db
 import pisi.operations as operations
 import pisi.pgraph as pgraph
 import pisi.signalhandler as signalhandler
 import pisi.ui as ui
-import pisi.db
+import pisi.util as util
+from pisi import Error
+from pisi import translate as _
 
-BASELAYOUT_PKG = 'baselayout'
-EOPKG_PKG = 'eopkg'
+BASELAYOUT_PKG = "baselayout"
+EOPKG_PKG = "eopkg"
+
 
 def plan_deterministic_install_order(order):
     """Ensure that baselayout is put at the end of any topological sort that includes it."""
@@ -37,6 +38,7 @@ def plan_deterministic_install_order(order):
 
     return order
 
+
 def install_pkg_names(packages, reinstall=False):
     """
     Installs packages from the repository.
@@ -50,13 +52,21 @@ def install_pkg_names(packages, reinstall=False):
     packagedb = pisi.db.packagedb.PackageDB()
     signal_handler = signalhandler.SignalHandler()
 
-    packages = [str(package) for package in packages]  # FIXME: why do we still get unicode input here? :/ -- exa
+    packages = [
+        str(package) for package in packages
+    ]  # FIXME: why do we still get unicode input here? :/ -- exa
 
     deduped_packages = packages = set(packages)
 
+    # The user may have passed providers e.g. 'pkgconfig(foo)'
+    # Ensure these get resolved to the underlying package name
+    packages = operations.helper.resolve_provider_matches(packages)
+
     # filter packages that are already installed
     if not reinstall:
-        not_installed = set([package for package in packages if not installdb.has_package(package)])
+        not_installed = set(
+            [package for package in packages if not installdb.has_package(package)]
+        )
         diff = packages - not_installed
         if len(diff) > 0:
             ctx.ui.warning(
@@ -124,7 +134,8 @@ def install_pkg_names(packages, reinstall=False):
     for package in order:
         ctx.ui.info(
             util.colorize(
-                _("Downloading %d / %d") % (order.index(package) + 1, len(order)), "yellow"
+                _("Downloading %d / %d") % (order.index(package) + 1, len(order)),
+                "yellow",
             )
         )
         install_op = atomicoperations.Install.from_name(package)
