@@ -13,7 +13,6 @@ import pisi.ui as ui
 import pisi.util as util
 from pisi import Error
 from pisi import translate as _
-from pisi.fetcher import Fetcher
 
 
 def reorder_base_packages_old(order):
@@ -174,5 +173,7 @@ def fetch_packages(order):
         ctx.ui.info(_(f"{r.uri.filename()} [cached]"))
 
     if items_to_fetch:
+        from pisi.fetcher import Fetcher
+
         fetcher = Fetcher()
         fetcher.fetch_multi(items_to_fetch)

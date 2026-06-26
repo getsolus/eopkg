@@ -34,7 +34,6 @@ import pisi.signalhandler as signalhandler
 import pisi.uri
 import pisi.util
 from pisi import translate as _
-from pisi.fetcher import Fetcher
 
 
 def locked(func):
@@ -424,6 +423,8 @@ def fetch(packages=[], path=os.path.curdir, repo=None):
     @param path: path to where the packages will be downloaded. If not given, packages will be downloaded
     to the current working directory.
     """
+
+    from pisi.fetcher import Fetcher
 
     packagedb = pisi.db.packagedb.PackageDB()
     repodb = pisi.db.repodb.RepoDB()
