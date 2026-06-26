@@ -3,13 +3,16 @@
 
 import optparse
 
-from pisi import translate as _
-
+import pisi.api
 import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.util as util
-import pisi.api
-import pisi.db
+from pisi import translate as _
+from pisi.db.componentdb import ComponentDB
+from pisi.db.installdb import InstallDB
+from pisi.db.packagedb import PackageDB
+from pisi.db.repodb import RepoDB
+from pisi.index import Index
 
 
 class Info(command.Command, metaclass=command.autocommand):
@@ -24,10 +27,10 @@ Usage: info <package1> <package2> ... <packagen>
 
     def __init__(self, args):
         super(Info, self).__init__(args)
-        self.installdb = pisi.db.installdb.InstallDB()
-        self.componentdb = pisi.db.componentdb.ComponentDB()
-        self.packagedb = pisi.db.packagedb.PackageDB()
-        self.repodb = pisi.db.repodb.RepoDB()
+        self.installdb = InstallDB()
+        self.componentdb = ComponentDB()
+        self.packagedb = PackageDB()
+        self.repodb = RepoDB()
 
     name = ("info", None)
 
@@ -70,7 +73,7 @@ Usage: info <package1> <package2> ... <packagen>
             "--repo",
             action="store",
             default=None,
-            help=_("Resolve package against specified repository")
+            help=_("Resolve package against specified repository"),
         )
         group.add_option(
             "-s",
@@ -95,7 +98,7 @@ Usage: info <package1> <package2> ... <packagen>
             self.help()
             return
 
-        index = pisi.index.Index()
+        index = Index()
         index.distribution = None
 
         # info of components

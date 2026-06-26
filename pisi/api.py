@@ -20,9 +20,7 @@ import pisi.db.packagedb
 import pisi.db.repodb
 import pisi.errors
 import pisi.file
-import pisi.index
 import pisi.metadata
-import pisi.operations.build
 import pisi.operations.check
 import pisi.operations.helper
 import pisi.operations.history
@@ -825,7 +823,10 @@ def info_name(package_name, useinstalldb=False, repo=None):
 
 def index(dirs=None, output="eopkg-index.xml", skip_signing=False, compression=0):
     """Accumulate eopkg XML files in a directory, and write an index."""
-    index = pisi.index.Index()
+
+    from pisi.index import Index
+
+    index = Index()
     index.distribution = None
     if not dirs:
         dirs = ["."]
@@ -898,6 +899,8 @@ def update_repo(repo, force=False):
 
 
 def __update_repo(repo, force=False):
+    from pisi.index import Index
+
     signal_handler = signalhandler.SignalHandler()
 
     ctx.ui.action(_("Updating repository: %s") % repo)
@@ -906,7 +909,7 @@ def __update_repo(repo, force=False):
     signal_handler.disable_signal(signal.SIGINT)
 
     repodb = pisi.db.repodb.RepoDB()
-    index = pisi.index.Index()
+    index = Index()
     if repodb.has_repo(repo):
         repouri = repodb.get_repo(repo).indexuri.get_uri()
         try:
@@ -970,7 +973,9 @@ def reorder_base_packages(*args, **kw):
 
 
 def build_until(*args, **kw):
-    return pisi.operations.build.build_until(*args, **kw)
+    from pisi.operations.build import build_until
+
+    return build_until(*args, **kw)
 
 
 def build(*args, **kw):
