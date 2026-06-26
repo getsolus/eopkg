@@ -8,14 +8,11 @@ import os.path
 import pisi
 import pisi.archive as archive
 import pisi.context as ctx
-import pisi.file
 import pisi.files
 import pisi.metadata
 import pisi.uri
 import pisi.util as util
 from pisi import translate as _
-
-from . import fetcher
 
 
 class Error(pisi.Error):
