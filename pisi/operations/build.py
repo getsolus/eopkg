@@ -529,7 +529,6 @@ class Builder:
         if pisi.uri.URI(url).is_remote_file():
             fetcher = Fetcher()
 
-            # TODO(Evan): wat
             try:
                 fetcher.fetch(url, self.pkg_work_dir())
             except HTTPError | IOError | ValueError:
