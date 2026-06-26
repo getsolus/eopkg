@@ -4,7 +4,6 @@
 import os
 
 from ordered_set import OrderedSet as set
-from requests import HTTPError
 
 import pisi
 import pisi.context as ctx
@@ -12,7 +11,6 @@ import pisi.db
 import pisi.package
 import pisi.util
 from pisi import translate as _
-from pisi.fetcher import Fetcher
 
 
 class PackageNotFound(pisi.Error):
@@ -139,6 +137,8 @@ def plan_takeback(operation):
 def takeback(operation):
     historydb = pisi.db.historydb.HistoryDB()
     beinstalled, beremoved, configs = plan_takeback(operation)
+    from pisi.fetcher import Fetcher
+
     fetcher = Fetcher()
 
     if beinstalled:

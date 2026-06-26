@@ -19,7 +19,6 @@ import pisi.uri
 import pisi.util
 from pisi import context as ctx
 from pisi import translate as _
-from pisi.fetcher import Fetcher
 
 
 class AlreadyHaveException(pisi.Exception):
@@ -140,6 +139,8 @@ class File:
 
             if uri.is_remote_file():
                 ctx.ui.info(_(f"Fetching {uri.get_uri}"), verbose=True)
+                from pisi.fetcher import Fetcher
+
                 fetcher = Fetcher()
                 # TODO(Evan): Error handling
                 fetcher.fetch(uri, transfer_dir, tmpfile)

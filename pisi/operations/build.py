@@ -31,7 +31,6 @@ import pisi.specfile
 import pisi.uri
 import pisi.util as util
 from pisi import translate as _
-from pisi.fetcher import Fetcher
 
 
 class Error(pisi.Error):
@@ -527,6 +526,8 @@ class Builder:
         parentdir = util.parenturi(diruri)
         url = util.join_path(parentdir, "component.xml")
         if pisi.uri.URI(url).is_remote_file():
+            from pisi.fetcher import Fetcher
+
             fetcher = Fetcher()
 
             try:

@@ -5,8 +5,6 @@
 
 import os
 
-from requests import HTTPError
-
 # pisi modules
 import pisi
 import pisi.archive
@@ -15,7 +13,6 @@ import pisi.mirrors
 import pisi.uri
 import pisi.util as util
 from pisi import translate as _
-from pisi.fetcher import Fetcher
 
 
 class Error(pisi.Error):
@@ -71,6 +68,10 @@ class SourceArchive:
             )
 
     def fetch_from_mirror(self):
+        from requests import HTTPError
+
+        from pisi.fetcher import Fetcher
+
         uri = self.url.get_uri()
         sep = uri[len("mirrors://") :].split("/")
         name = sep.pop(0)
