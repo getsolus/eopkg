@@ -136,9 +136,7 @@ class Fetcher:
                 finally:
                     self.progress.remove_task(task_id)
                     self.progress.console.print(
-                        _(
-                            f"[bold yellow]Copied[reset] {os.path.basename(destination)}"
-                        ),
+                        _(f"[green]Copied[reset] {os.path.basename(destination)}"),
                         highlight=False,
                     )
 
@@ -161,9 +159,7 @@ class Fetcher:
                 finally:
                     self.progress.remove_task(task_id)
                     self.progress.console.print(
-                        _(
-                            f"[bold yellow]Downloaded[reset] {os.path.basename(destination)}"
-                        ),
+                        _(f"[green]Downloaded[reset] {os.path.basename(destination)}"),
                         highlight=False,
                     )
         finally:
