@@ -3,24 +3,22 @@
 
 """eopkg source/package index"""
 
+import multiprocessing
 import os
 import shutil
-import multiprocessing
-
-from pisi import translate as _
 
 import pisi
-import pisi.context as ctx
-import pisi.specfile as specfile
-import pisi.metadata as metadata
-import pisi.util as util
-import pisi.package
-import pisi.pxml.xmlfile as xmlfile
-import pisi.file
-import pisi.pxml.autoxml as autoxml
 import pisi.component as component
+import pisi.context as ctx
+import pisi.file
 import pisi.group as group
-import pisi.operations.build
+import pisi.metadata as metadata
+import pisi.package
+import pisi.pxml.autoxml as autoxml
+import pisi.pxml.xmlfile as xmlfile
+import pisi.specfile as specfile
+import pisi.util as util
+from pisi import translate as _
 
 
 class Error(pisi.Error):
@@ -169,7 +167,8 @@ def add_package(params):
             ctx.ui.info("  %s" % os.path.basename(path))
         else:
             ctx.ui.info(
-                "%-80.80s\r" % (_("Adding package to index: %s") % os.path.basename(path)),
+                "%-80.80s\r"
+                % (_("Adding package to index: %s") % os.path.basename(path)),
                 noln=True,
             )
 
@@ -273,7 +272,9 @@ def add_spec(params):
     try:
         path, repo_uri = params
         # TODO: may use try/except to handle this
-        builder = pisi.operations.build.Builder(path)
+        from pisi.operations.build import Builder
+
+        builder = Builder(path)
         builder.fetch_component()
         sf = builder.spec
         if ctx.config.options and ctx.config.options.absolute_urls:
