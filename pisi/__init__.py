@@ -15,7 +15,6 @@ from importlib.resources import files
 
 import pisi.signalhandler as signalhandler
 
-
 try:
     locale.setlocale(locale.LC_ALL, "")
 except locale.Error as e:
@@ -37,7 +36,7 @@ lang = gettext.translation(
 translate = lang.gettext
 ngettext = lang.ngettext
 
-__version__ = "4.5.0"
+__version__ = "5.0.0"
 
 __all__ = ["api", "configfile", "db"]
 
