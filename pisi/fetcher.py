@@ -111,6 +111,7 @@ class Fetcher:
         :param str destination: The destination file to download to.
         :param str description: The description for the task.
         """
+        basename = os.path.basename(destination)
         ctx.sig.catch_signal(signal.SIGINT)
         try:
             if url.is_local_file():
@@ -124,7 +125,7 @@ class Fetcher:
                 total = os.path.getsize(source)
 
                 task_id = self.progress.add_task(
-                    description or os.path.basename(destination),
+                    description or basename,
                     total=total,
                 )
                 try:
@@ -132,13 +133,15 @@ class Fetcher:
                         source,
                         destination,
                         task_id,
+                        basename,
                     )
                 finally:
                     self.progress.remove_task(task_id)
                     self.progress.console.print(
-                        _(f"[green]Copied[reset] {os.path.basename(destination)}"),
+                        _(f"[green]Copied[reset] {basename}"),
                         highlight=False,
                     )
+                return
 
             with self.session.get(url.get_uri(), stream=True, timeout=15) as resp:
                 resp.raise_for_status()
@@ -146,7 +149,7 @@ class Fetcher:
 
                 total = int(resp.headers.get("Content-Length") or 0)
                 task_id = self.progress.add_task(
-                    description or os.path.basename(destination),
+                    description or basename,
                     total=total,
                 )
                 try:
@@ -155,11 +158,12 @@ class Fetcher:
                         destination,
                         start_time,
                         task_id,
+                        basename,
                     )
                 finally:
                     self.progress.remove_task(task_id)
                     self.progress.console.print(
-                        _(f"[green]Downloaded[reset] {os.path.basename(destination)}"),
+                        _(f"[green]Downloaded[reset] {basename}"),
                         highlight=False,
                     )
         finally:
