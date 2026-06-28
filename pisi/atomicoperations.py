@@ -232,7 +232,13 @@ class Install(AtomicOperation):
             # schedule for reinstall
             self.old_files = self.installdb.get_files(pkg.name)
             self.old_pkginfo = self.installdb.get_info(pkg.name)
-            self.old_path = self.installdb.pkg_dir(pkg.name, iversion_s, irelease_s)
+            # Use the actual directory path stored in installed_db rather than
+            # rebuilding it from the History-derived version/release.  When a
+            # stale directory's metadata.xml History doesn't match the directory
+            # name (e.g. the directory is papers-49.0-13 but History says
+            # version 48.5/release 12), pkg_dir() would point to a non-existent
+            # path and clean_dir() would silently miss the real stale directory.
+            self.old_path = self.installdb.package_path(pkg.name)
             self.remove_old = Remove(pkg.name)
 
     def reinstall(self):
@@ -545,6 +551,16 @@ class Remove(AtomicOperation):
         self.filesdb = pisi.db.filesdb.FilesDB()
         self.package_name = package_name
         self.package = self.installdb.get_package(self.package_name)
+        # Save the actual on-disk package directory path at init time, before
+        # any database operations may remove the package from installed_db.
+        # Using package_path() (which derives from the directory name stored
+        # in installed_db) rather than pkg_dir() (which derives from the
+        # metadata.xml History) ensures we always clean up the real directory,
+        # even if a stale directory's History doesn't match its directory name.
+        try:
+            self.pkg_dir_path = self.installdb.package_path(self.package_name)
+        except pisi.Error:
+            self.pkg_dir_path = self.package.pkg_dir()
         try:
             self.files = self.installdb.get_files(self.package_name)
         except pisi.Error as e:
@@ -657,7 +673,7 @@ class Remove(AtomicOperation):
         self.historydb.add_and_update(pkgBefore=self.package, operation="remove")
 
     def remove_pisi_files(self):
-        util.clean_dir(self.package.pkg_dir())
+        util.clean_dir(self.pkg_dir_path)
 
     def remove_db(self):
         self.installdb.remove_package(self.package_name)

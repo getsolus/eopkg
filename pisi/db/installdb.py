@@ -6,18 +6,18 @@
 
 import os
 import re
-from pisi import translate as _
-from pisi import Error
 
 import iksemel
 
 # eopkg
 import pisi
 import pisi.context as ctx
+import pisi.db.lazydb as lazydb
 import pisi.dependency
 import pisi.files
 import pisi.util
-import pisi.db.lazydb as lazydb
+from pisi import Error
+from pisi import translate as _
 
 
 class InstallDBError(pisi.Error):
@@ -73,7 +73,37 @@ class InstallDB(lazydb.LazyDB):
             name, version, release = dirname.rsplit("-", 2)
             return name, version + "-" + release
 
-        return dict(list(map(split_name, os.listdir(ctx.config.packages_dir()))))
+        installed = {}
+        packages_dir = ctx.config.packages_dir()
+        try:
+            for dirname in os.listdir(packages_dir):
+                try:
+                    name, version_release = split_name(dirname)
+                except ValueError:
+                    # Skip directories that don't match the expected format
+                    continue
+
+                if name in installed:
+                    # When multiple directories exist for the same package
+                    # (which can happen with stale/leftover directories),
+                    # keep the one with the highest release number to avoid
+                    # ghost packages where a stale directory overwrites the
+                    # correct one due to non-deterministic os.listdir() ordering.
+                    _, existing_release = installed[name].rsplit("-", 1)
+                    _, new_release = version_release.rsplit("-", 1)
+                    try:
+                        if int(new_release) <= int(existing_release):
+                            continue
+                    except ValueError:
+                        # If release can't be compared as integer, keep the
+                        # existing entry to avoid regression.
+                        continue
+
+                installed[name] = version_release
+        except OSError:
+            pass
+
+        return installed
 
     def __get_marked_packages(self, _type):
         info_path = os.path.join(ctx.config.info_dir(), _type)
