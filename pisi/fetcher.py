@@ -23,6 +23,8 @@ from rich.progress import (
     TransferSpeedColumn,
 )
 from rich.rule import Rule
+from rich.style import Style
+from rich.table import Column
 
 import pisi
 import pisi.context as ctx
@@ -30,7 +32,7 @@ import pisi.ui
 from pisi import translate as _
 from pisi.package import PackageResource
 from pisi.uri import URI
-from pisi.util import human_readable_rate
+from pisi.util import human_readable_rate, parse_package_name
 
 """Maximum size in bytes of a download chunk to process at a time."""
 MAX_CHUNK_SIZE = 8192
@@ -74,15 +76,20 @@ class Fetcher:
         self.session.proxies.update(proxies)
 
         self.progress = Progress(
-            TextColumn("[bold blue]{task.description}", justify="right"),
-            BarColumn(bar_width=None),
-            TaskProgressColumn(),
-            "•",
+            TaskProgressColumn(
+                text_format="{task.percentage:>3.0f}%",
+                style=Style(color="yellow"),
+            ),
+            TextColumn("[bold blue]{task.description}"),
+            TextColumn(
+                "", table_column=Column(ratio=1)
+            ),  # spacer, requires expand = True
             DownloadColumn(),
             "•",
             TransferSpeedColumn(),
             "•",
             TimeRemainingColumn(),
+            expand=True,
         )
 
         self.overall_progress = Progress(
@@ -418,7 +425,8 @@ class Fetcher:
                     futures = []
 
                     for resource in items:
-                        description = f"{resource.name} ({resource.repo})"
+                        _name, version = parse_package_name(resource.pkg_path)
+                        description = f"({resource.repo}) {resource.name} {version}"
                         if resource.is_delta:
                             description += " [delta]"
 
