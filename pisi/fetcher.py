@@ -383,10 +383,15 @@ class Fetcher:
 
         archive_file = os.path.join(dest_dir, filename or url.filename())
 
+        # Initalize the progress bar if fetch() is called rather than fetch_multi()
+        # TODO: is there a cleaner way to handle this?
+        single_caller = not self.live._started
+
         if os.path.exists(archive_file) and not os.access(archive_file, os.W_OK):
             raise IOError(_(f"Unable to access destination file '{archive_file}'"))
-
         try:
+            if single_caller:
+                self.progress.start()
             self.download_file(
                 url,
                 archive_file,
@@ -394,6 +399,9 @@ class Fetcher:
             )
         except HTTPError as e:
             raise FetchError(_(f"Error downloading '{url.filename()}': {e}")) from e
+        finally:
+            if single_caller:
+                self.progress.stop()
 
     def fetch_multi(self, items: list["PackageResource"]) -> None:
         """
