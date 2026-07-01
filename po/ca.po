@@ -1117,7 +1117,7 @@ msgstr "Directori de sortida per als paquets obtinguts"
 
 #: pisi/cli/fetch.py:48
 msgid "Fetch packages from a specified repository"
-msgstr ""
+msgstr "Obtén els paquets d'un repositori especificat."
 
 #: pisi/cli/fetch.py:59 pisi/cli/install.py:121 pisi/cli/listavailable.py:63
 #: pisi/cli/listcomponents.py:53 pisi/cli/listnewest.py:59
@@ -1884,7 +1884,7 @@ msgstr ""
 
 #: pisi/cli/command.py:133
 msgid "Set the max number of concurrent download workers"
-msgstr ""
+msgstr "Estableix el nombre màxim de baixades simultànies."
 
 #: pisi/cli/command.py:141
 msgid "Detailed output"
@@ -1956,7 +1956,7 @@ msgstr "Mostra una llista dels fitxers del paquet."
 
 #: pisi/cli/info.py:55
 msgid "Sort files by name (path), size or type."
-msgstr ""
+msgstr "Ordena els fitxers per nom (camí), mida o tipus."
 
 #: pisi/cli/info.py:62
 msgid "Info about the given component"
@@ -2103,12 +2103,14 @@ msgstr "El repositori %s no existeix."
 #. . FilesDB is a proper name and should not be translated
 #: pisi/db/filesdb.py:148
 msgid "FilesDB version mismatch or missing version."
-msgstr ""
+msgstr "La versió de la base de dades de fitxers no coincideix o no hi és."
 
 #. . FilesDB is a proper name and should not be translated
 #: pisi/db/filesdb.py:171
 msgid "FilesDB is invalid and cannot be rebuilt (no write access)."
 msgstr ""
+"La base de dades de fitxers no és vàlida i no es pot reconstruir (sense "
+"accés d'escriptura)."
 
 #: pisi/db/filesdb.py:173
 msgid "Falling back to slow and inaccurate XML search..."
@@ -2123,7 +2125,7 @@ msgstr "Es reconstrueix la base de dades de fitxers..."
 #: pisi/db/filesdb.py:193
 #, python-format
 msgid "FilesDB rebuild failed: %s"
-msgstr ""
+msgstr "La reconstrucció de la base de dades de fitxers ha fallat: %s"
 
 #: pisi/db/filesdb.py:209
 #, python-format
@@ -2590,12 +2592,12 @@ msgstr "%s [a la cau]"
 
 #: pisi/operations/history.py:182
 msgid "Downloading historical packages..."
-msgstr ""
+msgstr "Es baixen paquets històrics..."
 
 #: pisi/operations/history.py:186
 #, python-format
 msgid "Error while fetching historical packages: %s"
-msgstr ""
+msgstr "Error en obtenir els paquets històrics: %s"
 
 #: pisi/operations/history.py:199
 msgid ""
@@ -2638,6 +2640,7 @@ msgstr "Hi ha paquets extres a causa de les dependències."
 #, python-format
 msgid "Download Error: Package %s does not match the repository package."
 msgstr ""
+"Error de baixada: el paquet %s no coincideix amb el paquet del repositori."
 
 #: pisi/operations/install.py:144
 msgid "Finished downloading packages."
@@ -3401,11 +3404,11 @@ msgstr "No hi ha cap secció amb el nom %s."
 
 #: pisi/fetcher.py:258
 msgid "URL does not end in a file name"
-msgstr ""
+msgstr "L'URL no acaba amb un nom de fitxer."
 
 #: pisi/fetcher.py:327
 msgid "One or more errors occurred during fetching"
-msgstr ""
+msgstr "Hi ha hagut un o més errors durant la recuperació."
 
 #: pisi/file.py:27
 #, python-format
