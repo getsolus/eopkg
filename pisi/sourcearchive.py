@@ -56,9 +56,9 @@ class SourceArchive:
                 if self.url.get_uri().startswith("mirrors://"):
                     self.fetch_from_mirror()
                 else:
-                    pisi.fetcher.fetch_url(
-                        self.url, ctx.config.archives_dir(), self.progress
-                    )
+                    from pisi.fetcher import Fetcher
+
+                    Fetcher().fetch(self.url, ctx.config.archives_dir())
             except pisi.fetcher.FetchError:
                 raise
 
