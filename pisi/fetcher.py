@@ -509,7 +509,4 @@ class Fetcher:
         if ctx.config.values.general.https_proxy:
             proxies["https"] = ctx.config.values.general.https_proxy
 
-        if ctx.config.values.general.ftp_proxy:
-            proxies["ftp"] = ctx.config.values.general.ftp_proxy
-
         return proxies
