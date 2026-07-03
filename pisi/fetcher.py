@@ -503,14 +503,13 @@ class Fetcher:
 
     def _get_proxies(self) -> dict:
         proxies = {}
-
-        if ctx.config.values.general.http_proxy and self.url.scheme() == "http":
+        if ctx.config.values.general.http_proxy:
             proxies["http"] = ctx.config.values.general.http_proxy
 
-        if ctx.config.values.general.https_proxy and self.url.scheme() == "https":
+        if ctx.config.values.general.https_proxy:
             proxies["https"] = ctx.config.values.general.https_proxy
 
-        if ctx.config.values.general.ftp_proxy and self.url.scheme() == "ftp":
+        if ctx.config.values.general.ftp_proxy:
             proxies["ftp"] = ctx.config.values.general.ftp_proxy
 
         return proxies
