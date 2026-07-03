@@ -345,7 +345,7 @@ class Fetcher:
                     if elapsed < expected_time:
                         time.sleep(expected_time - elapsed)
 
-                        start_time = time.time()
+                    start_time = time.time()
 
                 # Handle SIGINT in ThreadPoolExecutor context
                 if ctx.sig.done_event.is_set():
