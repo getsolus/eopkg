@@ -266,12 +266,13 @@ class Fetcher:
     ) -> None:
         last_report = [0.0]
 
+        size = os.path.getsize(source)
+
         # Try hardlinking first
         try:
             if os.path.exists(destination):
                 os.unlink(destination)
             os.link(source, destination)
-            size = os.path.getsize(source)
             self.progress.update(task_id, completed=size)
             if self.overall_task is not None:
                 self.overall_progress.update(self.overall_task, advance=size)
@@ -302,9 +303,10 @@ class Fetcher:
                             self._overall_completed += size
                         self._report_overall_progress()
 
-                    self._report_progress(
-                        filename, copied, os.path.getsize(source), last_report
-                    )
+                    self._report_progress(filename, copied, size, last_report)
+
+        # Final progress report at 100%
+        self._report_progress(filename, size, size, last_report)
 
     def _download_to_file(
         self,
