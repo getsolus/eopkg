@@ -13,7 +13,6 @@ import re
 import stat
 
 import magic
-from requests import HTTPError
 
 import pisi
 import pisi.actionsapi.variables
@@ -526,13 +525,13 @@ class Builder:
         parentdir = util.parenturi(diruri)
         url = util.join_path(parentdir, "component.xml")
         if pisi.uri.URI(url).is_remote_file():
-            from pisi.fetcher import Fetcher
+            from pisi.fetcher import Fetcher, FetchError
 
             fetcher = Fetcher()
 
             try:
                 fetcher.fetch(url, self.pkg_work_dir())
-            except HTTPError | IOError | ValueError:
+            except (FetchError, IOError, ValueError):
                 ctx.ui.warning(
                     _(
                         "Cannot find component.xml in remote "

@@ -68,9 +68,7 @@ class SourceArchive:
             )
 
     def fetch_from_mirror(self):
-        from requests import HTTPError
-
-        from pisi.fetcher import Fetcher
+        from pisi.fetcher import Fetcher, FetchError
 
         uri = self.url.get_uri()
         sep = uri[len("mirrors://") :].split("/")
@@ -88,7 +86,7 @@ class SourceArchive:
                 ctx.ui.warning(_("Fetching source from mirror: %s") % url)
                 fetcher.fetch(url, ctx.config.archives_dir())
                 return
-            except HTTPError | IOError | ValueError:
+            except (FetchError, IOError, ValueError):
                 pass
 
         raise Error(_(f"Could not fetch source from {name} mirrors."))
