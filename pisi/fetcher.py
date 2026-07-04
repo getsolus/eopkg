@@ -8,7 +8,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
-from requests import HTTPError
+from requests import RequestException
 from requests.adapters import HTTPAdapter
 from rich.console import Group
 from rich.live import Live
@@ -399,7 +399,7 @@ class Fetcher:
                 archive_file,
                 description,
             )
-        except HTTPError as e:
+        except RequestException as e:
             raise FetchError(_(f"Error downloading '{url.filename()}': {e}")) from e
         finally:
             if single_caller:
