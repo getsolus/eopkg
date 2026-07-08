@@ -420,12 +420,13 @@ class Fetcher:
         max_workers = max(1, min(max_workers, 64))
         ctx.ui.debug(_(f"Setting {max_workers} concurrent download workers"))
 
-        total_size = sum(item.size for item in items)
+        known_sizes = [item.size for item in items if item.size is not None]
+        total_size = sum(known_sizes) if known_sizes else None
 
         self.overall_task = self.overall_progress.add_task("Overall", total=total_size)
         with self._overall_lock:
             self._overall_completed = 0
-            self._overall_total = total_size
+            self._overall_total = total_size or 0
         self._last_overall_report = 0.0
 
         ctx.sig.catch_signal(signal.SIGINT)
