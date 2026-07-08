@@ -56,11 +56,13 @@ def install_pkg_names(packages, reinstall=False):
         str(package) for package in packages
     ]  # FIXME: why do we still get unicode input here? :/ -- exa
 
-    deduped_packages = packages = set(packages)
+    packages = set(packages)
 
     # The user may have passed providers e.g. 'pkgconfig(foo)'
     # Ensure these get resolved to the underlying package name
     packages = operations.helper.resolve_provider_matches(packages)
+
+    deduped_packages = packages
 
     # filter packages that are already installed
     if not reinstall:
