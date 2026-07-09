@@ -47,13 +47,9 @@ class GroupDB(lazydb.LazyDB):
             mtime = os.path.getmtime(index_path)
             cached_mtime = meta.get(f"mtime_gdb_{repo}")
 
-            if len(self.__group_nodes[repo]) == 0 or cached_mtime != mtime:
-                if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
-                    from pisi.db.lmdbstore import MemoryMapping
-
-                    self.__group_nodes[repo] = MemoryMapping()
-                    self.__group_components[repo] = MemoryMapping()
-
+            if (
+                len(self.__group_nodes[repo]) == 0 or cached_mtime != mtime
+            ) and not self.lmdb_store.readonly:
                 doc = repodb.get_repo_doc(repo)
                 self.__group_nodes[repo].clear()
                 self.__group_components[repo].clear()
@@ -62,8 +58,7 @@ class GroupDB(lazydb.LazyDB):
                 self.__group_components[repo].update_bulk(
                     self.__generate_components(doc)
                 )
-                if not self.lmdb_store.readonly:
-                    meta[f"mtime_gdb_{repo}"] = mtime
+                meta[f"mtime_gdb_{repo}"] = mtime
 
         self.gdb = pisi.db.itembyrepo.ItemByRepo(self.__group_nodes)
         self.gcdb = pisi.db.itembyrepo.ItemByRepo(self.__group_components)

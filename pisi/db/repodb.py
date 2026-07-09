@@ -207,29 +207,15 @@ class RepoDB(lazydb.LazyDB):
             mtime = os.path.getmtime(index_path)
             cached_mtime = meta.get(f"mtime_rdb_{repo}")
 
-            if cached_mtime != mtime or repo not in self.repo_docs_db:
-                if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
-                    from pisi.db.lmdbstore import MemoryMapping
-
-                    if not isinstance(self.repo_docs_db, MemoryMapping):
-                        # Switch the whole mapping to memory for this session if it's stale
-                        # but we can't write to LMDB.
-                        new_mapping = MemoryMapping()
-                        # Copy existing items if any
-                        for k in self.repo_docs_db:
-                            try:
-                                new_mapping[k] = self.repo_docs_db[k]
-                            except KeyError:
-                                pass
-                        self.repo_docs_db = new_mapping
-
+            if (
+                cached_mtime != mtime or repo not in self.repo_docs_db
+            ) and not self.lmdb_store.readonly:
                 # Cache the XML document
                 import gzip
 
                 with open(index_path, "rb") as f:
                     self.repo_docs_db[repo] = gzip.zlib.compress(f.read())
-                if not self.lmdb_store.readonly:
-                    meta[f"mtime_rdb_{repo}"] = mtime
+                meta[f"mtime_rdb_{repo}"] = mtime
 
     def has_repo(self, name):
         return name in self.list_repos(only_active=False)

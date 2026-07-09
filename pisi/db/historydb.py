@@ -28,18 +28,11 @@ class HistoryDB(lazydb.LazyDB):
         mtime = os.path.getmtime(history_dir)
         cached_mtime = meta.get("mtime_history")
 
-        if len(self.__history_ops) == 0 or cached_mtime != mtime:
-            if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
-                # Stale but we can't write to LMDB. Use memory for this session.
-                from pisi.db.lmdbstore import MemoryMapping
-
-                self.__history_ops = MemoryMapping()
-                self.__history_files = MemoryMapping()
-
+        if (
+            len(self.__history_ops) == 0 or cached_mtime != mtime
+        ) and not self.lmdb_store.readonly:
             self.__repopulate(history_dir)
-
-            if not self.lmdb_store.readonly:
-                meta["mtime_history"] = mtime
+            meta["mtime_history"] = mtime
 
         # For compatibility with existing code that uses self.__logs
         self.__logs = sorted(

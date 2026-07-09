@@ -83,14 +83,7 @@ class InstallDB(lazydb.LazyDB):
             len(self.installed_db) == 0
             or len(self.xmls_db) == 0
             or cached_mtime != mtime
-        ):
-            if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
-                from pisi.db.lmdbstore import MemoryMapping
-
-                self.installed_db = MemoryMapping()
-                self.rev_deps_db = MemoryMapping()
-                self.xmls_db = MemoryMapping()
-
+        ) and not self.lmdb_store.readonly:
             # Initial population or staleness detected
             self.installed_db.clear()
             self.rev_deps_db.clear()
@@ -101,8 +94,7 @@ class InstallDB(lazydb.LazyDB):
             self.rev_deps_db.update_bulk(self.__generate_revdeps())
             self.xmls_db.update_bulk(self.__generate_xmls(installed_pkgs))
 
-            if not self.lmdb_store.readonly:
-                meta["mtime_idb"] = mtime
+            meta["mtime_idb"] = mtime
 
     def __generate_xmls(self, installed_pkgs):
         import gzip

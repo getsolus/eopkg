@@ -78,18 +78,7 @@ class PackageDB(lazydb.LazyDB):
                 len(self.__package_nodes[repo]) == 0
                 or len(self.__pkgconfigs[repo]) == 0
                 or cached_mtime != mtime
-            ):
-                if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
-                    # Stale/missing but we can't write to LMDB. Use memory for this session.
-                    from pisi.db.lmdbstore import MemoryMapping
-
-                    self.__package_nodes[repo] = MemoryMapping()
-                    self.__revdeps[repo] = MemoryMapping()
-                    self.__obsoletes[repo] = MemoryMapping()
-                    self.__replaces[repo] = MemoryMapping()
-                    self.__pkgconfigs[repo] = MemoryMapping()
-                    self.__pkgconfigs32[repo] = MemoryMapping()
-
+            ) and not self.lmdb_store.readonly:
                 doc = repodb.get_repo_doc(repo)
                 self.__package_nodes[repo].clear()
                 self.__revdeps[repo].clear()
@@ -111,8 +100,7 @@ class PackageDB(lazydb.LazyDB):
                 self.__pkgconfigs[repo].update_bulk(pc)
                 self.__pkgconfigs32[repo].update_bulk(pc32)
 
-                if not self.lmdb_store.readonly:
-                    meta[f"mtime_pdb_{repo}"] = mtime
+                meta[f"mtime_pdb_{repo}"] = mtime
 
         self.pdb = pisi.db.itembyrepo.ItemByRepo(self.__package_nodes, compressed=True)
         self.rvdb = pisi.db.itembyrepo.ItemByRepo(self.__revdeps)

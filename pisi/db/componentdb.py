@@ -51,14 +51,9 @@ class ComponentDB(lazydb.LazyDB):
             mtime = os.path.getmtime(index_path)
             cached_mtime = meta.get(f"mtime_cdb_{repo}")
 
-            if len(self.__component_nodes[repo]) == 0 or cached_mtime != mtime:
-                if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
-                    from pisi.db.lmdbstore import MemoryMapping
-
-                    self.__component_nodes[repo] = MemoryMapping()
-                    self.__component_packages[repo] = MemoryMapping()
-                    self.__component_sources[repo] = MemoryMapping()
-
+            if (
+                len(self.__component_nodes[repo]) == 0 or cached_mtime != mtime
+            ) and not self.lmdb_store.readonly:
                 doc = repodb.get_repo_doc(repo)
                 self.__component_nodes[repo].clear()
                 self.__component_packages[repo].clear()
@@ -72,8 +67,7 @@ class ComponentDB(lazydb.LazyDB):
                 )
                 self.__component_sources[repo].update_bulk(self.__generate_sources(doc))
 
-                if not self.lmdb_store.readonly:
-                    meta[f"mtime_cdb_{repo}"] = mtime
+                meta[f"mtime_cdb_{repo}"] = mtime
 
         self.cdb = pisi.db.itembyrepo.ItemByRepo(self.__component_nodes)
         self.cpdb = pisi.db.itembyrepo.ItemByRepo(self.__component_packages)

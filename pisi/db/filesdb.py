@@ -49,17 +49,11 @@ class FilesDB(lazydb.LazyDB):
 
         version = meta.get("filesdb_version")
 
-        if force_rebuild or version != FILESDB_FORMAT_VERSION or len(self.filesdb) == 0:
-            if self.lmdb_store.readonly and not self.lmdb_store.use_memory:
-                # We need to rebuild but can't write to LMDB. Fallback to memory.
-                from pisi.db.lmdbstore import MemoryMapping
-
-                self.filesdb = MemoryMapping()
-
+        if (
+            force_rebuild or version != FILESDB_FORMAT_VERSION or len(self.filesdb) == 0
+        ) and not self.lmdb_store.readonly:
             self.__rebuild()
-
-            if not self.lmdb_store.readonly:
-                meta["filesdb_version"] = FILESDB_FORMAT_VERSION
+            meta["filesdb_version"] = FILESDB_FORMAT_VERSION
 
     def has_file(self, path):
         return hashlib.md5(path.encode()).hexdigest() in self.filesdb
