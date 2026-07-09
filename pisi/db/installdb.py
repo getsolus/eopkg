@@ -62,9 +62,7 @@ class InstallInfo:
 
 class InstallDB(lazydb.LazyDB):
     def __init__(self):
-        lazydb.LazyDB.__init__(
-            self, cacheable=False, cachedir=ctx.config.packages_dir()
-        )
+        lazydb.LazyDB.__init__(self)
 
     @property
     def lmdb_mappings(self):

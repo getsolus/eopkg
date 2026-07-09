@@ -37,8 +37,7 @@ else:
 
 class FilesDB(lazydb.LazyDB):
     def __init__(self):
-        # Set cacheable=False because we use LMDB now
-        lazydb.LazyDB.__init__(self, cacheable=False)
+        lazydb.LazyDB.__init__(self)
 
     @property
     def lmdb_mappings(self):

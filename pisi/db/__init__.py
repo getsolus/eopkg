@@ -30,24 +30,11 @@ def flush_caches():
 
 
 def update_caches():
-    # Updates ondisk caches
-    for db in [
-        packagedb.PackageDB(),
-        componentdb.ComponentDB(),
-        installdb.InstallDB(),
-        groupdb.GroupDB(),
-    ]:
-        if db.is_initialized():
-            db.cache_save()
+    # LMDB persists immediately — nothing to save.
+    pass
 
 
 def regenerate_caches():
+    # LMDB data is regenerated lazily on next access via __getattr__.
+    # We only need to flush + invalidate to force a re-read from disk.
     flush_caches()
-    # Force cache regeneration
-    for db in [
-        packagedb.PackageDB(),
-        componentdb.ComponentDB(),
-        groupdb.GroupDB(),
-        installdb.InstallDB(),
-    ]:
-        db.cache_regenerate()

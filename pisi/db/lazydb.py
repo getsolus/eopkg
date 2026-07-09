@@ -2,17 +2,10 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import os
-import pickle
-import time
 
 import pisi
 from pisi import context as ctx
 from pisi import util
-
-# lower borks for international locales. What we want is ascii lower.
-ascii_lowercase = "abcdefghijklmnopqrstuvwxyz"
-ascii_uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-lower_map = str.maketrans(ascii_uppercase, ascii_lowercase)
 
 
 class Singleton(object):
@@ -37,15 +30,9 @@ class Singleton(object):
 
 
 class LazyDB(Singleton):
-    # Make sure that caches get invalidated when switching between pisi/eopkg versions
-    cache_version = pisi.__version__
-
-    def __init__(self, cacheable=False, cachedir=None):
+    def __init__(self):
         if "initialized" not in self.__dict__:
             self.initialized = False
-        self.cacheable = cacheable
-        self.cachedir = cachedir
-        self._lmdb_store = None
 
     @property
     def lmdb_store(self):
@@ -59,57 +46,7 @@ class LazyDB(Singleton):
     def is_initialized(self):
         return self.initialized
 
-    def __cache_file(self):
-        return util.join_path(
-            ctx.config.cache_root_dir(),
-            "%s.cache" % self.__class__.__name__.translate(lower_map),
-        )
-
-    def __cache_version_file(self):
-        return "%s.version" % self.__cache_file()
-
-    def cache_save(self):
-        if os.access(ctx.config.cache_root_dir(), os.W_OK) and self.cacheable:
-            with open(self.__cache_version_file(), "w") as f:
-                f.write(LazyDB.cache_version)
-                f.flush()
-                os.fsync(f.fileno())
-            pickle.dump(self._instance, open(self.__cache_file(), "wb"))
-
-    def cache_valid(self):
-        try:
-            f = self.__cache_version_file()
-            ver = open(f).read().strip()
-        except IOError:
-            return False
-        return ver == LazyDB.cache_version
-
-    def cache_load(self):
-        if os.path.exists(self.__cache_file()) and self.cache_valid():
-            try:
-                # Note that cache_version is checked prior to load,
-                # which means that using utf-8 encoding here is not an issue
-                # as we will only attempt to load a pickle cache which has
-                # been written with the current version of the codebase;
-                # this is particularly relevant if the pickle cache was
-                # written in py2 w/latin1 encoding.
-                self._instance = pickle.load(
-                    open(self.__cache_file(), "rb"), encoding="utf-8"
-                )
-                return True
-            except (pickle.UnpicklingError, EOFError):
-                if os.access(ctx.config.cache_root_dir(), os.W_OK):
-                    os.unlink(self.__cache_file())
-                return False
-        return False
-
     def cache_flush(self):
-        for path in [self.__cache_file(), self.__cache_version_file()]:
-            try:
-                os.remove(path)
-            except FileNotFoundError:
-                pass
-
         if not self.lmdb_store.readonly:
             # Subclasses can define lmdb_mappings to be cleared
             if hasattr(self, "lmdb_mappings"):
@@ -119,24 +56,12 @@ class LazyDB(Singleton):
     def invalidate(self):
         self._delete()
 
-    def cache_regenerate(self):
-        try:
-            self.this_attr_does_not_exist()
-        except AttributeError:
-            pass
-
     def __init(self):
-        if not self.cache_load():
-            self.init()
+        self.init()
 
     def __getattr__(self, attr):
         if not attr == "__setstate__" and not self.initialized:
-            start = time.time()
             self.__init()
-            end = time.time()
-            ctx.ui.debug(
-                "%s initialized in %s." % (self.__class__.__name__, end - start)
-            )
             self.initialized = True
 
         if attr not in self.__dict__:

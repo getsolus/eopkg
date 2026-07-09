@@ -181,7 +181,7 @@ class RepoOrder:
 
 class RepoDB(lazydb.LazyDB):
     def __init__(self):
-        lazydb.LazyDB.__init__(self, cacheable=False)
+        lazydb.LazyDB.__init__(self)
 
     @property
     def lmdb_mappings(self):
