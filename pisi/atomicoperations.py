@@ -103,7 +103,6 @@ class Install(AtomicOperation):
             ctx.ui.notify(pisi.ui.installing, package=self.pkginfo, files=self.files)
 
         self.check_versioning(self.pkginfo.version, self.pkginfo.release)
-        self.check_relations()
 
         self.extract_install()
         self.store_pisi_files()
@@ -130,10 +129,10 @@ class Install(AtomicOperation):
                 _("%s-%s is not a valid eopkg version format") % (version, release)
             )
 
-    def check_relations(self):
+    def check_relations(self, plan_packages=None):
         # check dependencies
         if not ctx.config.get_option("ignore_dependency"):
-            if not self.pkginfo.installable():
+            if not self.pkginfo.installable(plan_packages):
                 raise Error(
                     _(
                         "%s package cannot be installed unless the dependencies are satisfied"

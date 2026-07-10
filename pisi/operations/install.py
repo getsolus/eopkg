@@ -160,6 +160,10 @@ def install_pkg_names(packages, reinstall=False):
         if conflicts:
             operations.remove.remove_conflicting_packages(conflicts)
 
+    # Check all packages' relations before installing anything
+    for install_op in install_ops:
+        install_op.check_relations(set(order))
+
     # Install all the packages
     ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     signal_handler.disable_signal(signal.SIGINT)
@@ -365,12 +369,20 @@ def install_pkg_files(package_URIs, reinstall=False):
 
     ctx.ui.notify(ui.packagestogo, order=order)
 
+    # Pre-instantiate Install objects for pre-flight checks
+    file_install_ops = []
+    for x in order:
+        file_install_ops.append(atomicoperations.Install(dfn[x]))
+
+    # Check all packages' relations before installing anything
+    for install_op in file_install_ops:
+        install_op.check_relations(set(order))
+
     try:
-        for x in order:
-            atomicoperations.install_single_file(dfn[x], reinstall)
-    except Exception as e:
-        raise e
-        return False
+        for install_op in file_install_ops:
+            install_op.install(not reinstall)
+    except Exception:
+        raise
     finally:
         ctx.exec_usysconf()
 
