@@ -239,6 +239,10 @@ def upgrade(packages=[], repo=None):
 
     operations.remove.remove_obsoleted_packages()
 
+    # Check all packages' relations before installing anything
+    for install_op in install_ops:
+        install_op.check_relations(set(order))
+
     # Install all the packages
     ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     signal_handler.disable_signal(signal.SIGINT)
