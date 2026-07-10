@@ -192,6 +192,11 @@ class Build(command.Command, metaclass=command.autocommand):
 
         if self.options.package_format == "help":
             self.init(False, False)
+
+            # Print deprecation warning
+            ctx.ui.warning(_("This command is deprecated and will be removed in a future update."))
+            ctx.ui.warning(_("If you are using this command for a Third-Party application, please look for an alternative method of installation."))
+
             ctx.ui.info(_("Supported package formats:"))
             for format in pisi.package.Package.formats:
                 if format == pisi.package.Package.default_format:
@@ -201,6 +206,10 @@ class Build(command.Command, metaclass=command.autocommand):
             return
 
         self.init()
+
+        # Print deprecation warning
+        ctx.ui.warning(_("This command is deprecated and will be removed in a future update."))
+        ctx.ui.warning(_("If you are using this command for a Third-Party application, please look for an alternative method of installation."))
 
         if not ctx.get_option("output_dir"):
             ctx.config.options.output_dir = "."
