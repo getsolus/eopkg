@@ -3,13 +3,12 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
-import pisi.context as ctx
-import pisi.util as util
 import pisi.api
+import pisi.context as ctx
 import pisi.db
+from pisi import translate as _
+from pisi import util
+from pisi.cli import command
 
 
 class ListAvailable(command.Command, metaclass=command.autocommand):
@@ -25,7 +24,7 @@ all repositories.
     )
 
     def __init__(self, args):
-        super(ListAvailable, self).__init__(args)
+        super().__init__(args)
         self.componentdb = pisi.db.componentdb.ComponentDB()
         self.packagedb = pisi.db.packagedb.PackageDB()
 
@@ -82,7 +81,7 @@ all repositories.
         if component:
             try:
                 l = self.componentdb.get_packages(component, repo=repo, walk=True)
-            except Exception as e:
+            except Exception:
                 return
         else:
             l = pisi.api.list_available(repo)

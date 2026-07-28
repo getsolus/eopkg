@@ -1,11 +1,10 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from pisi import translate as _
-
 import pisi
 import pisi.api
-import pisi.cli.command as command
+from pisi import translate as _
+from pisi.cli import command
 
 
 class DeleteCache(command.Command, metaclass=command.autocommand):
@@ -20,7 +19,7 @@ consume a lot of disk space."""
     )
 
     def __init__(self, args=None):
-        super(DeleteCache, self).__init__(args)
+        super().__init__(args)
 
     name = ("delete-cache", "dc")
 

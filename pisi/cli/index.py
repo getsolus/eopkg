@@ -3,11 +3,9 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
 import pisi.context as ctx
-
+from pisi import translate as _
+from pisi.cli import command
 
 usage = _(
     """Index eopkg files in a given directory
@@ -29,7 +27,7 @@ class Index(command.Command, metaclass=command.autocommand):
     __doc__ = usage
 
     def __init__(self, args):
-        super(Index, self).__init__(args)
+        super().__init__(args)
 
     name = ("index", "ix")
 

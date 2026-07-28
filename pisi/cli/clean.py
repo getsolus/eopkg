@@ -2,8 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 from pisi import translate as _
-
-import pisi.cli.command as command
+from pisi.cli import command
 
 
 class Clean(command.Command, metaclass=command.autocommand):
@@ -17,7 +16,7 @@ This command deletes unused locks from the database directory."""
     )
 
     def __init__(self, args=None):
-        super(Clean, self).__init__(args)
+        super().__init__(args)
 
     name = ("clean", None)
 

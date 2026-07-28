@@ -3,14 +3,12 @@
 
 import optparse
 
-from pisi import translate as _
-
 import pisi.api
-import pisi.cli.command as command
 import pisi.context as ctx
-import pisi.util as util
 import pisi.db
-
+from pisi import translate as _
+from pisi import util
+from pisi.cli import command
 
 usage = _(
     """Verify installation
@@ -33,7 +31,7 @@ class Check(command.Command, metaclass=command.autocommand):
     __doc__ = usage
 
     def __init__(self, args):
-        super(Check, self).__init__(args)
+        super().__init__(args)
         self.installdb = pisi.db.installdb.InstallDB()
         self.componentdb = pisi.db.componentdb.ComponentDB()
 

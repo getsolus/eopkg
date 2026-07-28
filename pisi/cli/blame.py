@@ -3,11 +3,10 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.db
+from pisi import translate as _
+from pisi.cli import command
 
 
 class Blame(command.Command, metaclass=command.autocommand):
@@ -20,7 +19,7 @@ Usage: blame <package> ... <package>
     )
 
     def __init__(self, args=None):
-        super(Blame, self).__init__(args)
+        super().__init__(args)
         self.installdb = pisi.db.installdb.InstallDB()
 
     name = ("blame", "bl")

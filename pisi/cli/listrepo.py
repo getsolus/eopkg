@@ -1,12 +1,11 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from pisi import translate as _
-
-import pisi.cli.command as command
 import pisi.context as ctx
-import pisi.util as util
 import pisi.db
+from pisi import translate as _
+from pisi import util
+from pisi.cli import command
 
 
 class ListRepo(command.Command, metaclass=command.autocommand):
@@ -20,7 +19,7 @@ Lists currently tracked repositories.
     )
 
     def __init__(self, args):
-        super(ListRepo, self).__init__(args)
+        super().__init__(args)
         self.repodb = pisi.db.repodb.RepoDB()
 
     name = ("list-repo", "lr")

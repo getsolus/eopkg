@@ -3,12 +3,11 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
-import pisi.context as ctx
 import pisi.api
+import pisi.context as ctx
 import pisi.db
+from pisi import translate as _
+from pisi.cli import command
 
 
 class ListNewest(command.Command, metaclass=command.autocommand):
@@ -24,7 +23,7 @@ packages from all repositories.
     )
 
     def __init__(self, args):
-        super(ListNewest, self).__init__(args)
+        super().__init__(args)
         self.componentdb = pisi.db.componentdb.ComponentDB()
         self.packagedb = pisi.db.packagedb.PackageDB()
 

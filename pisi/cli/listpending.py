@@ -1,11 +1,10 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from pisi import translate as _
-
-import pisi.cli.command as command
-import pisi.context as ctx
 import pisi.api
+import pisi.context as ctx
+from pisi import translate as _
+from pisi.cli import command
 
 
 class ListPending(command.Command, metaclass=command.autocommand):
@@ -17,7 +16,7 @@ Lists packages waiting to be configured.
     )
 
     def __init__(self, args):
-        super(ListPending, self).__init__(args)
+        super().__init__(args)
 
     name = ("list-pending", "lp")
 

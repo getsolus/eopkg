@@ -3,12 +3,11 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
-import pisi.context as ctx
 import pisi.api
+import pisi.context as ctx
 import pisi.db
+from pisi import translate as _
+from pisi.cli import command
 
 
 class Upgrade(command.PackageOp, metaclass=command.autocommand):
@@ -33,14 +32,14 @@ expanded to package names.
     )
 
     def __init__(self, args):
-        super(Upgrade, self).__init__(args)
+        super().__init__(args)
 
     name = ("upgrade", "up")
 
     def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("upgrade options"))
 
-        super(Upgrade, self).options(group)
+        super().options(group)
         group.add_option(
             "--security-only",
             action="store_true",

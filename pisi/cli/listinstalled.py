@@ -3,13 +3,12 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.db
+from pisi import translate as _
+from pisi import util
+from pisi.cli import command
 from pisi.operations.remove import list_orphans
-import pisi.util as util
 
 
 class ListInstalled(command.Command, metaclass=command.autocommand):
@@ -21,7 +20,7 @@ Usage: list-installed
     )
 
     def __init__(self, args):
-        super(ListInstalled, self).__init__(args)
+        super().__init__(args)
         self.installdb = pisi.db.installdb.InstallDB()
         self.componentdb = pisi.db.componentdb.ComponentDB()
 

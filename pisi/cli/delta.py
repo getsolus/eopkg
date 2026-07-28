@@ -3,12 +3,10 @@
 
 import optparse
 
-from pisi import translate as _
-
 import pisi
-import pisi.cli.command as command
 import pisi.context as ctx
-
+from pisi import translate as _
+from pisi.cli import command
 
 usage = _(
     """Creates delta packages
@@ -27,7 +25,7 @@ class Delta(command.Command, metaclass=command.autocommand):
     __doc__ = usage
 
     def __init__(self, args):
-        super(Delta, self).__init__(args)
+        super().__init__(args)
 
     name = ("delta", "dt")
 
@@ -76,7 +74,7 @@ class Delta(command.Command, metaclass=command.autocommand):
                 if format == pisi.package.Package.default_format:
                     ctx.ui.info(_("  %s (default)") % format)
                 else:
-                    ctx.ui.info("  %s" % format)
+                    ctx.ui.info(f"  {format}")
             return
 
         new_package = ctx.get_option("newest_package")
