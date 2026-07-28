@@ -12,7 +12,7 @@ from pisi import translate as _
 
 class autocommand(type):
     def __init__(cls, name, bases, dict):
-        super(autocommand, cls).__init__(name, bases, dict)
+        super().__init__(name, bases, dict)
         Command.cmd.append(cls)
         name = getattr(cls, "name", None)
         if name is None:

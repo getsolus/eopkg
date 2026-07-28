@@ -3,11 +3,10 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
-import pisi.context as ctx
 import pisi.api
+import pisi.context as ctx
+from pisi import translate as _
+from pisi.cli import command
 
 
 class UpdateRepo(command.Command, metaclass=command.autocommand):
@@ -24,7 +23,7 @@ If no repository is given, all repositories are updated.
     )
 
     def __init__(self, args):
-        super(UpdateRepo, self).__init__(args)
+        super().__init__(args)
 
     name = ("update-repo", "ur")
 

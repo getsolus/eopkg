@@ -1,19 +1,18 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+import optparse
 import os
 import signal
 import sys
-import optparse
-
-from pisi import translate as _
 
 import pisi
 import pisi.api
-import pisi.db
 import pisi.context as ctx
-import pisi.cli.command as command
-import pisi.signalhandler as signalhandler
+import pisi.db
+from pisi import signalhandler
+from pisi import translate as _
+from pisi.cli import command
 
 # Operation names for translation
 opttrans = {
@@ -37,7 +36,7 @@ Lists previous operations."""
     )
 
     def __init__(self, args=None):
-        super(History, self).__init__(args)
+        super().__init__(args)
         self.historydb = pisi.db.historydb.HistoryDB()
         self.signal_handler = signalhandler.SignalHandler()
 
@@ -123,7 +122,7 @@ Lists previous operations."""
                 def write(self, s):
                     try:
                         self.less.stdin.write(s.encode())
-                    except IOError:
+                    except OSError:
                         raise LessException
 
             stdout, stderr = sys.stdout, sys.stderr

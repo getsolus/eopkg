@@ -3,11 +3,10 @@
 
 import optparse
 
-from pisi import translate as _
-
 import pisi.api
-import pisi.cli.command as command
 import pisi.context as ctx
+from pisi import translate as _
+from pisi.cli import command
 
 
 class AddRepo(command.Command, metaclass=command.autocommand):
@@ -24,7 +23,7 @@ NB: We support only local files (e.g., /a/b/c) and http:// URIs at the moment
     )
 
     def __init__(self, args):
-        super(AddRepo, self).__init__(args)
+        super().__init__(args)
         self.repodb = pisi.db.repodb.RepoDB()
 
     name = ("add-repo", "ar")
@@ -59,24 +58,23 @@ NB: We support only local files (e.g., /a/b/c) and http:// URIs at the moment
             self.init()
             name, indexuri = self.args
 
-            if ctx.get_option("no_fetch"):
-                if not ctx.ui.confirm(
-                    _(
-                        "Add %s repository without updating the database?\nBy confirming "
-                        "this you are also adding the repository to your system without "
-                        "checking the distribution of the repository.\n"
-                        "Do you want to continue?"
-                    )
-                    % name
-                ):
-                    return
+            if ctx.get_option("no_fetch") and not ctx.ui.confirm(
+                _(
+                    "Add %s repository without updating the database?\nBy confirming "
+                    "this you are also adding the repository to your system without "
+                    "checking the distribution of the repository.\n"
+                    "Do you want to continue?"
+                )
+                % name
+            ):
+                return
 
             pisi.api.add_repo(name, indexuri, ctx.get_option("at"))
 
             if not ctx.get_option("no_fetch"):
                 try:
                     pisi.api.update_repo(name)
-                except (pisi.Error, IOError):
+                except (OSError, pisi.Error):
                     pisi.api.remove_repo(name)
                     raise pisi.cli.Error(_(f"{name} repository could not be reached. Removing {name} from system."))
         else:

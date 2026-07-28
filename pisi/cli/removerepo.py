@@ -1,10 +1,9 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from pisi import translate as _
-
-import pisi.cli.command as command
 import pisi.api
+from pisi import translate as _
+from pisi.cli import command
 
 
 class RemoveRepo(command.Command, metaclass=command.autocommand):
@@ -18,7 +17,7 @@ Remove all repository information from the system.
     )
 
     def __init__(self, args):
-        super(RemoveRepo, self).__init__(args)
+        super().__init__(args)
 
     name = ("remove-repo", "rr")
 

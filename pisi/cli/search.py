@@ -4,11 +4,10 @@
 import optparse
 import re
 
-from pisi import translate as _
-
-import pisi.cli.command as command
 import pisi.context as ctx
 import pisi.db
+from pisi import translate as _
+from pisi.cli import command
 
 
 class Search(command.Command, metaclass=command.autocommand):
@@ -26,7 +25,7 @@ database.
     )
 
     def __init__(self, args):
-        super(Search, self).__init__(args)
+        super().__init__(args)
 
     name = ("search", "sr")
 
@@ -86,7 +85,7 @@ database.
             ctx.ui.error(_("No active repositories found"))
             return
 
-        replace = re.compile("(%s)" % "|".join(self.args), re.I)
+        replace = re.compile("(%s)" % "|".join(self.args), re.IGNORECASE)
         lang = ctx.get_option("language")
         repo = ctx.get_option("repository")
         name = ctx.get_option("name")

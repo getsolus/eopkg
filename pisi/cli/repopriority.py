@@ -1,18 +1,14 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from pathlib import Path
 import os
-import sys
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
-import optparse
-
-from pisi import translate as _
-
-import pisi.api
-import pisi.cli.command as command
 import pisi.context as ctx
+from pisi import translate as _
+from pisi.cli import command
+
 
 class RepoPriority(command.Command, metaclass=command.autocommand):
     __doc__ = _(
@@ -26,7 +22,7 @@ Usage: repo-priority <repo> <priority>
     )
 
     def __init__(self, args):
-        super(RepoPriority, self).__init__(args)
+        super().__init__(args)
 
     name = ("repo-priority", "rp")
 
@@ -67,7 +63,7 @@ Usage: repo-priority <repo> <priority>
 
         try:
             tree.write(repos_xml_file)
-        except IOError as e:
+        except OSError:
             raise pisi.Error(_("Failed to write to repository file"))
 
         ctx.ui.info(_("Repo %s reordered to position %s.") % (repo_name, repo_priority))

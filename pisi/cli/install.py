@@ -3,12 +3,11 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
-import pisi.context as ctx
 import pisi.api
+import pisi.context as ctx
 import pisi.db
+from pisi import translate as _
+from pisi.cli import command
 
 
 class Install(command.PackageOp, metaclass=command.autocommand):
@@ -26,7 +25,7 @@ expanded to package names.
     )
 
     def __init__(self, args):
-        super(Install, self).__init__(args)
+        super().__init__(args)
         self.componentdb = pisi.db.componentdb.ComponentDB()
 
     name = "install", "it"
@@ -34,7 +33,7 @@ expanded to package names.
     def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("install options"))
 
-        super(Install, self).options(group)
+        super().options(group)
 
         group.add_option(
             "--reinstall",

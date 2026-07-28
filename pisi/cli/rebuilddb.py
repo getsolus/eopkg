@@ -3,11 +3,10 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
-import pisi.context as ctx
 import pisi.api
+import pisi.context as ctx
+from pisi import translate as _
+from pisi.cli import command
 
 
 class RebuildDb(command.Command, metaclass=command.autocommand):
@@ -24,7 +23,7 @@ dirs under /var/lib/eopkg
     )
 
     def __init__(self, args):
-        super(RebuildDb, self).__init__(args)
+        super().__init__(args)
 
     name = ("rebuild-db", "rdb")
 

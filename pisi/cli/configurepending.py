@@ -3,10 +3,9 @@
 
 import optparse
 
-from pisi import translate as _
-
 import pisi.api
-import pisi.cli.command as command
+from pisi import translate as _
+from pisi.cli import command
 
 
 class ConfigurePending(command.PackageOp, metaclass=command.autocommand):
@@ -21,13 +20,13 @@ configures those packages.
     )
 
     def __init__(self, args):
-        super(ConfigurePending, self).__init__(args)
+        super().__init__(args)
 
     name = ("configure-pending", "cp")
 
     def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("configure-pending options"))
-        super(ConfigurePending, self).options(group)
+        super().options(group)
         self.parser.add_option_group(group)
 
     def run(self):

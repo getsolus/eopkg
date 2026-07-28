@@ -3,13 +3,11 @@
 
 import optparse
 
-from pisi import translate as _
-
 import pisi
 import pisi.api
-import pisi.cli.command as command
 import pisi.context as ctx
-
+from pisi import translate as _
+from pisi.cli import command
 
 usage = _(
     """Build eopkg packages
@@ -29,7 +27,7 @@ class Build(command.Command, metaclass=command.autocommand):
     __doc__ = usage
 
     def __init__(self, args):
-        super(Build, self).__init__(args)
+        super().__init__(args)
 
     name = ("build", "bi")
 

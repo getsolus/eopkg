@@ -1,11 +1,10 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from pisi import translate as _
-
 import pisi.cli
-import pisi.cli.command as command
 import pisi.context as ctx
+from pisi import translate as _
+from pisi.cli import command
 
 # Import all the commands that are alphabetically after help
 # We need to force-import all of these or help is truncated due to how pisi.command.autocommand is written.
@@ -42,7 +41,7 @@ If run without parameters, it prints the general help."""
     )
 
     def __init__(self, args=None):
-        super(Help, self).__init__(args)
+        super().__init__(args)
 
     name = ("help", "?")
 
@@ -56,7 +55,8 @@ If run without parameters, it prints the general help."""
 
         for arg in self.args:
             obj = command.Command.get_command(arg, True)
-            obj.help()
+            if obj:
+                obj.help()
             ctx.ui.info("")
 
 

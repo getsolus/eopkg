@@ -3,12 +3,10 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
-import pisi.context as ctx
 import pisi.api
 import pisi.db
+from pisi import translate as _
+from pisi.cli import command
 
 
 class AutoRemove(command.PackageOp, metaclass=command.autocommand):
@@ -29,14 +27,14 @@ safe to do so.
     )
 
     def __init__(self, args):
-        super(AutoRemove, self).__init__(args)
+        super().__init__(args)
         self.componentdb = pisi.db.componentdb.ComponentDB()
 
     name = ("autoremove", "rmf")
 
     def setup_options(self):
         group = optparse.OptionGroup(self.parser, _("autoremove options"))
-        super(AutoRemove, self).options(group)
+        super().options(group)
         group.add_option(
             "--purge",
             action="store_true",

@@ -1,11 +1,10 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from pisi import translate as _
-
 import pisi.api
-import pisi.cli.command as command
 import pisi.context as ctx
+from pisi import translate as _
+from pisi.cli import command
 
 
 class EnableRepo(command.Command, metaclass=command.autocommand):
@@ -21,7 +20,7 @@ Disabled repositories are not taken into account in operations
     )
 
     def __init__(self, args):
-        super(EnableRepo, self).__init__(args)
+        super().__init__(args)
         self.repodb = pisi.db.repodb.RepoDB()
 
     name = ("enable-repo", "er")

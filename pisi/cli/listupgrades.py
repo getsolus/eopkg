@@ -3,13 +3,12 @@
 
 import optparse
 
-from pisi import translate as _
-
-import pisi.cli.command as command
+import pisi.api
 import pisi.blacklist
 import pisi.context as ctx
-import pisi.api
 import pisi.db
+from pisi import translate as _
+from pisi.cli import command
 
 
 class ListUpgrades(command.Command, metaclass=command.autocommand):
@@ -23,7 +22,7 @@ Lists the packages that will be upgraded.
     )
 
     def __init__(self, args):
-        super(ListUpgrades, self).__init__(args)
+        super().__init__(args)
         self.componentdb = pisi.db.componentdb.ComponentDB()
         self.installdb = pisi.db.installdb.InstallDB()
 

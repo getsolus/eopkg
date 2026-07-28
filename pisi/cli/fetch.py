@@ -5,9 +5,9 @@ import optparse
 import os
 
 import pisi.api
-import pisi.cli.command as command
 import pisi.context as ctx
 from pisi import translate as _
+from pisi.cli import command
 
 
 class Fetch(command.Command, metaclass=command.autocommand):
@@ -23,7 +23,7 @@ Downloads the given pisi packages to working directory
     )
 
     def __init__(self, args):
-        super(Fetch, self).__init__(args)
+        super().__init__(args)
 
     name = ("fetch", "fc")
 

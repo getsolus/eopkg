@@ -4,10 +4,10 @@
 import optparse
 
 import pisi.api
-import pisi.cli.command as command
 import pisi.context as ctx
-import pisi.util as util
 from pisi import translate as _
+from pisi import util
+from pisi.cli import command
 from pisi.db.componentdb import ComponentDB
 from pisi.db.installdb import InstallDB
 from pisi.db.packagedb import PackageDB
@@ -26,7 +26,7 @@ Usage: info <package1> <package2> ... <packagen>
     )
 
     def __init__(self, args):
-        super(Info, self).__init__(args)
+        super().__init__(args)
         self.installdb = InstallDB()
         self.componentdb = ComponentDB()
         self.packagedb = PackageDB()

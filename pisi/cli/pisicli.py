@@ -12,7 +12,6 @@ import pisi.cli.blame
 import pisi.cli.build
 import pisi.cli.check
 import pisi.cli.clean
-import pisi.cli.command as command
 import pisi.cli.configurepending
 import pisi.cli.deletecache
 import pisi.cli.delta
@@ -41,6 +40,7 @@ import pisi.cli.searchfile
 import pisi.cli.updaterepo
 import pisi.cli.upgrade
 from pisi import translate as _
+from pisi.cli import command
 
 
 class ParserError(pisi.Exception):
@@ -81,7 +81,6 @@ class PreParser(optparse.OptionParser):
                 else:
                     self.opts.append(arg[1:])
                 del rargs[0]
-                return
 
             # We handle bare "--" explicitly, and bare "-" is handled by the
             # standard arg handler since the short arg case ensures that the
@@ -102,7 +101,7 @@ class PreParser(optparse.OptionParser):
         self.args = args
 
 
-class PisiCLI(object):
+class PisiCLI:
     def __init__(self, orig_args=None):
         # first construct a parser for common options
         # this is really dummy

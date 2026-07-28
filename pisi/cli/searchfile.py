@@ -3,11 +3,10 @@
 
 import optparse
 
-from pisi import translate as _
-
 import pisi
 import pisi.context as ctx
-import pisi.cli.command as command
+from pisi import translate as _
+from pisi.cli import command
 
 
 class SearchFile(command.Command, metaclass=command.autocommand):
@@ -21,7 +20,7 @@ Finds the installed package which contains the specified file.
     )
 
     def __init__(self, args):
-        super(SearchFile, self).__init__(args)
+        super().__init__(args)
 
     name = ("search-file", "sf")
 
