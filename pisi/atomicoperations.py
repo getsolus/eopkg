@@ -33,7 +33,7 @@ class NotfoundError(pisi.Error):
 # single package operations
 
 
-class AtomicOperation(object):
+class AtomicOperation:
     def __init__(self, ignore_dep=None):
         # self.package = package
         if ignore_dep == None:
@@ -67,7 +67,7 @@ class Install(AtomicOperation):
 
     def __init__(self, package_fname, ignore_dep=None, ignore_file_conflicts=None):
         "initialize from a file name"
-        super(Install, self).__init__(ignore_dep)
+        super().__init__(ignore_dep)
         if not ignore_file_conflicts:
             ignore_file_conflicts = ctx.get_option("ignore_file_conflicts")
         self.ignore_file_conflicts = ignore_file_conflicts
@@ -539,7 +539,7 @@ def install_single_name(name, upgrade=False):
 
 class Remove(AtomicOperation):
     def __init__(self, package_name, ignore_dep=None):
-        super(Remove, self).__init__(ignore_dep)
+        super().__init__(ignore_dep)
         self.installdb = pisi.db.installdb.InstallDB()
         self.filesdb = pisi.db.filesdb.FilesDB()
         self.package_name = package_name
