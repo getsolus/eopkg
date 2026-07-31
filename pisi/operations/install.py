@@ -1,27 +1,262 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+import multiprocessing
 import os
 import signal
 import sys
 import zipfile
+from queue import Empty
 
 from ordered_set import OrderedSet as set
 
 import pisi
-import pisi.atomicoperations as atomicoperations
 import pisi.context as ctx
 import pisi.db
-import pisi.operations as operations
-import pisi.pgraph as pgraph
-import pisi.signalhandler as signalhandler
-import pisi.ui as ui
-import pisi.util as util
-from pisi import Error
+import pisi.ui
+from pisi import (
+    Error,
+    atomicoperations,
+    events,
+    operations,
+    pgraph,
+    signalhandler,
+    util,
+)
 from pisi import translate as _
 
 BASELAYOUT_PKG = "baselayout"
 EOPKG_PKG = "eopkg"
+
+
+# Per-process global — set by worker_init after fork so each child
+# has its own reference to the shared progress queue.
+_worker_progress_queue = None
+
+
+def _run_parallel(worker_fn, arg_list, ops, *,
+                  oncompletion_cb=None,
+                  apply_automatic=None,
+                  op=events.Operation.INSTALL):
+    """
+    Handles pool creation, progress display, queue draining, error
+    propagation, and cleanup.
+
+    Callers are responsible for pre-flight checks (preflight() +
+    check_configs()) before building *arg_list* — all checks run in the
+    main process as one batch before anything is installed.
+
+    Cache saving is inhibited in worker processes via worker_init;
+    the main process retains cacheable=True so that @locked's
+    update_caches() persists DB state normally.
+
+    Parameters:
+        worker_fn: callable accepting an element of *arg_list*.
+        arg_list: iterable of arguments to pass to *worker_fn* in the pool.
+        ops: list of operation objects; update_databases() is called on each
+             after the pool finishes (unless *oncompletion_cb* is given).
+        oncompletion_cb: Optional callback to be invoked after the pool
+                   finishes. If not provided the default behaviour is to call
+                   `op.update_databases()` on each op, applying
+                   *apply_automatic* when set.
+        apply_automatic: optional set of package names to mark automatic
+                         during Phase 3 DB updates (only relevant when
+                         *oncompletion_cb* is not provided).
+        op: the :class:`~pisi.events.Operation` for the phase; drives the
+            overall progress label and frontend behaviour.
+    """
+    signal_handler = signalhandler.SignalHandler()
+
+    try:
+        # Warm the FilesDB before extraction starts: a cold init here
+        # (missing/invalid gdbm) triggers a rebuild that reads every
+        # package's files.xml — which must happen before workers start
+        # deleting old pkg dirs during extraction.
+        filesdb = pisi.db.filesdb.FilesDB()
+        if not filesdb.is_initialized():
+            filesdb.init()
+
+        # Setup progress display via the active UI frontend
+        ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
+        signal_handler.disable_signal(signal.SIGINT)
+
+        manager = multiprocessing.Manager()
+        progress_queue = manager.Queue()
+
+        # N.B. It's a bit wierd that we pass the entirely of options to each worker
+        #      process. However, it was initially done so destdir was respected
+        # N.B  We need actual processes here to overcoming limitations of the GIL
+        #      to get an actual performance benefit. Revisting with a ThreadPool
+        #      once the GIL is gone would be interesting and should help clean things
+        #      up.
+        pool = multiprocessing.Pool(
+            initializer=worker_init, initargs=(progress_queue, ctx.config.options)
+        )
+        result = pool.map_async(worker_fn, arg_list)
+
+        try:
+            total = len(ops)
+            seen = 0
+            # Definitive overall unit total (files across all items) so
+            # the global bar never shifts as workers register their items.
+            total_units = sum(
+                len(op_obj.files.list)
+                for op_obj in ops
+                if getattr(op_obj, "files", None) is not None
+            )
+
+            with ctx.ui.work_phase(total, op, total_units=total_units) as phase:
+                # Read until we've seen one ItemDone per package.
+                # Counting done messages is race-free — we never check
+                # `result.ready()` which can become True before the
+                # last queue message has crossed the IPC buffer.
+                while seen < total:
+                    try:
+                        msg = progress_queue.get(timeout=0.5)
+                        if isinstance(msg, events.ItemProgress):
+                            phase.add_item(
+                                msg.item, msg.total, op=msg.op, pkg_info=msg.pkg_info
+                            )
+                            phase.update_item(msg.item, msg.completed)
+                        elif isinstance(msg, events.ItemDone):
+                            phase.finish_item(
+                                msg.item, version=msg.version, op=msg.op
+                            )
+                            seen += 1
+                    except Empty:
+                        # A failed worker sends no ItemDone, so counting
+                        # alone would spin forever. Surface worker failures
+                        # as soon as the pool reports them; if no worker
+                        # failed, keep draining — the last ItemDone may
+                        # still be crossing the IPC buffer.
+                        if result.ready():
+                            result.get()
+
+            pool.close()
+            pool.join()
+            # Re-raise any worker exceptions
+            result.get()
+        except:
+            pool.terminate()
+            pool.join()
+            raise
+
+        ctx.ui.info(util.colorize(_("Updating databases..."), "yellow"))
+        if oncompletion_cb is not None:
+            oncompletion_cb(ops)
+        else:
+            for op_obj in ops:
+                if (
+                    apply_automatic is not None
+                    and op_obj.pkginfo.name in apply_automatic
+                ):
+                    op_obj.automatic = True
+                op_obj.update_databases()
+    except Exception:  # noqa: TRY203 ensure exceptions from workers are raised to main
+        raise
+    finally:
+        ctx.exec_usysconf()
+
+
+def worker_init(queue, options):
+    """Initialise a child process: store the progress queue reference,
+    silence UI output, and re-apply config options (required when the
+    multiprocessing start method is "spawn", which creates a fresh
+    interpreter that re-imports modules with default config)."""
+    global _worker_progress_queue
+    _worker_progress_queue = queue
+    pisi.api.set_userinterface(pisi.ui.UI())
+    pisi.api.set_options(options)
+    # Workers must not save caches — they would race writing the same
+    # pickle files. The main process handles cache updates after
+    # all workers finish and database operations are serialized.
+    pisi.db.installdb.InstallDB().cacheable = False
+    pisi.db.filesdb.FilesDB().cacheable = False
+
+
+def install_pkg_worker(path):
+    try:
+        install_op = atomicoperations.Install(path)
+        name = install_op.pkginfo.name
+        version = f"{install_op.pkginfo.version}-{install_op.pkginfo.release}"
+        pkg_info = events.PkgInfo(
+            name=install_op.pkginfo.name,
+            version=str(install_op.pkginfo.version),
+            release=install_op.pkginfo.release,
+            summary=install_op.pkginfo.summary,
+        )
+        # op is omitted from events: workers don't know the operation type,
+        # and frontends fall back to the enclosing phase's operation.
+        install_op.progress_callback = lambda c, t: _worker_progress_queue.put(
+            events.ItemProgress(
+                item=name, completed=c, total=t, pkg_info=pkg_info
+            )
+        )
+        install_op.extract()
+        _worker_progress_queue.put(
+            events.ItemDone(item=name, version=version)
+        )
+    except Exception as e:
+        raise e
+
+
+
+def install_file_worker(path):
+    try:
+        install_op = atomicoperations.Install(path)
+        name = install_op.pkginfo.name
+        version = "{}-{}".format(
+            install_op.pkginfo.version, install_op.pkginfo.release
+        )
+        pkg_info = events.PkgInfo(
+            name=install_op.pkginfo.name,
+            version=str(install_op.pkginfo.version),
+            release=install_op.pkginfo.release,
+            summary=install_op.pkginfo.summary,
+        )
+        # op is omitted from events: workers don't know the operation type,
+        # and frontends fall back to the enclosing phase's operation.
+        install_op.progress_callback = lambda c, t: _worker_progress_queue.put(
+            events.ItemProgress(
+                item=name, completed=c, total=t, pkg_info=pkg_info
+            )
+        )
+        install_op.extract()
+        _worker_progress_queue.put(
+            events.ItemDone(item=name, version=version)
+        )
+    except Exception as e:
+        raise e
+
+
+
+def remove_worker(args):
+    """Worker for parallel removal — deletes package files.
+
+    Receives the file list and package info from the main process (which
+    already loaded them) so the worker never touches the DBs.
+
+    Sends per-file ItemProgress messages via the callback so the
+    frontend can show meaningful percentages, then an ItemDone.
+    """
+    package_name, files, pkg_info = args
+    try:
+        remove_op = atomicoperations.Remove.for_worker(package_name, files)
+        remove_op.progress_callback = lambda c, t: _worker_progress_queue.put(
+            events.ItemProgress(
+                op=atomicoperations.REMOVE,
+                item=package_name,
+                completed=c,
+                total=t,
+                pkg_info=pkg_info,
+            )
+        )
+        remove_op.remove_files()
+        _worker_progress_queue.put(
+            events.ItemDone(op=atomicoperations.REMOVE, item=package_name)
+        )
+    except Exception as e:
+        raise e
 
 
 def plan_deterministic_install_order(order):
@@ -39,6 +274,39 @@ def plan_deterministic_install_order(order):
     return order
 
 
+def install_critical_first(ops, *, apply_automatic=None):
+    """Install critical packages (baselayout) sequentially, before the pool.
+
+    Parallel workers cannot honour the install order, and every other
+    package assumes baselayout's layout is already in place, so it must
+    be fully installed (extracted + DB updates) in the main process
+    before anything else starts extracting.
+
+    Pre-flight (preflight() + check_configs()) must already have run for
+    all ops.
+
+    :param ops: Install operation objects to install.
+    :param apply_automatic: Optional set of package names to mark automatic.
+    :returns: The remaining ops (everything except the critical packages).
+    """
+    critical = {BASELAYOUT_PKG}
+    rest = []
+    for op in ops:
+        if op.pkginfo.name in critical:
+            ctx.ui.info(
+                util.colorize(
+                    _("Installing %s first...") % op.pkginfo.name, "yellow"
+                )
+            )
+            if apply_automatic is not None and op.pkginfo.name in apply_automatic:
+                op.automatic = True
+            op.extract()
+            op.update_databases()
+        else:
+            rest.append(op)
+    return rest
+
+
 def install_pkg_names(packages, reinstall=False):
     """
     Installs packages from the repository.
@@ -50,7 +318,6 @@ def install_pkg_names(packages, reinstall=False):
 
     installdb = pisi.db.installdb.InstallDB()
     packagedb = pisi.db.packagedb.PackageDB()
-    signal_handler = signalhandler.SignalHandler()
 
     packages = [
         str(package) for package in packages
@@ -129,8 +396,6 @@ def install_pkg_names(packages, reinstall=False):
         if needs_confirm and not ctx.ui.confirm(_("Do you want to continue?")):
             return False
 
-    ctx.ui.notify(ui.packagestogo, order=order)
-
     # Resolve resources
     resources = operations.helper.get_download_info(order)
 
@@ -164,29 +429,32 @@ def install_pkg_names(packages, reinstall=False):
     for install_op in install_ops:
         install_op.check_relations(set(order))
 
-    # Install all the packages
-    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
-    signal_handler.disable_signal(signal.SIGINT)
-
     automatic = operations.helper.extract_automatic(packages, order)
 
-    try:
-        for i, install_op in enumerate(install_ops):
-            ctx.ui.info(
-                util.colorize(
-                    _("Installing %d / %d") % (i + 1, len(install_ops)),
-                    "yellow",
-                )
-            )
-            if install_op.pkginfo.name in automatic:
-                install_op.automatic = True
-            install_op.install(False)
-    except Exception as e:
-        raise e
-    finally:
+    # Batch pre-flight: all checks run in the main process before anything
+    # is installed. check_configs() renames user-modified configs so workers
+    # can extract without clobbering them.
+    for install_op in install_ops:
+        install_op.preflight(ask_reinstall=False)
+        install_op.check_configs()
+
+    # baselayout must be fully installed before the parallel pool starts:
+    # workers cannot honour the install order, so install it sequentially
+    # in the main process first (pre-flight already ran above).
+    install_ops = install_critical_first(install_ops, apply_automatic=automatic)
+    if install_ops:
+        arg_list = [install_op.package_fname for install_op in install_ops]
+        _run_parallel(
+            install_pkg_worker, arg_list, install_ops,
+            apply_automatic=automatic,
+        )
+    else:
         ctx.exec_usysconf()
 
     return True
+
+
+
 
 
 def install_pkg_files(package_URIs, reinstall=False):
@@ -239,9 +507,21 @@ def install_pkg_files(package_URIs, reinstall=False):
     package_URIs = local_URIs
 
     if ctx.config.get_option("ignore_dependency"):
-        # simple code path then
-        for x in package_URIs:
-            atomicoperations.install_single_file(x, reinstall)
+        # Simple code path: install each file directly, skipping dependency
+        # resolution and ordering. Still runs through the parallel extraction
+        # and serial DB updates handled by _run_parallel.
+        file_install_ops = [
+            atomicoperations.Install(x) for x in package_URIs
+        ]
+        # Batch pre-flight: all checks run in the main process before
+        # anything is installed.
+        for install_op in file_install_ops:
+            install_op.preflight(ask_reinstall=not reinstall)
+            install_op.check_configs()
+        arg_list = [install_op.package_fname for install_op in file_install_ops]
+        _run_parallel(
+            install_file_worker, arg_list, file_install_ops,
+        )
         return True
 
     # read the package information into memory first
@@ -367,8 +647,6 @@ def install_pkg_files(package_URIs, reinstall=False):
     if ctx.get_option("dry_run"):
         return True
 
-    ctx.ui.notify(ui.packagestogo, order=order)
-
     # Pre-instantiate Install objects for pre-flight checks
     file_install_ops = []
     for x in order:
@@ -378,12 +656,19 @@ def install_pkg_files(package_URIs, reinstall=False):
     for install_op in file_install_ops:
         install_op.check_relations(set(order))
 
-    try:
-        for install_op in file_install_ops:
-            install_op.install(not reinstall)
-    except Exception:
-        raise
-    finally:
+    # Batch pre-flight: all checks run in the main process before anything
+    # is installed.
+    for install_op in file_install_ops:
+        install_op.preflight(ask_reinstall=not reinstall)
+        install_op.check_configs()
+
+    file_install_ops = install_critical_first(file_install_ops)
+    if file_install_ops:
+        arg_list = [install_op.package_fname for install_op in file_install_ops]
+        _run_parallel(
+            install_file_worker, arg_list, file_install_ops,
+        )
+    else:
         ctx.exec_usysconf()
 
     return True

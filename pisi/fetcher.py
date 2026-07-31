@@ -1,50 +1,61 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project, 2026 Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+from __future__ import annotations
+
 import os
 import signal
-import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
 from requests import RequestException
 from requests.adapters import HTTPAdapter
-from rich.console import Group
-from rich.live import Live
-from rich.progress import (
-    BarColumn,
-    DownloadColumn,
-    Progress,
-    TaskID,
-    TaskProgressColumn,
-    TextColumn,
-    TimeRemainingColumn,
-    TransferSpeedColumn,
-)
-from rich.rule import Rule
-from rich.style import Style
-from rich.table import Column
 
 import pisi
 import pisi.context as ctx
 import pisi.ui
 from pisi import translate as _
+from pisi import util
+from pisi.events import Operation, PkgInfo
 from pisi.package import PackageResource
 from pisi.uri import URI
-from pisi.util import human_readable_rate, parse_package_name
 
 """Maximum size in bytes of a download chunk to process at a time."""
 MAX_CHUNK_SIZE = 8192
-
-"""Minimum interval in seconds between UI progress callbacks."""
-PROGRESS_UPDATE_INTERVAL = 0.1
 
 
 class FetchError(pisi.Error):
     """Raised when a fetch operation fails."""
 
-    pass
+
+class SingleFetchHandle(pisi.ui.PhaseHandle):
+    """Phase handle for single-file downloads."""
+
+    def __init__(self, url):
+        self._action = "Copied" if url.is_local_file() else "Downloaded"
+        self._name = None
+        self._total = 0
+
+    def add_item(self, item_name, total, *, op=None, pkg_info=None):
+        self._name = item_name
+        self._total = total
+
+    def update_item(self, item_name, completed):
+        if not self._total:
+            return
+        pct = int(completed * 100 / self._total)
+        print(
+            f"\r{util.colorize(f'{pct}%', 'yellow')} {item_name}",
+            end="",
+            flush=True,
+        )
+
+    def finish_item(self, item_name, *, version=None):
+        print(
+            f"\r{util.colorize(self._action, 'green')} {item_name}",
+            flush=True,
+        )
 
 
 class Fetcher:
@@ -58,11 +69,13 @@ class Fetcher:
         bandwidth_limit (int): The speed in bits per second that shall
             not be exceeded during downloads. Set to 0 for no limit.
         max_retries (int): The maximum number of times that a download
-            can be retried before giving up. Default 5
-        session (requests.Session): The HTTP session.
+            will be retried. Defaults to 5.
+        session (requests.Session): The session used for HTTP requests.
+        fetch_ui: A progress helper provided by the active UI frontend.
     """
 
     def __init__(self):
+        self.fetch_ui = None
         self.bandwidth_limit = self._get_bandwidth_limit()
         self.max_retries = self._get_max_retries()
 
@@ -75,59 +88,12 @@ class Fetcher:
         proxies = self._get_proxies()
         self.session.proxies.update(proxies)
 
-        self.progress = Progress(
-            TaskProgressColumn(
-                text_format="{task.percentage:>3.0f}%",
-                style=Style(color="yellow"),
-            ),
-            TextColumn("[bold blue]{task.description}"),
-            TextColumn(
-                "", table_column=Column(ratio=1)
-            ),  # spacer, requires expand = True
-            DownloadColumn(),
-            "•",
-            TransferSpeedColumn(),
-            "•",
-            TimeRemainingColumn(),
-            expand=True,
-        )
-
-        self.overall_progress = Progress(
-            TextColumn("[bold green]Downloading", justify="right"),
-            BarColumn(
-                complete_style="green",
-                bar_width=None,
-            ),
-            TaskProgressColumn(),
-            "•",
-            DownloadColumn(),
-            "•",
-            TransferSpeedColumn(),
-            "•",
-            TimeRemainingColumn(),
-        )
-        self.overall_task = None
-
-        # Overall progress tracking for fetching_overall callbacks
-        self._overall_lock = threading.Lock()
-        self._overall_completed = 0
-        self._overall_total = 0
-        self._last_overall_report = 0.0
-
-        self.live = Live(
-            Group(
-                self.progress,
-                Rule(style="dim"),
-                self.overall_progress,
-            ),
-            refresh_per_second=10,
-        )
-
     def download_file(
         self,
         url: URI,
         destination: str,
         description: str | None = None,
+        pkg_info: PkgInfo | None = None,
     ) -> None:
         """
         Download a remote resource to a local file.
@@ -135,37 +101,35 @@ class Fetcher:
         :param URI url: The URI of the resource to download.
         :param str destination: The destination file to download to.
         :param str description: The description for the task.
+        :param PkgInfo pkg_info: Package metadata for progress events.
         """
         basename = os.path.basename(destination)
+        item_name = description or basename
+
+        fetch_ui = self.fetch_ui
         ctx.sig.catch_signal(signal.SIGINT)
         try:
             if url.is_local_file():
                 source = url.path()
-                rooted_path = pisi.util.join_path(ctx.config.dest_dir(), source)
+                rooted_path = util.join_path(ctx.config.dest_dir(), source)
                 if os.path.exists(rooted_path):
                     source = rooted_path
                 else:
-                    raise IOError(_(f"Source file '{source}' does not exist"))
+                    raise OSError(_("Source file '%s' does not exist") % source)
 
                 total = os.path.getsize(source)
 
-                task_id = self.progress.add_task(
-                    description or basename,
-                    total=total,
-                )
+                fetch_ui.add_item(item_name, total, op=Operation.DOWNLOAD, pkg_info=pkg_info)
                 try:
                     self._copy_to_file(
                         source,
                         destination,
-                        task_id,
+                        fetch_ui,
+                        item_name,
                         basename,
                     )
                 finally:
-                    self.progress.remove_task(task_id)
-                    self.progress.console.print(
-                        _(f"[green]Copied[reset] {basename}"),
-                        highlight=False,
-                    )
+                    fetch_ui.finish_item(item_name)
                 return
 
             with self.session.get(url.get_uri(), stream=True, timeout=15) as resp:
@@ -173,99 +137,31 @@ class Fetcher:
                 start_time = time.time()
 
                 total = int(resp.headers.get("Content-Length") or 0)
-                task_id = self.progress.add_task(
-                    description or basename,
-                    total=total,
-                )
+                fetch_ui.add_item(item_name, total, op=Operation.DOWNLOAD, pkg_info=pkg_info)
                 try:
                     self._download_to_file(
                         resp,
                         destination,
                         start_time,
-                        task_id,
+                        fetch_ui,
+                        item_name,
                         basename,
                     )
                 finally:
-                    self.progress.remove_task(task_id)
-                    self.progress.console.print(
-                        _(f"[green]Downloaded[reset] {basename}"),
-                        highlight=False,
-                    )
+                    fetch_ui.finish_item(item_name)
         finally:
             ctx.sig.enable_signal(signal.SIGINT)
 
         ctx.sig.check_signals()
 
-    def _report_progress(
-        self,
-        filename: str,
-        downloaded: int,
-        total: int,
-        last_report_time: list[float],
-    ) -> float:
-        """Report download progress to the UI callback system.
-
-        Calls ctx.ui.display_progress with progress info, throttled
-        to at most one call per PROGRESS_UPDATE_INTERVAL seconds.
-
-        :param filename: The name of the file being downloaded.
-        :param downloaded: Bytes downloaded so far.
-        :param total: Total bytes to download.
-        :param last_report_time: Mutable single-element list holding
-            the timestamp of the last report ([time]).
-        :returns: The current timestamp.
-        """
-        now = time.time()
-        if now - last_report_time[0] < PROGRESS_UPDATE_INTERVAL and downloaded < total:
-            return now
-
-        last_report_time[0] = now
-
-        percent = (downloaded * 100.0 / total) if total else 0.0
-        ctx.ui.display_progress(
-            operation="fetching",
-            percent=percent,
-            filename=filename,
-            total_size=total,
-            downloaded_size=downloaded,
-        )
-        return now
-
-    def _report_overall_progress(self) -> None:
-        """Report overall download progress to the UI callback system.
-
-        Emits display_progress(operation="fetching_overall", …) based on
-        the total bytes completed across all concurrent downloads. Throttled
-        to at most one call per PROGRESS_UPDATE_INTERVAL seconds.
-        """
-        now = time.time()
-        if now - self._last_overall_report < PROGRESS_UPDATE_INTERVAL:
-            return
-        self._last_overall_report = now
-
-        with self._overall_lock:
-            percent = (
-                (self._overall_completed * 100.0 / self._overall_total)
-                if self._overall_total
-                else 0.0
-            )
-
-        ctx.ui.display_progress(
-            operation="fetching_overall",
-            percent=percent,
-            total_size=self._overall_total,
-            downloaded_size=self._overall_completed,
-        )
-
     def _copy_to_file(
         self,
         source: str,
         destination: str,
-        task_id: TaskID,
+        fetch_ui,
+        item_name: str,
         filename: str,
     ) -> None:
-        last_report = [0.0]
-
         size = os.path.getsize(source)
 
         # Try hardlinking first
@@ -273,51 +169,32 @@ class Fetcher:
             if os.path.exists(destination):
                 os.unlink(destination)
             os.link(source, destination)
-            self.progress.update(task_id, completed=size)
-            if self.overall_task is not None:
-                self.overall_progress.update(self.overall_task, advance=size)
-                with self._overall_lock:
-                    self._overall_completed += size
-                self._report_overall_progress()
-
-            self._report_progress(filename, size, size, last_report)
+            fetch_ui.update_item(item_name, size)
             return
         except OSError:
             # Fallback to manual copy with progress
             pass
 
-        with open(source, "rb") as src:
-            with open(destination, "wb") as dst:
-                copied = 0
-                while True:
-                    chunk = src.read(MAX_CHUNK_SIZE)
-                    if not chunk:
-                        break
-                    dst.write(chunk)
-                    size = len(chunk)
-                    copied += size
-                    self.progress.update(task_id, advance=size)
-                    if self.overall_task is not None:
-                        self.overall_progress.update(self.overall_task, advance=size)
-                        with self._overall_lock:
-                            self._overall_completed += size
-                        self._report_overall_progress()
-
-                    self._report_progress(filename, copied, size, last_report)
-
-        # Final progress report at 100%
-        self._report_progress(filename, size, size, last_report)
+        with open(source, "rb") as src, open(destination, "wb") as dst:
+            copied = 0
+            while True:
+                chunk = src.read(MAX_CHUNK_SIZE)
+                if not chunk:
+                    break
+                dst.write(chunk)
+                size = len(chunk)
+                copied += size
+                fetch_ui.update_item(item_name, copied)
 
     def _download_to_file(
         self,
         resp: requests.Response,
         destination: str,
         start_time: float,
-        task_id: TaskID,
+        fetch_ui,
+        item_name: str,
         filename: str,
     ) -> None:
-        last_report = [0.0]
-        total = int(resp.headers.get("Content-Length") or 0)
         downloaded = 0
 
         with open(destination, "wb") as f:
@@ -327,14 +204,7 @@ class Fetcher:
 
                 size = f.write(chunk)
                 downloaded += size
-                self.progress.update(task_id, advance=size)
-                if self.overall_task is not None:
-                    self.overall_progress.update(self.overall_task, advance=size)
-                    with self._overall_lock:
-                        self._overall_completed += size
-                    self._report_overall_progress()
-
-                self._report_progress(filename, downloaded, total, last_report)
+                fetch_ui.update_item(item_name, downloaded)
 
                 # Handle bandwidth limiting, if set
                 if self.bandwidth_limit:
@@ -353,15 +223,13 @@ class Fetcher:
                 if ctx.sig.done_event.is_set():
                     return
 
-        # Final progress report at 100%
-        self._report_progress(filename, downloaded, total, last_report)
-
     def fetch(
         self,
         url: URI | str,
         dest_dir: str,
         filename: str | None = None,
         description: str | None = None,
+        pkg_info: PkgInfo | None = None,
     ) -> None:
         """
         Fetches a remote resource.
@@ -369,9 +237,10 @@ class Fetcher:
         :param url: The file to fetch.
         :type url: pisi.uri.URI | str
         :param str dest_dir: The directory to save the downloaded file to.
-        :param filename: The name of the file to use.
+        :param filename: The filename to use.
         :type filename: str | None
         :param str description: The description for the task.
+        :param PkgInfo pkg_info: Package metadata for progress events.
         """
         # This is silly and I hate it.
         if type(url) is str:
@@ -381,31 +250,35 @@ class Fetcher:
             raise ValueError(_("URL does not end in a file name"))
 
         if not os.access(dest_dir, os.W_OK):
-            raise IOError(_(f"Unable to access destination directory '{dest_dir}'"))
+            raise OSError(_("Unable to access destination directory '%s'") % dest_dir)
 
         archive_file = os.path.join(dest_dir, filename or url.filename())
 
-        # Initalize the progress bar if fetch() is called rather than fetch_multi()
-        # TODO: is there a cleaner way to handle this?
-        single_caller = not self.live._started
-
         if os.path.exists(archive_file) and not os.access(archive_file, os.W_OK):
-            raise IOError(_(f"Unable to access destination file '{archive_file}'"))
-        try:
-            if single_caller:
-                self.progress.start()
-            self.download_file(
-                url,
-                archive_file,
-                description,
-            )
-        except RequestException as e:
-            raise FetchError(_(f"Error downloading '{url.filename()}': {e}")) from e
-        finally:
-            if single_caller:
-                self.progress.stop()
+            raise OSError(_("Unable to access destination file '%s'") % archive_file)
 
-    def fetch_multi(self, items: list["PackageResource"]) -> None:
+        # Single-file fetch: display inline CLI progress (no Live display).
+        # Multi-file fetch (fetch_multi) wraps in ctx.ui.work_phase
+        # which provides the full Rich Live display.
+        #
+        # Only create a handle (and clean it up afterwards) when called
+        # standalone: in fetch_multi, self.fetch_ui is the shared phase
+        # handle for ALL concurrent downloads, so the first thread to
+        # finish must not null it out from under the others.
+        single = self.fetch_ui is None
+        if single:
+            self.fetch_ui = SingleFetchHandle(url)
+        try:
+            self.download_file(url, archive_file, description, pkg_info)
+        except RequestException as e:
+            raise FetchError(
+                _("Error downloading '%s': %s") % (url.filename(), e)
+            ) from e
+        finally:
+            if single:
+                self.fetch_ui = None
+
+    def fetch_multi(self, items: list[PackageResource]) -> None:
         """
         Fetches multiple remote resources concurrently.
 
@@ -418,33 +291,27 @@ class Fetcher:
         )
         # Ensure we've got something reasonable to work with
         max_workers = max(1, min(max_workers, 64))
-        ctx.ui.debug(_(f"Setting {max_workers} concurrent download workers"))
+        ctx.ui.debug(_("Setting %s concurrent download workers") % max_workers)
 
+        # Overall byte total from index metadata (when complete) so the
+        # global bar never shifts as concurrent downloads register.
         known_sizes = [item.size for item in items if item.size is not None]
-        total_size = sum(known_sizes) if known_sizes else None
+        total_units = sum(known_sizes) if len(known_sizes) == len(items) else None
 
-        self.overall_task = self.overall_progress.add_task("Overall", total=total_size)
-        with self._overall_lock:
-            self._overall_completed = 0
-            self._overall_total = total_size or 0
-        self._last_overall_report = 0.0
-
-        ctx.sig.catch_signal(signal.SIGINT)
-        try:
-            with self.live:
+        with ctx.ui.work_phase(len(items), Operation.DOWNLOAD, total_units=total_units) as phase:
+            self.fetch_ui = phase
+            ctx.sig.catch_signal(signal.SIGINT)
+            try:
                 with ThreadPoolExecutor(max_workers=max_workers) as executor:
                     futures = []
 
                     for resource in items:
-                        _name, version = parse_package_name(resource.pkg_path)
+                        _name, version = util.parse_package_name(resource.pkg_path)
                         description = f"({resource.repo}) {resource.name} {version}"
                         if resource.is_delta:
                             description += " [delta]"
 
-                        ctx.ui.notify(
-                            pisi.ui.downloading,
-                            packageresource=resource,
-                        )
+                        pkg_info = PkgInfo(name=resource.name)
 
                         futures.append(
                             executor.submit(
@@ -453,6 +320,7 @@ class Fetcher:
                                 os.path.dirname(resource.local_path),
                                 os.path.basename(resource.local_path),
                                 description,
+                                pkg_info,
                             )
                         )
 
@@ -468,12 +336,9 @@ class Fetcher:
                         raise pisi.Error(
                             _("One or more errors occurred during fetching")
                         )
-
-                    # Update live display with a dummy group clean things up visually
-                    self.live.update(Group())
-
-        finally:
-            ctx.sig.enable_signal(signal.SIGINT)
+            finally:
+                ctx.sig.enable_signal(signal.SIGINT)
+                self.fetch_ui = None
 
         ctx.sig.check_signals()
 
@@ -486,9 +351,9 @@ class Fetcher:
         if bandwidth_limit and bandwidth_limit != "0":
             # The limit is in KB
             bandwidth_limit = int(bandwidth_limit) * 1000
-            parts = human_readable_rate(bandwidth_limit)
+            parts = util.human_readable_rate(bandwidth_limit)
             rate = f"{parts[0]} {parts[1]}"
-            ctx.ui.warning(_(f"Bandwidth usage is limited to {rate}"))
+            ctx.ui.warning(_("Bandwidth usage is limited to %s") % rate)
             return bandwidth_limit
         else:
             return 0

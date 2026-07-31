@@ -1,20 +1,14 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-import signal
 import sys
 
 from ordered_set import OrderedSet as set
 
 import pisi
-import pisi.atomicoperations as atomicoperations
 import pisi.context as ctx
 import pisi.db
-import pisi.pgraph as pgraph
-import pisi.signalhandler as signalhandler
-import pisi.ui as ui
-import pisi.util as util
-from pisi import Error
+from pisi import Error, atomicoperations, events, pgraph, util
 from pisi import translate as _
 from pisi.operations import helper
 
@@ -37,7 +31,6 @@ def remove(
 
     componentdb = pisi.db.componentdb.ComponentDB()
     installdb = pisi.db.installdb.InstallDB()
-    signal_handler = signalhandler.SignalHandler()
 
     should_ignore_safety = (
         not ctx.get_option("ignore_safety")
@@ -130,22 +123,47 @@ in the respective order to satisfy dependencies:
             ctx.ui.warning(_("Package removal declined"))
             return False
 
-    ctx.ui.notify(ui.packagestogo, order=order)
+    # Filter to only installed packages and pre-instantiate Remove objects
+    # for Phase 3 DB updates (serial, after the parallel pool finishes).
+    remove_ops = []
+    for package in order:
+        if installdb.has_package(package):
+            remove_ops.append(atomicoperations.Remove(package))
+        else:
+            ctx.ui.info(_("Package %s is not installed. Cannot remove.") % package)
 
-    # Remove the packages.
-    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
-    signal_handler.disable_signal(signal.SIGINT)
+    if not remove_ops:
+        return None
 
-    try:
-        for package in order:
-            if installdb.has_package(package):
-                atomicoperations.remove_single(package)
-            else:
-                ctx.ui.info(_("Package %s is not installed. Cannot remove.") % package)
-    except Exception as e:
-        raise e
-    finally:
-        ctx.exec_usysconf()
+    from pisi.operations.install import _run_parallel, remove_worker
+
+    # Callback action to run once removal is successful
+    def post_removal_callback(ops):
+        for op in ops:
+            op.update_databases()
+            op.remove_pisi_files()
+
+    # Workers get the file list and package info preloaded from the main
+    # process: they must never initialize DBs (cold init is expensive and
+    # can trigger full rebuilds from XML).
+    arg_list = [
+        (
+            op.package_name,
+            op.files,
+            events.PkgInfo(
+                name=op.package.name,
+                version=str(op.package.version),
+                release=op.package.release,
+                summary=op.package.summary,
+            ),
+        )
+        for op in remove_ops
+    ]
+    _run_parallel(
+        remove_worker, arg_list, remove_ops,
+        oncompletion_cb=post_removal_callback,
+        op=events.Operation.REMOVE,
+    )
 
     # Prior to 2c63650, this function had no return statement at all on the "complete" codepath.
     # 2c63650 added a "return True". Unfortunately, it appears that "False" means "Ask the user for confirmation",

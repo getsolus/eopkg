@@ -32,6 +32,7 @@ import pisi.signalhandler as signalhandler
 import pisi.uri
 import pisi.util
 from pisi import translate as _
+from pisi.events import Operation, PkgInfo
 
 
 def locked(func):
@@ -601,24 +602,22 @@ def snapshot():
     historydb.create_history("snapshot")
 
     li = installdb.list_installed()
-    progress = ctx.ui.Progress(len(li))
 
-    processed = 0
-    for name in li:
-        package = installdb.get_package(name)
-        historydb.add_package(pkgBefore=package, operation="snapshot")
-        # Save changed config files of the package in snapshot
-        for f in installdb.get_files(name).list:
-            if f.type == "config" and pisi.util.config_changed(f):
-                fpath = pisi.util.join_path(ctx.config.dest_dir(), f.path)
-                historydb.save_config(name, fpath)
+    with ctx.ui.work_phase(1, Operation.SNAPSHOT) as phase:
+        phase.add_item(_("Snapshot"), len(li), op=Operation.SNAPSHOT)
+        processed = 0
+        for name in li:
+            package = installdb.get_package(name)
+            historydb.add_package(pkgBefore=package, operation="snapshot")
+            # Save changed config files of the package in snapshot
+            for f in installdb.get_files(name).list:
+                if f.type == "config" and pisi.util.config_changed(f):
+                    fpath = pisi.util.join_path(ctx.config.dest_dir(), f.path)
+                    historydb.save_config(name, fpath)
 
-        processed += 1
-        ctx.ui.display_progress(
-            operation="snapshot",
-            percent=progress.update(processed),
-            info=_("Taking snapshot of the system"),
-        )
+            processed += 1
+            phase.update_item(_("Snapshot"), processed)
+        phase.finish_item(_("Snapshot"))
 
     historydb.update_history()
 
@@ -764,18 +763,29 @@ def configure_pending(packages=None):
 
     # Clear legacy "needs configuration" flag
     order = generate_pending_order(packages)
-    for x in order:
-        if installdb.has_package(x):
-            pkginfo = installdb.get_package(x)
-            pkg_path = installdb.package_path(x)
-            m = pisi.metadata.MetaData()
-            metadata_path = pisi.util.join_path(pkg_path, ctx.const.metadata_xml)
-            m.read(metadata_path)
-            # FIXME: we need a full package info here!
-            pkginfo.name = x
-            ctx.ui.notify(pisi.ui.configuring, package=pkginfo, files=None)
-            ctx.ui.notify(pisi.ui.configured, package=pkginfo, files=None)
-        installdb.clear_pending(x)
+    with ctx.ui.work_phase(len(order), Operation.CONFIGURE) as phase:
+        for x in order:
+            if installdb.has_package(x):
+                pkginfo = installdb.get_package(x)
+                pkg_path = installdb.package_path(x)
+                m = pisi.metadata.MetaData()
+                metadata_path = pisi.util.join_path(pkg_path, ctx.const.metadata_xml)
+                m.read(metadata_path)
+                # FIXME: we need a full package info here!
+                pkginfo.name = x
+                phase.add_item(
+                    x,
+                    1,
+                    op=Operation.CONFIGURE,
+                    pkg_info=PkgInfo(
+                        name=x,
+                        version=str(pkginfo.version),
+                        release=pkginfo.release,
+                        summary=pkginfo.summary,
+                    ),
+                )
+                phase.finish_item(x)
+            installdb.clear_pending(x)
 
 
 def info(package, installed=False):
@@ -904,7 +914,6 @@ def __update_repo(repo, force=False):
     signal_handler = signalhandler.SignalHandler()
 
     ctx.ui.action(_("Updating repository: %s") % repo)
-    ctx.ui.notify(pisi.ui.updatingrepo, name=repo)
     ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
     signal_handler.disable_signal(signal.SIGINT)
 

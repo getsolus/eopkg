@@ -5,11 +5,13 @@ import locale
 import re
 import sys
 import tty
+from contextlib import contextmanager
 
 import pisi
 import pisi.ui
 import pisi.util
 from pisi import context as ctx
+from pisi import events
 from pisi import translate as _
 
 
@@ -156,39 +158,208 @@ class CLI(pisi.ui.UI):
             if no_expr.search(s):
                 return False
 
-    def display_progress(self, **ka):
-        """display progress of any operation"""
-        if ka["operation"] in [
-            "removing",
-            "rebuilding-db",
-            "fetching",
-            "fetching_overall",
-        ]:
-            return
-        else:
-            self.output("\r%s (%d%%)" % (ka.get("info", ""), ka["percent"]))
-
-        if ka["percent"] == 100:
-            self.output(pisi.util.colorize(_(" [complete]\n"), "gray"))
-
     def status(self, msg=None):
         if msg:
             msg = str(msg)
             self.output(pisi.util.colorize(msg + "\n", "brightgreen"))
             pisi.util.xterm_title(msg)
 
-    def notify(self, event, **keywords):
-        if event == pisi.ui.installed:
-            msg = _("Installed %s") % keywords["package"].name
-        elif event == pisi.ui.removed:
-            msg = _("Removed %s") % keywords["package"].name
-        elif event == pisi.ui.upgraded:
-            msg = _("Upgraded %s") % keywords["package"].name
-        elif event == pisi.ui.configured:
-            msg = _("Configured %s") % keywords["package"].name
+    @contextmanager
+    def work_phase(self, num_items, op, *, total_units=None):
+        """Context manager wrapping a phase of work (parallel or sequential).
+
+        Displays live Rich progress bars (per-item + overall)
+        during install, upgrade, remove, or fetch operations.
+
+        :param num_items: Total number of items in this phase.
+        :param op: The :class:`~pisi.events.Operation` for the phase; drives
+                   the overall label and frontend behaviour.
+        :param total_units: Optional definitive unit total (bytes for
+            downloads, files for operations) for the overall bar; when
+            given, the bar never shifts as further items register.
+        """
+        from rich.console import Group
+        from rich.live import Live
+        from rich.progress import (
+            BarColumn,
+            DownloadColumn,
+            Progress,
+            ProgressColumn,
+            TaskProgressColumn,
+            TextColumn,
+            TimeRemainingColumn,
+            TransferSpeedColumn,
+        )
+        from rich.rule import Rule
+        from rich.style import Style
+        from rich.table import Column
+        from rich.text import Text
+
+        label = op.label
+        is_download = op == events.Operation.DOWNLOAD
+
+        item_columns = [
+            TaskProgressColumn(
+                text_format="{task.percentage:>3.0f}%",
+                style=Style(color="yellow"),
+            ),
+            TextColumn("[bold blue]{task.description}"),
+        ]
+        if is_download:
+            item_columns += [
+                TextColumn("", table_column=Column(ratio=1)),
+                DownloadColumn(),
+                "\u2022",
+                TransferSpeedColumn(),
+                "\u2022",
+                TimeRemainingColumn(),
+            ]
+        item_progress = Progress(*item_columns, expand=is_download)
+
+        overall_columns = [
+            TextColumn(f"[bold green]{label}", justify="right"),
+            BarColumn(complete_style="green", bar_width=None),
+            TaskProgressColumn(),
+            "\u2022",
+        ]
+        if is_download:
+            overall_columns += [
+                DownloadColumn(),
+                "\u2022",
+                TransferSpeedColumn(),
+                "\u2022",
+                TimeRemainingColumn(),
+            ]
         else:
-            msg = None
-        if msg:
-            self.output(pisi.util.colorize(msg + "\n", "cyan"))
-            if ctx.log:
-                ctx.log.info(msg)
+            # The bar/percentage columns above are computed from per-item
+            # units (files), but the trailing text shows the package count
+            # as before — a counter tracked separately by the phase handle.
+            class PackageCountColumn(ProgressColumn):
+                def __init__(self, total):
+                    super().__init__()
+                    self.total = total
+                    self.done = 0
+
+                def mark_done(self):
+                    self.done += 1
+
+                def render(self, task):
+                    return Text(f"{self.done}/{self.total} packages")
+
+            package_count_column = PackageCountColumn(num_items)
+            overall_columns += [package_count_column]
+        overall_progress = Progress(*overall_columns)
+
+        # The overall task's total is fixed when the caller knows it
+        # upfront so the bar never shifts as further items register;
+        # otherwise it starts from the package count (operations) or
+        # indeterminate (downloads) and grows as items report their
+        # unit counts.
+        if total_units is not None:
+            overall_total = total_units
+        elif is_download:
+            overall_total = None
+        else:
+            overall_total = num_items
+        overall_task = overall_progress.add_task("Overall", total=overall_total)
+
+        handle = RichPhaseHandle(
+            item_progress,
+            overall_progress,
+            overall_task,
+            op,
+            package_count=None if is_download else package_count_column,
+            total_units=total_units,
+        )
+
+        with Live(
+            Group(item_progress, Rule(style="dim"), overall_progress),
+            refresh_per_second=10,
+        ):
+            yield handle
+
+
+class RichPhaseHandle(pisi.ui.PhaseHandle):
+    """Phase handle that renders live Rich progress bars.
+
+    The overall bar aggregates per-item progress in a unit-neutral way:
+    units are bytes for download phases and files for install/upgrade/
+    remove phases (per-item totals from the typed events), so the global
+    bar advances smoothly as items progress concurrently.
+    """
+
+    def __init__(
+        self, item_progress, overall_progress, overall_task, op, *,
+        package_count=None, total_units=None,
+    ):
+        self.item_progress = item_progress
+        self.overall_progress = overall_progress
+        self.overall_task = overall_task
+        self.op = op
+        self.label = op.label if op is not None else ""
+        # Optional "n/n packages" counter rendered in the overall bar;
+        # the bar itself advances by units (files/bytes), this counter
+        # advances per finished item.
+        self.package_count = package_count
+        # Definitive unit total for the overall bar; when None the total
+        # grows as items register their unit counts.
+        self._fixed_total = total_units
+        self.tasks = {}
+        self._ops = {}  # item_name → operation for finish_item
+        self._item_totals = {}  # item_name → total units
+        self._item_done = {}  # item_name → completed units so far
+        self._units_total = 0  # Σ per-item totals
+        self._units_done = 0  # Σ per-item completed
+
+    def add_item(self, item_name, total, *, op=None, pkg_info=None):
+        if item_name not in self.tasks:
+            self._ops[item_name] = op
+            label = op.label if op is not None else self.label
+            desc = f"{label} {item_name}"
+            if pkg_info is not None:
+                v = pkg_info.version
+                r = pkg_info.release
+                if v and r:
+                    desc += f" {v}-{r}"
+                elif v:
+                    desc += f" {v}"
+            self.tasks[item_name] = self.item_progress.add_task(desc, total=total)
+            self._item_totals[item_name] = total
+            self._units_total += total
+            if self._fixed_total is None:
+                self.overall_progress.update(self.overall_task, total=self._units_total)
+
+    def update_item(self, item_name, completed):
+        task_id = self.tasks.get(item_name)
+        if task_id is not None:
+            self.item_progress.update(task_id, completed=completed)
+        # Advance the overall bar by the delta: items may report
+        # concurrently, so credit each item's units as they arrive.
+        delta = completed - self._item_done.get(item_name, 0)
+        self._item_done[item_name] = completed
+        self._units_done += delta
+        self.overall_progress.update(self.overall_task, completed=self._units_done)
+
+    def finish_item(self, item_name, *, version=None, op=None):
+        task_id = self.tasks.pop(item_name, None)
+        if task_id is not None:
+            self.item_progress.remove_task(task_id)
+        if self.package_count is not None:
+            self.package_count.mark_done()
+        # Credit any units that never went through update_item (e.g.
+        # hardlinked copies or progress-less phases) so the bar reaches 100%.
+        remaining = max(
+            0, self._item_totals.get(item_name, 0) - self._item_done.get(item_name, 0)
+        )
+        self._units_done += remaining
+        self.overall_progress.update(self.overall_task, completed=self._units_done)
+        # Per-item op from the worker event wins, then the op recorded at
+        # add_item(), then the phase's own operation (workers usually omit
+        # op, so this fallback drives the done label).
+        op = op or self._ops.pop(item_name, None) or self.op
+        done_label = op.done_label if op is not None else self.label
+        if version:
+            line = (_("[green]%s[reset] %s %s") % (done_label, item_name, version))
+        else:
+            line = (_("[green]%s[reset] %s") % (done_label, item_name))
+        self.overall_progress.console.print(line, highlight=False)

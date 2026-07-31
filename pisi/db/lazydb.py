@@ -8,6 +8,7 @@ import time
 import pisi
 from pisi import context as ctx
 from pisi import util
+from pisi import translate as _
 
 # lower borks for international locales. What we want is ascii lower.
 ascii_lowercase = "abcdefghijklmnopqrstuvwxyz"
