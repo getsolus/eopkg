@@ -33,6 +33,7 @@ _blessed_kernel_borks = [
     "modules.dep.bin",
     "modules.symbols",
     "modules.symbols.bin",
+    "modules.softdep",
 ]
 
 _top_level_dirs = [
