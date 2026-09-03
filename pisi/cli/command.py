@@ -189,7 +189,10 @@ class Command(object):
 
         if write and not os.access(pisi.context.config.packages_dir(), os.W_OK):
             try:
-                os.execv('/usr/bin/pkexec',  ['/usr/bin/pkexec', ] + sys.argv)
+                # https://stackoverflow.com/a/73807992
+                # --keep-cwd fixes a bug where eopkg does not preserve
+                # the working directory when installing a .eopkg file
+                os.execv('/usr/bin/pkexec',  ['/usr/bin/pkexec', '--keep-cwd'] + sys.argv)
             except:
                 raise pisi.cli.Error(_("You have to be root for this operation."))
 
