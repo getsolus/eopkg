@@ -1120,7 +1120,7 @@ msgstr "Katalog wyjściowy dla pobranych pakietów"
 
 #: pisi/cli/fetch.py:48
 msgid "Fetch packages from a specified repository"
-msgstr ""
+msgstr "Pobieranie pakietów ze wskazanego repozytorium "
 
 #: pisi/cli/fetch.py:59 pisi/cli/install.py:121 pisi/cli/listavailable.py:63
 #: pisi/cli/listcomponents.py:53 pisi/cli/listnewest.py:59
@@ -1882,7 +1882,7 @@ msgstr ""
 
 #: pisi/cli/command.py:133
 msgid "Set the max number of concurrent download workers"
-msgstr ""
+msgstr "Ustaw maksymalną liczbę równoległych wątków pobierania"
 
 #: pisi/cli/command.py:141
 msgid "Detailed output"
@@ -1954,7 +1954,7 @@ msgstr "Pokaż listę plików pakietu."
 
 #: pisi/cli/info.py:55
 msgid "Sort files by name (path), size or type."
-msgstr ""
+msgstr "Sortuj pliki według nazwy (ścieżki), rozmiaru lub typu."
 
 #: pisi/cli/info.py:62
 msgid "Info about the given component"
@@ -2103,12 +2103,14 @@ msgstr "Repozytorium %s nie istnieje."
 #. . FilesDB is a proper name and should not be translated
 #: pisi/db/filesdb.py:148
 msgid "FilesDB version mismatch or missing version."
-msgstr ""
+msgstr "Niezgodność wersji bazy FilesDB lub brak informacji o wersji."
 
 #. . FilesDB is a proper name and should not be translated
 #: pisi/db/filesdb.py:171
 msgid "FilesDB is invalid and cannot be rebuilt (no write access)."
 msgstr ""
+"Baza FilesDB jest nieprawidłowa i nie można jej odbudować (brak uprawnień do"
+" zapisu)."
 
 #: pisi/db/filesdb.py:173
 msgid "Falling back to slow and inaccurate XML search..."
@@ -2123,7 +2125,7 @@ msgstr "Odbudowuję FilesDB..."
 #: pisi/db/filesdb.py:193
 #, python-format
 msgid "FilesDB rebuild failed: %s"
-msgstr ""
+msgstr "Odbudowywanie bazy FilesDB nie powiodło się: %s"
 
 #: pisi/db/filesdb.py:209
 #, python-format
@@ -2582,12 +2584,12 @@ msgstr "%s [z pamięci podręcznej]"
 
 #: pisi/operations/history.py:182
 msgid "Downloading historical packages..."
-msgstr ""
+msgstr "Pobieranie archiwalnych pakietów..."
 
 #: pisi/operations/history.py:186
 #, python-format
 msgid "Error while fetching historical packages: %s"
-msgstr ""
+msgstr "Błąd podczas pobierania archiwalnych pakietów:  %s"
 
 #: pisi/operations/history.py:199
 msgid ""
@@ -2628,7 +2630,7 @@ msgstr "Istnieją dodatkowe pakiety z powodu zależności."
 #: pisi/operations/install.py:139 pisi/operations/upgrade.py:218
 #, python-format
 msgid "Download Error: Package %s does not match the repository package."
-msgstr ""
+msgstr "Błąd pobierania: Pakiet %s nie zgadza się z pakietem w repozytorium."
 
 #: pisi/operations/install.py:144
 msgid "Finished downloading packages."
@@ -3384,11 +3386,11 @@ msgstr "Brak sekcji o nazwie '%s'"
 
 #: pisi/fetcher.py:258
 msgid "URL does not end in a file name"
-msgstr ""
+msgstr "Adres URL nie kończy się nazwą pliku"
 
 #: pisi/fetcher.py:327
 msgid "One or more errors occurred during fetching"
-msgstr ""
+msgstr "Wystąpił jeden lub więcej błędów podczas pobierania "
 
 #: pisi/file.py:27
 #, python-format
