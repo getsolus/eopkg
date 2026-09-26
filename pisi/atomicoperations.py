@@ -3,6 +3,8 @@
 
 """Atomic package operations such as install/remove/upgrade"""
 
+from __future__ import annotations
+
 import base64
 import os
 import shutil
@@ -12,7 +14,6 @@ import pisi
 import pisi.context as ctx
 import pisi.db
 import pisi.files
-import pisi.metadata
 import pisi.operations.delta
 import pisi.ui
 import pisi.uri
@@ -33,7 +34,7 @@ class NotfoundError(pisi.Error):
 # single package operations
 
 
-class AtomicOperation(object):
+class AtomicOperation:
     def __init__(self, ignore_dep=None):
         # self.package = package
         if ignore_dep == None:
@@ -67,7 +68,7 @@ class Install(AtomicOperation):
 
     def __init__(self, package_fname, ignore_dep=None, ignore_file_conflicts=None):
         "initialize from a file name"
-        super(Install, self).__init__(ignore_dep)
+        super().__init__(ignore_dep)
         if not ignore_file_conflicts:
             ignore_file_conflicts = ctx.get_option("ignore_file_conflicts")
         self.ignore_file_conflicts = ignore_file_conflicts
@@ -219,7 +220,7 @@ class Install(AtomicOperation):
                     self.operation = UPGRADE
 
                 # is this a downgrade? confirm this action.
-                if not self.operation == UPGRADE:
+                if self.operation != UPGRADE:
                     if pkg_release < irelease:
                         x = _("Downgrade to old distribution release?")
                     else:
@@ -235,7 +236,7 @@ class Install(AtomicOperation):
             self.remove_old = Remove(pkg.name)
 
     def reinstall(self):
-        return not self.operation == INSTALL
+        return self.operation != INSTALL
 
     def extract_install(self):
         "unzip package in place"
@@ -441,8 +442,10 @@ class Install(AtomicOperation):
                 for attrPair in file.extendedAttributes:
                     realVal = base64.b64decode(bytes(attrPair.value, "utf-8"))
                     xattr.setxattr("/" + file.path, attrPair.label, realVal)
-        except Exception as e:
-            ctx.ui.warning("Failed to restore xattr: {}".format(e))
+        except ImportError as e:
+            ctx.ui.warning(f"{e}")
+        except OSError as e:
+            ctx.ui.warning(f"Failed to restore xattr: {e}")
             # ctx.ui.warning("Please run: eopkg fix-attributes")
 
     def store_pisi_files(self):
@@ -472,7 +475,7 @@ class Install(AtomicOperation):
 
         # need system restart?
         if self.installdb.has_package(self.pkginfo.name):
-            (version, release, build) = self.installdb.get_version(self.pkginfo.name)
+            (_version, release, _build) = self.installdb.get_version(self.pkginfo.name)
             actions = self.pkginfo.get_update_actions(release)
         else:
             actions = self.pkginfo.get_update_actions("1")
@@ -539,7 +542,7 @@ def install_single_name(name, upgrade=False):
 
 class Remove(AtomicOperation):
     def __init__(self, package_name, ignore_dep=None):
-        super(Remove, self).__init__(ignore_dep)
+        super().__init__(ignore_dep)
         self.installdb = pisi.db.installdb.InstallDB()
         self.filesdb = pisi.db.filesdb.FilesDB()
         self.package_name = package_name
@@ -567,7 +570,7 @@ class Remove(AtomicOperation):
 
         for fileinfo in self.files.list:
             if is_usr_merged_duplicate(self.files.list, fileinfo.path):
-                ctx.ui.debug("Not removing usr-merged file: %s" % fileinfo.path)
+                ctx.ui.debug(f"Not removing usr-merged file: {fileinfo.path}")
                 continue
 
             self.remove_file(fileinfo, self.package_name, True)
