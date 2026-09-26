@@ -63,14 +63,11 @@ def exec_usysconf():
         ui.error(_("usysconf not installed. Please upgrade!"))
         return
 
-    # Tell UI tools the system configuration is running
+    # Tell UI tools the system configuration is running; the frontend
+    # decides whether the binary's output reaches the terminal (CLI) or
+    # is suppressed (PackageKit, whose stdout is parsed by packagekitd).
     try:
-        ui.notify(pisi.ui.systemconf)
-    except:
-        pass
-
-    try:
-        os.system("{} run".format(usysconf_binary))
+        ui.run_usysconf("{} run".format(usysconf_binary))
     except Exception as e:
         if ctx:
             ctx.ui.error(_("Failed to configure system"))
