@@ -31,7 +31,7 @@ def check_update_actions(packages):
             continue
 
         pkg = packagedb.get_package(package)
-        version, release, build = installdb.get_version(package)
+        _version, release, _build = installdb.get_version(package)
         pkg_actions = pkg.get_update_actions(release)
 
         for action_name, action_targets in list(pkg_actions.items()):
@@ -50,7 +50,7 @@ def check_update_actions(packages):
             )
         )
         for package, target in actions["systemRestart"]:
-            ctx.ui.info("    - %s" % package)
+            ctx.ui.info(f"    - {package}")
 
     return has_actions
 
@@ -81,9 +81,9 @@ def find_upgrades(packages, replaces):
 
         pkg = packagedb.get_package(i_pkg)
         (
-            version,
+            _version,
             release,
-            build,
+            _build,
             distro,
             distro_release,
         ) = installdb.get_version_and_distro_release(i_pkg)
@@ -151,18 +151,18 @@ def upgrade(packages=[], repo=None):
     if ctx.get_option("exclude"):
         packages = pisi.blacklist.exclude(packages, ctx.get_option("exclude"))
 
-    ctx.ui.debug("packages = %s" % str(packages))
+    ctx.ui.debug(f"packages = {packages!s}")
 
     if len(packages) == 0:
         ctx.ui.info(_("No packages to upgrade."))
         return True
 
-    ctx.ui.debug("packages = %s" % str(packages))
+    ctx.ui.debug(f"packages = {packages!s}")
 
     if not ctx.config.get_option("ignore_dependency"):
-        graph, order = plan_upgrade(packages, replaces=replaces)
+        _graph, order = plan_upgrade(packages, replaces=replaces)
     else:
-        graph = None
+        _graph = None
         order = list(packages)
 
     componentdb = pisi.db.componentdb.ComponentDB()
@@ -369,7 +369,7 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
     def add_needed_revdeps(pkg, Bp):
         # Search for reverse dependency update needs of to be upgraded packages
         # check only the installed ones.
-        version, release, build = installdb.get_version(pkg.name)
+        _version, release, _build = installdb.get_version(pkg.name)
         actions = pkg.get_update_actions(release)
 
         packages = actions.get("reverseDependencyUpdate")
