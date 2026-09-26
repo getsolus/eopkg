@@ -73,7 +73,25 @@ class InstallDB(lazydb.LazyDB):
             name, version, release = dirname.rsplit("-", 2)
             return name, version + "-" + release
 
-        return dict(list(map(split_name, os.listdir(ctx.config.packages_dir()))))
+        installed = {}
+        for dirname in os.listdir(ctx.config.packages_dir()):
+            name, version_release = split_name(dirname)
+            # Safety guard: stale pkg dirs left behind by an interrupted
+            # or parallelized upgrade must not shadow the newest installed
+            # version. Release is the god-tier version component — it
+            # increments on every upgrade — so the highest release wins.
+            if name in installed:
+                _version, release = version_release.rsplit("-", 1)
+                _cur_version, cur_release = installed[name].rsplit("-", 1)
+                try:
+                    is_newer = int(release) > int(cur_release)
+                except ValueError:
+                    # Unparseable release — keep the first-seen entry.
+                    is_newer = False
+                if not is_newer:
+                    continue
+            installed[name] = version_release
+        return installed
 
     def __get_marked_packages(self, _type):
         info_path = os.path.join(ctx.config.info_dir(), _type)
