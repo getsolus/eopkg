@@ -158,42 +158,11 @@ class CLI(pisi.ui.UI):
             if no_expr.search(s):
                 return False
 
-    def display_progress(self, **ka):
-        """display progress of any operation"""
-        if ka["operation"] in [
-            "removing",
-            "rebuilding-db",
-            "fetching",
-            "fetching_overall",
-        ]:
-            return
-        else:
-            self.output("\r%s (%d%%)" % (ka.get("info", ""), ka["percent"]))
-
-        if ka["percent"] == 100:
-            self.output(pisi.util.colorize(_(" [complete]\n"), "gray"))
-
     def status(self, msg=None):
         if msg:
             msg = str(msg)
             self.output(pisi.util.colorize(msg + "\n", "brightgreen"))
             pisi.util.xterm_title(msg)
-
-    def notify(self, event, **keywords):
-        if event == pisi.ui.installed:
-            msg = _("Installed %s") % keywords["package"].name
-        elif event == pisi.ui.removed:
-            msg = _("Removed %s") % keywords["package"].name
-        elif event == pisi.ui.upgraded:
-            msg = _("Upgraded %s") % keywords["package"].name
-        elif event == pisi.ui.configured:
-            msg = _("Configured %s") % keywords["package"].name
-        else:
-            msg = None
-        if msg:
-            self.output(pisi.util.colorize(msg + "\n", "cyan"))
-            if ctx.log:
-                ctx.log.info(msg)
 
     @contextmanager
     def work_phase(self, num_items, op, *, total_units=None):
