@@ -10,24 +10,6 @@ from contextlib import contextmanager
 
 from pisi.events import Operation
 
-(
-    installed,
-    upgraded,
-    removed,
-    installing,
-    removing,
-    configuring,
-    configured,
-    extracting,
-    downloading,
-    packagestogo,
-    updatingrepo,
-    upgrading,
-    cached,
-    desktopfile,
-    systemconf,
-) = list(range(15))
-
 
 class PhaseHandle:
     """Handle for a phase of work.
@@ -72,23 +54,6 @@ class _NullPhaseHandle(PhaseHandle):
 
 class UI:
     "Abstract class for UI operations, derive from this."
-
-    class Progress:
-        def __init__(self, totalsize, existsize=0):
-            self.totalsize = totalsize
-            try:
-                self.percent = (existsize * 100) / totalsize
-            except ArithmeticError:
-                self.percent = 0
-
-        def update(self, size):
-            if not self.totalsize:
-                return 100
-            try:
-                self.percent = (size * 100) / self.totalsize
-            except ArithmeticError:
-                self.percent = 0
-            return self.percent
 
     def __init__(self, debuggy=False, verbose=False):
         self.show_debug = debuggy
@@ -143,14 +108,6 @@ class UI:
 
     def status(self, msg=None):
         "set status, if not given clear it"
-        pass
-
-    def display_progress(self, **ka):
-        "display progress"
-        pass
-
-    def notify(self, event, **keywords):
-        "notify UI of a significant event"
         pass
 
     def run_usysconf(self, command: str) -> None:
