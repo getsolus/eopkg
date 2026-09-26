@@ -15,7 +15,6 @@ import pisi.context as ctx
 import pisi.db
 import pisi.files
 import pisi.operations.delta
-import pisi.ui
 import pisi.version
 from pisi import translate as _
 from pisi import util
@@ -526,6 +525,7 @@ class Remove(AtomicOperation):
         self.filesdb = pisi.db.filesdb.FilesDB()
         self.package_name = package_name
         self.package = self.installdb.get_package(self.package_name)
+        self.progress_callback = None
         try:
             self.files = self.installdb.get_files(self.package_name)
         except pisi.Error as e:
@@ -537,55 +537,56 @@ class Remove(AtomicOperation):
             )
             self.files = pisi.files.Files()
 
-    def run(self):
-        """Remove a single package"""
+    @classmethod
+    def for_worker(cls, package_name, files):
+        """Worker-side instance without any DB access.
 
-        ctx.ui.status(_("Removing package %s") % self.package_name)
-        ctx.ui.notify(pisi.ui.removing, package=self.package, files=self.files)
-        if not self.installdb.has_package(self.package_name):
-            raise Error(_("Trying to remove nonexistent package ") + self.package_name)
+        The main process has already loaded the package's file list; workers
+        must not initialize DBs (cold init is expensive and can trigger full
+        rebuilds from XML), so the preloaded state is shipped instead.
+        """
+        obj = cls.__new__(cls)
+        obj.package_name = package_name
+        obj.files = files
+        obj.progress_callback = None
+        return obj
 
-        self.check_dependencies()
+    def remove_files(self):
+        """Delete all files owned by this package."""
+        total = len(self.files.list)
+        removed_count = 0
 
         for fileinfo in self.files.list:
             if is_usr_merged_duplicate(self.files.list, fileinfo.path):
                 ctx.ui.debug(f"Not removing usr-merged file: {fileinfo.path}")
                 continue
 
-            self.remove_file(fileinfo, self.package_name, True)
+            self.remove_file(fileinfo, self.package_name, remove_permanent=True, skip_conflict_check=True)
+            removed_count += 1
 
-        self.update_databases()
-
-        self.remove_pisi_files()
-
-        ctx.ui.close()
-        ctx.ui.notify(pisi.ui.removed, package=self.package, files=self.files)
-
-    def check_dependencies(self):
-        # FIXME: why is this not implemented? -- exa
-        # we only have to check the dependencies to ensure the
-        # system will be consistent after this removal
-        pass
-        # is there any package who depends on this package?
+            if self.progress_callback:
+                self.progress_callback(removed_count, total)
 
     @staticmethod
-    def remove_file(fileinfo, package_name, remove_permanent=False):
+    def remove_file(fileinfo, package_name, remove_permanent=False, *, skip_conflict_check=False):
         if fileinfo.permanent and not remove_permanent:
             return
 
-        fpath = pisi.util.join_path(ctx.config.dest_dir(), fileinfo.path)
+        fpath = util.join_path(ctx.config.dest_dir(), fileinfo.path)
 
         historydb = pisi.db.historydb.HistoryDB()
-        filesdb = pisi.db.filesdb.FilesDB()
-        # we should check if the file belongs to another
-        # package (this can legitimately occur while upgrading
-        # two packages such that a file has moved from one package to
-        # another as in #2911)
-        if filesdb.has_file(fileinfo.path):
-            pkg, existing_file = filesdb.get_file(fileinfo.path)
-            if pkg != package_name:
-                ctx.ui.warning(_("Not removing conflicted file : %s") % fpath)
-                return
+
+        if not skip_conflict_check:
+            filesdb = pisi.db.filesdb.FilesDB()
+            # we should check if the file belongs to another
+            # package (this can legitimately occur while upgrading
+            # two packages such that a file has moved from one package to
+            # another as in #2911)
+            if filesdb.has_file(fileinfo.path):
+                pkg, _existing_file = filesdb.get_file(fileinfo.path)
+                if pkg != package_name:
+                    ctx.ui.warning(_("Not removing conflicted file : %s") % fpath)
+                    return
 
         if fileinfo.type == ctx.const.conf:
             # config files are precious, leave them as they are
@@ -595,7 +596,7 @@ class Remove(AtomicOperation):
             # and when the package is reinstalled the symlink will
             # link to that changed file again.
             try:
-                if os.path.islink(fpath) or pisi.util.sha1_file(fpath) == fileinfo.hash:
+                if os.path.islink(fpath) or util.sha1_file(fpath) == fileinfo.hash:
                     os.unlink(fpath)
                 else:
                     # keep changed file in history
@@ -604,9 +605,9 @@ class Remove(AtomicOperation):
                     # after saving to history db, remove the config file any way
                     if ctx.get_option("purge"):
                         os.unlink(fpath)
-            except pisi.util.FileError:
+            except util.FileError:
                 pass
-            except pisi.util.FileNotFoundError:
+            except util.FileNotFoundError:
                 ctx.ui.warning(
                     _(
                         "Installed config file %s does not exist on system [Probably you manually deleted]"
@@ -629,9 +630,14 @@ class Remove(AtomicOperation):
 
         # remove emptied directories
         dpath = os.path.dirname(fpath)
-        while dpath != "/" and not os.listdir(dpath):
-            os.rmdir(dpath)
-            dpath = os.path.dirname(dpath)
+        try:
+            while dpath != "/" and not os.listdir(dpath):
+                os.rmdir(dpath)
+                dpath = os.path.dirname(dpath)
+        except OSError:
+            # e.g. a missing parent dir (file was already gone); nothing
+            # to clean up then.
+            pass
 
     def update_databases(self):
         self.remove_db()
@@ -649,10 +655,6 @@ class Remove(AtomicOperation):
 # FIX:DB
 #         # FIXME: something goes wrong here, if we use ctx operations ends up with segmentation fault!
 #         pisi.db.packagedb.remove_tracking_package(self.package_name)
-
-
-def remove_single(package_name):
-    Remove(package_name).run()
 
 
 def build(package):
