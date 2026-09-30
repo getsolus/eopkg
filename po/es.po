@@ -5,6 +5,7 @@
 # 
 # Translators:
 # Evan Maddock, 2026
+# Santiago Silva, 2026
 # 
 #, fuzzy
 msgid ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-26 19:37-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
-"Last-Translator: Evan Maddock, 2026\n"
+"Last-Translator: Santiago Silva, 2026\n"
 "Language-Team: Spanish (https://app.transifex.com/solus/teams/188714/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2522,7 +2523,7 @@ msgstr "%s [cached]"
 
 #: pisi/operations/history.py:182
 msgid "Downloading historical packages..."
-msgstr ""
+msgstr "Descargando paquetes históricos..."
 
 #: pisi/operations/history.py:186
 #, python-format
@@ -2785,11 +2786,11 @@ msgstr ""
 #: pisi/pxml/autoxml.py:757
 #, python-brace-format
 msgid "Type mismatch. Expected {0}, got {1}"
-msgstr ""
+msgstr "Error de coincidencia de tipo. Esperaba {0}, recibió {1}"
 
 #: pisi/pxml/autoxml.py:791 pisi/pxml/autoxml.py:923
 msgid "Type mismatch: DOM cannot be decoded."
-msgstr ""
+msgstr "Error de coincidencia de tipo. No se pudo decodificar el DOM."
 
 #: pisi/pxml/autoxml.py:795 pisi/pxml/autoxml.py:811 pisi/pxml/autoxml.py:825
 #: pisi/pxml/autoxml.py:927 pisi/pxml/autoxml.py:941 pisi/pxml/autoxml.py:955
@@ -2844,7 +2845,7 @@ msgstr ""
 
 #: pisi/scripts/eopkg.py:46
 msgid "This is a packaging error."
-msgstr ""
+msgstr "Esto es un error de empaquetado."
 
 #: pisi/scripts/eopkg.py:52
 msgid ""
