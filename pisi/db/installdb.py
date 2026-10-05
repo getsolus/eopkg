@@ -73,7 +73,20 @@ class InstallDB(lazydb.LazyDB):
             name, version, release = dirname.rsplit("-", 2)
             return name, version + "-" + release
 
-        return dict(list(map(split_name, os.listdir(ctx.config.packages_dir()))))
+        installed = {}
+        for dirname in os.listdir(ctx.config.packages_dir()):
+            # Check these directories are not malformed
+            metadata_xml = os.path.join(
+                ctx.config.packages_dir(), dirname, ctx.const.metadata_xml
+            )
+            if not os.path.exists(metadata_xml):
+                ctx.ui.debug(
+                    _("Ignoring stale package directory without metadata: %s")
+                    % dirname
+                )
+                continue
+            installed.update([split_name(dirname)])
+        return installed
 
     def __get_marked_packages(self, _type):
         info_path = os.path.join(ctx.config.info_dir(), _type)
