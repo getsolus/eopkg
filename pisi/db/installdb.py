@@ -155,14 +155,27 @@ class InstallDB(lazydb.LazyDB):
 
         return distro, release
 
-    def get_version_and_distro_release(self, package):
+    def __read_metadata(self, package):
+        """Parse the package's metadata.xml."""
         metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
-        meta_doc = iksemel.parse(metadata_xml)
+        if not os.path.exists(metadata_xml):
+            raise InstallDBError(
+                _("Missing installation metadata for package '%s'") % package
+            )
+        try:
+            return iksemel.parse(metadata_xml)
+        except Exception as e:
+            raise InstallDBError(
+                _("Failed to read installation metadata for package '%s': %s")
+                % (package, e)
+            ) from e
+
+    def get_version_and_distro_release(self, package):
+        meta_doc = self.__read_metadata(package)
         return self.__get_version(meta_doc) + self.__get_distro_release(meta_doc)
 
     def get_version(self, package):
-        metadata_xml = os.path.join(self.package_path(package), ctx.const.metadata_xml)
-        meta_doc = iksemel.parse(metadata_xml)
+        meta_doc = self.__read_metadata(package)
         return self.__get_version(meta_doc)
 
     def get_files(self, package):
