@@ -5,6 +5,7 @@ import multiprocessing
 import os
 import signal
 import sys
+import threading
 import zipfile
 from queue import Empty
 
@@ -48,6 +49,17 @@ def _op_pkg_info(op_obj):
         release=pkg.release,
         summary=pkg.summary,
     )
+
+
+def _consume_results(result_iter, error_box, done_event):
+    """Drain an `imap_unordered` result iterator in a background thread."""
+    try:
+        for _ in result_iter:
+            pass
+    except Exception as exc:  # noqa: BLE001 - re-raised in the main thread
+        error_box.append(exc)
+    finally:
+        done_event.set()
 
 
 def _run_parallel(worker_fn, arg_list, ops, *,
@@ -108,7 +120,19 @@ def _run_parallel(worker_fn, arg_list, ops, *,
         pool = multiprocessing.Pool(
             initializer=worker_init, initargs=(progress_queue, ctx.config.options)
         )
-        result = pool.map_async(worker_fn, arg_list)
+        result = pool.imap_unordered(worker_fn, arg_list, chunksize=1)
+        # The pool's result iterator must be drained: iterating is what
+        # surfaces worker exceptions and keeps the internal result cache from
+        # growing. A background thread consumes it so the drain loop below
+        # stays free to render progress.
+        worker_error = []
+        result_done = threading.Event()
+        result_thread = threading.Thread(
+            target=_consume_results,
+            args=(result, worker_error, result_done),
+            daemon=True,
+        )
+        result_thread.start()
 
         try:
             total = len(ops)
@@ -127,10 +151,11 @@ def _run_parallel(worker_fn, arg_list, ops, *,
             pkg_infos = {_op_item_name(op_obj): _op_pkg_info(op_obj) for op_obj in ops}
 
             with ctx.ui.work_phase(total, op, total_units=total_units) as phase:
-                # Read until we've seen one ItemDone per package.
-                # Counting done messages is race-free — we never check
-                # `result.ready()` which can become True before the
-                # last queue message has crossed the IPC buffer.
+                # Read until we've seen one ItemDone per package. Every
+                # successful worker emits its ItemDone *before* returning, so
+                # by the time the consumer thread has read its result the
+                # message is already queued — counting done messages is
+                # therefore race-free.
                 while seen < total:
                     try:
                         msg = progress_queue.get(timeout=0.5)
@@ -147,16 +172,26 @@ def _run_parallel(worker_fn, arg_list, ops, *,
                     except Empty:
                         # A failed worker sends no ItemDone, so counting
                         # alone would spin forever. Surface worker failures
-                        # as soon as the pool reports them; if no worker
-                        # failed, keep draining — the last ItemDone may
-                        # still be crossing the IPC buffer.
-                        if result.ready():
-                            result.get()
+                        # as soon as the consumer thread reports them.
+                        if worker_error:
+                            raise worker_error[0]
+                        # All results are in, yet an item never reported
+                        # completion: the worker broke its contract. Fail
+                        # loudly instead of hanging on the shortfall.
+                        if result_done.is_set():
+                            raise Error(
+                                _(
+                                    "Worker process exited without reporting "
+                                    "completion for all items."
+                                )
+                            )
 
             pool.close()
             pool.join()
+            result_thread.join()
             # Re-raise any worker exceptions
-            result.get()
+            if worker_error:
+                raise worker_error[0]
         except:
             pool.terminate()
             pool.join()
