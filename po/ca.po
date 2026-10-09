@@ -664,7 +664,7 @@ msgstr "Suprimit/s %s"
 #: pisi/cli/__init__.py:192
 #, python-format
 msgid "Upgraded %s"
-msgstr "Actualitzat/s %s"
+msgstr "Actualitzat: %s"
 
 #: pisi/cli/__init__.py:194
 #, python-format
