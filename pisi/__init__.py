@@ -13,7 +13,7 @@ import signal
 import sys
 from importlib.resources import files
 
-import pisi.signalhandler as signalhandler
+from pisi import signalhandler
 
 try:
     locale.setlocale(locale.LC_ALL, "")
@@ -36,7 +36,7 @@ lang = gettext.translation(
 translate = lang.gettext
 ngettext = lang.ngettext
 
-__version__ = "5.0.0"
+__version__ = "6.0.0"
 
 __all__ = ["api", "configfile", "db"]
 
