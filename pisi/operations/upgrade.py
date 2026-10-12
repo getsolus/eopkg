@@ -1,22 +1,15 @@
 # SPDX-FileCopyrightText: 2005-2011 TUBITAK/UEKAE, 2013-2017 Ikey Doherty, Solus Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-import signal
 import sys
 
 from ordered_set import OrderedSet as set
 
 import pisi
-import pisi.atomicoperations as atomicoperations
 import pisi.blacklist
 import pisi.context as ctx
 import pisi.db
-import pisi.operations as operations
-import pisi.pgraph as pgraph
-import pisi.signalhandler as signalhandler
-import pisi.ui as ui
-import pisi.util as util
-from pisi import Error
+from pisi import Error, atomicoperations, events, operations, pgraph, util
 from pisi import translate as _
 
 
@@ -31,7 +24,7 @@ def check_update_actions(packages):
             continue
 
         pkg = packagedb.get_package(package)
-        version, release, build = installdb.get_version(package)
+        _version, release, _build = installdb.get_version(package)
         pkg_actions = pkg.get_update_actions(release)
 
         for action_name, action_targets in list(pkg_actions.items()):
@@ -50,7 +43,7 @@ def check_update_actions(packages):
             )
         )
         for package, target in actions["systemRestart"]:
-            ctx.ui.info("    - %s" % package)
+            ctx.ui.info(f"    - {package}")
 
     return has_actions
 
@@ -81,9 +74,9 @@ def find_upgrades(packages, replaces):
 
         pkg = packagedb.get_package(i_pkg)
         (
-            version,
+            _version,
             release,
-            build,
+            _build,
             distro,
             distro_release,
         ) = installdb.get_version_and_distro_release(i_pkg)
@@ -122,7 +115,6 @@ def upgrade(packages=[], repo=None):
     packagedb = pisi.db.packagedb.PackageDB()
     installdb = pisi.db.installdb.InstallDB()
     replaces = packagedb.get_replaces()
-    signal_handler = signalhandler.SignalHandler()
 
     if not packages:
         # if packages is empty, then upgrade all packages
@@ -138,7 +130,7 @@ def upgrade(packages=[], repo=None):
 
     # Force upgrading of installed but replaced packages or else they will be removed (they are obsoleted also).
     # This is not wanted for a replaced driver package (eg. nvidia-X).
-    replaced = set(pisi.util.flatten_list(list(replaces.values())))
+    replaced = set(util.flatten_list(list(replaces.values())))
     packages |= replaced
     packages |= upgrade_base(packages)
 
@@ -151,18 +143,18 @@ def upgrade(packages=[], repo=None):
     if ctx.get_option("exclude"):
         packages = pisi.blacklist.exclude(packages, ctx.get_option("exclude"))
 
-    ctx.ui.debug("packages = %s" % str(packages))
+    ctx.ui.debug(f"packages = {packages!s}")
 
     if len(packages) == 0:
         ctx.ui.info(_("No packages to upgrade."))
         return True
 
-    ctx.ui.debug("packages = %s" % str(packages))
+    ctx.ui.debug(f"packages = {packages!s}")
 
     if not ctx.config.get_option("ignore_dependency"):
-        graph, order = plan_upgrade(packages, replaces=replaces)
+        _graph, order = plan_upgrade(packages, replaces=replaces)
     else:
-        graph = None
+        _graph = None
         order = list(packages)
 
     componentdb = pisi.db.componentdb.ComponentDB()
@@ -184,7 +176,7 @@ def upgrade(packages=[], repo=None):
     total_size, symbol = util.human_readable_size(total_size)
     ctx.ui.info(
         util.colorize(
-            _("Total size of package(s): %.2f %s") % (total_size, symbol), "yellow"
+            _("Total size of package(s): %.2f %s (cached: %.2f %s)") % (total_size, symbol, cached_size, symbol), "yellow"
         )
     )
 
@@ -201,8 +193,6 @@ def upgrade(packages=[], repo=None):
 
     if needs_confirm and not ctx.ui.confirm(_("Do you want to continue?")):
         return False
-
-    ctx.ui.notify(ui.packagestogo, order=order)
 
     # Resolve resources
     resources = operations.helper.get_download_info(order)
@@ -243,26 +233,32 @@ def upgrade(packages=[], repo=None):
     for install_op in install_ops:
         install_op.check_relations(set(order))
 
-    # Install all the packages
-    ctx.ui.info(_("Disabling keyboard interrupts for file operations."))
-    signal_handler.disable_signal(signal.SIGINT)
-
     automatic = operations.helper.extract_automatic(packages, order)
 
-    try:
-        for i, install_op in enumerate(install_ops):
-            ctx.ui.info(
-                util.colorize(
-                    _("Installing %d / %d") % (i + 1, len(install_ops)),
-                    "yellow",
-                )
-            )
-            if install_op.pkginfo.name in automatic:
-                install_op.automatic = True
-            install_op.install(True)
-    except Exception as e:
-        raise e
-    finally:
+    # Batch pre-flight: all checks run in the main process before anything
+    # is installed.
+    for install_op in install_ops:
+        install_op.preflight(ask_reinstall=True)
+        install_op.check_configs()
+
+    from pisi.operations.install import (
+        _run_parallel,
+        install_critical_first,
+        install_pkg_worker,
+    )
+
+    # baselayout must be fully installed before the parallel pool starts:
+    # workers cannot honour the install order, so install it sequentially
+    # in the main process first (pre-flight already ran above).
+    install_ops = install_critical_first(install_ops, apply_automatic=automatic)
+    if install_ops:
+        arg_list = [install_op.package_fname for install_op in install_ops]
+        _run_parallel(
+            install_pkg_worker, arg_list, install_ops,
+            apply_automatic=automatic,
+            op=events.Operation.UPGRADE,
+        )
+    else:
         ctx.exec_usysconf()
 
     # Prior to 2c63650, this function had no return statement at all on the "complete" codepath.
@@ -291,7 +287,7 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
     if force_replaced:
         if replaces is None:
             replaces = packagedb.get_replaces()
-        A |= set(pisi.util.flatten_list(list(replaces.values())))
+        A |= set(util.flatten_list(list(replaces.values())))
 
     # find the "install closure" graph of G_f by package
     # set A using packagedb
@@ -369,7 +365,7 @@ def plan_upgrade(A, force_replaced=True, replaces=None):
     def add_needed_revdeps(pkg, Bp):
         # Search for reverse dependency update needs of to be upgraded packages
         # check only the installed ones.
-        version, release, build = installdb.get_version(pkg.name)
+        _version, release, _build = installdb.get_version(pkg.name)
         actions = pkg.get_update_actions(release)
 
         packages = actions.get("reverseDependencyUpdate")

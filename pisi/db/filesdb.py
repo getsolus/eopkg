@@ -91,10 +91,16 @@ class FilesDB(lazydb.LazyDB):
         for f in files.list:
             self.filesdb[hashlib.md5(f.path.encode()).hexdigest()] = pkg
 
+        if isinstance(self.filesdb, shelve.DbfilenameShelf):
+            self.filesdb.sync()
+
     def remove_files(self, files):
         for f in files:
             if hashlib.md5(f.path.encode()).hexdigest() in self.filesdb:
                 del self.filesdb[hashlib.md5(f.path.encode()).hexdigest()]
+
+        if isinstance(self.filesdb, shelve.DbfilenameShelf):
+            self.filesdb.sync()
 
     def destroy(self):
         files_db = os.path.join(ctx.config.info_dir(), ctx.const.files_db)

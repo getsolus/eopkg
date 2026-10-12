@@ -46,11 +46,6 @@ class SourceArchive:
 
     def fetch(self, interactive=True):
         if not self.is_cached(interactive):
-            if interactive:
-                self.progress = ctx.ui.Progress
-            else:
-                self.progress = None
-
             try:
                 ctx.ui.info(_("Fetching source from: %s") % self.url.uri)
                 if self.url.get_uri().startswith("mirrors://"):
