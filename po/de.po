@@ -5,6 +5,7 @@
 # 
 # Translators:
 # Evan Maddock, 2026
+# Rafael Millonigg, 2026
 # 
 #, fuzzy
 msgid ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-26 19:37-0400\n"
 "PO-Revision-Date: 2026-05-10 00:31+0000\n"
-"Last-Translator: Evan Maddock, 2026\n"
+"Last-Translator: Rafael Millonigg, 2026\n"
 "Language-Team: German (https://app.transifex.com/solus/teams/188714/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +33,7 @@ msgstr "Installation fehlgeschlagen."
 #: pisi/actionsapi/rubymodules.py:133
 #, python-format
 msgid "Running 'ruby %s' failed."
-msgstr "Ausführung von 'ruby %s' fehlgeschlagen"
+msgstr "Ausführung von 'ruby %s' fehlgeschlagen."
 
 #: pisi/actionsapi/autotools.py:33 pisi/actionsapi/cmaketools.py:28
 #, python-format
@@ -40,7 +41,7 @@ msgid ""
 "Please attach the config.log to your bug report:\n"
 "%s/config.log"
 msgstr ""
-"Bitte hängen Sie die config.log Datei in Ihren Fehler-Bericht an:\n"
+"Bitte hängen Sie die config.log Datei an Ihren Fehlerbericht an:\n"
 "%s/config.log"
 
 #: pisi/actionsapi/autotools.py:102 pisi/actionsapi/autotools.py:118
@@ -130,7 +131,7 @@ msgstr "Ausführen von libtoolize fehlgeschlagen."
 
 #: pisi/actionsapi/perlmodules.py:65
 msgid "perl build failed."
-msgstr "Perl-Konstruktion fehlgeschlagen."
+msgstr "Perl build ist fehlgeschlagen."
 
 #: pisi/actionsapi/perlmodules.py:75
 msgid "perl install failed."
@@ -139,7 +140,7 @@ msgstr "Perl-Installation ist fehlgeschlagen."
 #: pisi/actionsapi/pisitools.py:70 pisi/actionsapi/pisitools.py:146
 #, python-format
 msgid "No file matched pattern \"%s\""
-msgstr "Keine Datei zu dem Suchmuster \"%s\" gefunden"
+msgstr "Keine Datei entsprach dem Suchmuster \"%s\""
 
 #: pisi/actionsapi/pisitools.py:158
 #, python-format
@@ -560,7 +561,7 @@ msgstr "Die Optionen müssen vor dem Hauptargument aufgeführt sein"
 
 #: pisi/cli/pisicli.py:118
 msgid "No command given"
-msgstr "Kein Befehl erhalten"
+msgstr "Kein Befehl angegeben"
 
 #: pisi/cli/pisicli.py:121
 msgid "Command line parsing error"
@@ -579,11 +580,11 @@ msgid ""
 "\n"
 "Remove all repository information from the system.\n"
 msgstr ""
-"Entferne Depots\n"
+"Entferne Repositories\n"
 "\n"
 "Syntax: remove-repo <repo_1> <repo_2> ... <repo_n>\n"
 "\n"
-"Entferne die komplette Depotinformation von dem System.\n"
+"Entferne die komplette Repository-Information von dem System.\n"
 
 #: pisi/cli/repopriority.py:19
 msgid ""
