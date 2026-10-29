@@ -707,9 +707,9 @@ msgid ""
 "By confirming this you are also adding the repository to your system without checking the distribution of the repository.\n"
 "Do you want to continue?"
 msgstr ""
-"%s Depot hinzufügen, ohne die Datenbank zu aktualisieren?\n"
-"Durch die Bestätigung dieser Meldung fügen Sie das Depot diesem System hinzu, ohne die Distributionsversion des Depots zu überprüfen.\n"
-"Wollen Sie forfahren?"
+"%s Repository hinzufügen, ohne die Datenbank zu aktualisieren?\n"
+"Durch die Bestätigung dieser Meldung fügen Sie das Repository diesem System hinzu, ohne die Distribution des Repositories zu überprüfen.\n"
+"Wollen Sie fortfahren?"
 
 #: pisi/cli/autoremove.py:16
 msgid ""
@@ -729,13 +729,12 @@ msgstr ""
 
 #: pisi/cli/autoremove.py:38
 msgid "autoremove options"
-msgstr ""
+msgstr "autoremove Optionen"
 
 #: pisi/cli/autoremove.py:44 pisi/cli/remove.py:40
 #: pisi/cli/removeorphans.py:40
 msgid "Removes everything including changed config files of the package"
-msgstr ""
-"Entfernt Pakete komplett (inklusive der geänderten Konfigurationsdateien)"
+msgstr "Entfernt alles inklusive geänderter Konfigurationsdateien des Pakets"
 
 #: pisi/cli/blame.py:15
 msgid ""
@@ -755,11 +754,11 @@ msgstr "blame Optionen"
 
 #: pisi/cli/blame.py:35
 msgid "Blame for the given release"
-msgstr "Verantwortlich für das Release"
+msgstr "Urheberzuordnung für das angegebene Release"
 
 #: pisi/cli/blame.py:42
 msgid "Blame for all of the releases"
-msgstr "Verantwortlich für alle Versionen"
+msgstr "Urheberzuordnung für alle Releases"
 
 #: pisi/cli/blame.py:69 pisi/specfile.py:398 pisi/specfile.py:507
 #, python-format
@@ -774,7 +773,7 @@ msgstr "Paketbetreuer: %s <%s>\n"
 #: pisi/cli/blame.py:78
 #, python-format
 msgid "Release Updater: %s <%s>\n"
-msgstr "Vorbereitung der Release: %s <%s>\n"
+msgstr "Release-Updater: %s <%s>\n"
 
 #: pisi/cli/blame.py:82
 #, python-format
@@ -797,11 +796,11 @@ msgstr ""
 "\n"
 "Syntax: build [<pspec.xml> | <sourcename>] ...\n"
 "\n"
-"Man kann die Adresse (URI) der pspec.xml Datei angeben\n"
-"eopkg wird all die notwendigen Dateien sammeln und das Paket erstellen.\n"
+"Man kann die URI der pspec.xml Datei angeben.\n"
+"eopkg wird alle notwendigen Dateien sammeln und das Paket erstellen.\n"
 "\n"
-"Alternativ kann man den Namen einer Quelldatei angeben,\n"
-"welches aus dem Depot heruntergeladen werden soll.\n"
+"Alternativ kann man den Namen eines Quellpakets angeben,\n"
+"welches aus einem Quellen enthaltenden Repository heruntergeladen werden soll.\n"
 
 #: pisi/cli/build.py:38
 msgid "build options"
