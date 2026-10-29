@@ -140,28 +140,29 @@ msgstr "Perl-Installation ist fehlgeschlagen."
 #: pisi/actionsapi/pisitools.py:70 pisi/actionsapi/pisitools.py:146
 #, python-format
 msgid "No file matched pattern \"%s\""
-msgstr "Keine Datei entsprach dem Suchmuster \"%s\""
+msgstr "Keine Datei entsprach dem Muster \"%s\""
 
 #: pisi/actionsapi/pisitools.py:158
 #, python-format
 msgid "ActionsAPI [doman]: Wrong man page file: %s"
-msgstr "ActionsAPI [doman]: Falsche Datei für man page: %s"
+msgstr "ActionsAPI [doman]: Falsche man page Datei: %s"
 
 #: pisi/actionsapi/pisitools.py:192
 #, python-format
 msgid "No file matched pattern \"%s\". 'domove' operation failed."
 msgstr ""
-"Keine Datei mit Muster \"%s\" gefunden. Operation 'domove' fehlgeschlagen."
+"Keine Datei entsprach dem Muster \"%s\". Operation 'domove' fehlgeschlagen."
 
 #: pisi/actionsapi/pisitools.py:224
 #, python-format
 msgid "ActionsAPI [rename]: %s: %s"
-msgstr "ActionsAPI [umbenennen]: %s: %s"
+msgstr "ActionsAPI [rename]: %s: %s"
 
 #: pisi/actionsapi/pisitools.py:241
 #, python-format
 msgid "No such file matching pattern: \"%s\". 'dosed' operation failed."
-msgstr "Keine Datei gleicht dem Muster: \"%s\". Operation 'dosed' fehlgeschlagen."
+msgstr ""
+"Keine Datei entspricht dem Muster: \"%s\". Operation 'dosed' fehlgeschlagen."
 
 #: pisi/actionsapi/pisitools.py:257
 #, python-format
@@ -171,28 +172,28 @@ msgstr "Prozedur dosed hat die Datei '%s' nicht verändert."
 #: pisi/actionsapi/pisitools.py:262
 #, python-format
 msgid "File does not exist or permission denied: %s"
-msgstr "Datei existiert nicht oder Zugang verweigert: %s"
+msgstr "Datei existiert nicht oder Zugriff verweigert: %s"
 
 #: pisi/actionsapi/pisitools.py:282
 #, python-format
 msgid "ActionsAPI [dosym]: File already exists: %s"
-msgstr "ActionsAPI [dosym]: Datei existiert schon: %s"
+msgstr "ActionsAPI [dosym]: Datei existiert bereits: %s"
 
 #: pisi/actionsapi/pisitools.py:292 pisi/actionsapi/pisitoolsfunctions.py:67
 #, python-format
 msgid "No file matched pattern \"%s\"."
-msgstr "Keine Datei gleicht dem Muster \"%s\"."
+msgstr "Keine Datei entspricht dem Muster \"%s\"."
 
 #: pisi/actionsapi/pisitools.py:341 pisi/actionsapi/shelltools.py:102
 #, python-format
 msgid "No file matched pattern \"%s\". Remove operation failed."
-msgstr "Keine Datei gleicht dem Muster \"%s\". Entfernen fehlgeschlagen."
+msgstr "Keine Datei entspricht dem Muster \"%s\". Entfernen fehlgeschlagen."
 
 #: pisi/actionsapi/pisitools.py:353
 #, python-format
 msgid "No directory matched pattern \"%s\". Remove directory operation failed."
 msgstr ""
-"Kein Verzeichnis gleicht dem Muster \"%s\". Entfernen des Verzeichnisses "
+"Kein Verzeichnis entspricht dem Muster \"%s\". Entfernen des Verzeichnisses "
 "fehlgeschlagen."
 
 #: pisi/actionsapi/pisitoolsfunctions.py:38
@@ -204,7 +205,7 @@ msgstr "Unzureichende Argumente."
 #: pisi/actionsapi/pisitoolsfunctions.py:46
 #, python-format
 msgid "No executable file matched pattern \"%s\"."
-msgstr "Keine ausführbare Datei gleicht dem Muster \"%s\"."
+msgstr "Keine ausführbare Datei entspricht dem Muster \"%s\"."
 
 #: pisi/actionsapi/pythonmodules.py:51
 msgid "Configuration failed."
@@ -237,17 +238,17 @@ msgstr "Verzeichnis %s konnte nicht erstellt werden"
 #: pisi/actionsapi/shelltools.py:51
 #, python-format
 msgid "ActionsAPI [echo]: Can't append to file %s."
-msgstr "ActionsAPI [echo]: Konnte nicht an die Datei %s hinzugefügen."
+msgstr "ActionsAPI [echo]: Konnte nicht an die Datei %s anhängen."
 
 #: pisi/actionsapi/shelltools.py:58
 #, python-format
 msgid "ActionsAPI [chmod]: No file matched pattern \"%s\"."
-msgstr "ActionsAPI [chmod]: Keine Datei gleicht dem Muster \"%s\"."
+msgstr "ActionsAPI [chmod]: Keine Datei entspricht dem Muster \"%s\"."
 
 #: pisi/actionsapi/shelltools.py:66
 #, python-format
 msgid "ActionsAPI [chmod]: Operation not permitted: %s (mode: 0%o)"
-msgstr "ActionsAPI [chmod]: Vorgang nicht gestattet %s (Modus: 0%o)"
+msgstr "ActionsAPI [chmod]: Operation nicht erlaubt %s (Modus: 0%o)"
 
 #: pisi/actionsapi/shelltools.py:70
 #, python-format
@@ -257,7 +258,7 @@ msgstr "ActionsAPI [chmod]: Datei %s existiert nicht."
 #: pisi/actionsapi/shelltools.py:80
 #, python-format
 msgid "ActionsAPI [chown]: Operation not permitted: %s (uid: %s, gid: %s)"
-msgstr "ActionsAPI [chown]: Vorgang nicht gestattet %s (uid: %s, gid: %s)"
+msgstr "ActionsAPI [chown]: Operation nicht erlaubt %s (uid: %s, gid: %s)"
 
 #: pisi/actionsapi/shelltools.py:84
 #, python-format
@@ -267,7 +268,7 @@ msgstr "ActionsAPI [chown]: Datei %s existiert nicht."
 #: pisi/actionsapi/shelltools.py:93
 #, python-format
 msgid "ActionsAPI [sym]: Permission denied: %s to %s"
-msgstr "ActionsAPI [sym]: Zugang verweigert: %s zu %s"
+msgstr "ActionsAPI [sym]: Zugriff verweigert: %s zu %s"
 
 #: pisi/actionsapi/shelltools.py:112
 #, python-format
@@ -282,7 +283,7 @@ msgstr "ActionsAPI [unlink]: Datei %s existiert nicht."
 #: pisi/actionsapi/shelltools.py:127
 #, python-format
 msgid "ActionsAPI [unlinkDir]: Operation not permitted: %s"
-msgstr "ActionsAPI [unlinkDir]: Vorgang nicht gestattet: %s"
+msgstr "ActionsAPI [unlinkDir]: Operation nicht erlaubt: %s"
 
 #: pisi/actionsapi/shelltools.py:134
 #, python-format
@@ -292,7 +293,7 @@ msgstr "ActionsAPI [unlinkDir]: Verzeichnis %s existiert nicht."
 #: pisi/actionsapi/shelltools.py:143
 #, python-format
 msgid "ActionsAPI [move]: No file matched pattern \"%s\"."
-msgstr "ActionsAPI [move]: Keine Datei gleicht dem Muster \"%s\"."
+msgstr "ActionsAPI [move]: Keine Datei entspricht dem Muster \"%s\"."
 
 #: pisi/actionsapi/shelltools.py:151
 #, python-format
@@ -307,7 +308,7 @@ msgstr "ActionsAPI [move]: Datei %s existiert nicht."
 #: pisi/actionsapi/shelltools.py:163
 #, python-format
 msgid "ActionsAPI [copy]: No file matched pattern \"%s\"."
-msgstr "ActionsAPI [move]: Keine Datei gleicht dem Muster \"%s\"."
+msgstr "ActionsAPI [copy]: Keine Datei entspricht dem Muster \"%s\"."
 
 #: pisi/actionsapi/shelltools.py:171
 #, python-format
@@ -332,7 +333,7 @@ msgstr "ActionsAPI [copytree]: Verzeichnis %s existiert nicht."
 #: pisi/actionsapi/shelltools.py:221
 #, python-format
 msgid "ActionsAPI [touch]: No file matched pattern \"%s\"."
-msgstr "ActionsAPI [touch]: Keine Datei gleicht dem Muster \"%s\"."
+msgstr "ActionsAPI [touch]: Keine Datei entspricht dem Muster \"%s\"."
 
 #: pisi/actionsapi/shelltools.py:230
 #, python-format
@@ -350,11 +351,11 @@ msgstr "Verschieben der Quelldateien fehlgeschlagen"
 
 #: pisi/actionsapi/texlivemodules.py:53
 msgid "Generate config files failed"
-msgstr "Generieren der config-Dateien fehlgeschlagen"
+msgstr "Generieren der Config-Dateien fehlgeschlagen"
 
 #: pisi/actionsapi/texlivemodules.py:56
 msgid "Building format files failed"
-msgstr "Das Erstellen von Format-Dateien ist fehlgeschlagen"
+msgstr "Erstellen von Format-Dateien ist fehlgeschlagen"
 
 #: pisi/actionsapi/texlivemodules.py:64
 msgid "Creating symlinks from format to engines failed"
@@ -370,11 +371,11 @@ msgstr "Installation der texmf-Dateien ist fehlgeschlagen"
 
 #: pisi/actionsapi/texlivemodules.py:76
 msgid "Installing config files failed"
-msgstr "Installation der config-Dateien ist fehlgeschlagen"
+msgstr "Installation der Config-Dateien ist fehlgeschlagen"
 
 #: pisi/actionsapi/texlivemodules.py:80
 msgid "Handle config files failed"
-msgstr "Benutzen der config-Dateien ist fehlgeschlagen"
+msgstr "Benutzen der Config-Dateien ist fehlgeschlagen"
 
 #: pisi/actionsapi/texlivemodules.py:95
 #, python-format
@@ -384,7 +385,7 @@ msgstr "Symlink %s übersprungen (Sonderfall)"
 #: pisi/actionsapi/texlivemodules.py:98
 #, python-format
 msgid "Symlink %s -> %s skipped (texlive-core takes care of it."
-msgstr "Symlink %s -> %s übersprungen (texlive-Kern kümmert sich darum)."
+msgstr "Symlink %s -> %s übersprungen (texlive-core kümmert sich darum."
 
 #: pisi/actionsapi/texlivemodules.py:104
 #, python-format
@@ -409,32 +410,32 @@ msgstr "Erstelle /etc/texmf/%s.d"
 #: pisi/actionsapi/texlivemodules.py:182
 #, python-format
 msgid "Moving (and symlinking) /usr/share/texmf/%s to /etc/texmf/%s.d"
-msgstr "Verschiebe (und verlinke) /usr/share/texmf/%s nach /etc/texmf/%s.d"
+msgstr "Verschiebe (und symlinke) /usr/share/texmf/%s nach /etc/texmf/%s.d"
 
 #: pisi/actionsapi/texlivemodules.py:263
 #, python-format
 msgid "Building format file %s"
-msgstr "Format-Datei %s wird konstruiert"
+msgstr "Format-Datei %s wird erstellt"
 
 #: pisi/actionsapi/texlivemodules.py:354
 #, python-format
 msgid "Map %s is added to %s/%s.cfg"
-msgstr "Map %s wurde nach %s/%s.cfg hinzugefügt"
+msgstr "Map %s wird in %s/%s.cfg hinzugefügt"
 
 #: pisi/actionsapi/texlivemodules.py:363
 #, python-format
 msgid "MixedMap %s is added to %s/%s.cfg"
-msgstr "MixedMap %s wurde nach %s/%s.cfg hinzugefügt"
+msgstr "MixedMap %s wird in %s/%s.cfg hinzugefügt"
 
 #: pisi/actionsapi/texlivemodules.py:372
 #, python-format
 msgid "p +%s is added to %s/%s-config.ps"
-msgstr "p +%s wurde zu %s/%s-config.ps hinzugefügt"
+msgstr "p +%s wird in %s/%s-config.ps hinzugefügt"
 
 #: pisi/actionsapi/texlivemodules.py:381
 #, python-format
 msgid "f %s is added to %s/%s-config"
-msgstr "f %s wurde zu %s/%s-config hinzugefügt"
+msgstr "f %s wird in %s/%s-config hinzugefügt"
 
 #: pisi/actionsapi/texlivemodules.py:390
 #, python-format
