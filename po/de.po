@@ -1675,11 +1675,11 @@ msgid ""
 "\n"
 "Finds the installed package which contains the specified file.\n"
 msgstr ""
-"Suche nach einer Datei\n"
+"Suche eine Datei\n"
 "\n"
-"Syntax: search-file <path_1> <path_2> ... <path_n>\n"
+"Syntax: search-file <path1> <path2> ... <pathn>\n"
 "\n"
-"Findet das installierte Paket welches die spezifizierte Datei beinhaltet.\n"
+"Findet das installierte Paket welches die angegebene Datei beinhaltet.\n"
 
 #: pisi/cli/searchfile.py:29
 msgid "search-file options"
@@ -1697,12 +1697,12 @@ msgstr "Paket %s hat die Datei /%s"
 #: pisi/cli/searchfile.py:53
 #, python-format
 msgid "Path '%s' does not belong to an installed package"
-msgstr "Dateipfad '%s' gehört zu keinem installierten Paket"
+msgstr "Pfad '%s' gehört zu keinem installierten Paket"
 
 #: pisi/cli/searchfile.py:69
 #, python-format
 msgid "Searching for %s"
-msgstr "Suche %s"
+msgstr "Suche nach %s"
 
 #: pisi/cli/updaterepo.py:15
 msgid ""
@@ -1715,14 +1715,14 @@ msgid ""
 "Synchronizes the eopkg databases with the current repository.\n"
 "If no repository is given, all repositories are updated.\n"
 msgstr ""
-"Update der Depot-Datenbank\n"
+"Aktualisierung der Repository Datenbanken\n"
 "\n"
 "Syntax: update-repo [<repo1> <repo2> ... <repon>]\n"
 "\n"
-"<repoi>: Depotname\n"
+"<repoi>: Repositoryname\n"
 "\n"
-"Synchronisiert die eopkg-Datenbank mit dem aktuellen Depot.\n"
-"Falls kein Depot angegeben ist, werden alle Depots aktualisiert.\n"
+"Synchronisiert die eopkg Datenbanken mit dem aktuellen Repository.\n"
+"Falls kein Depot angegeben ist, werden alle Repositories aktualisiert.\n"
 
 #: pisi/cli/updaterepo.py:32
 msgid "update-repo options"
