@@ -1355,9 +1355,9 @@ msgstr ""
 "\n"
 "Syntax: list-available [ <repo1> <repo2> ... repon ]\n"
 "\n"
-"Gibt eine Zusammenfassung von eopkg Paketen im angegebenen\n"
-"Depot aus. Falls kein Depot angegeben wurde, so werden die\n"
-"Pakete in allen Depots angezeigt.\n"
+"Gibt eine Zusammenfassung von eopkg Paketen in den angegebenen\n"
+"Repositories aus. Falls kein Repository angegeben wurde, werden die\n"
+"Pakete aus allen Repositories angezeigt.\n"
 
 #: pisi/cli/listavailable.py:35
 msgid "list-available options"
@@ -1371,7 +1371,7 @@ msgstr "In langem Format anzeigen"
 
 #: pisi/cli/listavailable.py:48
 msgid "List available packages under given component"
-msgstr "Listet vorhandene Pakete einer gegebenen Komponente auf"
+msgstr "Liste vorhandene Pakete einer gegebenen Komponente auf"
 
 #: pisi/cli/listavailable.py:55
 msgid "Show uninstalled packages only"
@@ -1384,7 +1384,7 @@ msgstr "Installierte Pakete werden in dieser Farbe angezeigt"
 #: pisi/cli/listavailable.py:77
 #, python-format
 msgid "Repository : %s\n"
-msgstr "Depot : %s\n"
+msgstr "Repository : %s\n"
 
 #: pisi/cli/listcomponents.py:15
 msgid ""
@@ -1400,7 +1400,7 @@ msgstr ""
 "Syntax: list-components\n"
 "\n"
 "Gibt eine einfache Liste über die verfügbaren\n"
-"eopkg Komponenten in den Depots.\n"
+"eopkg Komponenten in den Repositories.\n"
 
 #: pisi/cli/listcomponents.py:31
 msgid "list-components options"
@@ -1408,7 +1408,7 @@ msgstr "list-components Optionen"
 
 #: pisi/cli/listcomponents.py:45 pisi/cli/search.py:49
 msgid "Name of the source or package repository"
-msgstr "Name des Quell- oder Paketdepots"
+msgstr "Name des Source- oder Paketrepositories"
 
 #: pisi/cli/listinstalled.py:17
 msgid ""
@@ -1427,20 +1427,22 @@ msgstr "list-installed Optionen"
 #: pisi/cli/listinstalled.py:37
 msgid "Show automatically installed packages and the parent dependency"
 msgstr ""
+"Zeige automatisch installierte Pakete und deren übergeordnete Abhängigkeit "
+"an"
 
 #: pisi/cli/listinstalled.py:44
 msgid "Show installed packages that were installed by a user"
 msgstr ""
+"Zeige installierte Pakete an, die von einem Benutzer installiert wurden"
 
 #: pisi/cli/listinstalled.py:51
 msgid "Only list the installed packages built by the given host"
 msgstr ""
-"Zeige die installierten Pakete, die von dem angegebenen Anbieter erstellt "
-"wurden."
+"Zeige die installierten Pakete, die von dem angegebenen Host erstellt wurden"
 
 #: pisi/cli/listinstalled.py:65
 msgid "List installed packages under given component"
-msgstr "Installierte Pakete einer gegebenen Komponente auflisten"
+msgstr "Zeige installierte Pakete einer gegebenen Komponente"
 
 #: pisi/cli/listinstalled.py:72 pisi/cli/listupgrades.py:53
 msgid "Show detailed install info"
@@ -1450,7 +1452,7 @@ msgstr "Detaillierte Installationsinformationen anzeigen"
 #. not be translated.
 #: pisi/cli/listinstalled.py:82
 msgid "You cannot specify both --explicit and --automatic"
-msgstr ""
+msgstr "Es kann nicht beides angegeben werden --explicit und --automatic"
 
 #: pisi/cli/listinstalled.py:109 pisi/cli/listupgrades.py:88
 msgid ""
@@ -1460,7 +1462,7 @@ msgstr ""
 
 #: pisi/cli/listinstalled.py:157
 msgid "Orphaned package"
-msgstr ""
+msgstr "Verwaistes Paket"
 
 #: pisi/cli/listnewest.py:16
 msgid ""
@@ -1472,13 +1474,13 @@ msgid ""
 "repositories. If no repository is specified, we list the new\n"
 "packages from all repositories.\n"
 msgstr ""
-"Liste die neuesten Pakete im Depot auf\n"
+"Liste die neuesten Pakete in den Repositories auf\n"
 "\n"
-"Syntax: list-newest [ <repo_1> <repo_2> ... repo_n ]\n"
+"Syntax: list-newest [ <repo1> <repo2> ... repon ]\n"
 "\n"
 "Gibt eine Liste aller neu veröffentlichten Pakete in dem angegebenen\n"
-"Depot aus. Falls kein Depot angegeben wurde, wird die Liste aller\n"
-"neuen Pakete von allen Depots ausgegeben.\n"
+"Repositories aus. Falls kein Repository angegeben wurde, wird die Liste aller\n"
+"neuen Pakete von allen Repositories ausgegeben.\n"
 
 #: pisi/cli/listnewest.py:34
 msgid "list-newest options"
@@ -1489,21 +1491,21 @@ msgid ""
 "List new packages added to repository after this given date formatted as "
 "yyyy-mm-dd"
 msgstr ""
-"Liste neue Pakete, die im Depot nach dem angegebenen Datum hinzugefügt "
-"wurden. Datumsformat: yyyy-mm-dd"
+"Liste neue Pakete, die im Repository nach dem angegebenen Datum im Format "
+"yyyy-mm-dd hinzugefügt wurden"
 
 #: pisi/cli/listnewest.py:50
 msgid ""
 "List new packages added to repository after last nth previous repository "
 "update"
 msgstr ""
-"Liste die Pakete auf, die seit dem n-ten Depot-Update in das Depot "
-"hinzugefügt wurden"
+"Liste die Pakete auf, die nach dem n-ten Repository-Update zu dem Repository"
+" hinzugefügt wurden"
 
 #: pisi/cli/listnewest.py:85
 #, python-format
 msgid "Packages added to %s since %s:\n"
-msgstr "Neue Pakete zu %s hinzugefügt seit dem %s:\n"
+msgstr "Pakete zu %s hinzugefügt seit dem %s:\n"
 
 #: pisi/cli/listnewest.py:87
 #, python-format
@@ -1518,11 +1520,11 @@ msgid ""
 "\n"
 "Lists the packages that will be upgraded.\n"
 msgstr ""
-"Liste upgradebare Pakete auf\n"
+"Liste aktualisierbare Pakete auf\n"
 "\n"
-"Usage: list-upgrades\n"
+"Syntax: list-upgrades\n"
 "\n"
-"Listet die upgradebaren Pakte auf.\n"
+"Listet die Pakte auf, die aktualisiert würden.\n"
 
 #: pisi/cli/listupgrades.py:33
 msgid "list-upgrades options"
@@ -1534,7 +1536,7 @@ msgstr "Listet aktualisierbare Pakete der angegebenen Komponente auf"
 
 #: pisi/cli/listupgrades.py:77 pisi/operations/upgrade.py:157
 msgid "No packages to upgrade."
-msgstr "Es gibt keine Pakete zu aktualisieren."
+msgstr "Keine Pakete zu aktualisieren."
 
 #: pisi/cli/rebuilddb.py:15
 msgid ""
@@ -1547,14 +1549,14 @@ msgid ""
 "If package specs are given, they should be the names of package\n"
 "dirs under /var/lib/eopkg\n"
 msgstr ""
-"Datenbanken wiederherstellen\n"
+"Datenbanken neu erstellen\n"
 "\n"
 "Syntax: rebuilddb [ <package1> <package2> ... <packagen> ]\n"
 "\n"
-"Rekonstruiert die eopkg Datenbanken\n"
+"Stellt die eopkg Datenbanken erneut her\n"
 "\n"
-"Wenn Pakete angegeben werden, sollten sie den \n"
-"Verzeichnisnamen unter /var/lib/eopkg entsprechen\n"
+"Wenn Paket-Spezifikationen angegeben werden, sollten sie den \n"
+"Namen der Paketverzeichnisse unter /var/lib/eopkg entsprechen\n"
 
 #: pisi/cli/rebuilddb.py:32
 msgid "rebuild-db options"
@@ -1562,11 +1564,11 @@ msgstr "rebuild-db Optionen"
 
 #: pisi/cli/rebuilddb.py:39
 msgid "Rebuild files database"
-msgstr "Rekonstruiere Dateidatenbank"
+msgstr "Erstelle Dateidatenbank neu"
 
 #: pisi/cli/rebuilddb.py:46
 msgid "Rebuild eopkg databases?"
-msgstr "eopkg-Datenbanken rekonstruieren?"
+msgstr "eopkg-Datenbanken neu erstellen?"
 
 #: pisi/cli/remove.py:16
 msgid ""
@@ -1579,14 +1581,14 @@ msgid ""
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
 msgstr ""
-"Entferne Pisi Pakete\n"
+"Entferne eopkg Pakete\n"
 "\n"
-"Syntax: remove <package_1> <package_2> ... <package_n>\n"
+"Syntax: remove <package1> <package2> ... <packagen>\n"
 "\n"
-"Entfernt Pakete von dem System. Der Name des Pakets reicht, um es zu entfernen.\n"
+"Entfernt Paket(e) vom System. Einfach die Namen, der zu entfernenden Pakete, angeben.\n"
 "\n"
-"Man kann auch Komonenten anstatt der Namen angeben, welche anschließend zum\n"
-"Paketnamen erweitert werden.\n"
+"Man kann auch Komponenten anstatt Paketnamen angeben, welche anschließend zu\n"
+"Paketnamen aufgelöst werden.\n"
 
 #: pisi/cli/remove.py:34
 msgid "remove options"
@@ -1594,7 +1596,8 @@ msgstr "remove Optionen"
 
 #: pisi/cli/remove.py:47
 msgid "Remove component's and recursive components' packages"
-msgstr "Komponente entfernen und Pakete der Komponente rekursivieren"
+msgstr ""
+"Entferne Pakete der Komponente und aller rekursiv enthaltenen Komponenten"
 
 #: pisi/cli/removeorphans.py:16
 msgid ""
