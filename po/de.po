@@ -1023,13 +1023,16 @@ msgstr "Beschädigte Pakete neu installieren?"
 
 #: pisi/cli/check.py:160
 msgid "Broken packages were not reinstalled."
-msgstr ""
+msgstr "Beschädigte Pakete wurden nicht installiert."
 
 #: pisi/cli/check.py:166
 msgid ""
 "Could not check the integrity of packages which contain files your user did not have permission to read.\n"
 "Running the check under a privileged user may help to fix this problem."
 msgstr ""
+"Die Integrität der Pakete, die Dateien enthalten, für die dein Benutzer keine Leseberechtigung hat, konnte nicht überprüft werden.\n"
+"\n"
+"Die Überprüfung mit einem Benutzer mit erweiterten Rechten auszuführen, könnte helfen, dieses Problem zu beheben."
 
 #: pisi/cli/configurepending.py:14
 msgid ""
@@ -1045,7 +1048,7 @@ msgstr ""
 "Falls die Konfiguration einiger Pakete durch COMAR\n"
 "während der Installation nicht durchgeführt wurde,\n"
 "werden diese Pakete auf eine Warteliste gesetzt.\n"
-"Das Kommando konfiguriert diese Pakete.\n"
+"Dieses Kommando konfiguriert jene Pakete.\n"
 
 #: pisi/cli/configurepending.py:29
 msgid "configure-pending options"
@@ -1062,14 +1065,14 @@ msgid ""
 "packages by comparing the sha1sum of files and creates\n"
 "a delta package with the changed files.\n"
 msgstr ""
-"Erstellt Delta Package\n"
+"Erstellt Delta-Pakete\n"
 "\n"
-"Verwendung: delta oldpackage1 oldpackage2 ...  newpackage\n"
+"Syntax: delta oldpackage1 oldpackage2 ...  newpackage\n"
 "        delta -t newpackage oldpackage1 oldpackage2 ...\n"
 "\n"
 "Das Delta-Kommando findet die Unterschiede zwischen den angegebenen\n"
-"Pakete durch das Vergleichen der sha1sum Prüfsumme der Dateien und erstellt\n"
-"ein Delta Packet mit den geänderten Dateien.\n"
+"Paketen durch den Vergleich der sha1sum Prüfsumme der Dateien und erstellt\n"
+"ein Delta-Paket mit den geänderten Dateien.\n"
 
 #: pisi/cli/delta.py:35
 msgid "delta options"
@@ -1083,7 +1086,7 @@ msgstr ""
 
 #: pisi/cli/delta.py:56
 msgid "Output directory for produced packages."
-msgstr "Zielverzeichnis für erzeugte Pakete"
+msgstr "Zielverzeichnis für erstellte Pakete"
 
 #: pisi/cli/fetch.py:15
 msgid ""
@@ -1097,11 +1100,11 @@ msgid ""
 msgstr ""
 "Paket herunterladen\n"
 "\n"
-"Syntax: fetch <package1> <package2> ... <packagen>\n"
+"Syntax: fetch [<package1> <package2> ... <packagen>]\n"
 "\n"
 "<packagei>: Paketname\n"
 "\n"
-"Lädt das angegebene Paket in das Arbeitsverzeichnis herunter\n"
+"Lädt die angegebenen pisi Pakete in das Arbeitsverzeichnis herunter\n"
 
 #: pisi/cli/fetch.py:31
 msgid "fetch options"
@@ -1113,18 +1116,18 @@ msgstr "Zielverzeichnis für die heruntergeladenen Pakete"
 
 #: pisi/cli/fetch.py:48
 msgid "Fetch packages from a specified repository"
-msgstr ""
+msgstr "Lade Pakete aus einem angegebenen Repository"
 
 #: pisi/cli/fetch.py:59 pisi/cli/install.py:121 pisi/cli/listavailable.py:63
 #: pisi/cli/listcomponents.py:53 pisi/cli/listnewest.py:59
 #: pisi/cli/listupgrades.py:61 pisi/cli/search.py:86 pisi/cli/searchfile.py:63
 #: pisi/cli/upgrade.py:120 pisi/cli/info.py:93
 msgid "No active repositories found"
-msgstr ""
+msgstr "Keine aktiven Repositories gefunden"
 
 #: pisi/cli/history.py:20
 msgid "upgrade"
-msgstr "Upgrade ausführen"
+msgstr "aktualisieren"
 
 #: pisi/cli/history.py:21
 msgid "remove"
@@ -1132,7 +1135,7 @@ msgstr "entfernen"
 
 #: pisi/cli/history.py:22
 msgid "emerge"
-msgstr "emerge"
+msgstr "zusammenführen"
 
 #: pisi/cli/history.py:23
 msgid "install"
@@ -1144,11 +1147,11 @@ msgstr "Schnappschuss"
 
 #: pisi/cli/history.py:25
 msgid "takeback"
-msgstr "zurückversetzen"
+msgstr "zurücksetzen"
 
 #: pisi/cli/history.py:26
 msgid "repository update"
-msgstr "Depot Update"
+msgstr "Repository Update"
 
 #: pisi/cli/history.py:32
 msgid ""
@@ -1158,11 +1161,11 @@ msgid ""
 "\n"
 "Lists previous operations."
 msgstr ""
-"Historie der eopkg Operationen\n"
+"Historie der pisi Operationen\n"
 "\n"
-"Syntax: Historie\n"
+"Syntax: history\n"
 "\n"
-"Listet die vorherigen Operationen auf."
+"Listet vorherige Operationen auf."
 
 #: pisi/cli/history.py:47
 msgid "history options"
@@ -1179,8 +1182,7 @@ msgstr "Schnappschuss des aktuellen Systemzustandes aufnehmen"
 #: pisi/cli/history.py:73
 msgid "Takeback to the state after the given operation finished"
 msgstr ""
-"In den Zustand zurückversetzen, in dem sich das System nach Abschluss der "
-"gegebenen Operation befand"
+"System in den Zustand nach Abschluss der gegebenen Operation zurücksetzen"
 
 #: pisi/cli/history.py:84
 #, python-format
@@ -1215,13 +1217,13 @@ msgstr ""
 "\n"
 "Syntax: index <directory> ...\n"
 "\n"
-"Dieses Kommando sucht nach den eopkg Dateien in einem Verzeichnis, sammelt eopkg\n"
+"Dieses Kommando sucht nach eopkg Dateien in einem Verzeichnis, sammelt eopkg\n"
 "Tags und bündelt die Informationen in einer XML-Datei, welche standardmäßig den\n"
-"Namen 'eopkg-index.xml' erhält. Der Befehl indexiert sowohl Quelldateien, als auch\n"
+"Namen 'eopkg-index.xml' erhält. Der Befehl indexiert sowohl Source-Dateien, als auch\n"
 "binäre Pakete.\n"
 "\n"
 "Wenn man mehrere Verzeichnisse angibt, funktioniert das Kommando ebenso.\n"
-"Es wird dann jedoch alles in eine einzelne index-Datei gepackt.\n"
+"Es wird dann jedoch alles in eine einzelne Index-Dateien gepackt.\n"
 
 #: pisi/cli/index.py:37
 msgid "index options"
@@ -1240,6 +1242,8 @@ msgid ""
 "Comma-separated compression types for index file. Valid options are \"xz\" "
 "and \"bz2\". Defaults to \"xz\"."
 msgstr ""
+"Kommagetrennte Liste der Komprimierungsformate für die Indexdatei. Gültige "
+"Optionen sind „xz“ und „bz2“. Standardmäßig wird „xz“ verwendet."
 
 #: pisi/cli/index.py:66
 msgid "Do not sign index."
@@ -1257,15 +1261,15 @@ msgid ""
 "You can also specify components instead of package names, which will be\n"
 "expanded to package names.\n"
 msgstr ""
-"Install eopkg packages\n"
+"Installieren von eopkg Paketen\n"
 "\n"
-"Syntax: install <package_1> <package_2> ... <package_n>\n"
+"Syntax: install <package1> <package2> ... <packagen>\n"
 "\n"
 "Man kann Dateinamen, URIs oder Paketnamen verwenden. Falls man einen\n"
-"Paketnamen angegeben hat, sollte er in einem Depot auch vorhanden sein.\n"
+"Paketnamen angegeben hat, sollte er im Repository auch vorhanden sein.\n"
 "\n"
-"Man kann statt eines Paketnamens auch einen Komponentennamen angeben.\n"
-"Dieser wird zu mehreren Paketnamen erweitert.\n"
+"Man kann statt eines Paketnamens auch eine Komponente angeben.\n"
+"Dieser wird zu mehreren Paketnamen aufgelöst.\n"
 
 #: pisi/cli/install.py:35
 msgid "install options"
@@ -1273,7 +1277,7 @@ msgstr "install Optionen"
 
 #: pisi/cli/install.py:43
 msgid "Reinstall already installed packages"
-msgstr "Bereits installierte Pakete erneut installieren."
+msgstr "Bereits installierte Pakete erneut installieren"
 
 #: pisi/cli/install.py:49
 msgid "Skip distribution release and architecture check"
@@ -1292,6 +1296,8 @@ msgid ""
 "Don't check for updates in reverse dependencies of runtime dependencies when"
 " updates are available"
 msgstr ""
+"Keine Updates für Rückwärtsabhängigkeiten von Laufzeitabhängigkeiten prüfen,"
+" wenn Updates verfügbar sind"
 
 #: pisi/cli/install.py:76
 msgid "Install component's and recursive components' packages"
@@ -1299,11 +1305,11 @@ msgstr "Pakete von Komponenten und rekursiven Abhängigkeiten installieren"
 
 #: pisi/cli/install.py:84
 msgid "Name of the component's repository"
-msgstr "Name des Komponentendepots"
+msgstr "Name des Repositories der Komponente"
 
 #: pisi/cli/install.py:91 pisi/cli/upgrade.py:89
 msgid "Fetch upgrades but do not install."
-msgstr "Upgrades herunterladen, aber nicht installieren."
+msgstr "Aktualisierungen herunterladen, aber nicht installieren."
 
 #: pisi/cli/install.py:99
 msgid ""
@@ -1332,6 +1338,8 @@ msgid ""
 "Updates available, checking reverse dependencies of runtime dependencies for"
 " safety."
 msgstr ""
+"Updates verfügbar, Rückwärtsabhängigkeiten der Laufzeitabhängigkeiten werden"
+" auf mögliche Probleme geprüft."
 
 #: pisi/cli/listavailable.py:17
 msgid ""
@@ -1343,7 +1351,7 @@ msgid ""
 "repositories. If no repository is specified, we list packages in\n"
 "all repositories.\n"
 msgstr ""
-"Auflistung der verfügbaren Pakete im depot\n"
+"Auflistung verfügbarer Pakete in den Repositories\n"
 "\n"
 "Syntax: list-available [ <repo1> <repo2> ... repon ]\n"
 "\n"
