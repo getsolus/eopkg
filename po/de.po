@@ -445,7 +445,7 @@ msgstr "Sprachdatei  %s  wurde schon generiert."
 #: pisi/actionsapi/texlivemodules.py:393
 #, python-format
 msgid "No rule to proccess %s. Please file a bug."
-msgstr "Keine Regel für Prozess %s. Bitte Fehlerbericht erstellen."
+msgstr "Keine Regel für Prozess %s. Bitte Fehlerbericht einreichen."
 
 #: pisi/cli/clean.py:11
 msgid ""
@@ -489,9 +489,9 @@ msgid ""
 "\n"
 "If run without parameters, it prints the general help."
 msgstr ""
-"Zeigt die Hilfe für Kommandos an\n"
+"Zeigt die Hilfe für angegebene Kommandos\n"
 "\n"
-"Syntax: help [ <command_1> <command_2> ... <command_n> ]\n"
+"Syntax: help [ <command1> <command2> ... <commandn> ]\n"
 "\n"
 "Falls keine Parameter angegeben werden, wird die allgemeine Hilfe angezeigt."
 
@@ -502,9 +502,9 @@ msgid ""
 "where <command> is one of:\n"
 "\n"
 msgstr ""
-"%prog [Optionen] <Befehl> [Argumente]\n"
+"%prog [Optionen] <command> [Argumente]\n"
 "\n"
-"wobei <Befehl> einer der folgenden Befehlen sein kann:\n"
+"Wobei <command> einer der folgenden Befehle sein kann:\n"
 "\n"
 
 #: pisi/cli/help.py:72
@@ -523,11 +523,11 @@ msgid ""
 msgstr ""
 "Liste ausstehende Pakete auf\n"
 "\n"
-"Liste die Pakete auf, die noch konfiguriert werden müssen.\n"
+"Listet die Pakete auf, die noch konfiguriert werden müssen.\n"
 
 #: pisi/cli/listpending.py:32
 msgid "There are no packages waiting to be configured"
-msgstr "Es sind keine Pakete vorhanden, die auf die Konfiguration warten"
+msgstr "Keine Pakete warten auf die Konfiguration"
 
 #: pisi/cli/listrepo.py:14
 msgid ""
@@ -537,11 +537,11 @@ msgid ""
 "\n"
 "Lists currently tracked repositories.\n"
 msgstr ""
-"Liste Depots auf\n"
+"Liste Repositories auf\n"
 "\n"
 "Syntax: list-repo\n"
 "\n"
-"Listet die aktuell überwachten Depots auf.\n"
+"Listet die aktuell verwalteten Repositories auf.\n"
 
 #: pisi/cli/listrepo.py:31 pisi/cli/listrepo.py:32
 msgid "active"
@@ -583,9 +583,9 @@ msgid ""
 msgstr ""
 "Entferne Repositories\n"
 "\n"
-"Syntax: remove-repo <repo_1> <repo_2> ... <repo_n>\n"
+"Syntax: remove-repo <repo1> <repo2> ... <repon>\n"
 "\n"
-"Entferne die komplette Repository-Information von dem System.\n"
+"Entferne alle Repository-Informationen aus dem System.\n"
 
 #: pisi/cli/repopriority.py:19
 msgid ""
@@ -596,24 +596,30 @@ msgid ""
 "<repo>: Name of repository to adjust priority\n"
 "<priority>: Set the repository's priority at given position (0 is first)\n"
 msgstr ""
+"Setzt die Priorität eines Repositories\n"
+"\n"
+"Syntax: repo-priority <repo> <priority>\n"
+"\n"
+"<repo>: Name des Repositories das angepasst werden soll\n"
+"<priority>: Setze die Priorität des Repositories auf eine Position (0 entspricht der ersten)\n"
 
 #: pisi/cli/repopriority.py:44
 msgid "Priority needs to be a number"
-msgstr ""
+msgstr "Priorität muss eine Zahl sein"
 
 #: pisi/cli/repopriority.py:48
 #, python-format
 msgid "Unable to locate repository file, expected: %s"
-msgstr ""
+msgstr "Repository-Datei wurde nicht gefunden, erwartet: %s"
 
 #: pisi/cli/repopriority.py:62
 #, python-format
 msgid "Repository %s does not exist. Cannot reorder."
-msgstr ""
+msgstr "Repository %s existiert nicht. Neuordnung nicht möglich."
 
 #: pisi/cli/repopriority.py:71
 msgid "Failed to write to repository file"
-msgstr ""
+msgstr "Schreiben in die Repository-Datei fehlgeschlagen"
 
 #: pisi/cli/repopriority.py:73
 #, python-format
@@ -667,14 +673,14 @@ msgid ""
 "\n"
 "NB: We support only local files (e.g., /a/b/c) and http:// URIs at the moment\n"
 msgstr ""
-"Depot hinzufügen\n"
+"Repository hinzufügen\n"
 "\n"
 "Syntax: add-repo <repo> <indexuri>\n"
 "\n"
-"<repo>: Name des Depots welches hinzugefügt werden soll\n"
+"<repo>: Name des Repositories, welches hinzugefügt werden soll\n"
 "<indexuri>: URI der Index-Datei\n"
 "\n"
-"NB: Im Moment werden nur lokale Dateien (z.B. /a/b/c) und http:// URIs unterstützt\n"
+"NB: Es werden nur lokale Dateien (z.B. /a/b/c) und http:// URIs unterstützt\n"
 
 #: pisi/cli/addrepo.py:33
 msgid "add-repo options"
