@@ -41,7 +41,7 @@ msgid ""
 "Please attach the config.log to your bug report:\n"
 "%s/config.log"
 msgstr ""
-"Bitte hängen Sie die config.log Datei an Ihren Fehlerbericht an:\n"
+"Bitte die config.log an den Fehlerbericht anhängen:\n"
 "%s/config.log"
 
 #: pisi/actionsapi/autotools.py:102 pisi/actionsapi/autotools.py:118
@@ -513,7 +513,7 @@ msgid ""
 "Use \"%prog help <command>\" for help on a specific command.\n"
 msgstr ""
 "\n"
-"Geben Sie \"%prog help <command>\" für Hilfe für einen bestimmten Befehl ein.\n"
+"\"%prog help <command>\" eingeben für Hilfe zu einem bestimmten Befehl.\n"
 
 #: pisi/cli/listpending.py:13
 msgid ""
@@ -707,8 +707,8 @@ msgid ""
 "By confirming this you are also adding the repository to your system without checking the distribution of the repository.\n"
 "Do you want to continue?"
 msgstr ""
-"%s Repository hinzufügen, ohne die Datenbank zu aktualisieren?\n"
-"Durch die Bestätigung dieser Meldung fügen Sie das Repository diesem System hinzu, ohne die Distribution des Repositories zu überprüfen.\n"
+"Repository %s hinzufügen, ohne die Datenbank zu aktualisieren?\n"
+"Durch die Bestätigung dieser Meldung wird das Repository diesem System hinzugefügt, ohne die Distribution des Repositories zu überprüfen.\n"
 "Wollen Sie fortfahren?"
 
 #: pisi/cli/autoremove.py:16
@@ -726,6 +726,18 @@ msgid ""
 "installing the packages being removed, will also be removed if it is\n"
 "safe to do so.\n"
 msgstr ""
+"Entfernen von eopkg Paketen\n"
+"\n"
+"Syntax: autoremove <package1> <package2> ... <packagen>\n"
+"\n"
+"Entfernt Paket(e) vom System. Einfach die Paketnamen angeben, welche entfernt werden sollen.\n"
+"\n"
+"Es können auch Komponenten statt Paketnamen angegeben werden, diese werden zu\n"
+"Paketnamen aufgelöst.\n"
+"\n"
+"Alle zusätzlichen Pakete, die bei der Installation der zu entfernenden Pakete\n"
+"automatisch mitinstalliert wurden, werden ebenfalls entfernt, \n"
+"sofern dies sicher ist.\n"
 
 #: pisi/cli/autoremove.py:38
 msgid "autoremove options"
@@ -799,8 +811,8 @@ msgstr ""
 "Man kann die URI der pspec.xml Datei angeben.\n"
 "eopkg wird alle notwendigen Dateien sammeln und das Paket erstellen.\n"
 "\n"
-"Alternativ kann man den Namen eines Quellpakets angeben,\n"
-"welches aus einem Quellen enthaltenden Repository heruntergeladen werden soll.\n"
+"Alternativ kann man den Namen eines Source-Pakets angeben,\n"
+"welches aus einem Sourcen enthaltenden Repository heruntergeladen werden soll.\n"
 
 #: pisi/cli/build.py:38
 msgid "build options"
@@ -809,7 +821,7 @@ msgstr "build Optionen"
 #: pisi/cli/build.py:49
 msgid "Run pisi build operation without printing extra debug information"
 msgstr ""
-"Starte den pisi build Vorgang ohne die extra debug information anzuzeigen"
+"Ausführen der pisi build Operation ohne extra Debug-Information anzuzeigen"
 
 #: pisi/cli/build.py:57 pisi/cli/command.py:238
 msgid "Do not take dependency information into account"
@@ -817,7 +829,7 @@ msgstr "Information der Abhängigkeiten nicht auswerten"
 
 #: pisi/cli/build.py:65
 msgid "Output directory for produced packages"
-msgstr "Zielverzeichnis für erzeugte Pakete"
+msgstr "Zielverzeichnis für erstellte Pakete"
 
 #: pisi/cli/build.py:72
 msgid "Bypass errors from ActionsAPI"
@@ -833,7 +845,7 @@ msgstr "Testschritt umgehen"
 
 #: pisi/cli/build.py:93
 msgid "Create a static package with ar files"
-msgstr "Eine statisches Paket mit ar Dateien erstellen"
+msgstr "Erstelle ein statisches Paket mit ar Dateien"
 
 #: pisi/cli/build.py:101 pisi/cli/delta.py:64
 msgid ""
@@ -857,31 +869,31 @@ msgstr "Build-Schritte"
 
 #: pisi/cli/build.py:129
 msgid "Break build after fetching the source archive"
-msgstr "Build abbrechen, nach Kopie des Quellverzeichnisses"
+msgstr "Build nach Kopie des Source-Archivs abbrechen"
 
 #: pisi/cli/build.py:138
 msgid ""
 "Break build after unpacking the source archive, checking sha1sum and "
 "applying patches"
 msgstr ""
-"Build abbrechen, nach entpacken der Quelldatei, prüfen der sha1sum und "
-"anwenden der Patches."
+"Build nach Entpacken der Source-Archivs, Prüfen der sha1sum und Anwenden der"
+" Patches abbrechen."
 
 #: pisi/cli/build.py:149
 msgid "Break build after running configure step"
-msgstr "Konstruktion nach dem Konfigurations-Schritt abbrechen"
+msgstr "Build nach dem Konfigurations-Schritt abbrechen"
 
 #: pisi/cli/build.py:157
 msgid "Break build after running compile step"
-msgstr "Konstruktion nach dem Kompilierungs-Schritt abbrechen"
+msgstr "Build nach dem Kompilierungs-Schritt abbrechen"
 
 #: pisi/cli/build.py:165
 msgid "Break build after running check step"
-msgstr "Konstruktion nach dem Überprüfungs-Schritt abbrechen"
+msgstr "Build nach dem Überprüfungs-Schritt abbrechen"
 
 #: pisi/cli/build.py:173
 msgid "Break build after running install step"
-msgstr "Konstruktion nach dem Installations-Schritt abbrechen"
+msgstr "Build nach dem Installations-Schritt abbrechen"
 
 #: pisi/cli/build.py:181
 msgid "Create eopkg package"
@@ -892,6 +904,8 @@ msgid ""
 "Building packages is not supported when eopkg is compiled with nuitka. "
 "Please use eopkg.py instead."
 msgstr ""
+"Das Erstellen von Paketen wird nicht unterstützt, wenn eopkg mit Nuitka "
+"kompiliert wurde. Bitte verwende stattdessen eopkg.py."
 
 #: pisi/cli/build.py:195 pisi/cli/delta.py:74
 msgid "Supported package formats:"
@@ -917,17 +931,19 @@ msgid ""
 "\n"
 "If no packages are given, checks all installed packages.\n"
 msgstr ""
-"Installationsüberprüfung\n"
+"Installation überprüfen\n"
 "\n"
-"Syntax: check [<package_1> <package_2> ... <package_n>]\n"
+"Syntax: check [<package1> <package2> ... <packagen>]\n"
+"       check -c <component>\n"
 "\n"
-"<package_i>: Paketname\n"
+"<packagei>: Paketname\n"
 "\n"
-"Eine verschlüsselte Prüfsumme ist für jedes installierte Programm\n"
-"gespeichert. Das Prüfkommando check nutzt die Prüfsumme, um ein Paket\n"
-"zu überprüfen. Es muss nur der Paketname angegeben werden.\n"
+"Eine verschlüsselte Prüfsumme ist für jede installierte\n"
+"Datei. Das Kommando check nutzt die Prüfsumme, um ein Paket\n"
+"zu überprüfen.\n"
+"Einfach die Paketnamen angegeben.\n"
 "\n"
-"Falls kein Name angegeben wird, werden alle installierten Pakete überprüft.\n"
+"Ohne angegeben Paketnamen, werden alle installierten Pakete überprüft.\n"
 
 #: pisi/cli/check.py:43
 msgid "check options"
@@ -976,12 +992,12 @@ msgstr "Zugriff verweigert: /%s"
 #: pisi/cli/check.py:126
 #, python-format
 msgid "Corrupted file: /%s"
-msgstr "Datei korrupt: %s"
+msgstr "Beschädigte Datei: %s"
 
 #: pisi/cli/check.py:132
 #, python-format
 msgid "Modified configuration file: /%s"
-msgstr "Konfigurationsdatei geändert: /%s"
+msgstr "Geänderte Konfigurationsdatei: /%s"
 
 #. Package is not installed
 #: pisi/cli/check.py:139
@@ -994,14 +1010,16 @@ msgid ""
 "These packages are broken but are not found in a repository, they must be "
 "reinstalled manually:"
 msgstr ""
+"Diese Pakete sind beschädigt, befinden sich jedoch in keinem Repository. Sie"
+" müssen manuell neu installiert werden:"
 
 #: pisi/cli/check.py:152
 msgid "The following packages are broken:"
-msgstr ""
+msgstr "Die folgenden Pakete sind beschädigt:"
 
 #: pisi/cli/check.py:154
 msgid "Reinstall the broken packages?"
-msgstr ""
+msgstr "Beschädigte Pakete neu installieren?"
 
 #: pisi/cli/check.py:160
 msgid "Broken packages were not reinstalled."
