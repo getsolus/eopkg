@@ -10,7 +10,6 @@ import pisi
 import pisi.conflict
 import pisi.context as ctx
 import pisi.db
-import pisi.ui as ui
 import pisi.util as util
 from pisi import Error
 from pisi import translate as _
@@ -135,7 +134,6 @@ def calculate_download_sizes(order):
                 if os.path.exists(part_path):
                     cached_size += os.stat(part_path).st_size
 
-    ctx.ui.notify(ui.cached, total=total_size, cached=cached_size)
     return total_size, cached_size
 
 
