@@ -688,15 +688,17 @@ msgstr "add-repo Optionen"
 
 #: pisi/cli/addrepo.py:38
 msgid "Ignore repository distribution check"
-msgstr "Ignoriere Depot Distributions-Check"
+msgstr "Ignoriere Repository Distributions-Check"
 
 #: pisi/cli/addrepo.py:45
 msgid "Does not fetch repository index and does not check distribution match"
-msgstr "Depotindex nicht abgerufen und Distributionsversion nicht geprüft"
+msgstr ""
+"Ruft den Repository-Index nicht ab und prüft keine Übereinstimmung mit der "
+"Distribution."
 
 #: pisi/cli/addrepo.py:53
 msgid "Add repository at given position (0 is first)"
-msgstr "Depot an angegebener Position hinzufügen (0 ist die Erste)"
+msgstr "Repository an angegebener Position hinzufügen (0 ist die erste)"
 
 #: pisi/cli/addrepo.py:65
 #, python-format
