@@ -1611,10 +1611,17 @@ msgid ""
 "Only packages that have no reverse dependencies outside of the automatically\n"
 "installed list will be removed.\n"
 msgstr ""
+"Verwaiste Pakete entfernen\n"
+"\n"
+"Syntax: remove-orphans\n"
+"\n"
+"Entfernt alle nicht mehr benötigten, verwaisten Pakete aus dem System, die automatisch als Abhängigkeiten anderer Pakete installiert wurden.\n"
+"\n"
+"Es werden nur Pakete entfernt, von denen keine anderen Pakete außerhalb der Liste der automatisch installierten Pakete abhängen.\n"
 
 #: pisi/cli/removeorphans.py:34
 msgid "remove-orphans options"
-msgstr ""
+msgstr "remove-orphans Optionen"
 
 #: pisi/cli/search.py:16
 msgid ""
@@ -1628,15 +1635,13 @@ msgid ""
 "options to search in install database or source\n"
 "database.\n"
 msgstr ""
-"Suche nach Pakete\n"
+"Suche nach Paketen\n"
 "\n"
-"Syntax: search <term_1> <term_2> ... <term_n>\n"
+"Syntax: search <term1> <term2> ... <termn>\n"
 "\n"
-"Findet Pakete welche die angegebenen Sucheingaben\n"
-"in Zusammenfassung, Beschreibung oder Packetnamen enthält. Die\n"
-"Standardsuche wird in der Paketdatenbank durchgeführt.\n"
-"Durch die Angabe von Optionen kann in der Installations-\n"
-"oder Quelldatenbank gesucht werden.\n"
+"Sucht nach Paketen anhand angegebener Suchbegriffe in den Feldern für Zusammenfassung, Beschreibung und Paketname.\n"
+"\n"
+"Standardmäßig wird die Paketdatenbank durchsucht. Benutze Optionen, um die Installations- oder die Quelldatenbank zu durchsuchen.\n"
 
 #: pisi/cli/search.py:34
 msgid "search options"
@@ -1644,7 +1649,7 @@ msgstr "search Optionen"
 
 #: pisi/cli/search.py:41
 msgid "Summary and description language"
-msgstr "Zusammenfassungs- und Beschreibungssprache"
+msgstr "Zusammenfassung und Beschreibungssprache"
 
 #: pisi/cli/search.py:56
 msgid "Search in installdb"
@@ -1652,15 +1657,15 @@ msgstr "Suche in installdb"
 
 #: pisi/cli/search.py:62
 msgid "Search in the package name"
-msgstr "Suche in den Paketnamen"
+msgstr "Suche im Paketnamen"
 
 #: pisi/cli/search.py:68
 msgid "Search in the package summary"
-msgstr "Suche in Zusammenfassung der Pakete"
+msgstr "Suche in der Paket-Zusammenfassung"
 
 #: pisi/cli/search.py:74
 msgid "Search in the package description"
-msgstr "Suche in Paketbeschreibung"
+msgstr "Suche in der Paketbeschreibung"
 
 #: pisi/cli/searchfile.py:15
 msgid ""
