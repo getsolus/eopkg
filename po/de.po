@@ -1873,11 +1873,11 @@ msgstr "Bandbreitenverwendung unter angegebenen KBs halten"
 msgid "Set the max number of retry attempts in case of connection timeouts"
 msgstr ""
 "Lege die maximale Anzahl der Wiederholungsversuche bei Verbindungs-Timeouts "
-"fest."
+"fest"
 
 #: pisi/cli/command.py:133
 msgid "Set the max number of concurrent download workers"
-msgstr ""
+msgstr "Lege die maximale Anzahl gleichzeitig ausgeführter Downloads fest"
 
 #: pisi/cli/command.py:141
 msgid "Detailed output"
@@ -1889,12 +1889,14 @@ msgstr "Debugger-Informationen anzeigen"
 
 #: pisi/cli/command.py:155
 msgid "Suppresses all coloring of eopkg's output"
-msgstr "eopkg-Ausgaben ohne farbliche Darstellungen anzeigen"
+msgstr "Farbliche Ausgaben von eopkg unterdrücken"
 
 #: pisi/cli/command.py:169
 msgid ""
 "HTTP Basic-Auth is no longer supported. Please reconfigure your repository."
 msgstr ""
+"HTTP-Basisauthentifizierung wird nicht mehr unterstützt. Bitte konfiguriere "
+"dein Repository neu."
 
 #: pisi/cli/command.py:176
 #, python-format
@@ -1917,13 +1919,13 @@ msgstr "Comar Konfigurations-Agent umgehen"
 #: pisi/cli/command.py:257
 msgid "Do not perform any action, just show what would be done"
 msgstr ""
-"Keine Aktion ausführen sondern nur anzeigen was in der Aktion geschehen "
+"Keine Aktion ausführen, sondern nur anzeigen was in der Aktion geschehen "
 "würde"
 
 #: pisi/cli/command.py:276
 #, python-format
 msgid "usage: %s\n"
-msgstr "Syntax: %s\n"
+msgstr "Verwendung: %s\n"
 
 #: pisi/cli/info.py:20
 msgid ""
@@ -1933,6 +1935,11 @@ msgid ""
 "\n"
 "<packagei> is either a package name or a .pisi file,\n"
 msgstr ""
+"Paket Informationen anzeigen\n"
+"\n"
+"Verwendung: info <package1> <package2> ... <packagen>\n"
+"\n"
+"<packagei> ist entweder ein Paketname oder eine .pisi Datei,\n"
 
 #: pisi/cli/info.py:38
 msgid "info options"
@@ -1944,7 +1951,7 @@ msgstr "Eine Liste der Paketdateien anzeigen."
 
 #: pisi/cli/info.py:55
 msgid "Sort files by name (path), size or type."
-msgstr ""
+msgstr "Sortiere Dateien nach Name (Pfad), Größe oder Typ."
 
 #: pisi/cli/info.py:62
 msgid "Info about the given component"
@@ -1956,24 +1963,24 @@ msgstr "Nur Pfade anzeigen."
 
 #: pisi/cli/info.py:76
 msgid "Resolve package against specified repository"
-msgstr ""
+msgstr "Ermittle das Paket im angegebenen Repository"
 
 #: pisi/cli/info.py:83
 msgid "Do not show details"
-msgstr "Details nicht anzeigen"
+msgstr "Keine Details anzeigen"
 
 #: pisi/cli/info.py:86
 msgid "Output in xml format"
-msgstr "Ausgabe in XML-Format"
+msgstr "Ausgabe im XML-Format"
 
 #: pisi/cli/info.py:139
 #, python-format
 msgid "Unable to resolve repository: %s"
-msgstr ""
+msgstr "Repository %s kann nicht ermittelt werden"
 
 #: pisi/cli/info.py:176
 msgid "Reverse Dependencies:"
-msgstr "Rückabhängigkeiten:"
+msgstr "Rückwärtsabhängigkeiten:"
 
 #: pisi/cli/info.py:189
 #, python-format
@@ -2000,12 +2007,12 @@ msgstr "[binary] "
 #: pisi/cli/info.py:218
 #, python-format
 msgid "Package found in %s repository:"
-msgstr "Paket gefunden im %s Depot:"
+msgstr "Paket gefunden im %s Repository:"
 
 #: pisi/cli/info.py:221
 #, python-format
 msgid "%s package is not found in binary repositories"
-msgstr "Paket %s nicht gefunden in Binärdepots"
+msgstr "Paket %s nicht gefunden in Binär-Repositories"
 
 #: pisi/db/groupdb.py:52 pisi/db/groupdb.py:61
 #, python-format
@@ -2056,15 +2063,15 @@ msgstr "Paket %s ist nicht installiert"
 #: pisi/db/repodb.py:188
 #, python-format
 msgid "%s repository needs to be updated"
-msgstr "%s-Depot muss aktualisiert werden"
+msgstr "%s Repository muss aktualisiert werden"
 
 #: pisi/db/repodb.py:196
 msgid ""
 "Error parsing repository index information. Index file does not exist or is "
 "malformed."
 msgstr ""
-"Fehler beim analysieren der Index-Datei des Depots. Index-Datei fehlerhaft "
-"oder nicht vorhanden."
+"Fehler beim Analysieren der Index-Datei des Repositories. Index-Datei ist "
+"fehlerhaft oder nicht vorhanden."
 
 #: pisi/db/repodb.py:309
 #, python-format
@@ -2072,23 +2079,23 @@ msgid ""
 "Repository '%s' is not compatible with your distribution. Repository is "
 "disabled."
 msgstr ""
-"Depot '%s' ist nicht kompatibel zu Ihrer Distribution. Depot ist "
+"Repository '%s' ist nicht kompatibel zu Ihrer Distribution. Repository ist "
 "deaktiviert."
 
 #: pisi/db/itembyrepo.py:31
 #, python-format
 msgid "%s not found in any repository."
-msgstr "%s wurde in keinem Depot gefunden."
+msgstr "%s wurde in keinem Repository gefunden."
 
 #: pisi/db/itembyrepo.py:41
 #, python-format
 msgid "Repo item %s not found"
-msgstr "Depotgegenstand %s nicht gefunden"
+msgstr "Repository-Eintrag %s nicht gefunden"
 
 #: pisi/db/itembyrepo.py:51 pisi/db/itembyrepo.py:62 pisi/db/itembyrepo.py:72
 #, python-format
 msgid "Repository %s does not exist."
-msgstr "Depot %s existiert nicht."
+msgstr "Repository %s existiert nicht."
 
 #. . FilesDB is a proper name and should not be translated
 #: pisi/db/filesdb.py:148
