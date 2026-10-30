@@ -2100,41 +2100,43 @@ msgstr "Repository %s existiert nicht."
 #. . FilesDB is a proper name and should not be translated
 #: pisi/db/filesdb.py:148
 msgid "FilesDB version mismatch or missing version."
-msgstr ""
+msgstr "Abweichende oder fehlende FilesDB-Version."
 
 #. . FilesDB is a proper name and should not be translated
 #: pisi/db/filesdb.py:171
 msgid "FilesDB is invalid and cannot be rebuilt (no write access)."
 msgstr ""
+"Die FilesDB ist ungültig und kann nicht neu erstellt werden (keine "
+"Schreibberechtigung)."
 
 #: pisi/db/filesdb.py:173
 msgid "Falling back to slow and inaccurate XML search..."
-msgstr ""
+msgstr "Es wird auf die langsame und ungenaue XML-Suche zurückgegriffen…"
 
 #. . FilesDB is a proper name and should not be translated
 #: pisi/db/filesdb.py:180
 msgid "Rebuilding the FilesDB..."
-msgstr ""
+msgstr "FilesDB wird neu erstellt..."
 
 #. . FilesDB is a proper name and should not be translated
 #: pisi/db/filesdb.py:193
 #, python-format
 msgid "FilesDB rebuild failed: %s"
-msgstr ""
+msgstr "Neuerstellung der FilesDB fehlgeschlagen: %s"
 
 #: pisi/db/filesdb.py:209
 #, python-format
 msgid "Adding '%s' ..."
-msgstr ""
+msgstr "'%s' wird hinzugefügt..."
 
 #: pisi/db/filesdb.py:212
 msgid "Okay."
-msgstr ""
+msgstr "Okay."
 
 #: pisi/db/filesdb.py:218
 #, python-format
 msgid "Added so far: %s"
-msgstr ""
+msgstr "Bereits hinzugefügt: %s"
 
 #: pisi/db/filesdb.py:224
 #, python-format
@@ -2145,12 +2147,16 @@ msgid_plural ""
 "\n"
 "%(num)d packages added in total."
 msgstr[0] ""
+"\n"
+"%(num)d Paket insgesamt hinzugefügt."
 msgstr[1] ""
+"\n"
+"%(num)d Pakete insgesamt hinzugefügt ."
 
 #: pisi/db/packagedb.py:132
 #, python-format
 msgid "Repo %s not found."
-msgstr ""
+msgstr "Repository %s nicht gefunden."
 
 #: pisi/db/packagedb.py:221 pisi/db/packagedb.py:227
 #, python-format
@@ -2162,7 +2168,7 @@ msgstr "Paket %s nicht gefunden."
 msgid ""
 "The file '%s' belongs to a different package other than '%s'. Skipping it..."
 msgstr ""
-"Die Datei '%s' gehört zu einem anderen Paket als '%s'. Überspringe sie..."
+"Die Datei '%s' gehört zu einem anderen Paket als '%s'. Wird übersprungen..."
 
 #: pisi/operations/delta.py:53
 #, python-format
@@ -2170,8 +2176,8 @@ msgid ""
 "Package '%s' has the same release number with the new package. Skipping "
 "it..."
 msgstr ""
-"Das Paket '%s' hat die gleiche Versionsnummer wie das neue Paket. "
-"Überspringe es..."
+"Das Paket '%s' hat die gleiche Versionsnummer wie das neue Paket. Wird "
+"übersprungen..."
 
 #: pisi/operations/delta.py:73 pisi/operations/build.py:1642
 #, python-format
@@ -2185,13 +2191,14 @@ msgid ""
 "package. Skipping it..."
 msgstr ""
 "Alle Dateien im Paket '%s' unterscheiden sich von den Dateien in dem neuen "
-"Paket. Überspringe..."
+"Paket. Wird übersprungen..."
 
 #: pisi/operations/delta.py:134
 #, python-format
 msgid "New package '%s' exists in the list of old packages. Skipping it..."
 msgstr ""
-"Neues Paket '%s' existiert in der Liste der alten Pakete. Überspringe es..."
+"Neues Paket '%s' existiert in der Liste der alten Pakete. Wird "
+"übersprungen..."
 
 #: pisi/operations/remove.py:51 pisi/operations/remove.py:85
 msgid "Safety switch prevents the removal of following packages:\n"
@@ -2210,15 +2217,15 @@ msgstr "Paket %s existiert nicht. Kann nicht entfernt werden."
 
 #: pisi/operations/remove.py:68
 msgid "No packages to remove."
-msgstr "Es gibt keine Pakete zum entfernen."
+msgstr "Es gibt keine Pakete zu entfernen."
 
 #: pisi/operations/remove.py:103
 msgid ""
 "The following list of packages will be removed\n"
 "in the respective order to satisfy dependencies:\n"
 msgstr ""
-"Die folgende Paketliste wird in der entsprechenden Reihenfolge entfernt, um "
-"die Abhängigkeiten zu erfüllen:\n"
+"Die folgenden Pakete werden in der angegebenen Reihenfolge entfernt,\n"
+"um die Abhängigkeiten aufzulösen:\n"
 
 #: pisi/operations/remove.py:119 pisi/operations/history.py:155
 #: pisi/operations/history.py:203 pisi/operations/install.py:123
@@ -2235,7 +2242,7 @@ msgstr "Entfernen von Paket abgelehnt"
 #: pisi/operations/remove.py:126 pisi/operations/install.py:158
 #: pisi/operations/upgrade.py:243 pisi/api.py:908 pisi/api.py:948
 msgid "Disabling keyboard interrupts for file operations."
-msgstr ""
+msgstr "Tastaturunterbrechungen werden für Dateioperationen deaktiviert."
 
 #: pisi/operations/remove.py:134
 #, python-format
@@ -2252,7 +2259,7 @@ msgstr "Veraltete Pakete übrig"
 
 #: pisi/operations/remove.py:316
 msgid "Replaced package remains"
-msgstr "Paketreste ersetzt"
+msgstr "Paketreste wurden ersetzt"
 
 #: pisi/operations/build.py:113
 #, python-format
@@ -2262,7 +2269,7 @@ msgstr "Pfad %s gehört zu mehreren Paketen"
 #: pisi/operations/build.py:360
 #, python-format
 msgid "pspec.xml avoids this package from building for '%s'"
-msgstr "pspec.xml verhindert verhindert Erstellen des Pakets für '%s'"
+msgstr "pspec.xml verhindert Erstellunge des Pakets für '%s'"
 
 #: pisi/operations/build.py:363
 #, python-format
@@ -2275,13 +2282,12 @@ msgstr "ccache entdeckt..."
 
 #: pisi/operations/build.py:383
 msgid "IceCream detected. Make sure your daemon is up and running..."
-msgstr ""
-"IceCream entdeckt. Stellen Sie sicher, dass Ihr Daemon gestartet ist..."
+msgstr "IceCream erkannt. Stelle sicher, dass der Daemon ausgeführt wird…"
 
 #: pisi/operations/build.py:416
 #, python-format
 msgid "Rebuilding for %s"
-msgstr "Neuaufbau für %s"
+msgstr "Neuerstellung für %s"
 
 #: pisi/operations/build.py:538
 msgid ""
@@ -2301,7 +2307,7 @@ msgstr ""
 
 #: pisi/operations/build.py:566
 msgid "Unpacking archive(s)..."
-msgstr "Datei wird entpackt..."
+msgstr "Archiv(e) werden entpackt..."
 
 #: pisi/operations/build.py:574
 #, python-format
@@ -2315,7 +2321,7 @@ msgstr "Quelle wird konfiguriert..."
 
 #: pisi/operations/build.py:584
 msgid "Building source..."
-msgstr "Quelle wird konstruiert"
+msgstr "Quelle wird erstellt..."
 
 #: pisi/operations/build.py:589
 msgid "Testing package..."
@@ -2328,17 +2334,17 @@ msgstr "Wird installiert..."
 #: pisi/operations/build.py:661
 #, python-format
 msgid "Unable to read Actions Script (%s): %s"
-msgstr "Nicht imstande das Action-Skript zu lesen (%s): %s"
+msgstr "Actions Script (%s) kann nicht gelesen werden: %s"
 
 #: pisi/operations/build.py:663
 #, python-format
 msgid "SyntaxError in Actions Script (%s): %s"
-msgstr "Syntaxfehler im Action-Skript (%s): %s"
+msgstr "Syntaxfehler im Actions Script (%s): %s"
 
 #: pisi/operations/build.py:692
 #, python-format
 msgid "Unable to read COMAR script (%s): %s"
-msgstr "Nicht imstande das COMAR-Skript zu lesen (%s):%s"
+msgstr "COMAR-Script (%s) kann nicht gelesen werden:%s"
 
 #: pisi/operations/build.py:694
 #, python-format
@@ -2370,7 +2376,7 @@ msgstr "Sandbox-Verletzungen!"
 #: pisi/operations/build.py:798
 #, python-format
 msgid "unable to call function from actions: %s"
-msgstr "Nicht imstande die Funktion vom Vorgang aufzurufen: %s"
+msgstr "Kann die Funktion vom Vorgang nicht aufrufen: %s"
 
 #: pisi/operations/build.py:812
 #, python-format
@@ -2385,7 +2391,7 @@ msgstr "Quellpaket '%s' definiert mehrfache 'Path'-Tags für %s"
 #: pisi/operations/build.py:830 pisi/atomicoperations.py:130
 #, python-format
 msgid "%s-%s is not a valid eopkg version format"
-msgstr "%s-%s ist kein gültiges Format einer eopkg-Version"
+msgstr "%s-%s ist kein gültiges eopkg-Versionsformat"
 
 #: pisi/operations/build.py:856
 msgid ""
@@ -2410,11 +2416,11 @@ msgstr "Paket kann wegen unerfüllten Abhängigkeiten nicht erstellt werden"
 #: pisi/operations/build.py:891
 #, python-format
 msgid "Build dependency %s cannot be satisfied"
-msgstr "Build-Abhängigkeit %s konnte nicht zufriedengestellt werden"
+msgstr "Build-Abhängigkeit %s konnte nicht erfüllt werden"
 
 #: pisi/operations/build.py:894
 msgid "Do you want to install the unsatisfied build dependencies"
-msgstr "Wollen Sie die notwendigen fehlenden Abhängigkeiten installieren"
+msgstr "Wollen Sie die unerfüllten Abhängigkeiten installieren"
 
 #: pisi/operations/build.py:896
 msgid "Installing build dependencies."
