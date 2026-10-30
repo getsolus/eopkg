@@ -2450,6 +2450,8 @@ msgid ""
 "pkg-config not found but package provides .pc files - skipping export of "
 "pkgconfig information"
 msgstr ""
+"pkg-config nicht gefunden, obwohl das Paket .pc-Dateien bereitstellt – der "
+"Export der pkg-config-Informationen wird übersprungen"
 
 #: pisi/operations/build.py:1132
 #, python-format
