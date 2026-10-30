@@ -2456,17 +2456,17 @@ msgstr ""
 #: pisi/operations/build.py:1132
 #, python-format
 msgid "Unable to obtain pkgconfig module version for %s"
-msgstr ""
+msgstr "Version des pkgconfig Moduls für %s kann nicht ermittelt werden"
 
 #: pisi/operations/build.py:1140
 #, python-format
 msgid "Adding %s to provided pkgconfig32 list"
-msgstr ""
+msgstr "%s wird zur unterstützten pkgconfig32-Liste hinzugefügt"
 
 #: pisi/operations/build.py:1145
 #, python-format
 msgid "Adding %s to provided pkgconfig list"
-msgstr ""
+msgstr "%s wird zur unterstützten pkgconfig-Liste hinzugefügt"
 
 #: pisi/operations/build.py:1369
 #, python-format
@@ -2508,7 +2508,7 @@ msgstr "Behalte Build-Verzeichnis"
 
 #: pisi/operations/build.py:1775
 msgid "Action script error caught."
-msgstr "Fehler im Action-Skript entdeckt."
+msgstr "Fehler im Action Script entdeckt."
 
 #: pisi/operations/build.py:1780
 #, python-format
@@ -2523,21 +2523,23 @@ msgstr "Letzter Status war '%s'"
 #: pisi/operations/helper.py:33
 msgid "Reordering install order so system.base packages come first."
 msgstr ""
+"Installationsreihenfolge wird angepasst, sodass Pakete von system.base "
+"zuerst installiert werden."
 
 #: pisi/operations/helper.py:35
 #, python-format
 msgid "install_order: %s"
-msgstr ""
+msgstr "install_order: %s"
 
 #: pisi/operations/helper.py:49
 #, python-format
 msgid "order: %s"
-msgstr ""
+msgstr "order: %s"
 
 #: pisi/operations/helper.py:62
 #, python-format
 msgid "Selected packages [%s] are in conflict with each other."
-msgstr "Markierte Pakete [%s] sind in Konflikt miteinander."
+msgstr "Selektierte Pakete [%s] sind miteinander in Konflikt."
 
 #: pisi/operations/helper.py:69
 #, python-format
@@ -2555,16 +2557,16 @@ msgstr ""
 
 #: pisi/operations/helper.py:76
 msgid "Remove the following conflicting packages?"
-msgstr "Folgende widersprüchliche Pakete entfernen?"
+msgstr "Sollen die folgenden in Konflikt stehenden Pakete entfernt werden?"
 
 #: pisi/operations/helper.py:77
 msgid "Conflicting packages should be removed to continue"
-msgstr "Pakete mit Konflikten sollten zuerst entfernt werden"
+msgstr "In Konflikt stehende Pakete sollten entfernt werden, um fortzufahren"
 
 #: pisi/operations/history.py:78
 #, python-format
 msgid "Package %s found in repository %s"
-msgstr "Paket %s im Depot %s gefunden"
+msgstr "Paket %s im Repository %s gefunden"
 
 #: pisi/operations/history.py:146
 msgid "Following packages will be installed:\n"
@@ -2586,12 +2588,12 @@ msgstr "%s [gecached]"
 
 #: pisi/operations/history.py:182
 msgid "Downloading historical packages..."
-msgstr ""
+msgstr "Ältere Paketversionen werden heruntergeladen…"
 
 #: pisi/operations/history.py:186
 #, python-format
 msgid "Error while fetching historical packages: %s"
-msgstr ""
+msgstr "Fehler beim Herunterladen der älteren Paketversionen: %s"
 
 #: pisi/operations/history.py:199
 msgid ""
@@ -2599,14 +2601,14 @@ msgid ""
 "Following packages could not be found in repositories and are not cached:\n"
 msgstr ""
 "\n"
-"Folgende Pakete konnten in den Depots nicht gefunden werden und sind nicht zwischengespeichert:\n"
+"Folgende Pakete konnten in den Repositories nicht gefunden werden und sind nicht gecached:\n"
 
 #: pisi/operations/install.py:70 pisi/operations/install.py:209
 msgid ""
 "The following package(s) are already installed and are not going to be "
 "installed again:"
 msgstr ""
-"Die folgenden Pakete sind schon installiert und werden nicht erneut "
+"Folgenden Paket(e) sind schon installiert und werden nicht erneut "
 "installiert:"
 
 #: pisi/operations/install.py:78 pisi/operations/install.py:323
