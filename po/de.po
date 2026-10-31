@@ -2617,16 +2617,16 @@ msgstr "Keine zu installierenden Pakete."
 
 #: pisi/operations/install.py:99 pisi/operations/upgrade.py:176
 msgid "The following packages will be downloaded:"
-msgstr ""
+msgstr "Die folgenden Pakete werden heruntergeladen:"
 
 #: pisi/operations/install.py:101
 msgid "The following packages will be installed:"
-msgstr ""
+msgstr "Die folgenden Pakete werden installiert:"
 
 #: pisi/operations/install.py:110 pisi/operations/upgrade.py:187
 #, python-format
 msgid "Total size of package(s): %.2f %s"
-msgstr "Gesamtgrösse der Pakete: %.2f %s"
+msgstr "Gesamtgröße der Paket(e): %.2f %s"
 
 #: pisi/operations/install.py:120 pisi/operations/upgrade.py:199
 msgid "There are extra packages due to dependencies."
@@ -2636,10 +2636,12 @@ msgstr "Es gibt zusätzliche Pakete auf Grund von Abhängigkeiten."
 #, python-format
 msgid "Download Error: Package %s does not match the repository package."
 msgstr ""
+"Fehler beim Herunterladen: Paket %s entspricht nicht dem Paket im "
+"Repository."
 
 #: pisi/operations/install.py:144
 msgid "Finished downloading packages."
-msgstr ""
+msgstr "Herunterladen der Pakete abgeschlossen."
 
 #: pisi/operations/install.py:167 pisi/operations/upgrade.py:252
 #, python-format
@@ -2663,7 +2665,7 @@ msgstr "Paket %s (%s) ist nicht kompatibel mit Ihrer %s Architektur."
 #: pisi/operations/install.py:298
 #, python-format
 msgid "External dependencies not satisfied: %s"
-msgstr "Externe Abhängigkeiten werden nicht erfüllt: %s"
+msgstr "Nicht erfüllte externe Abhängigkeiten: %s"
 
 #: pisi/operations/install.py:305
 msgid ""
@@ -2682,34 +2684,34 @@ msgstr "Installationsreihenfolge:"
 #: pisi/operations/install.py:405 pisi/specfile.py:301
 #, python-format
 msgid "%s dependency of package %s is not satisfied"
-msgstr "Abhängigkeit %s von %s ist nicht zufriedenstellend"
+msgstr "Abhängigkeit %s von Paket %s wird nicht erfüllt"
 
 #: pisi/operations/install.py:427
 #, python-format
 msgid "topological_sort() order: %s"
-msgstr ""
+msgstr "topological_sort() order: %s"
 
 #: pisi/operations/install.py:430
 #, python-format
 msgid "deterministic order: %s"
-msgstr ""
+msgstr "deterministic order: %s"
 
 #: pisi/operations/install.py:433
 #, python-format
 msgid "final order.reverse(): %s"
-msgstr ""
+msgstr "final order.reverse(): %s"
 
 #: pisi/operations/upgrade.py:48
 msgid ""
 "You must restart your system for the updates in the following package(s) to "
 "take effect:"
 msgstr ""
-"Sie müssen das System neu starten, damit die Paketaktualisierungen wirksam "
-"werden:"
+"Sie müssen das System neu starten, damit die Aktualisierung der Paket(e) "
+"wirksam wird:"
 
 #: pisi/operations/upgrade.py:72
 msgid "Warning: package *name* ends with '.pisi'"
-msgstr ""
+msgstr "Warnung: Paket *name* endet mit '.pisi'"
 
 #: pisi/operations/upgrade.py:75
 #, python-format
@@ -2719,7 +2721,7 @@ msgstr "Paket %s ist nicht installiert."
 #: pisi/operations/upgrade.py:79
 #, python-format
 msgid "Package %s is not available in repositories."
-msgstr "Paket %s ist in den Depots nicht vorhanden."
+msgstr "Paket %s ist in den Repositories nicht vorhanden."
 
 #: pisi/operations/upgrade.py:104
 #, python-format
@@ -2728,11 +2730,11 @@ msgstr "Paket %s ist schon auf dem aktuellen Release %s."
 
 #: pisi/operations/upgrade.py:178
 msgid "The following packages will be upgraded:"
-msgstr "Folgende Pakete werden aktualisiert:"
+msgstr "Die folgenden Pakete werden aktualisiert:"
 
 #: pisi/operations/upgrade.py:225
 msgid "Finished downloading package upgrades."
-msgstr ""
+msgstr "Das Herunterladen der Paket-Aktualisierungen ist abgeschlossen."
 
 #: pisi/operations/upgrade.py:316
 #, python-format
@@ -2741,7 +2743,7 @@ msgstr "Abhängigkeit %s von %s kann nicht erfüllt werden"
 
 #: pisi/operations/upgrade.py:318
 msgid "Upgrade is not possible."
-msgstr "Upgrade ist nicht möglich."
+msgstr "Aktualisierung ist nicht möglich."
 
 #: pisi/operations/upgrade.py:424
 msgid "Safety switch forces the installation of following packages:"
@@ -2755,21 +2757,22 @@ msgstr ""
 #: pisi/operations/upgrade.py:463
 #, python-format
 msgid "installs and upgrades (unordered): %s"
-msgstr ""
+msgstr "Installationen und Aktualisierungen (unsortiert): %s"
 
 #: pisi/operations/upgrade.py:475
 #, python-format
 msgid "installs and upgrades (deterministic order): %s"
 msgstr ""
+"Installationen und Aktualisierungen (deterministische Reihenfolge): %s"
 
 #: pisi/pxml/xmlext.py:74
 msgid "getNodeText: Expected text node, got something else!"
-msgstr ""
+msgstr "getNodeText: text node erwartet, aber etwas anderes vorgefunden!"
 
 #: pisi/pxml/xmlfile.py:51
 #, python-format
 msgid "String '%s' has invalid XML"
-msgstr "String '%s' hat ungültiges XML"
+msgstr "String '%s' enthält ungültiges XML"
 
 #: pisi/pxml/xmlfile.py:87
 #, python-format
@@ -2779,43 +2782,47 @@ msgstr "Kann die Datei (%s) nicht lesen: %s"
 #: pisi/pxml/xmlfile.py:89 pisi/specfile.py:494
 #, python-format
 msgid "File '%s' has invalid XML"
-msgstr "Datei '%s' hat ungültiges XML"
+msgstr "Datei '%s' enthält ungültiges XML"
 
 #: pisi/pxml/autoxml.py:74
 #, python-brace-format
 msgid "At least one '{}' tag should have local text."
-msgstr ""
+msgstr "Mindestens ein '{}' Tag sollte einen lokalen Text enthalten."
 
 #: pisi/pxml/autoxml.py:86
 #, python-brace-format
 msgid "'{0}' language of tag '{1}' is empty."
-msgstr ""
+msgstr "'{0}' Sprache von Tag '{1}' ist leer."
 
 #. FIXME: what exception could we catch here, replace with that.
 #: pisi/pxml/autoxml.py:118
 msgid "LocalText: unable to get either current or default locale."
 msgstr ""
+"LocalText: Weder die aktuelle noch die Standardsprache konnte ermittelt "
+"werden."
 
 #: pisi/pxml/autoxml.py:132 pisi/pxml/autoxml.py:151
 msgid ""
 "Tag should have at least the current locale, or failing that an English or "
 "Turkish version."
 msgstr ""
+"Für das Tag muss mindestens eine Version in der aktuellen Sprache vorhanden "
+"sein, ersatzweise auf Englisch oder Türkisch."
 
 #: pisi/pxml/autoxml.py:386
 #, python-brace-format
 msgid "autoxml.check: '{}' errors."
-msgstr ""
+msgstr "autoxml.check: '{}' Fehler."
 
 #: pisi/pxml/autoxml.py:454 pisi/pxml/autoxml.py:464
 #, python-brace-format
 msgid "autoxml.parse: String '{}' has errors."
-msgstr ""
+msgstr "autoxml.parse: String '{}' hat Fehler."
 
 #: pisi/pxml/autoxml.py:493 pisi/pxml/autoxml.py:503
 #, python-brace-format
 msgid "autoxml.read: File '{}' has errors."
-msgstr ""
+msgstr "autoxml.read: File '{}' hat Fehler."
 
 #: pisi/pxml/autoxml.py:518
 msgid "autoxml.write: object validation has failed."
