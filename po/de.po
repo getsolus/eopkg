@@ -49,12 +49,12 @@ msgstr ""
 #: pisi/actionsapi/perlmodules.py:49 pisi/actionsapi/perlmodules.py:55
 #: pisi/actionsapi/waftools.py:65
 msgid "Configure failed."
-msgstr "Configure fehlgeschlagen."
+msgstr "Konfiguration fehlgeschlagen."
 
 #: pisi/actionsapi/autotools.py:104 pisi/actionsapi/autotools.py:120
 #: pisi/actionsapi/kde.py:69 pisi/actionsapi/waftools.py:67
 msgid "No configure script found."
-msgstr "Kein Configure-Skript gefunden."
+msgstr "Kein Konfigurationsskript gefunden."
 
 #: pisi/actionsapi/autotools.py:135 pisi/actionsapi/cmaketools.py:89
 #: pisi/actionsapi/kde.py:75 pisi/actionsapi/perlmodules.py:62
@@ -85,7 +85,7 @@ msgstr "Ausführen von autoheader fehlgeschlagen."
 
 #: pisi/actionsapi/cmaketools.py:78
 msgid "No configure script found for cmake."
-msgstr "Kein configure Skript für cmake gefunden."
+msgstr "Kein Konfigurationsskript für cmake gefunden."
 
 #: pisi/actionsapi/cmaketools.py:131 pisi/actionsapi/kde.py:89
 msgid "No Makefile found."
@@ -123,7 +123,7 @@ msgstr "Ausführen von ldconfig fehlgeschlagen."
 
 #: pisi/actionsapi/libtools.py:42
 msgid "GNU Config Update Finished."
-msgstr "GNU Config Aktualisierung fertig gestellt."
+msgstr "GNU Config Aktualisierung beendet."
 
 #: pisi/actionsapi/libtools.py:47
 msgid "Running libtoolize failed."
@@ -343,7 +343,7 @@ msgstr "ActionsAPI [touch]: Zugriff verweigert: %s"
 #: pisi/actionsapi/shelltools.py:296
 #, python-format
 msgid "Command \"%s\" failed, return value was %d."
-msgstr "Kommando \"%s\" fehlgeschlagen, Rückgabewert war %d."
+msgstr "Befehl \"%s\" fehlgeschlagen, Rückgabewert war %d."
 
 #: pisi/actionsapi/texlivemodules.py:50
 msgid "Moving source files failed"
@@ -461,7 +461,7 @@ msgstr ""
 "Syntax: clean\n"
 "\n"
 "eopkg nutzt Dateisystemsperren um Datenbankzugriffe zu verwalten.\n"
-"Dieses Kommando löscht nicht benutzte Sperren von dem Datenbankverzeichnis."
+"Dieser Befehl löscht nicht benutzte Sperren von dem Datenbankverzeichnis."
 
 #: pisi/cli/deletecache.py:13
 msgid ""
@@ -489,7 +489,7 @@ msgid ""
 "\n"
 "If run without parameters, it prints the general help."
 msgstr ""
-"Zeigt die Hilfe für angegebene Kommandos\n"
+"Zeigt die Hilfe für angegebene Befehle\n"
 "\n"
 "Syntax: help [ <command1> <command2> ... <commandn> ]\n"
 "\n"
@@ -938,7 +938,7 @@ msgstr ""
 "<packagei>: Paketname\n"
 "\n"
 "Eine verschlüsselte Prüfsumme ist für jede installierte\n"
-"Datei. Das Kommando check nutzt die Prüfsumme, um ein Paket\n"
+"Datei. Der Befehl check nutzt die Prüfsumme, um ein Paket\n"
 "zu überprüfen.\n"
 "Einfach die Paketnamen angegeben.\n"
 "\n"
@@ -1047,7 +1047,7 @@ msgstr ""
 "Falls die Konfiguration einiger Pakete durch COMAR\n"
 "während der Installation nicht durchgeführt wurde,\n"
 "werden diese Pakete auf eine Warteliste gesetzt.\n"
-"Dieses Kommando konfiguriert jene Pakete.\n"
+"Dieser Befehl konfiguriert jene Pakete.\n"
 
 #: pisi/cli/configurepending.py:29
 msgid "configure-pending options"
@@ -1069,7 +1069,7 @@ msgstr ""
 "Verwendung: delta oldpackage1 oldpackage2 ...  newpackage\n"
 "            delta -t newpackage oldpackage1 oldpackage2 ...\n"
 "\n"
-"Das Delta-Kommando findet die Unterschiede zwischen den angegebenen\n"
+"Der Delta-Befehl findet die Unterschiede zwischen den angegebenen\n"
 "Paketen durch den Vergleich der sha1sum Prüfsumme der Dateien und erstellt\n"
 "ein Delta-Paket mit den geänderten Dateien.\n"
 
@@ -1221,7 +1221,7 @@ msgstr ""
 "Namen 'eopkg-index.xml' erhält. Der Befehl indexiert sowohl Source-Dateien, als auch\n"
 "binäre Pakete.\n"
 "\n"
-"Wenn man mehrere Verzeichnisse angibt, funktioniert das Kommando ebenso.\n"
+"Wenn man mehrere Verzeichnisse angibt, funktioniert der Befehl ebenso.\n"
 "Es wird dann jedoch alles in eine einzelne Index-Dateien gepackt.\n"
 
 #: pisi/cli/index.py:37
@@ -2334,17 +2334,17 @@ msgstr "Wird installiert..."
 #: pisi/operations/build.py:661
 #, python-format
 msgid "Unable to read Actions Script (%s): %s"
-msgstr "Actions Script (%s) kann nicht gelesen werden: %s"
+msgstr "Actions Skript (%s) kann nicht gelesen werden: %s"
 
 #: pisi/operations/build.py:663
 #, python-format
 msgid "SyntaxError in Actions Script (%s): %s"
-msgstr "Syntaxfehler im Actions Script (%s): %s"
+msgstr "Syntaxfehler im Actions Skript (%s): %s"
 
 #: pisi/operations/build.py:692
 #, python-format
 msgid "Unable to read COMAR script (%s): %s"
-msgstr "COMAR-Script (%s) kann nicht gelesen werden:%s"
+msgstr "COMAR-Skript (%s) kann nicht gelesen werden:%s"
 
 #: pisi/operations/build.py:694
 #, python-format
@@ -2508,7 +2508,7 @@ msgstr "Behalte Build-Verzeichnis"
 
 #: pisi/operations/build.py:1775
 msgid "Action script error caught."
-msgstr "Fehler im Action Script entdeckt."
+msgstr "Fehler im Action Skript entdeckt."
 
 #: pisi/operations/build.py:1780
 #, python-format
@@ -3273,11 +3273,11 @@ msgstr "Repository wird aktualisiert: %s"
 #: pisi/api.py:918
 #, python-format
 msgid "%s repository information is up-to-date."
-msgstr "Depot-Information von %s ist aktuell."
+msgstr "Repository-Information von %s ist aktuell."
 
 #: pisi/api.py:920
 msgid "Updating database at any rate as requested"
-msgstr "Datenbank wird wunschgemäss aktualisiert"
+msgstr "Datenbank wird wie gewünscht in jedem Fall aktualisiert."
 
 #: pisi/api.py:927
 msgid "Package database updated."
@@ -3286,7 +3286,7 @@ msgstr "Paket-Datenbank aktualisiert."
 #: pisi/api.py:929
 #, python-format
 msgid "No repository named %s found."
-msgstr "Kein Depot mit Namen %s gefunden."
+msgstr "Kein Repository mit Namen %s gefunden."
 
 #: pisi/atomicoperations.py:93
 #, python-format
@@ -3296,12 +3296,14 @@ msgstr "Installiere %s, Version %s, Release %s"
 #: pisi/atomicoperations.py:139
 #, python-format
 msgid "%s package cannot be installed unless the dependencies are satisfied"
-msgstr "Paket %s kann nicht ohne seine Abhängigkeiten installiert werden"
+msgstr ""
+"Paket %s kann installiert werden, solange die Abhängigkeiten nicht erfüllt "
+"sind"
 
 #: pisi/atomicoperations.py:178
 #, python-format
 msgid "/%s from %s gets replaced by %s package\n"
-msgstr ""
+msgstr "/%s aus %s wird ersetzt durch das Paket %s\n"
 
 #: pisi/atomicoperations.py:182 pisi/atomicoperations.py:187
 #, python-format
@@ -3319,31 +3321,31 @@ msgstr ""
 
 #: pisi/atomicoperations.py:209
 msgid "Re-install same distribution release of package?"
-msgstr ""
+msgstr "Dasselbe Distributions-Release des Pakets erneut installieren?"
 
 #: pisi/atomicoperations.py:211
 msgid "Package re-install declined"
-msgstr "Erneute Installation des Paketes wird abgelehnt"
+msgstr "Erneute Installation des Paketes abgelehnt"
 
 #: pisi/atomicoperations.py:219
 msgid "Upgrading to new distribution release"
-msgstr "Ein Upgrade auf das neue Distributions-Release wird ausgeführt"
+msgstr "Aktualisierung auf das neue Distributions-Release"
 
 #: pisi/atomicoperations.py:225
 msgid "Downgrade to old distribution release?"
-msgstr "Zu dem alten Distribution-Release downgraden?"
+msgstr "Auf ein älteres Distributions-Release zurückstufen?"
 
 #: pisi/atomicoperations.py:229
 msgid "Package downgrade declined"
-msgstr "Paket-Downgrade abgelehnt"
+msgstr "Paket-Zurückstufung abgelehnt"
 
 #: pisi/atomicoperations.py:335
 msgid ""
 "Unable to relocate following files. Reinstallation of this package is "
 "strongly recommended."
 msgstr ""
-"Kann folgende Dateien nicht zurücksetzen. Eine erneute Installation dieses "
-"Pakets wird dringend empfohlen!"
+"Die folgenden Dateien konnten nicht verschoben werden. Es wird dringend "
+"empfohlen, dieses Paket erneut zu installieren."
 
 #. comar prefix is added to the pkg_dir while extracting comar
 #. script file. so we'll use pkg_dir as destination.
@@ -3351,7 +3353,7 @@ msgstr ""
 #: pisi/atomicoperations.py:466
 #, python-format
 msgid "Storing %s"
-msgstr "%s wird abgelegt"
+msgstr "%s wird gespeichert"
 
 #: pisi/atomicoperations.py:554
 #, python-format
@@ -3367,7 +3369,7 @@ msgstr "Paket %s wird entfernt"
 
 #: pisi/atomicoperations.py:565
 msgid "Trying to remove nonexistent package "
-msgstr "Nicht vorhandenes Paket wird versucht zu entfernen"
+msgstr "Versuche nicht vorhandenes Paket zu entfernen"
 
 #: pisi/atomicoperations.py:606
 #, python-format
@@ -3380,13 +3382,15 @@ msgid ""
 "Installed config file %s does not exist on system [Probably you manually "
 "deleted]"
 msgstr ""
+"Installierte Konfigurationsdatei %s existiert nicht im System "
+"[Möglicherweise wurde sie manuell gelöscht]"
 
 #: pisi/atomicoperations.py:643
 #, python-format
 msgid ""
 "Installed file %s does not exist on system [Probably you manually deleted]"
 msgstr ""
-"Installierte Datei %s existiert nicht mehr im System [vermutlich haben Sie "
+"Installierte Datei %s existiert nicht mehr im System [Möglicherweise wurde "
 "sie manuell gelöscht]"
 
 #: pisi/configfile.py:136
@@ -3396,11 +3400,11 @@ msgstr "Kein Abschnitt mit Namen '%s' "
 
 #: pisi/fetcher.py:258
 msgid "URL does not end in a file name"
-msgstr ""
+msgstr "URL endet nicht mit einem Dateinamen"
 
 #: pisi/fetcher.py:327
 msgid "One or more errors occurred during fetching"
-msgstr ""
+msgstr "Beim Abrufen sind ein oder mehrere Fehler aufgetreten"
 
 #: pisi/file.py:27
 #, python-format
@@ -3434,7 +3438,7 @@ msgstr "Datei '%s' nicht gefunden."
 #: pisi/file.py:179
 #, python-format
 msgid "File integrity of %s compromised."
-msgstr "Dateiintegrität von %s kompromittiert."
+msgstr "Die Integrität der Datei %s ist nicht gewährleistet."
 
 #. : File.read and File.write are function names, and should not be
 #. translated.
@@ -3453,12 +3457,12 @@ msgstr "ERROR: gpg --detach-sig %s fehlgeschlagen"
 
 #: pisi/index.py:149
 msgid "Adding packages to index:"
-msgstr ""
+msgstr "Hinzufügen der Pakete zum Index:"
 
 #: pisi/index.py:171
 #, python-format
 msgid "Adding package to index: %s"
-msgstr ""
+msgstr "Hinzufügen des Pakets zum Index: %s"
 
 #: pisi/index.py:189
 #, python-format
@@ -3515,7 +3519,7 @@ msgstr "unpack: check_file_hash fehlgeschlagen"
 #: pisi/sourcearchive.py:117
 #, python-format
 msgid "Unknown archive type '%s' is given for '%s'."
-msgstr "Unbekannter Archivtyp '%s' übergeben für '%s'."
+msgstr "Unbekannter Archivtyp '%s' angegeben für '%s'."
 
 #: pisi/sourcearchive.py:122
 #, python-format
@@ -3550,7 +3554,7 @@ msgstr "Sie haben nicht die benötigten Leserechte"
 #: pisi/util.py:532
 #, python-format
 msgid "File %s was not found"
-msgstr ""
+msgstr "Datei %s wurde nicht gefunden"
 
 #: pisi/util.py:534
 #, python-format
@@ -3612,8 +3616,9 @@ msgstr "Ungültiger Delta Paketname: %s"
 #, python-format
 msgid "Failed to acquire inhibit lock: %s"
 msgstr ""
+"Sperre zur Verhinderung paralleler Vorgänge konnte nicht erworben werden: %s"
 
 #: pisi/util.py:1005
 #, python-format
 msgid "D-Bus call failed: %s"
-msgstr ""
+msgstr "D-Bus Aufruf fehlgeschlagen %s"
