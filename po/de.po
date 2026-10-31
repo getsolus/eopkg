@@ -810,8 +810,8 @@ msgstr ""
 "Man kann die URI der pspec.xml Datei angeben.\n"
 "eopkg wird alle notwendigen Dateien sammeln und das Paket erstellen.\n"
 "\n"
-"Alternativ kann man den Namen eines Source-Pakets angeben,\n"
-"welches aus einem Sourcen enthaltenden Repository heruntergeladen werden soll.\n"
+"Alternativ kann man den Namen eines Quellpakets angeben,\n"
+"welches aus einem Quell-Repository heruntergeladen werden soll.\n"
 
 #: pisi/cli/build.py:38
 msgid "build options"
@@ -868,15 +868,15 @@ msgstr "Build-Schritte"
 
 #: pisi/cli/build.py:129
 msgid "Break build after fetching the source archive"
-msgstr "Build nach Kopie des Source-Archivs abbrechen"
+msgstr "Build nach Kopie des Quellarchivs abbrechen"
 
 #: pisi/cli/build.py:138
 msgid ""
 "Break build after unpacking the source archive, checking sha1sum and "
 "applying patches"
 msgstr ""
-"Build nach Entpacken der Source-Archivs, Prüfen der sha1sum und Anwenden der"
-" Patches abbrechen."
+"Build nach Entpacken des Quellarchivs, Prüfen der sha1sum und Anwenden der "
+"Patches abbrechen."
 
 #: pisi/cli/build.py:149
 msgid "Break build after running configure step"
@@ -1218,7 +1218,7 @@ msgstr ""
 "\n"
 "Dieses Kommando sucht nach eopkg Dateien in einem Verzeichnis, sammelt eopkg\n"
 "Tags und bündelt die Informationen in einer XML-Datei, welche standardmäßig den\n"
-"Namen 'eopkg-index.xml' erhält. Der Befehl indexiert sowohl Source-Dateien, als auch\n"
+"Namen 'eopkg-index.xml' erhält. Der Befehl indexiert sowohl Quelldateien, als auch\n"
 "binäre Pakete.\n"
 "\n"
 "Wenn man mehrere Verzeichnisse angibt, funktioniert der Befehl ebenso.\n"
@@ -1407,7 +1407,7 @@ msgstr "list-components Optionen"
 
 #: pisi/cli/listcomponents.py:45 pisi/cli/search.py:49
 msgid "Name of the source or package repository"
-msgstr "Name des Source- oder Paketrepositories"
+msgstr "Name des Quell- oder Paketrepositories"
 
 #: pisi/cli/listinstalled.py:17
 msgid ""
@@ -3500,7 +3500,7 @@ msgstr "Quelle wird abgerufen von: %s"
 #: pisi/sourcearchive.py:66
 #, python-format
 msgid "Source archive is stored: %s/%s"
-msgstr "Quell-Archiv wird gespeichert: %s/%s"
+msgstr "Quellarchiv wird gespeichert: %s/%s"
 
 #: pisi/sourcearchive.py:83
 #, python-format
