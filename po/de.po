@@ -2767,7 +2767,7 @@ msgstr ""
 
 #: pisi/pxml/xmlext.py:74
 msgid "getNodeText: Expected text node, got something else!"
-msgstr "getNodeText: text node erwartet, aber etwas anderes vorgefunden!"
+msgstr "getNodeText: Textknoten erwartet, aber etwas anderes vorgefunden!"
 
 #: pisi/pxml/xmlfile.py:51
 #, python-format
@@ -2817,91 +2817,91 @@ msgstr "autoxml.check: '{}' Fehler."
 #: pisi/pxml/autoxml.py:454 pisi/pxml/autoxml.py:464
 #, python-brace-format
 msgid "autoxml.parse: String '{}' has errors."
-msgstr "autoxml.parse: String '{}' hat Fehler."
+msgstr "autoxml.parse: String '{}' weist Fehler auf."
 
 #: pisi/pxml/autoxml.py:493 pisi/pxml/autoxml.py:503
 #, python-brace-format
 msgid "autoxml.read: File '{}' has errors."
-msgstr "autoxml.read: File '{}' hat Fehler."
+msgstr "autoxml.read: Datei '{}' weist Fehler auf."
 
 #: pisi/pxml/autoxml.py:518
 msgid "autoxml.write: object validation has failed."
-msgstr ""
+msgstr "autoxml.write: Objekt-Validierung fehlgeschlagen."
 
 #: pisi/pxml/autoxml.py:527
 #, python-brace-format
 msgid "autoxml.write: File encoding '{}' has errors."
-msgstr ""
+msgstr "autoxml.write: Fehler in der Dateikodierung'{}'."
 
 #: pisi/pxml/autoxml.py:586
 #, python-brace-format
 msgid "gen_tag: unrecognized tag type {} in spec."
-msgstr ""
+msgstr "gen_tag: Nicht erkannter Tag-Typ {} in der Spezifikation."
 
 #: pisi/pxml/autoxml.py:642 pisi/pxml/autoxml.py:654
 #, python-brace-format
 msgid "Mandatory variable {} not available."
-msgstr ""
+msgstr "Erforderliche Variable {} ist nicht verfügbar."
 
 #: pisi/pxml/autoxml.py:731
 msgid "Type mismatch: read text cannot be decoded."
-msgstr ""
+msgstr "Typkonflikt: Der gelesene Text kann nicht dekodiert werden."
 
 #: pisi/pxml/autoxml.py:739 pisi/pxml/autoxml.py:749
 #, python-brace-format
 msgid "Mandatory token {} not available."
-msgstr ""
+msgstr "Erforderlicher Token {} ist nicht verfügbar."
 
 #: pisi/pxml/autoxml.py:757
 #, python-brace-format
 msgid "Type mismatch. Expected {0}, got {1}"
-msgstr ""
+msgstr "Typkonflikt. Erwartet {0}, erhalten {1}"
 
 #: pisi/pxml/autoxml.py:791 pisi/pxml/autoxml.py:923
 msgid "Type mismatch: DOM cannot be decoded."
-msgstr ""
+msgstr "Typkonflikt: DOM kann nicht dekodiert werden."
 
 #: pisi/pxml/autoxml.py:795 pisi/pxml/autoxml.py:811 pisi/pxml/autoxml.py:825
 #: pisi/pxml/autoxml.py:927 pisi/pxml/autoxml.py:941 pisi/pxml/autoxml.py:955
 msgid "Mandatory argument not available."
-msgstr ""
+msgstr "Erforderliches Argument ist nicht verfügbar."
 
 #. note: we can receive an error if obj has no content
 #: pisi/pxml/autoxml.py:808 pisi/pxml/autoxml.py:938
 msgid "Object cannot be encoded."
-msgstr ""
+msgstr "Das Objekt kann nicht kodiert werden."
 
 #: pisi/pxml/autoxml.py:822 pisi/pxml/autoxml.py:952
 msgid "Object cannot be formatted."
-msgstr ""
+msgstr "Das Objekt kann nicht formatiert werden."
 
 #: pisi/pxml/autoxml.py:838
 msgid "List type must contain only one element."
-msgstr ""
+msgstr "Listentyp darf nur ein Element enthalten."
 
 #: pisi/pxml/autoxml.py:854 pisi/pxml/autoxml.py:878
 #, python-brace-format
 msgid "Mandatory list \"{0}\" under \"{1}\" node is empty."
-msgstr ""
+msgstr "Erforderliche Liste \"{0}\" unter \"{1}\" Knoten ist leer."
 
 #: pisi/scenarioapi/package.py:71
 #, python-format
 msgid "No pisi package: %s* found."
-msgstr "Kein eopkg-Paket: %s* gefunden."
+msgstr "Kein pisi-Paket: %s* gefunden."
 
 #: pisi/scenarioapi/repoops.py:17
 #, python-format
 msgid "Repo already has package named %s."
-msgstr "Repo hat schon ein Paket mit dem Namen %s."
+msgstr "Repository hat schon ein Paket mit dem Namen %s."
 
 #: pisi/scenarioapi/repoops.py:44 pisi/scenarioapi/repoops.py:52
 #, python-format
 msgid "Repo does not have package named %s."
-msgstr "Repo enthält kein Paket mit Namen %s."
+msgstr "Repository enthält kein Paket mit Namen %s."
 
 #: pisi/scripts/eopkg.py:34
 msgid "Keyboard Interrupt: Exiting..."
-msgstr "Tastatur-Interrupt: Wird beendet..."
+msgstr "Tastaturunterbrechungen: Wird beendet..."
 
 #: pisi/scripts/eopkg.py:37
 msgid "Program terminated."
