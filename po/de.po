@@ -2901,7 +2901,7 @@ msgstr "Repository enthält kein Paket mit Namen %s."
 
 #: pisi/scripts/eopkg.py:34
 msgid "Keyboard Interrupt: Exiting..."
-msgstr "Tastaturunterbrechungen: Wird beendet..."
+msgstr "Tastaturunterbrechung: Wird beendet..."
 
 #: pisi/scripts/eopkg.py:37
 msgid "Program terminated."
@@ -2911,10 +2911,12 @@ msgstr "Programm beendet."
 msgid ""
 "Cyclic dependency detected. The following packages cannot be installed:"
 msgstr ""
+"Zyklische Abhängigkeit erkannt. Die folgenden Pakete können nicht "
+"installiert werden:"
 
 #: pisi/scripts/eopkg.py:46
 msgid "This is a packaging error."
-msgstr ""
+msgstr "Das ist ein Paketierungsfehler."
 
 #: pisi/scripts/eopkg.py:52
 msgid ""
@@ -2922,15 +2924,15 @@ msgid ""
 "Please file a bug report to <https://github.com/getsolus/package-management/>."
 msgstr ""
 "Unbehandelte interne Ausnahme.\n"
-"Bitte erstellen Sie einen Fehler-Bericht auf <https://github.com/getsolus/package-management/>."
+"Bitte erstellen Sie einen Fehlerbericht auf <https://github.com/getsolus/package-management/>."
 
 #: pisi/scripts/eopkg.py:63
 msgid "System error. Program terminated."
-msgstr "Systemfehler. Programmausführung abgebrochen."
+msgstr "Systemfehler. Programm beendet."
 
 #: pisi/scripts/eopkg.py:68
 msgid "Please use 'eopkg help' for general help."
-msgstr "Bitte geben Sie 'eopkg help' für die allgemeine Hilfe ein"
+msgstr "Bitte 'eopkg help' für die allgemeine Hilfe eingeben."
 
 #: pisi/scripts/eopkg.py:71
 msgid ""
@@ -2942,11 +2944,11 @@ msgstr ""
 
 #: pisi/scripts/eopkg.py:74
 msgid "Use --debug to see a traceback."
-msgstr "Verwenden Sie --debug, um einen traceback zu sehen."
+msgstr "--debug verwenden, um einen traceback zu sehen."
 
 #: pisi/comariface.py:22
 msgid "comar-api package is not fully installed"
-msgstr "Comar-API Paket wurde nicht vollständig installiert"
+msgstr "Comar-API Paket ist nicht vollständig installiert"
 
 #: pisi/comariface.py:85
 #, python-format
@@ -2981,48 +2983,46 @@ msgstr "Skriptfehler: %s"
 
 #: pisi/comariface.py:131
 msgid "Calling post install handlers"
-msgstr "Nachbereitung der Installation wird gestartet"
+msgstr "Ausführen der Post-Installations-Handler"
 
 #: pisi/comariface.py:149
 msgid "Running package's post install script"
-msgstr "Nachbereitung der Installation wird ausgeführt"
+msgstr "Ausführen der Post-Installations-Skripte für Pakete"
 
 #: pisi/comariface.py:163
 #, python-format
 msgid "Running pre removal operations for %s"
-msgstr "Bereite %s zum Entfernen vor"
+msgstr "Ausführen der Operationen vor dem Entfernen von %s"
 
 #: pisi/comariface.py:169
 msgid "Running package's pre remove script"
-msgstr "Vorbereitung zum Entfernen des Paketes wird ausgeführt"
+msgstr "Ausführen der Skripte vor dem Entfernen von Paketen"
 
 #: pisi/comariface.py:177
 msgid "Calling pre remove handlers"
-msgstr "Prozess zur Vorbereitung des Entfernens wird aufgerufen"
+msgstr "Ausführen der Handler vor dem Entfernen "
 
 #: pisi/comariface.py:193
 #, python-format
 msgid "Running post removal operations for %s"
-msgstr "Operationen nach dem Entfernen von %s werden durchgeführt"
+msgstr "Ausführen der Operationen nach dem Entfernen von %s"
 
 #: pisi/comariface.py:201
 msgid "Running package's postremove script"
-msgstr "Skript wird ausgeführt, um die Deinstallation abzuschließen"
+msgstr "Ausführen der Skripte nach dem Entfernen"
 
 #: pisi/comariface.py:209
 msgid "Calling post remove handlers"
-msgstr ""
-"Bearbeitungsprozedur um den Deinstallationsvorgang abzuschließen wird "
-"aufgerufen"
+msgstr "Ausführen der Post-Entfernungs-Handler"
 
 #: pisi/comariface.py:221
 msgid "Unregistering comar scripts"
-msgstr "Comar-Skripte werden entfernt"
+msgstr "Comar-Skripte werden deregistiert"
 
 #: pisi/config.py:86
 #, python-format
 msgid "Destination directory %s does not exist. Creating it."
-msgstr "Zielverzeichnis %s existiert nicht. Wird neu erstellt."
+msgstr "Zielverzeichnis %s existiert nicht. Wird erstellt."
 
 #: pisi/conflict.py:17 pisi/dependency.py:19 pisi/replace.py:15
 msgid " version >= "
@@ -3056,20 +3056,20 @@ msgstr "Konstante kann nicht neu eingebunden werden: %s"
 #: pisi/constants.py:27
 #, python-format
 msgid "Can't unbind constant: %s"
-msgstr "Konstante %s kann nicht geändert werden"
+msgstr "Konstante %s kann nicht aufgehoben werden"
 
 #: pisi/context.py:63
 msgid "usysconf not installed. Please upgrade!"
-msgstr ""
+msgstr "usysconf ist nicht installiert. Bitte aktualisieren!"
 
 #: pisi/context.py:76
 msgid "Failed to configure system"
-msgstr ""
+msgstr "Systemkonfiguration fehlgeschlagen"
 
 #: pisi/graph.py:17
 #, python-format
 msgid "Encountered cycle %s"
-msgstr "Zusammengetroffener Zyklus %s"
+msgstr "Zyklus erkannt %s"
 
 #: pisi/metadata.py:64
 #, python-format
@@ -3094,7 +3094,7 @@ msgstr "Mirrors-Datei %s existiert nicht. Konnte mirrors:// nicht auflösen"
 #: pisi/specfile.py:172
 #, python-format
 msgid "URI: %s, type: %s, sha1sum: %s"
-msgstr "URI: %s, Typ: %s, Sha1sum: %s"
+msgstr "URI: %s, Typ: %s, sha1sum: %s"
 
 #: pisi/specfile.py:204 pisi/specfile.py:207
 msgid " or "
@@ -3139,12 +3139,12 @@ msgstr "Build-Abhängigkeiten:"
 #: pisi/history.py:36
 #, python-format
 msgid "%s repository is updated."
-msgstr "%s-Depot wurde aktualisiert."
+msgstr "%s-Repository wurde aktualisiert."
 
 #: pisi/history.py:56
 #, python-format
 msgid "%s is upgraded from %s to %s with delta."
-msgstr "%s wurde via Delta-Update von von %s zu %s aktualisiert."
+msgstr "%s wurde via Delta von %s zu %s aktualisiert."
 
 #: pisi/history.py:62
 #, python-format
@@ -3178,17 +3178,17 @@ msgstr "Unbekannte Paketoperation"
 #: pisi/version.py:71
 #, python-format
 msgid "Invalid version string: '%s'"
-msgstr "Ungültige Versionskennzeichnung: '%s'"
+msgstr "Ungültige Version: '%s'"
 
 #: pisi/archive.py:250
 #, python-format
 msgid "Ignoring unknown file in archive: %s"
-msgstr ""
+msgstr "Ignoriere unbekannte Datei im Archiv: %s"
 
 #: pisi/archive.py:255
 #, python-format
 msgid "Skipping merged file %s"
-msgstr ""
+msgstr "Überspringe zusammengeführte Datei %s"
 
 #: pisi/archive.py:492
 #, python-format
@@ -3204,26 +3204,26 @@ msgstr ""
 #: pisi/api.py:577
 #, python-format
 msgid "Cleaning package cache %s..."
-msgstr "Säubere Paket-Cache %s..."
+msgstr "Bereinige Paket-Cache %s..."
 
 #: pisi/api.py:579
 #, python-format
 msgid "Cleaning source archive cache %s..."
-msgstr "Säubere Quellarchiv-Cache %s..."
+msgstr "Bereinige Quellarchiv-Cache %s..."
 
 #: pisi/api.py:581
 #, python-format
 msgid "Cleaning temporary directory %s..."
-msgstr "Säubere temporäres Verzeichnis %s..."
+msgstr "Bereinige temporäres Verzeichnis %s..."
 
 #: pisi/api.py:587
 #, python-format
 msgid "Removing cache file %s..."
-msgstr "Entferne Cachedatei %s..."
+msgstr "Entferne Cache-Datei %s..."
 
 #: pisi/api.py:620
 msgid "Taking snapshot of the system"
-msgstr "Schnappschuss des Systems wird gerade aufgenommen"
+msgstr "Schnappschuss des Systems wird aufgenommen"
 
 #: pisi/api.py:791
 #, python-format
@@ -3241,32 +3241,34 @@ msgstr "Index-Datei geschrieben"
 
 #: pisi/api.py:846
 msgid "Not a valid repo name."
-msgstr "Kein gültiger Depotname."
+msgstr "Kein gültiger Repositoryname."
 
 #: pisi/api.py:854
 #, python-format
 msgid "Repo already present with name %s and same URL. Removing first."
 msgstr ""
+"Ein Repository mit dem Namen %s und derselben URL ist bereits vorhanden. Das"
+" vorhandene Repository wird zuerst entfernt."
 
 #: pisi/api.py:867
 #, python-format
 msgid "Repo %s added to system."
-msgstr "Depot %s in das System hinzugefügt"
+msgstr "Repository %s zum System hinzugefügt."
 
 #: pisi/api.py:876
 #, python-format
 msgid "Repo %s removed from system."
-msgstr "Depot %s vom System entfernt."
+msgstr "Repository %s vom System entfernt."
 
 #: pisi/api.py:878
 #, python-format
 msgid "Repository %s does not exist. Cannot remove."
-msgstr "Depot %s existiert nicht. Kann nicht entfernt werden."
+msgstr "Repository %s existiert nicht. Kann nicht entfernt werden."
 
 #: pisi/api.py:906
 #, python-format
 msgid "Updating repository: %s"
-msgstr "Depot wird aktualisiert: %s"
+msgstr "Repository wird aktualisiert: %s"
 
 #: pisi/api.py:918
 #, python-format
