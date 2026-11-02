@@ -497,13 +497,16 @@ def is_upgradable(
     if not installdb.has_package(name):
         return False
 
-    (
-        i_version,
-        i_release,
-        i_build,
-        i_distro,
-        i_distro_release,
-    ) = installdb.get_version_and_distro_release(name)
+    try:
+        (
+            _i_version,
+            i_release,
+            _i_build,
+            i_distro,
+            i_distro_release,
+        ) = installdb.get_version_and_distro_release(name)
+    except pisi.Error:
+        return False
 
     try:
         (
