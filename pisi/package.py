@@ -195,25 +195,22 @@ class Package:
 
     def extract_install(self, outdir, callback=None):
         def callback_internal(tarinfo, extracted):
-            if not extracted:
-                # Installing packages (especially shared libraries) is a
-                # bit tricky. You should also change the inode if you
-                # change the file, cause the file is opened allready and
-                # accessed. Removing and creating the file will also
-                # change the inode and will do the trick (in fact, old
-                # file will be deleted only when its closed).
-                #
-                # Also, tar.extract() doesn't write on symlinks... Not any
-                # more :).
-                if os.path.isfile(tarinfo.name) or os.path.islink(tarinfo.name):
-                    try:
-                        os.unlink(tarinfo.name)
-                    except OSError as e:
-                        ctx.ui.warning(e)
-            else:
-                # Added for package-manager
-                if tarinfo.name.endswith(".desktop"):
-                    ctx.ui.notify(pisi.ui.desktopfile, desktopfile=tarinfo.name)
+            # Installing packages (especially shared libraries) is a
+            # bit tricky. You should also change the inode if you
+            # change the file, cause the file is opened allready and
+            # accessed. Removing and creating the file will also
+            # change the inode and will do the trick (in fact, old
+            # file will be deleted only when its closed).
+            #
+            # Also, tar.extract() doesn't write on symlinks... Not any
+            # more :).
+            if not extracted and (
+                os.path.isfile(tarinfo.name) or os.path.islink(tarinfo.name)
+            ):
+                try:
+                    os.unlink(tarinfo.name)
+                except OSError as e:
+                    ctx.ui.warning(e)
 
             if callback:
                 callback(tarinfo, extracted)

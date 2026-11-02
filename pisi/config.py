@@ -22,7 +22,7 @@ class Error(pisi.Error):
     pass
 
 
-class Options(object):
+class Options:
     def __getattr__(self, name):
         if name not in self.__dict__:
             return None
@@ -31,6 +31,17 @@ class Options(object):
 
     def __setattr__(self, name, value):
         self.__dict__[name] = value
+
+    def __setstate__(self, state):
+        """Restore pickled options (multiprocessing spawn).
+
+        `__getattr__` resolves unknown attributes to `None`, and
+        Python 3.14's pickle falls back to `obj.update(state)` when an
+        object has no `__setstate__` — which would hit that `None`
+        and break unpickling ("NoneType object is not callable"), killing
+        the forked worker processes used for parallel operations.
+        """
+        self.__dict__.update(state)
 
 
 class Config(object, metaclass=pisi.util.Singleton):
