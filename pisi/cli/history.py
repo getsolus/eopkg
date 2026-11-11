@@ -108,31 +108,36 @@ Lists previous operations."""
                     import subprocess
 
                     self.less = subprocess.Popen(
-                        ["less", "-K", "-"], stdin=subprocess.PIPE
+                        ["less", "-K", "-"],
+                        stdin=subprocess.PIPE,
+                        text=True,
+                        encoding=sys.stdout.encoding or "utf-8",
+                        errors="replace",
                     )
 
-                def __del__(self):
-                    if self.less.poll() is None:
-                        self.less.stdin.close()
-                    self.less.wait()
+                def write(self, s):
+                    return self.less.stdin.write(s)
 
                 def flush(self):
                     self.less.stdin.flush()
 
-                def write(self, s):
+                def close(self):
                     try:
-                        self.less.stdin.write(s.encode())
-                    except OSError:
-                        raise LessException
+                        self.less.stdin.close()
+                    finally:
+                        self.less.wait()
 
             stdout, stderr = sys.stdout, sys.stderr
-            sys.stdout = sys.stderr = LessPipe()
+            pipe = LessPipe()
+            sys.stdout = sys.stderr = pipe
+
             try:
                 func()
             except LessException:
                 pass
             finally:
                 sys.stdout, sys.stderr = stdout, stderr
+                pipe.close()
 
         else:
             func()
