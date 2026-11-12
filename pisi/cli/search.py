@@ -8,6 +8,7 @@ import pisi.context as ctx
 import pisi.db
 from pisi import translate as _
 from pisi.cli import command
+from pisi.operations.helper import resolve_provider_matches
 
 
 class Search(command.Command, metaclass=command.autocommand):
@@ -95,14 +96,18 @@ database.
         if name or summary or desc:
             fields = {"name": name, "summary": summary, "desc": desc}
 
+        # The user may have passed providers e.g. 'pkgconfig(foo)'
+        # Ensure these get resolved to the underlying package name
+        terms = resolve_provider_matches(self.args)
+
         if ctx.get_option("installdb"):
             db = pisi.db.installdb.InstallDB()
-            pkgs = db.search_package(self.args, lang, fields)
+            pkgs = db.search_package(terms, lang, fields)
             get_info = db.get_package
             get_name_sum = lambda pkg: (pkg.name, pkg.summary)
         else:
             db = pisi.db.packagedb.PackageDB()
-            pkgs = db.search_package(self.args, lang, repo, fields)
+            pkgs = db.search_package(terms, lang, repo, fields)
             get_info = db.get_package
             get_name_sum = lambda pkg: (pkg.name, pkg.summary)
 
