@@ -233,33 +233,18 @@ def upgrade(packages=[], repo=None):
     for install_op in install_ops:
         install_op.check_relations(set(order))
 
+    # Which packages need to be marked as automatically installed
     automatic = operations.helper.extract_automatic(packages, order)
 
-    # Batch pre-flight: all checks run in the main process before anything
-    # is installed.
-    for install_op in install_ops:
-        install_op.preflight(ask_reinstall=True)
-        install_op.check_configs()
+    from pisi.operations.install import run_install_ops
 
-    from pisi.operations.install import (
-        _run_parallel,
-        install_critical_first,
-        install_pkg_worker,
+    # Actually do the thing
+    run_install_ops(
+        install_ops,
+        ask_reinstall=True,
+        apply_automatic=automatic,
+        op=events.Operation.UPGRADE,
     )
-
-    # baselayout must be fully installed before the parallel pool starts:
-    # workers cannot honour the install order, so install it sequentially
-    # in the main process first (pre-flight already ran above).
-    install_ops = install_critical_first(install_ops, apply_automatic=automatic)
-    if install_ops:
-        arg_list = [install_op.package_fname for install_op in install_ops]
-        _run_parallel(
-            install_pkg_worker, arg_list, install_ops,
-            apply_automatic=automatic,
-            op=events.Operation.UPGRADE,
-        )
-    else:
-        ctx.exec_usysconf()
 
     # Prior to 2c63650, this function had no return statement at all on the "complete" codepath.
     # 2c63650 added a "return True". Unfortunately, it appears that "False" means "Ask the user for confirmation",
