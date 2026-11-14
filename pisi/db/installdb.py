@@ -85,7 +85,23 @@ class InstallDB(lazydb.LazyDB):
                     % dirname
                 )
                 continue
-            installed.update([split_name(dirname)])
+
+            name, version_release = split_name(dirname)
+            # Safety guard: stale pkg dirs left behind by an interrupted
+            # or parallelized upgrade must not shadow the newest installed
+            # version. The release component increments on every upgrade,
+            # so the highest release wins.
+            if name in installed:
+                _version, release = version_release.rsplit("-", 1)
+                _cur_version, cur_release = installed[name].rsplit("-", 1)
+                try:
+                    is_newer = int(release) > int(cur_release)
+                except ValueError:
+                    # Unparseable release — keep the first-seen entry.
+                    is_newer = False
+                if not is_newer:
+                    continue
+            installed[name] = version_release
         return installed
 
     def __get_marked_packages(self, _type):
