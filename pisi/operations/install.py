@@ -294,6 +294,44 @@ def install_critical_first(ops, *, apply_automatic=None):
     return rest
 
 
+def run_install_ops(
+    install_ops,
+    *,
+    ask_reinstall=True,
+    worker_fn=install_pkg_worker,
+    apply_automatic=None,
+    op=events.Operation.INSTALL,
+):
+    """Install a batch of :class:`~pisi.atomicoperations.Install` operations.
+
+    Helper function to actually run an installation operation against a set of
+    initalized Install operation Objects.
+
+    :param install_ops: Install operation objects to run.
+    :param ask_reinstall: Passed through to `preflight()` checks.
+    :param worker_fn: Pool worker, either `install_pkg_worker` or `install_file_worker`.
+    :param apply_automatic: Optional set of package names to mark as automatically installed.
+    :param op: Operation type driving the progress events.
+    """
+    for install_op in install_ops:
+        install_op.preflight(ask_reinstall=ask_reinstall)
+        install_op.check_configs()
+
+    install_ops = install_critical_first(install_ops, apply_automatic=apply_automatic)
+    if not install_ops:
+        ctx.exec_usysconf()
+        return
+
+    arg_list = [install_op.package_fname for install_op in install_ops]
+    _run_parallel(
+        worker_fn,
+        arg_list,
+        install_ops,
+        apply_automatic=apply_automatic,
+        op=op,
+    )
+
+
 def install_pkg_names(packages, reinstall=False):
     """
     Installs packages from the repository.
@@ -416,33 +454,17 @@ def install_pkg_names(packages, reinstall=False):
     for install_op in install_ops:
         install_op.check_relations(set(order))
 
+    # Which packages need to be marked as automatically installed
     automatic = operations.helper.extract_automatic(packages, order)
 
-    # Batch pre-flight: all checks run in the main process before anything
-    # is installed. check_configs() renames user-modified configs so workers
-    # can extract without clobbering them.
-    for install_op in install_ops:
-        install_op.preflight(ask_reinstall=False)
-        install_op.check_configs()
-
-    # baselayout must be fully installed before the parallel pool starts:
-    # workers cannot honour the install order, so install it sequentially
-    # in the main process first (pre-flight already ran above).
-    install_ops = install_critical_first(install_ops, apply_automatic=automatic)
-    if install_ops:
-        arg_list = [install_op.package_fname for install_op in install_ops]
-        _run_parallel(
-            install_pkg_worker, arg_list, install_ops,
-            apply_automatic=automatic,
-        )
-    else:
-        ctx.exec_usysconf()
+    # Actually do the thing
+    run_install_ops(
+        install_ops,
+        ask_reinstall=False,
+        apply_automatic=automatic,
+    )
 
     return True
-
-
-
-
 
 def install_pkg_files(package_URIs, reinstall=False):
     """install a number of pisi package files"""
@@ -643,20 +665,11 @@ def install_pkg_files(package_URIs, reinstall=False):
     for install_op in file_install_ops:
         install_op.check_relations(set(order))
 
-    # Batch pre-flight: all checks run in the main process before anything
-    # is installed.
-    for install_op in file_install_ops:
-        install_op.preflight(ask_reinstall=not reinstall)
-        install_op.check_configs()
-
-    file_install_ops = install_critical_first(file_install_ops)
-    if file_install_ops:
-        arg_list = [install_op.package_fname for install_op in file_install_ops]
-        _run_parallel(
-            install_file_worker, arg_list, file_install_ops,
-        )
-    else:
-        ctx.exec_usysconf()
+    run_install_ops(
+        file_install_ops,
+        ask_reinstall=not reinstall,
+        worker_fn=install_file_worker,
+    )
 
     return True
 
