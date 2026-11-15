@@ -38,6 +38,8 @@ class HistoryDB(lazydb.LazyDB):
             dir_util.copy_tree(config_dir, "/")
 
     def save_config(self, package, config_file):
+        if not hasattr(self.history.operation, "no"):
+            return
         hist_dir = os.path.join(
             ctx.config.history_dir(), self.history.operation.no, package
         )
