@@ -7,6 +7,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
+from pisi import translate as _
+
 
 @dataclass(frozen=True)
 class EventInfo:
@@ -28,16 +30,16 @@ class Operation(Enum):
         op.done_label       # "Installed"
     """
 
-    INSTALL = EventInfo("install", "Installing", "Installed")
-    REINSTALL = EventInfo("reinstall", "Reinstalling", "Reinstalled")
-    UPGRADE = EventInfo("upgrade", "Upgrading", "Upgraded")
-    DOWNGRADE = EventInfo("downgrade", "Downgrading", "Downgraded")
-    REMOVE = EventInfo("remove", "Removing", "Removed")
-    CONFIGURE = EventInfo("configure", "Configuring", "Configured")
-    DOWNLOAD = EventInfo("download", "Downloading", "Downloaded")
-    UPDATE_REPO = EventInfo("update-repo", "Updating repo", "Updated repo")
-    SYSTEM_CONF = EventInfo("system-conf", "System config", "System configured")
-    SNAPSHOT = EventInfo("snapshot", "Snapshotting", "Snapshotted")
+    INSTALL = EventInfo(_("install"), _("Installing"), _("Installed"))
+    REINSTALL = EventInfo(_("reinstall"), _("Reinstalling"), _("Reinstalled"))
+    UPGRADE = EventInfo(_("upgrade"), _("Upgrading"), _("Upgraded"))
+    DOWNGRADE = EventInfo(_("downgrade"), _("Downgrading"), _("Downgraded"))
+    REMOVE = EventInfo(_("remove"), _("Removing"), _("Removed"))
+    CONFIGURE = EventInfo(_("configure"), _("Configuring"), _("Configured"))
+    DOWNLOAD = EventInfo(_("download"), _("Downloading"), _("Downloaded"))
+    UPDATE_REPO = EventInfo(_("update-repo"), _("Updating repo"), _("Updated repo"))
+    SYSTEM_CONF = EventInfo(_("system-conf"), _("System config"), _("System configured"))
+    SNAPSHOT = EventInfo(_("snapshot"), _("Snapshotting"), _("Snapshotted"))
 
     @property
     def label(self) -> str:
