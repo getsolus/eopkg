@@ -18,41 +18,6 @@ PKGCONFIG_RE = re.compile(r"^pkgconfig\((.+)\)$")
 PKGCONFIG32_RE = re.compile(r"^pkgconfig32\((.+)\)$")
 
 
-def reorder_base_packages_old(order):
-    componentdb = pisi.db.componentdb.ComponentDB()
-
-    """system.base packages must be first in order"""
-    systembase = componentdb.get_union_component("system.base").packages
-
-    systembase_order = []
-    nonbase_order = []
-    for pkg in order:
-        if pkg in systembase:
-            systembase_order.append(pkg)
-        else:
-            nonbase_order.append(pkg)
-
-    install_order = systembase_order + nonbase_order
-    ctx.ui.warning(_("Reordering install order so system.base packages come first."))
-    if len(install_order) > 1 and ctx.config.get_option("debug"):
-        ctx.ui.info(_("install_order: %s" % install_order))
-    return install_order
-
-
-def reorder_base_packages(order):
-    """Dummy function that doesn't actually re-order system.base in front.
-
-    We now use OrderedSets, which keep the original topological sort,
-    so this shouldn't actually be necessary now.
-
-    This also implies that the only function of system.base is for the
-    packages in it to be un-removable.
-    """
-    if len(order) > 1 and ctx.config.get_option("debug"):
-        ctx.ui.info(_("order: %s" % order))
-    return order
-
-
 def check_conflicts(order, packagedb):
     """check if upgrading to the latest versions will cause havoc
     done in a simple minded way without regard for dependencies of

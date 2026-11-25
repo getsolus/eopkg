@@ -362,12 +362,6 @@ def install_pkg_names(packages, reinstall=False):
         graph = None
         order = list(packages)
 
-    componentdb = pisi.db.componentdb.ComponentDB()
-
-    # Bug 4211
-    if componentdb.has_component("system.base"):
-        order = operations.helper.reorder_base_packages(order)
-
     # Show what packages will be downloaded or installed if there are
     # more than one
     if len(order) > 1:

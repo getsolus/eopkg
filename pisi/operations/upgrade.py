@@ -157,12 +157,6 @@ def upgrade(packages=[], repo=None):
         _graph = None
         order = list(packages)
 
-    componentdb = pisi.db.componentdb.ComponentDB()
-
-    # Bug 4211
-    if componentdb.has_component("system.base"):
-        order = operations.helper.reorder_base_packages(order)
-
     # Show what packages will be upgraded/fetched
     if ctx.get_option("fetch_only"):
         ctx.ui.status(_("The following packages will be downloaded:"))

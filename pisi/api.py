@@ -738,11 +738,6 @@ def generate_pending_order(A):
     order = G_f.topological_sort()
     order.reverse()
 
-    componentdb = pisi.db.componentdb.ComponentDB()
-    # Bug 4211
-    if componentdb.has_component("system.base"):
-        order = reorder_base_packages(order)
-
     return order
 
 
@@ -963,17 +958,13 @@ def rebuild_db(files=False):
 
 # from pisi.operations import install, remove, upgrade, emerge
 # from pisi.operations import plan_install_pkg_names as plan_install
-# from pisi.operations import plan_remove, plan_upgrade, upgrade_base, calculate_conflicts, reorder_base_packages
+# from pisi.operations import plan_remove, plan_upgrade, upgrade_base, calculate_conflicts
 # from pisi.build import build_until
 # from pisi.atomicoperations import resurrect_package, build
 
 
 def calculate_conflicts(*args, **kw):
     return pisi.conflict.calculate_conflicts(*args, **kw)
-
-
-def reorder_base_packages(*args, **kw):
-    return pisi.operations.helper.reorder_base_packages(*args, **kw)
 
 
 def build_until(*args, **kw):
