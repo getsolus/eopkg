@@ -202,7 +202,7 @@ def install_pkg_worker(path):
     install_op.progress_callback = lambda c, t: _worker_progress_queue.put(
         events.ItemProgress(item=name, completed=c, total=t)
     )
-    install_op.extract()
+    install_op.extract_install()
     _worker_progress_queue.put(events.ItemDone(item=name))
 
 
