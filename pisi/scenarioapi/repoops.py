@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 import os
+import subprocess
 
 from pisi.scenarioapi.package import Package
 from pisi.scenarioapi.withops import *
@@ -60,7 +61,9 @@ def repo_updated_index():
     cur = os.getcwd()
     path = os.path.join(cur, consts.repo_path)
     os.chdir(consts.repo_path)
-    os.system("pisi index --skip-signing %s >/dev/null 2>&1" % path)
+    subprocess.run(["pisi", "index", "--skip-signing", path],
+                   stdout=subprocess.DEVNULL,
+                   stderr=subprocess.DEVNULL)
     os.chdir(cur)
 
 

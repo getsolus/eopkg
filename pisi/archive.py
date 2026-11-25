@@ -307,8 +307,8 @@ class ArchiveTar(ArchiveBase):
                                     old_path = "/" + old_path
                                 if not new_path.startswith("/"):
                                     new_path = "/" + new_path
-                                print(("Moving:", old_path, " -> ", new_path))
-                                os.system("mv -f %s %s" % (old_path, new_path))
+                                print("Moving:", repr(old_path), " -> ", repr(new_path))
+                                util.try_move(old_path, new_path)
                             else:
                                 raise
                     try:
@@ -316,7 +316,7 @@ class ArchiveTar(ArchiveBase):
                     except OSError as e:
                         # hmmm, not empty dir? try rename it adding .old extension.
                         if e.errno == errno.ENOTEMPTY:
-                            os.system("mv -f %s %s.old" % (tarinfo.name, tarinfo.name))
+                            util.try_move(tarinfo.name, tarinfo.name + '.old')
                         else:
                             raise
 

@@ -272,7 +272,7 @@ class File:
                 Exception
             ) as e:  # FIXME: what exception could we catch here, replace with that.
                 raise NoSignatureFound(uri)
-            if os.system("gpg --verify " + sigfilename) != 0:
+            if pisi.util.system("gpg", "--verify", sigfilename) != 0:
                 raise InvalidSignature(uri)
             # everything is all right here
 

@@ -250,9 +250,8 @@ def moveSources():
                 path = path.strip()
                 filename = path.split("/", -1)
                 dirname = os.path.dirname(path)
-                if not os.path.isdir("%s/%s" % (reloc, dirname)):
-                    os.system("mkdir -p %s/%s" % (reloc, dirname))
-                shutil.move("%s" % path, "%s/%s" % (reloc, dirname))
+                os.makedirs(os.path.join(reloc, dirname), exist_ok=True)
+                shutil.move(path, os.path.join(reloc, dirname))
 
 
 def buildFormatFiles():

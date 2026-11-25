@@ -404,6 +404,14 @@ def copy_file_stat(src, dest):
     shutil.copy2(src, dest)
 
 
+def try_move(src: str, dest: str) -> None:
+    """Rename the source file to the destination without either needing to exist."""
+    try:
+        shutil.move(src, dest)
+    except FileNotFoundError:
+        pass
+
+
 def read_link(link):
     """Return the normalized path which is pointed by the symbolic link."""
     # tarfile module normalizes the paths pointed by symbolic links. This
@@ -1004,3 +1012,16 @@ def systemd_inhibit(reason: str):
     except Exception as e:
         ctx.ui.warning(_("D-Bus call failed: %s" % e))
         return None, None
+
+
+########################################
+# Command execution related Functions  #
+########################################
+
+
+def system(*args: str) -> int:
+    """
+    Execute the given command and return the exit status.
+    This should be used instead of os.system.
+    """
+    return subprocess.run(args).returncode

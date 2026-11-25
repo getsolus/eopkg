@@ -67,7 +67,7 @@ def exec_usysconf():
     # decides whether the binary's output reaches the terminal (CLI) or
     # is suppressed (PackageKit, whose stdout is parsed by packagekitd).
     try:
-        ui.run_usysconf("{} run".format(usysconf_binary))
+        ui.run_usysconf(usysconf_binary, 'run')
     except Exception as e:
         if ctx:
             ctx.ui.error(_("Failed to configure system"))
