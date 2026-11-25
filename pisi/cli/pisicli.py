@@ -52,7 +52,7 @@ class PreParser(optparse.OptionParser):
 
     def __init__(self, version):
         optparse.OptionParser.__init__(
-            self, usage=pisi.cli.help.usage_text, version=version
+            self, usage=pisi.cli.help.usage_text(), version=version
         )
 
     def error(self, msg):
