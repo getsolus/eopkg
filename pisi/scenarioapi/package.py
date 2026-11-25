@@ -3,6 +3,7 @@
 
 import os
 import glob
+import subprocess
 
 from pisi.scenarioapi.pspec import Pspec
 from pisi.scenarioapi.actions import Actions
@@ -26,10 +27,9 @@ class Package:
         self.create_package()
 
     def create_pisi(self):
-        os.system(
-            "pisi build %s -O %s > /dev/null 2>&1"
-            % (consts.pspec_path, consts.repo_path)
-        )
+        subprocess.run(["pisi", "build", consts.pspec_path, "-O", consts.repo_path],
+                       stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL)
 
     def create_package(self):
         pspec = Pspec(self.name, consts.pspec_path)

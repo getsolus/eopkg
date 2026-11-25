@@ -7,31 +7,28 @@ from pisi.scenarioapi.constants import *
 
 
 def pisi_upgraded(*args):
-    packages = util.strlist(args).rstrip()
-    os.system("pisi -D%s upgrade %s" % (consts.pisi_db, packages))
+    util.system("pisi", "-D", consts.pisi_db, "upgrade", *args)
 
 
 def pisi_info(package):
-    os.system("pisi -D%s info %s" % (consts.pisi_db, package))
+    util.system("pisi", "-D", consts.pisi_db, "info", package)
 
 
 def pisi_removed(*args):
-    packages = util.strlist(args).rstrip()
-    os.system("pisi -D%s remove %s" % (consts.pisi_db, packages))
+    util.system("pisi", "-D", consts.pisi_db, "remove", *args)
 
 
 def pisi_added_repo(name, url):
-    os.system("pisi -D%s add-repo -y %s %s" % (consts.pisi_db, name, url))
+    util.system("pisi", "-D", consts.pisi_db, "add-repo", "-y", name, url)
 
 
 def pisi_updated_repo():
-    os.system("pisi -D%s update-repo" % consts.pisi_db)
+    util.system("pisi", "-D", consts.pisi_db, "update-repo")
 
 
 def pisi_installed(*args):
-    packages = util.strlist(args).rstrip()
-    os.system("pisi -D%s install %s" % (consts.pisi_db, packages))
+    util.system("pisi", "-D", consts.pisi_db, "install", *args)
 
 
 def pisi_reinstalled(package):
-    os.system("pisi -D%s install --reinstall %s" % (consts.pisi_db, package))
+    util.system("pisi", "-D", consts.pisi_db, "install", "--reinstall", package)

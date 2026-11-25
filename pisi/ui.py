@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-import os
 from collections.abc import Iterator
 from contextlib import contextmanager
 
 from pisi.events import Operation
+from pisi import util
 
 
 class PhaseHandle:
@@ -110,7 +110,7 @@ class UI:
         "set status, if not given clear it"
         pass
 
-    def run_usysconf(self, command: str) -> None:
+    def run_usysconf(self, *command: str) -> None:
         """Run the system configuration binary (usysconf).
 
         Frontends override this to control how the binary's output is
@@ -119,7 +119,7 @@ class UI:
 
         :param command: Full shell command line for usysconf.
         """
-        os.system(command)
+        util.system(*command)
 
     @contextmanager
     def work_phase(
