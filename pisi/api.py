@@ -41,25 +41,28 @@ def locked(func):
     """
 
     def wrapper(*__args, **__kw):
+        lockfile = pisi.util.join_path(pisi.context.config.lock_dir(), "pisi")
         try:
-            lock = open(
-                pisi.util.join_path(pisi.context.config.lock_dir(), "pisi"), "w"
+            with open(lockfile, "w") as lock:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                ctx.locked = True
+        except FileNotFoundError:
+            raise pisi.errors.LockFileError(
+                _("Lock directory (%s) not found") % lockfile
             )
-        except IOError:
+        except PermissionError:
             raise pisi.errors.PrivilegeError(
                 _("You have to be root for this operation.")
             )
-
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            ctx.locked = True
-        except IOError:
+        except BlockingIOError:
             if not ctx.locked:
                 raise pisi.errors.AnotherInstanceError(
                     _(
                         "Another instance of eopkg is running. Only one instance is allowed."
                     )
                 )
+        except OSError:
+            raise pisi.Error(_("An unknown issue occurred whilst attempting to hold the lock file."))
 
         reason = f"Performing {func.__name__} operation"
 

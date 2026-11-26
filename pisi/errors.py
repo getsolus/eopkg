@@ -9,3 +9,7 @@ class AnotherInstanceError(pisi.Error):
 
 class PrivilegeError(pisi.Error):
     pass
+
+
+class LockFileError(pisi.Error):
+    pass
